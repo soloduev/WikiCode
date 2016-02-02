@@ -1,0 +1,228 @@
+{% extends 'main.html' %}
+{% load bootstrap3 %}
+{% block page_name %}
+    <div class="container" style="margin-top: 50px;">
+        <div class="row">
+            <br>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <form action="{% url 'create_page' %}" method="post">
+            {% csrf_token %}
+            <div class="row">
+
+                <div class="col-xs-12 col-sm-10 col-md-10"
+                     style="border-left: 1px solid #d5d5d5;min-height:500px;border-bottom: 1px solid #d5d5d5;">
+                    <div class="row">
+                        <label class="text-center btn-primary btn-block">CREATE NEW PUBLICATION</label>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-1"></div>
+                        <div class="col-xs-10">
+                            <h3>Title</h3>
+                            <input required id="lt-markdown-title" name="title" type="text" class="btn-block"
+                                   placeholder="Input title for this publication..."
+                                   style="height: 30px; font-family: Consolas;"/>
+
+                            <p>
+                            <h3>Description</h3>
+                            <textarea required id="lt-markdown-description" name="description" type="text" class="btn-block"
+                                   placeholder="Input description..."
+                                   style="height: 100px; font-family: Consolas; resize: none;"></textarea>
+
+                            <p>
+
+                            <h3>Markdown Text</h3>
+                            </p>
+                            <div class="row">
+                                <div class="col-xs-9">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-primary" data-toggle="dropdown"
+                                                href="#dropdown-1"  style="border-radius: 0px;">
+                                            <i class="fa fa-header">
+                                                <span></span>
+                                            </i>
+                                        </button>
+                            <span class="text-right" id="dropdown-1">
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <button type="button" class="btn btn-default btn-block" id="lt-markdown-h1">Header
+                                        1
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" class="btn btn-default btn-block" id="lt-markdown-h2">Header
+                                        2
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" class="btn btn-default btn-block" id="lt-markdown-h3">Header
+                                        3
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" class="btn btn-default btn-block" id="lt-markdown-h4">Header
+                                        4
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" class="btn btn-default btn-block" id="lt-markdown-h5">Header
+                                        5
+                                    </button>
+                                </li>
+                            </ul>
+                            </span>
+                                        <button type="button" class="btn btn-primary" id="lt-markdown-bold"><i
+                                                class="fa fa-bold"></i></button>
+                                        <button type="button" class="btn btn-primary" id="lt-markdown-italic"><i
+                                                class="fa fa-italic"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-primary" id="lt-markdown-ol"><i
+                                                class="fa fa-list-ol"></i></button>
+                                        <button type="button" class="btn btn-primary" id="lt-markdown-ul"><i
+                                                class="fa fa-list-ul"></i></button>
+                                        <button type="button" class="btn btn-primary" id="lt-markdown-code"><i
+                                                class="fa fa-code"></i></button>
+                                        </button>
+                                        <button type="button" class="btn btn-primary" id="lt-markdown-line"><i
+                                                class="fa fa-minus"></i></button>
+                                        </button>
+                                        <button type="button" class="btn btn-primary" id="lt-markdown-quote"><i
+                                                class="fa fa-quote-left"></i></button>
+                                        </button>
+                                        <button type="button" class="btn btn-primary" id="lt-markdown-link"><i
+                                                class="fa fa-link"></i></button>
+                                        <button type="button" class="btn btn-primary" id="lt-markdown-img"><i
+                                                class="fa fa-image"></i></button>
+                                        <button type="button" class="btn btn-primary dropdown-toggle"
+                                                id="lt-markdown-choose-theme"
+                                                data-toggle="dropdown"
+                                                href="#dropdown-4"
+                                                style="border-radius: 0px;">
+                                            <i class="fa fa-paint-brush">
+                                                <span class="caret"></span>
+                                            </i>
+                                        </button>
+                                <span class="text-right" id="dropdown-4">
+                                <ul class="dropdown-menu" style="width: 432px;">
+                                    <li class="text-center">
+                                        Current theme publication:
+                                    </li>
+                                    <li>
+                                        <input id="lt-markdown-cur-theme" type="text" readonly
+                                               class="btn-block text-center" value="Cerulean"
+                                               name="theme">
+                                    </li>
+                                    <li>
+                                        <button type="button" class="btn btn-default" id="lt-markdown-theme1"
+                                                style="width: 141px;">United
+                                        </button>
+                                        <button type="button" class="btn btn-default" id="lt-markdown-theme2"
+                                                style="width: 141px;">Cerulean
+                                        </button>
+                                        <button type="button" class="btn btn-default" id="lt-markdown-theme3"
+                                                style="width: 141px;">Cyborg
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button" class="btn btn-default" id="lt-markdown-theme4"
+                                                style="width: 141px;">Journal
+                                        </button>
+                                        <button type="button" class="btn btn-default" id="lt-markdown-theme5"
+                                                style="width: 141px;">Readable
+                                        </button>
+                                        <button type="button" class="btn btn-default" id="lt-markdown-theme6"
+                                                style="width: 141px;">Simplex
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button" class="btn btn-default" id="lt-markdown-theme7"
+                                                style="width: 141px;">Slate
+                                        </button>
+                                        <button type="button" class="btn btn-default" id="lt-markdown-theme8"
+                                                style="width: 141px;">Spacelab
+                                        </button>
+                                        <button type="button" class="btn btn-default" id="lt-markdown-theme9"
+                                                style="width: 141px;">Superhero
+                                        </button>
+                                    </li>
+
+                                </ul>
+                            </span>
+
+                                    </div>
+                                </div>
+                                <div class="col-xs-3 text-right">
+                                    <button id="form-input" type="submit" class="btn btn-primary"
+                                            style="border-radius: 0px;"><i
+                                            class="fa fa-eye"></i> Preview
+                                    </button>
+                                </div>
+                            </div>
+                            <p></p>
+                        <textarea required id="lt-markdown-textarea" name="text" class="btn-block" rows="15"
+                                  style="resize: none; font-family: Consolas;"
+                                  placeholder="Input Markdown text..." wrap="soft"></textarea>
+                            <input id="lt-markdown-secret" content="secret" name="secret" type="text" hidden
+                                   value="off"/>
+                            <hr>
+                            <p>
+
+
+                        </div>
+                        <div class="col-xs-1"></div>
+
+                    </div>
+
+                </div>
+                <div class="col-xs-12 col-sm-2 col-md-2"
+                     style="border-left: 1px solid #d5d5d5;border-right: 1px solid #d5d5d5;border-bottom: 1px solid #d5d5d5;
+                 min-height: 715px;">
+                    <div class="row">
+                            <label class="text-center btn-primary btn-block">OPTIONS</label>
+                    </div>
+                    <div class="row">
+                        <br>
+                        <div class="text-center">
+                            <label class=""><input type="checkbox"> Public</label>
+                        </div>
+                        <div class="text-center">
+                            <label class=""><input type="checkbox"> Private</label>
+                        </div>
+                        <hr>
+                        <div class="text-center">
+                            <label class=""><input type="checkbox"> Private edit</label>
+                        </div>
+                        <div class="text-center">
+                            <label class=""><input type="checkbox"> Public edit</label>
+                        </div>
+                        <hr>
+                        <div class="text-center">
+                            <label class=""><input type="checkbox"> Comments</label>
+                        </div>
+                        <div class="text-center">
+                            <label class=""><input type="checkbox"> Marks</label>
+                        </div>
+                        <hr>
+                        <div class="text-center">
+                            <label class="">Tags:</label>
+                        </div>
+                        <div class="text-center">
+                            <textarea class="" name="tags" style="resize: none; height: 317px;"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <button id="send" type="submit" class="btn btn-block btn-primary" style="border-radius: 0px;">Create
+                </button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

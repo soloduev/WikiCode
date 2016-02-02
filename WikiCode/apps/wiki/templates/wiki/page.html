@@ -1,0 +1,31 @@
+{% extends 'main.html' %}
+{% load bootstrap3 %}
+{% block page_name %}
+    <div class="container" style="margin-top: 50px;">
+        <div class="row">
+            <br>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12"
+                 style="border-left: 1px solid #d5d5d5;border-right: 1px solid #d5d5d5;min-height:500px;border-bottom: 1px solid #d5d5d5;">
+                <div class="row">
+
+                                 <iframe class="btn-block" id="frame1" name="frame1" src="{{ publication.html_page.url }}"
+                                         onload="FrameManager.registerFrame(this)" scrolling="no" frameborder="0" marginheight="0"
+                                         marginwidth="0">
+
+                                 </iframe>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,263 @@
+{% extends 'main.html' %}
+{% load bootstrap3 %}
+{% block page_name %}
+    <div class="container" style="margin-top: 50px;">
+        <div class="row">
+            <br>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-4 col-md-4"
+                 style="border-left: 1px solid #d5d5d5;min-height:335px;border-bottom: 1px solid #d5d5d5;">
+                <div class="row">
+                    <label class="text-center btn-primary btn-block">TREE PROJECTS</label>
+                </div>
+                <div class="row">
+                    <ul id="tree2">
+                        <li><a href="#">Personal</a>
+
+                            <ul>
+                                <li>Preview publication</li>
+                                <li>Lessons
+                                    <ul>
+                                        <li>Java
+                                            <ul>
+                                                <li>Lesson1</li>
+                                                <li>Lesson2</li>
+                                                <li>Lesson3</li>
+                                            </ul>
+                                        </li>
+                                        <li>C++
+                                            <ul>
+                                                <li>Lesson1</li>
+                                                <li>Lesson2</li>
+                                                <li>Lesson3</li>
+                                            </ul>
+                                        </li>
+                                        <li>Scala</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>Imports
+                            <ul>
+                                <li>Spring
+                                    <ul>
+                                        <li>Spring boot
+                                            <ul>
+                                                <li>Lesson1</li>
+                                                <li>Lesson2</li>
+                                                <li>Lesson3</li>
+                                                <li>Lesson4</li>
+                                                <li>Lesson5</li>
+                                            </ul>
+                                        </li>
+                                        <li>Data Bases
+                                            <ul>
+                                                <li>Lesson1</li>
+                                                <li>Lesson2</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-8 col-md-8"
+                 style="border-left: 1px solid #d5d5d5;border-right: 1px solid #d5d5d5;border-bottom: 1px solid #d5d5d5;
+                 min-height: 250px;">
+                <div class="row">
+                    <label class="text-center btn-primary btn-block">USER INFORMATION</label>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 hidden-sm hidden-xs">
+                        <div class="[ info-card ]">
+                            <img style="width: 100%" src="http://placehold.it/240x240">
+
+                            <div class="[ info-card-details ] animate">
+                                <div class="[ info-card-header ]">
+                                    <h1> User Name </h1>
+
+                                    <h3> Nikname User </h3>
+                                </div>
+                                <div class="[ info-card-detail ]">
+                                    <!-- Description -->
+                                    <p>You can do "like" this user</p>
+
+                                    <div class="social">
+                                        <a href=""
+                                           class="[ social-icon facebook ] animate"><span
+                                                class="fa fa-thumbs-o-up"></span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-sm-12">
+                        <div class="row btn-block">
+                            <div class="col-md-4 col-sm-6 col-xs-6" style="border-right: solid 1px #d5d5d5;">
+                                <label class="text-left btn-block" id="title-elem-page">User name</label>
+                                <label class="text-left btn-block" id="title-elem-page">Nickname</label>
+                                <label class="text-left btn-block" id="title-elem-page">E-Mail</label>
+                                <hr>
+                                <label class="text-left btn-block" id="title-elem-page">Publications</label>
+                                <label class="text-left btn-block" id="title-elem-page">Imports</label>
+                                <label class="text-left btn-block" id="title-elem-page">Commentaries</label>
+                                <hr>
+                                <label class="text-left btn-block" id="title-elem-page">Likes</label>
+                                <label class="text-left btn-block" id="title-elem-page">Import it</label>
+                                <label class="text-left btn-block" id="title-elem-page">Commented it</label>
+                            </div>
+                            <div class="col-md-8 col-sm-6  col-xs-6">
+                                <label class="text-left btn-block">Vasya Pupkin</label>
+                                <label class="text-left btn-block">Anonymus</label>
+                                <label class="text-left btn-block">example@mail.ru</label>
+                                <hr>
+                                <label class="text-left btn-block">24</label>
+                                <label class="text-left btn-block">56</label>
+                                <label class="text-left btn-block">349</label>
+                                <hr>
+                                <label class="text-left btn-block">127 <i class="btn-link text-center" style="width: 60px;">Like!</i></label>
+                                <label class="text-left btn-block">81</label>
+                                <label class="text-left btn-block">1243</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="tabbable-panel">
+                        <div class="tabbable-line">
+                            <ul class="nav nav-tabs ">
+                                <li class="active">
+                                    <a href="#tab_default_1" data-toggle="tab">
+                                        Preview publication </a>
+                                </li>
+                                <li>
+                                    <a href="#tab_default_2" data-toggle="tab">
+                                        Top  publication</a>
+                                </li>
+                                <li>
+                                    <a href="#tab_default_3" data-toggle="tab">
+                                        Last publication </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tab_default_1">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-md-8 col-xs-8">
+                                                <h4 class="text-left">Title this publication</h4>
+                                            </div>
+                                            <div class="col-md-4 col-xs-4 text-right">
+
+                                                <label class="btn-primary text-center btn-block">
+                                                    Read
+                                                </label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <p>
+                                        I'm in Tab 1.
+                                    </p>
+
+                                    <p>
+                                        Duis autem eum iriure dolor in hendrerit in vulputate velit esse molestie
+                                        consequat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
+                                        suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum
+                                        iriure dolor in hendrerit in vulputate velit esse molestie consequat. Duis autem
+                                        vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat.
+                                    </p>
+                                    <p>
+                                        Duis autem eum iriure dolor in hendrerit in vulputate velit esse molestie
+                                        consequat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
+                                        suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum
+                                        iriure dolor in hendrerit in vulputate velit esse molestie consequat. Duis autem
+                                        vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat.
+                                    </p>
+                                    <p>
+                                        Duis autem eum iriure dolor in hendrerit in vulputate velit esse molestie
+                                        consequat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
+                                        suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum
+                                        iriure dolor in hendrerit in vulputate velit esse molestie consequat. Duis autem
+                                        vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat.
+                                    </p>
+                                    <p>
+                                        Duis autem eum iriure dolor in hendrerit in vulputate velit esse molestie
+                                        consequat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
+                                        suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum
+                                        iriure dolor in hendrerit in vulputate velit esse molestie consequat. Duis autem
+                                        vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat.
+                                    </p>
+                                </div>
+                                <div class="tab-pane" id="tab_default_2">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-md-8 col-xs-8">
+                                                <h4 class="text-left">Title this publication</h4>
+                                            </div>
+                                            <div class="col-md-4 col-xs-4 text-right">
+
+                                                <label class="btn-primary text-center btn-block">
+                                                    Read
+                                                </label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <p>
+                                        Howdy, I'm in Tab 2.
+                                    </p>
+
+                                    <p>
+                                        Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit
+                                        lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure
+                                        dolor in hendrerit in vulputate velit esse molestie consequat. Ut wisi enim ad
+                                        minim veniam, quis nostrud exerci tation.
+                                    </p>
+                                </div>
+                                <div class="tab-pane" id="tab_default_3">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-md-8 col-xs-8">
+                                                <h4 class="text-left">Title this publication</h4>
+                                            </div>
+                                            <div class="col-md-4 col-xs-4 text-right">
+
+                                                <label class="btn-primary text-center btn-block">
+                                                    Read
+                                                </label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <p>
+                                        Howdy, I'm in Tab 3.
+                                    </p>
+
+                                    <p>
+                                        Duis autem vel eum iriure dolor in hendrerit in vulputate. Ut wisi enim ad minim
+                                        veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip
+                                        ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in
+                                        vulputate velit esse molestie consequat
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
