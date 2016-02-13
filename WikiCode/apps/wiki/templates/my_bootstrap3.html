@@ -33,6 +33,7 @@
 <script src={% static "wiki/frames/postmessage/postmessage.js"%}></script>
 <script src={% static "wiki/frames/FrameManager.js" %}></script>
 <script src={% static "wiki/scripts.js" %}></script>
-
-
+<!--Подключаем скрипт для парсинга markdown -->
+<script src={% static "wiki/marked/marked.js" %}></script>
+{% block add_script %}{% endblock %}
 </html>

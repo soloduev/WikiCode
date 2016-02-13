@@ -12,20 +12,109 @@
     </div>
 {% endblock %}
 {% block content %}
+    <!--
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-1 col-sm-1 col-md-1"
+                 style="min-height:500px; border: 2px solid black; position: fixed; z-index: 2; width: 50px;">
+                <div class="row">
+
+
+                </div>
+            </div>
+
+            <div class="col-xs-1 col-sm-1 col-md-1"
+                 style="min-height:500px;">
+                <div class="row">
+
+
+                </div>
+            </div>
+
+            <div class="col-xs-11 col-sm-11 col-md-11"
+                 style="border-left: 1px solid #d5d5d5;border-right: 1px solid #d5d5d5;min-height:500px;border-bottom: 1px solid #d5d5d5;">
+                <div class="row">
+
+                    <iframe class="btn-block" id="frame1" name="frame1" src="{{ publication.html_page.url }}"
+                            onload="FrameManager.registerFrame(this)" scrolling="no" frameborder="0" marginheight="0"
+                            marginwidth="0">
+
+                    </iframe>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    -->
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12"
                  style="border-left: 1px solid #d5d5d5;border-right: 1px solid #d5d5d5;min-height:500px;border-bottom: 1px solid #d5d5d5;">
                 <div class="row">
-
-                                 <iframe class="btn-block" id="frame1" name="frame1" src="{{ publication.html_page.url }}"
-                                         onload="FrameManager.registerFrame(this)" scrolling="no" frameborder="0" marginheight="0"
-                                         marginwidth="0">
-
-                                 </iframe>
-
+                    <label class="text-center btn-primary btn-block">PAGE</label>
                 </div>
+                <style>
+                    .md-btn:hover {
+                        background-color: white;
+                        border-radius: 0px;
+                        color: #337ab7;
+                    }
+
+                    .md-btn {
+                        border: 0px solid black;
+                        background-color: white;
+                        color: white;
+                    }
+
+                    .md-comment:hover {
+                        background-color: white;
+                        border-radius: 0px;
+                        color: #337ab7;
+                    }
+
+                    .md-comment {
+                        border: 0px solid black;
+                        background-color: white;
+                        color: white;
+                    }
+                </style>
+                <form action="{% url 'testform' %}" method="post">
+                    {% csrf_token %}
+
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="row">
+                            {% for elem in map %}
+                            <!-- Экземпляр абзаца-->
+                            <div class="col-xs-1 col-sm-1 col-md-1">
+                                <div class="row">
+                                    <a class="md-btn btn btn-default btn-block" id="md-btn-{{ elem.index }}"><i
+                                            class="md-ico fa fa-pencil-square-o fa-2x"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-xs-11 col-sm-11 col-md-11">
+                                <div class="row">
+                                    <div class="md-hover" id="markdown-row-{{ elem.index }}"></div>
+                                    <input type="hidden" name="md-elem-{{ elem.index }}" id="md-input-{{ elem.index }}">
+                                </div>
+                            </div>
+                            <!-- КОНЕЦ -->
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="row">
+                        <button type="submit" class="btn btn-block btn-default">Подтвердить изменения в публикации</button>
+                    </div>
+                </div>
+                </form>
+
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block add_script %}
+
 {% endblock %}

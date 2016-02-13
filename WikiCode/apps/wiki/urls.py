@@ -16,4 +16,9 @@ urlpatterns = [
 
 
     url(r'^create_page/$', views.create_page, name='create_page'),
+
+    url(r'^testform/$', views.testform, name='testform'),
+
+
+    url(r'^test/$', views.test, name='test'),
 ]
