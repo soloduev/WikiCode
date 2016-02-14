@@ -44,65 +44,44 @@
                         color: white;
                     }
                 </style>
-                <form action="{% url 'testform' %}" method="post">
-                    {% csrf_token %}
 
-                    <div class="col-xs-12 col-sm-12 col-md-12">
-                        <div class="row">
-                            <div class="col-xs-1 col-sm-1 col-md-1">
-                                <div class="row">
-                                    <a class="md-btn btn btn-default btn-block" id="md-btn-1"><i
-                                            class="md-ico fa fa-pencil-square-o fa-2x"></i></a>
-                                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="row">
+                        <div class="col-xs-1 col-sm-1 col-md-1">
+                            <div class="row">
+                                <a class="md-btn btn btn-default btn-block" id="md-btn-1"><i
+                                        class="md-ico fa fa-pencil-square-o fa-2x"></i></a>
                             </div>
-                            <div class="col-xs-11 col-sm-11 col-md-11">
-                                <div class="row">
-                                    <div class="md-hover" id="markdown-row-1"></div>
-                                    <input type="hidden" name="md-elem-1" id="md-input-1">
-                                </div>
+                        </div>
+                        <div class="col-xs-11 col-sm-11 col-md-11">
+                            <div class="row">
+                                <div class="md-hover" id="markdown-row-1"></div>
                             </div>
-                            <div class="col-xs-1 col-sm-1 col-md-1">
-                                <div class="row">
-                                    <a class="md-btn btn btn-default btn-block" id="md-btn-2"><i
-                                            class="md-ico fa fa-pencil-square-o fa-2x"></i></a>
-                                </div>
+                        </div>
+                        <div class="col-xs-1 col-sm-1 col-md-1">
+                            <div class="row">
+                                <a class="md-btn btn btn-default btn-block" id="md-btn-2"><i
+                                        class="md-ico fa fa-pencil-square-o fa-2x"></i></a>
                             </div>
-                            <div class="col-xs-11 col-sm-11 col-md-11">
-                                <div class="row">
-                                    <div class="md-hover" id="markdown-row-2"></div>
-                                </div>
+                        </div>
+                        <div class="col-xs-11 col-sm-11 col-md-11">
+                            <div class="row">
+                                <div class="md-hover" id="markdown-row-2"></div>
                             </div>
-                            <div class="col-xs-1 col-sm-1 col-md-1">
-                                <div class="row">
-                                    <a class="md-btn btn btn-default btn-block" id="md-btn-3"><i
-                                            class="md-ico fa fa-pencil-square-o fa-2x"></i></a>
-                                </div>
+                        </div>
+                        <div class="col-xs-1 col-sm-1 col-md-1">
+                            <div class="row">
+                                <a class="md-btn btn btn-default btn-block" id="md-btn-3"><i
+                                        class="md-ico fa fa-pencil-square-o fa-2x"></i></a>
                             </div>
-                            <div class="col-xs-11 col-sm-11 col-md-11">
-                                <div class="row">
-                                    <div class="md-hover" id="markdown-row-3"></div>
-                                </div>
-                            </div>
-                            <div class="col-xs-1 col-sm-1 col-md-1">
-                                <div class="row">
-                                    <a class="md-btn btn btn-default btn-block" id="md-btn-4"><i
-                                            class="md-ico fa fa-pencil-square-o fa-2x"></i></a>
-                                </div>
-                            </div>
-                            <div class="col-xs-11 col-sm-11 col-md-11">
-                                <div class="row">
-                                    <div class="md-hover" id="markdown-row-4"></div>
-                                </div>
+                        </div>
+                        <div class="col-xs-11 col-sm-11 col-md-11" id="flip">
+                            <div class="row">
+                                <div class="md-hover" id="markdown-row-3"></div>
                             </div>
                         </div>
                     </div>
-                <div class="col-xs-12 col-sm-12 col-md-12">
-                    <div class="row">
-                        <button type="submit" class="btn btn-block btn-default">Подтвердить изменения в публикации</button>
-                    </div>
                 </div>
-                </form>
-
             </div>
         </div>
     </div>
@@ -112,94 +91,27 @@
     <script>
         $(init);
         var md1 = '# Разработка на java #';
-        var md2 = 'Впервые на джава начВпервые на джава начали прогать в 1997 годуВпервые на джава начали прогать в 1997 годуВпервые на джава начали прогать вВпервые на джава начали прогать в 1997 годуВпервые на джава начали прогать в 1997 годуВпервые на джава начали прогать вали прогать в 1997 годуВпервые на джава начали прогать в 1997 годуВпервые на джава начали прогать в 1997 годуВпервые на джава начали прогать в 1997 годуВпервые на джава начали прогать в 1997 году';
-        var md3 = 'С тех пор многое что изменилось';
-        var md4 = '```\nSystem.out.println("Hello world!");\n```';
-        var md5 = '# Разработка на java #';
-        var is_edit = false;
+        var md2 = 'Писать на этом языке очень крутоПисать на это\nм язы очень крутоисать на это\nм язы очень крутоПисаПисать на этом языке оче очень крутоПисать на этом языке оче\nке очень крутоПисать на этом языке очень крутоПисать на этом языке очень крутоПисать на этом языке о этом языке очень крутоПисать на этом языке очень крутоПичень крутоПисать на этом языке очень круто';
+        var md3 = '```\nэто код\nи это код\nИ ЭТО КОД\nПоследняя строчка кода\n```\n';
 
+        document.getElementById('markdown-row-1').innerHTML = marked(md1);
+        document.getElementById('markdown-row-2').innerHTML = marked(md2);
+        document.getElementById('markdown-row-3').innerHTML = marked(md3);
 
-        document.getElementById('markdown-row-1').innerHTML =
-                marked(md1);
-        $('#markdown-row-1').attr('content', marked(md1));
-        document.getElementById('markdown-row-2').innerHTML =
-                marked(md2);
-        document.getElementById('markdown-row-3').innerHTML =
-                marked(md3);
-        document.getElementById('markdown-row-4').innerHTML =
-                marked(md4);
-        document.getElementById('markdown-row-5').innerHTML =
-                marked(md5);
+        $('#md-btn-1').attr('style', 'height: ' + $('#markdown-row-1').height() + 'px;');
+        $('#md-btn-2').attr('style', 'height: ' + $('#markdown-row-2').height() + 'px;');
+        $('#md-btn-3').attr('style', 'height: ' + $('#markdown-row-3').height() + 'px;');
 
+        var front = document.getElementById("flip")
+                , back_content = 'Контент)'
+                , back;
 
         function init() {
-            $('#md-btn-1').bind('click', showEdit1);
-            $('#md-btn-2').bind('click', showEdit2);
+            $('#md-btn-3').bind('click', flip);
         }
 
-        function showEdit1() {
-            if (!is_edit) {
-                is_edit = true;
-                document.getElementById('markdown-row-1').innerHTML =
-                        '<textarea id="cur_textarea" class="btn-block" rows="10" style="resize: none;">' + md1 + '</textarea>' +
-                        '<button type="button" id="cur_btn_accept" class="btn btn-default">Подтвердить изменение</button>' +
-                        '<button type="button" id="cur_btn_cancel" class="btn btn-default">Отмена</button>';
-                $('#cur_btn_accept').bind('click', closeTextArea);
-                $('#cur_btn_cancel').bind('click', cancelTextArea);
-                function closeTextArea() {
-                    cur_text = $("#cur_textarea").val();
-                    document.getElementById('markdown-row-1').innerHTML =
-                            marked(cur_text);
-                    md1 = cur_text;
-                    is_edit = false;
-                    $("#md-input-1").val(cur_text);
-                }
-
-                function cancelTextArea() {
-                    document.getElementById('markdown-row-1').innerHTML =
-                            marked(md1);
-                    is_edit = false;
-                }
-            }
+        function flip() {
+            back = flippant.flip(front, back_content, 'modal');
         }
-        function showEdit2() {
-            if (!is_edit) {
-                is_edit = true;
-                document.getElementById('markdown-row-2').innerHTML =
-                        '<textarea id="cur_textarea" class="btn-block" rows="10" style="resize: none;">' + md2 + '</textarea>' +
-                        '<button id="cur_btn_accept" class="btn btn-default">Подтвердить изменение</button>' +
-                        '<button id="cur_btn_cancel" class="btn btn-default">Отмена</button>';
-                $('#cur_btn_accept').bind('click', closeTextArea);
-                $('#cur_btn_cancel').bind('click', cancelTextArea);
-                function closeTextArea() {
-                    cur_text = $("#cur_textarea").val();
-                    document.getElementById('markdown-row-2').innerHTML =
-                            marked(cur_text);
-                    md2 = cur_text;
-                    is_edit = false;
-                }
-
-                function cancelTextArea() {
-                    document.getElementById('markdown-row-2').innerHTML =
-                            marked(md2);
-                    is_edit = false;
-                }
-            }
-        }
-
     </script>
-    <script type='text/javascript'>
-        height = $('#markdown-row-1').height();
-        $('#md-btn-1').attr('style', 'height: ' + height + 'px;')
-        height = $('#markdown-row-2').height();
-        $('#md-btn-2').attr('style', 'height: ' + height + 'px;')
-        height = $('#markdown-row-3').height();
-        $('#md-btn-3').attr('style', 'height: ' + height + 'px;')
-        height = $('#markdown-row-4').height();
-        $('#md-btn-4').attr('style', 'height: ' + height + 'px;')
-        height = $('#markdown-row-5').height();
-        $('#md-btn-5').attr('style', 'height: ' + height + 'px;')
-
-    </script>
-
 {% endblock %}

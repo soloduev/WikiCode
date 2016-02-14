@@ -20,6 +20,8 @@
     <link href={% static "wiki/style.css" %} type="text/css" rel="stylesheet">
     <link href={% static "wiki/fontawesome/css/font-awesome.css" %} type="text/css" rel="stylesheet">
     <link href={% static "wiki/bootstrapfiles/css/bootstrap.css" %} type="text/css" rel="stylesheet">
+    <!--Flippant-->
+    <link href={% static "wiki/flippant/flippant.css" %} type="text/css" rel="stylesheet">
 </head>
 
 <body>
@@ -35,5 +37,8 @@
 <script src={% static "wiki/scripts.js" %}></script>
 <!--Подключаем скрипт для парсинга markdown -->
 <script src={% static "wiki/marked/marked.js" %}></script>
+<!--Подключаем flippant для динамичного переворачивания контента-->
+<script src={% static "wiki/flippant/flip.js" %}></script>
+<script src={% static "wiki/flippant/flippant.js" %}></script>
 {% block add_script %}{% endblock %}
 </html>
