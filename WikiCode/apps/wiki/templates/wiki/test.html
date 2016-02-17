@@ -17,7 +17,7 @@
             <div class="col-xs-12 col-sm-12 col-md-12"
                  style="border-left: 1px solid #d5d5d5;border-right: 1px solid #d5d5d5;min-height:500px;border-bottom: 1px solid #d5d5d5;">
                 <div class="row">
-                    <label class="text-center btn-primary btn-block">HELP</label>
+                    <label class="text-center btn-primary btn-block">TEST</label>
                 </div>
                 <style>
                     .md-btn:hover {
@@ -47,39 +47,19 @@
 
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="row">
+                        {% for elem in numbers %}
                         <div class="col-xs-1 col-sm-1 col-md-1">
                             <div class="row">
-                                <a class="md-btn btn btn-default btn-block" id="md-btn-1"><i
+                                <a class="md-btn btn btn-default btn-block" id="md-btn-{{ elem }}"><i
                                         class="md-ico fa fa-pencil-square-o fa-2x"></i></a>
                             </div>
                         </div>
                         <div class="col-xs-11 col-sm-11 col-md-11">
                             <div class="row">
-                                <div class="md-hover" id="markdown-row-1"></div>
+                                <div class="md-hover" id="markdown-row-{{ elem }}"></div>
                             </div>
                         </div>
-                        <div class="col-xs-1 col-sm-1 col-md-1">
-                            <div class="row">
-                                <a class="md-btn btn btn-default btn-block" id="md-btn-2"><i
-                                        class="md-ico fa fa-pencil-square-o fa-2x"></i></a>
-                            </div>
-                        </div>
-                        <div class="col-xs-11 col-sm-11 col-md-11">
-                            <div class="row">
-                                <div class="md-hover" id="markdown-row-2"></div>
-                            </div>
-                        </div>
-                        <div class="col-xs-1 col-sm-1 col-md-1">
-                            <div class="row">
-                                <a class="md-btn btn btn-default btn-block" id="md-btn-3"><i
-                                        class="md-ico fa fa-pencil-square-o fa-2x"></i></a>
-                            </div>
-                        </div>
-                        <div class="col-xs-11 col-sm-11 col-md-11" id="flip">
-                            <div class="row">
-                                <div class="md-hover" id="markdown-row-3"></div>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -90,28 +70,50 @@
 {% block add_script %}
     <script>
         $(init);
-        var md1 = '# Разработка на java #';
-        var md2 = 'Писать на этом языке очень крутоПисать на это\nм язы очень крутоисать на это\nм язы очень крутоПисаПисать на этом языке оче очень крутоПисать на этом языке оче\nке очень крутоПисать на этом языке очень крутоПисать на этом языке очень крутоПисать на этом языке о этом языке очень крутоПисать на этом языке очень крутоПичень крутоПисать на этом языке очень круто';
-        var md3 = '```\nэто код\nи это код\nИ ЭТО КОД\nПоследняя строчка кода\n```\n';
 
-        document.getElementById('markdown-row-1').innerHTML = marked(md1);
-        document.getElementById('markdown-row-2').innerHTML = marked(md2);
-        document.getElementById('markdown-row-3').innerHTML = marked(md3);
 
-        $('#md-btn-1').attr('style', 'height: ' + $('#markdown-row-1').height() + 'px;');
-        $('#md-btn-2').attr('style', 'height: ' + $('#markdown-row-2').height() + 'px;');
-        $('#md-btn-3').attr('style', 'height: ' + $('#markdown-row-3').height() + 'px;');
+        var startDiv = '<div class="container"><div class="row"><div class="col-md-2"></div><div class="col-md-8">';
+        var header = '<label class="text-center btn-primary btn-block">EDIT PARAGRAPH</label>';
+        var textarea1 = '<p><textarea id="edittext" required class="btn-block newtext" rows="15" style="resize: none; font-family: Consolas;color: #0f0f0f;" wrap="soft">';
+        var textarea2 = '</textarea></p>';
+        var comments = '<p><input type="text" required class="btn-block" rows="2" style="resize: none; font-family: Consolas;color: #0f0f0f;" wrap="soft" placeholder="Enter your comments..."></textarea></p>';
+        var editInput = '<button id="editinput" type="submit" class="btn btn-block btn-primary btnedit" style="border-radius: 0px;">Edit </button>';
+        var cancelInput = '<button type="submit" class="btn btn-block btn-primary btncancel" style="border-radius: 0px;">Cancel </button>';
+        var endDiv = '</div><div class="col-md-2"></div></div></div>';
 
-        var front = document.getElementById("flip")
-                , back_content = 'Контент)'
-                , back;
+        {% for p in paragraphs %}
+            var back{{ p.index|escapejs }};
+            var md{{ p.index|escapejs }} = '{{ p.text|escapejs }}';
+            document.getElementById('markdown-row-{{ p.index|escapejs }}').innerHTML = marked(md{{ p.index|escapejs }});
+            $('#md-btn-{{ p.index|escapejs }}').attr('style', 'height: ' + $('#markdown-row-{{ p.index|escapejs }}').height() + 'px;');
 
-        function init() {
-            $('#md-btn-3').bind('click', flip);
+            var front{{ p.index|escapejs }} = document.getElementById("markdown-row-{{ p.index|escapejs }}")
+                , back_content
+                , back{{ p.index|escapejs }};
+
+        {% endfor %}
+
+         function init() {
+             {% for p in paragraphs %}
+                $('#md-btn-{{ p.index|escapejs }}').bind('click', flip{{ p.index|escapejs }});
+             {% endfor %}
         }
 
-        function flip() {
-            back = flippant.flip(front, back_content, 'modal');
+        {% for p in paragraphs %}
+        function flip{{ p.index|escapejs }}() {
+            back{{ p.index|escapejs }} = flippant.flip(front{{ p.index|escapejs }}, startDiv + header + textarea1 + md{{ p.index|escapejs }} + textarea2 + comments + editInput + cancelInput + endDiv, 'modal');
+            back{{ p.index|escapejs }}.addEventListener('click', function (e) {
+                if (e.target.classList.contains('btncancel')) {
+                    back{{ p.index|escapejs }}.close();
+                }
+                else if(e.target.classList.contains('btnedit')){
+                    md{{ p.index|escapejs }} = back{{ p.index|escapejs }}.querySelector('textarea').value;
+                    document.getElementById('markdown-row-{{ p.index|escapejs }}').innerHTML = marked(md{{ p.index|escapejs }});
+                    $('#md-btn-{{ p.index|escapejs }}').attr('style', 'height: ' + $('#markdown-row-{{ p.index|escapejs }}').height() + 'px;');
+                    back{{ p.index|escapejs }}.close();
+                }
+            })
         }
+        {% endfor %}
     </script>
 {% endblock %}

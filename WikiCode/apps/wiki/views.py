@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import Publication, Statistics
 from django.template import RequestContext, loader
 from django.http import HttpResponse
+from .mymarkdown import mdsplit
 
 
 def index(request):
@@ -145,8 +146,29 @@ def create_page(request):
 
 
 def test(request):
-    context = {
+    text = """# Урок по языку Java!
+Java - великолепный язык для кроссплатформенной разработки!
+Вот пример кода на этом языке:
+```
+System.out.println("Hello world!");
+```
+Учите этот классный язык!
+"""
+    arr = mdsplit.mdSplit(text);
+    print(arr)
+    numbers = [];
+    for i in range(0,len(arr)):
+        numbers.append(str(i+1))
 
+    paragraphs = []
+    for i in range(0,len(arr)):
+        paragraphs.append({
+            "index": str(i+1),
+            "text": arr[i]
+        })
+    context = {
+        "paragraphs": paragraphs,
+        "numbers":numbers,
     }
     return render(request, 'wiki/test.html', context)
 
