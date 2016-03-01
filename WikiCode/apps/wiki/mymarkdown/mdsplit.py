@@ -91,6 +91,8 @@ def isHeader(line):
 def isCodeBlock(line):
     if line == "```\n":
         return True
+    elif len(line)>=3 and line[0]=='`' and line[1]=='`' and line[2]=='`':
+        return True
     else:
         return False
 

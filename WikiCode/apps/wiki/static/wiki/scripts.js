@@ -60,3 +60,4 @@ $('#tree2').treed({openedClass:'glyphicon-folder-open', closedClass:'glyphicon-f
 
 $('#tree3').treed({openedClass:'glyphicon-chevron-right', closedClass:'glyphicon-chevron-down'});
 
+
