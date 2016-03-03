@@ -1,7 +1,7 @@
 {% extends 'main.html' %}
 {% load bootstrap3 %}
 {% block page_name %}
-    <div class="container" style="margin-top: 50px;" >
+    <div class="container" style="margin-top: 50px;">
         <div class="row">
             <br>
         </div>
@@ -21,9 +21,96 @@
                 </div>
                 <div class="row">
 
-                </div>
+                    <div class="col-xs-1 col-sm-2 col-md-3 col-lg-4"></div>
 
+                    <div class="col-xs-10 col-sm-8 col-md-6 col-lg-4">
+                        <div class="container-fluid">
+                            <br>
+
+                            <div class="row">
+                                <label>Before registering, read the site rules:</label>
+                            </div>
+                            <div class="row">
+                                <div id="accordion" class="panel-group">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a href="#collapse-1" data-parent="#accordion"
+                                                   data-toggle="collapse"><span
+                                                        class="glyphicon glyphicon-warning-sign"></span> Read site rules</a>
+                                            </h4>
+                                        </div>
+                                        <div class="panel-collapse collapse" id="collapse-1">
+                                            <div class="panel-body" id="rules">
+                                                <label>Десять простых правил, которые должен соблюдать
+                                                    каждый:</label><br>
+                                                <ol>
+                                                    <li>Правило</li>
+                                                    <li>Правило</li>
+                                                    <li>Правило</li>
+                                                    <li>Правило</li>
+                                                    <li>Правило</li>
+                                                    <li>Правило</li>
+                                                    <li>Правило</li>
+                                                    <li>Правило</li>
+                                                    <li>Правило</li>
+                                                    <li>Правило</li>
+                                                </ol>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+
+                            <div class="row">
+                                <label>Your Name</label>
+                            </div>
+                            <div class="row">
+                                <input type="text" placeholder="User Name" class="btn-block" style="height: 30px;">
+                            </div>
+                            <br>
+
+                            <div class="row">
+                                <label>Your Nickname</label>
+                            </div>
+                            <div class="row">
+                                <input type="text" placeholder="Nickname" class="btn-block" style="height: 30px;">
+                            </div>
+                            <br>
+
+                            <div class="row">
+                                <label>Your Email</label>
+                            </div>
+                            <div class="row">
+                                <input type="email" placeholder="example@example.com" class="btn-block"
+                                       style="height: 30px;">
+                            </div>
+                            <br>
+
+                            <div class="row">
+                                <label>Your Password</label>
+                            </div>
+                            <div class="row">
+                                <input type="password" placeholder="Password" class="btn-block" style="height: 30px;">
+                            </div>
+                            <br>
+
+                            <div class="row">
+                                <a href="#" class="btn btn-primary btn-block"><span
+                                        class="glyphicon glyphicon-ok"></span> Sign up</a>
+                            </div>
+                            <br>
+                            <br>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-1 col-sm-2 col-md-3 col-lg-4"></div>
+                </div>
             </div>
         </div>
     </div>
+{% endblock %}
+{% block add_script %}
+
 {% endblock %}
