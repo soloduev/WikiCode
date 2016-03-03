@@ -1,7 +1,7 @@
 {% extends 'main.html' %}
 {% load bootstrap3 %}
 {% block page_name %}
-    <div class="container" style="margin-top: 50px;" >
+    <div class="container" style="margin-top: 50px;">
         <div class="row">
             <br>
         </div>
@@ -20,10 +20,210 @@
                     <label class="text-center btn-primary btn-block">HELP</label>
                 </div>
                 <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a href="#collapse-1" data-parent="#accordion"
+                                       data-toggle="collapse">Про что будет сайт?</a>
+                                </h4>
+                            </div>
+                            <div class="panel-collapse collapse" id="collapse-1">
+                                <div class="panel-body">
+                                    <label>Для кого этот сайт?</label><br>
+                                <span>В первую очередь этот сайт разрабатывается для самих разработчиков.
+                                    На нем можно будет публиковать свои конспекты посвященных разработке.
+                                    Одни пользователи создают эти конспекты, другие их читают.
+                                    Суть в том, чтобы сделать своеобразную wiki конспектов, но не простую.
+                                    В любой момент, пользователь, читающий конспект, может изменить любую его часть сразу же на лету(конечно, если у этого пользователя есть на это право).
+                                </span><br><br>
+                                    <label>Динамические конспекты</label><br>
+                                <span>Конспекты разбиты на логические абзацы, которые можно на лету изменять, комментировать и соответственно изучать.
+                                    Каждое изменение конспекта, порождает его новую версию с автором этого изменения.
+                                    В случае чего, можно будет всегда откатится к предыдущей версии конспекта.
+                                </span><br><br>
+                                    <label>Платформа создания конспектов Markdown</label><br>
+                                <span>За платформу был выбран язык разметки Markdown.
+                                    Простота синтаксиса, удобное использование, наличие только самого необходимого
+                                    инструментала и симпатичный результат, делают Markdown отличным решением.
+                                </span><br><br>
+                                    <label>Удобно для демонстраций.</label><br>
+                                <span>Каждый конспект представляет собой отдельную html страничку, на которой нет ничего
+                                    кроме самого конспекта. Это очень удобно, когда необходимо абстрагироваться от сайта,
+                                    комментариев и редактирования, и сосредоточиться непосредственно на самом материале.
+                                </span><br><br>
+                                    <label>Оформление конспектов</label><br>
+                                <span>Как раз, для отдельной демонстрации, предусмотрены темы оформления конспектов.
+                                    Задайте стиль вашему конспекту, подчеркнув тематику материала.
+                                </span><br><br>
+                                    <label>Ведите занятия</label><br>
+                                <span>Вы, можете вести занятия по этим конспектам прямо с сайта.
+                                    Любой пользователь, который имеет доступ к вашему конспекту, может максимально плотно начать с ним работать.
+                                    Он может редактировать его, скачивать в необходимом ему формате, и конечно же, задавать вопросы на лету.
+                                </span><br><br>
+                                    <label>Коллекционируйте конспекты</label><br>
+                                <span>Ведите коллекцию понравившихся вам конспектов. Пусть, самые лучшие будут у вас на странице всегда под рукой.
+                                    Импортируйте чужие конспекты в удобное для вас место.
+                                </span><br><br>
+                                    <label>Повышайте репутацию</label><br>
+                                <span>Выкладывайте материал, просматривайте больше и больше конспектов, отмечайте понравившиеся, копируйте себе самые лучшие.
+                                    Повышайте рейтинг себе и своим конспектам, чтобы знания изложенные в них были использованы всеми кем только возможно.
+                                </span><br><br>
+                                    <label>Развивайтесь</label><br>
+                                <span>Единый гайд-центр к любой технологии разработки.
+                                    Изучайте, задавайте вопросы, исправляйте, сделайте этот сайт самым настоящим центром знаний!
+                                </span><br><br>
+                                </div>
+                            </div>
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a href="#collapse-2" data-parent="#accordion"
+                                       data-toggle="collapse">Создание конспекта</a>
+                                </h4>
+                            </div>
+                            <div class="panel-collapse collapse" id="collapse-2">
+                                <div class="panel-body">
 
+                                </div>
+                            </div>
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a href="#collapse-3" data-parent="#accordion"
+                                       data-toggle="collapse">Управление деревом конспектом</a>
+                                </h4>
+                            </div>
+                            <div class="panel-collapse collapse" id="collapse-3">
+                                <div class="panel-body">
+
+                                </div>
+                            </div>
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a href="#collapse-4" data-parent="#accordion"
+                                       data-toggle="collapse">Система версий конспектов</a>
+                                </h4>
+                            </div>
+                            <div class="panel-collapse collapse" id="collapse-4">
+                                <div class="panel-body">
+
+                                </div>
+                            </div>
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a href="#collapse-5" data-parent="#accordion"
+                                       data-toggle="collapse">Редактирование конспекта на лету</a>
+                                </h4>
+                            </div>
+                            <div class="panel-collapse collapse" id="collapse-5">
+                                <div class="panel-body">
+
+                                </div>
+                            </div>
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a href="#collapse-6" data-parent="#accordion"
+                                       data-toggle="collapse">Комментирование конспекта на лету</a>
+                                </h4>
+                            </div>
+                            <div class="panel-collapse collapse" id="collapse-6">
+                                <div class="panel-body">
+
+                                </div>
+                            </div>
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a href="#collapse-7" data-parent="#accordion"
+                                       data-toggle="collapse">Демонстрация конспекта</a>
+                                </h4>
+                            </div>
+                            <div class="panel-collapse collapse" id="collapse-7">
+                                <div class="panel-body">
+
+                                </div>
+                            </div>
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a href="#collapse-8" data-parent="#accordion"
+                                       data-toggle="collapse">Виды и параметры конспектов</a>
+                                </h4>
+                            </div>
+                            <div class="panel-collapse collapse" id="collapse-8">
+                                <div class="panel-body">
+
+                                </div>
+                            </div>
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a href="#collapse-9" data-parent="#accordion"
+                                       data-toggle="collapse">Генерация конспектов</a>
+                                </h4>
+                            </div>
+                            <div class="panel-collapse collapse" id="collapse-9">
+                                <div class="panel-body">
+
+                                </div>
+                            </div>
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a href="#collapse-10" data-parent="#accordion"
+                                       data-toggle="collapse">Файлы приложенные к конспекту</a>
+                                </h4>
+                            </div>
+                            <div class="panel-collapse collapse" id="collapse-10">
+                                <div class="panel-body">
+
+                                </div>
+                            </div>
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a href="#collapse-11" data-parent="#accordion"
+                                       data-toggle="collapse">Ссылки приложенные к конспекту</a>
+                                </h4>
+                            </div>
+                            <div class="panel-collapse collapse" id="collapse-11">
+                                <div class="panel-body">
+
+                                </div>
+                            </div>
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a href="#collapse-12" data-parent="#accordion"
+                                       data-toggle="collapse">Настройки конспекта</a>
+                                </h4>
+                            </div>
+                            <div class="panel-collapse collapse" id="collapse-12">
+                                <div class="panel-body">
+
+                                </div>
+                            </div>
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a href="#collapse-13" data-parent="#accordion"
+                                       data-toggle="collapse">Поиск конспектов</a>
+                                </h4>
+                            </div>
+                            <div class="panel-collapse collapse" id="collapse-13">
+                                <div class="panel-body">
+
+                                </div>
+                            </div>
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a href="#collapse-14" data-parent="#accordion"
+                                       data-toggle="collapse">Теги конспектов</a>
+                                </h4>
+                            </div>
+                            <div class="panel-collapse collapse" id="collapse-14">
+                                <div class="panel-body">
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-
             </div>
         </div>
+    </div>
     </div>
 {% endblock %}
