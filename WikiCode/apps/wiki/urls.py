@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^settings/$', views.settings, name='settings'),
     url(r'^user/$', views.user, name='user'),
     url(r'^registration/$', views.registration, name='registration'),
+    url(r'^tree_manager/$',views.tree_manager, name='tree_manager'),
 
 
     url(r'^create_page/$', views.create_page, name='create_page'),
@@ -21,4 +22,5 @@ urlpatterns = [
 
 
     url(r'^test/$', views.test, name='test'),
+
 ]

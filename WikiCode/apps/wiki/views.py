@@ -187,3 +187,9 @@ def testform(request):
 
     }
     return render(request, 'wiki/index.html', context)
+
+def tree_manager(request):
+    context = {
+
+    }
+    return render(request, 'wiki/tree_manager.html', context)

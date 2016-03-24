@@ -61,3 +61,14 @@ $('#tree2').treed({openedClass:'glyphicon-folder-open', closedClass:'glyphicon-f
 $('#tree3').treed({openedClass:'glyphicon-chevron-right', closedClass:'glyphicon-chevron-down'});
 
 
+
+//Кусок скрипта относится к странице tree_manager.html
+//-------------------------------------------------
+
+$(document).ready(function () {
+    $.getScript("http://code.jquery.com/ui/1.9.2/jquery-ui.js").done(function (script, textStatus) { $('tbody').sortable();$(".alert-info").alert('close');$(".alert-success").show(); });
+});
+
+
+//-------------------------------------------------
+
