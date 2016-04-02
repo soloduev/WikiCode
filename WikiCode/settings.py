@@ -125,3 +125,4 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = "C:/PhytonProjects/WikiCode/media"
 MEDIA_URL = '/media/'
 
+LOGIN_URL = '/registration/'

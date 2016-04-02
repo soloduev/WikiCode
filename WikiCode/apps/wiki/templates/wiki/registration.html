@@ -62,44 +62,41 @@
                                 </div>
                             </div>
                             <br>
+                            <form action="{% url 'create_user' %}" method="post">
+                            {% csrf_token %}
 
-                            <div class="row">
-                                <label>Your Name</label>
-                            </div>
-                            <div class="row">
-                                <input type="text" placeholder="User Name" class="btn-block" style="height: 30px;">
-                            </div>
-                            <br>
+                                <div class="row">
+                                    <label>Your Nickname</label>
+                                </div>
+                                <div class="row">
+                                    <input type="text" name="user_nickname" placeholder="Nickname" class="btn-block"  autofocus required style="height: 30px;">
+                                </div>
+                                <br>
 
-                            <div class="row">
-                                <label>Your Nickname</label>
-                            </div>
-                            <div class="row">
-                                <input type="text" placeholder="Nickname" class="btn-block" style="height: 30px;">
-                            </div>
-                            <br>
+                                <div class="row">
+                                    <label>Your Email</label>
+                                </div>
+                                <div class="row">
+                                    <input type="email" name="user_email" placeholder="example@example.com" class="btn-block"  required
+                                           style="height: 30px;">
+                                </div>
+                                <br>
 
-                            <div class="row">
-                                <label>Your Email</label>
-                            </div>
-                            <div class="row">
-                                <input type="email" placeholder="example@example.com" class="btn-block"
-                                       style="height: 30px;">
-                            </div>
-                            <br>
+                                <div class="row">
+                                    <label>Your Password</label>
+                                </div>
+                                <div class="row">
+                                    <input type="password" name="user_password" placeholder="Password" class="btn-block"  required style="height: 30px;">
+                                </div>
+                                <br>
 
-                            <div class="row">
-                                <label>Your Password</label>
-                            </div>
-                            <div class="row">
-                                <input type="password" placeholder="Password" class="btn-block" style="height: 30px;">
-                            </div>
-                            <br>
+                                <div class="row">
+                                    <button type="submit" class="btn btn-primary btn-block"><span
+                                            class="glyphicon glyphicon-ok"></span> Sign up</button>
+                                </div>
 
-                            <div class="row">
-                                <a href="#" class="btn btn-primary btn-block"><span
-                                        class="glyphicon glyphicon-ok"></span> Sign up</a>
-                            </div>
+                            </form>
+
                             <br>
                             <br>
                         </div>

@@ -17,6 +17,10 @@ urlpatterns = [
 
 
     url(r'^create_page/$', views.create_page, name='create_page'),
+    url(r'^create_user/$', views.create_user, name='create_user'),
+    url(r'^login_user/$', views.login_user, name='login_user'),
+    url(r'^logout_user/$', views.logout_user, name='logout_user'),
+
 
     url(r'^testform/$', views.testform, name='testform'),
 

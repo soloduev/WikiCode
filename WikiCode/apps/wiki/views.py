@@ -3,30 +3,55 @@ from .models import Publication, Statistics
 from django.template import RequestContext, loader
 from django.http import HttpResponse
 from .mymarkdown import mdsplit
+from django.contrib.auth.models import User
+from django.contrib.auth import logout
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
+
     all_publications = Publication.objects.all()
+    if request.user.is_authenticated():
+        user_data = (request.user.email)
+    else:
+        user_data = ("None")
+
     context = {
         "all_publications": all_publications,
+        "user_data": user_data,
     }
     return render(request, 'wiki/index.html', context)
 
 
 def about(request):
-    context = {
 
+    if request.user.is_authenticated():
+        user_data = (request.user.email)
+    else:
+        user_data = ("None")
+
+    context = {
+        "user_data": user_data,
     }
     return render(request, 'wiki/about.html', context)
 
 
+@login_required
 def create(request):
-    context = {
 
+    if request.user.is_authenticated():
+        user_data = (request.user.email)
+    else:
+        user_data = ("None")
+
+    context = {
+        "user_data": user_data,
     }
     return render(request, 'wiki/create.html', context)
 
 
+@login_required
 def edit(request):
     context = {
 
@@ -35,8 +60,14 @@ def edit(request):
 
 
 def help(request):
-    context = {
 
+    if request.user.is_authenticated():
+        user_data = (request.user.email)
+    else:
+        user_data = ("None")
+
+    context = {
+        "user_data" : user_data,
     }
     return render(request, 'wiki/help.html', context)
 
@@ -56,36 +87,130 @@ def page(request, id):
             "text": arr[i]
         })
 
+    if request.user.is_authenticated():
+        user_data = (request.user.email)
+    else:
+        user_data = ("None")
+
     context = {
         "publication": publication,
         "paragraphs":paragraphs,
         "numbers":numbers,
+        "user_data":user_data,
 
     }
     return render(request, 'wiki/page.html', context)
 
 
+@login_required
 def settings(request):
-    context = {
 
+    if request.user.is_authenticated():
+        user_data = (request.user.email)
+    else:
+        user_data = ("None")
+
+    context = {
+        "user_data":user_data,
     }
     return render(request, 'wiki/settings.html', context)
 
 
+@login_required
 def user(request):
-    context = {
 
+    if request.user.is_authenticated():
+        user_data = (request.user.email)
+    else:
+        user_data = ("None")
+
+    context = {
+        "user_data":user_data,
     }
     return render(request, 'wiki/user.html', context)
 
 
 def registration(request):
-    context = {
 
+    if request.user.is_authenticated():
+        user_data = (request.user.email)
+    else:
+        user_data = ("None")
+
+    context = {
+        "user_data":user_data,
     }
     return render(request, 'wiki/registration.html', context)
 
 
+def create_user(request):
+    """Регистрация нового пользователя"""
+
+    # Получаем данные формы
+    form = request.POST
+
+    # Создаем нового пользователя
+    user = User.objects.create_user(form["user_nickname"], form["user_email"], form["user_password"])
+    user.save()
+
+    print(">>>>>> WikiCode >>>>>>")
+    print("Создан новый пользователь: "+form["user_nickname"])
+
+    all_publications = Publication.objects.all()
+    context = {
+        "all_publications": all_publications,
+    }
+    return render(request, 'wiki/index.html', context)
+
+
+def login_user(request):
+
+    user_name = request.POST['user_name']
+    user_password = request.POST['user_password']
+
+    user = authenticate(username=user_name, password=user_password)
+
+    if user is not None:
+        if user.is_active:
+            login(request, user)
+        else:
+            print(">>>>>>>>>>>>>> WIKI ERROR: disabled account")
+            ...
+    else:
+        print(">>>>>>>>>>>>>> WIKI ERROR: invalid login")
+        ...
+
+    all_publications = Publication.objects.all()
+
+    if request.user.is_authenticated():
+        user_data = (request.user.email)
+    else:
+        user_data = ("None")
+
+    context = {
+        "all_publications": all_publications,
+        "user_data": user_data,
+    }
+    return render(request, 'wiki/index.html', context)
+
+@login_required
+def logout_user(request):
+    logout(request)
+    all_publications = Publication.objects.all()
+
+    if request.user.is_authenticated():
+        user_data = (request.user.email)
+    else:
+        user_data = ("None")
+
+    context = {
+        "all_publications": all_publications,
+        "user_data": user_data,
+    }
+    return render(request, 'wiki/index.html', context)
+
+
+@login_required
 def create_page(request):
     # Получаем данные формы
     form = request.POST
@@ -133,8 +258,15 @@ def create_page(request):
             edits=0)
         new_publication.save()
         all_publications = Publication.objects.all()
+
+        if request.user.is_authenticated():
+            user_data = (request.user.email)
+        else:
+            user_data = ("None")
+
         context = {
             "all_publications": all_publications,
+            "user_data" : user_data,
         }
         return render(request, 'wiki/index.html', context)
     else:
@@ -152,6 +284,7 @@ def create_page(request):
         return HttpResponse(template.render(context))
 
 
+@login_required
 def test(request):
     text = """# Урок по языку Java!
 Java - великолепный язык для кроссплатформенной разработки!
@@ -180,6 +313,7 @@ System.out.println("Hello world!");
     return render(request, 'wiki/test.html', context)
 
 
+@login_required
 def testform(request):
     form = request.POST
     print(form['md-elem-1'])
@@ -188,8 +322,16 @@ def testform(request):
     }
     return render(request, 'wiki/index.html', context)
 
-def tree_manager(request):
-    context = {
 
+@login_required
+def tree_manager(request):
+
+    if request.user.is_authenticated():
+        user_data = (request.user.email)
+    else:
+        user_data = ("None")
+
+    context = {
+        "user_data": user_data,
     }
     return render(request, 'wiki/tree_manager.html', context)
