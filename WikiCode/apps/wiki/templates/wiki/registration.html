@@ -64,7 +64,13 @@
                             <br>
                             <form action="{% url 'create_user' %}" method="post">
                             {% csrf_token %}
+                                {% if error %}
+                                    <div class="row">
+                                        <label style="color:red;">{{ error }}</label>
 
+                                    </div>
+                                    <br>
+                                {% endif %}
                                 <div class="row">
                                     <label id="wiki_nickname_message">Your Nickname</label>
                                 </div>
@@ -91,7 +97,7 @@
                                 <br>
 
                                 <div class="row">
-                                    <button type="submit" class="btn btn-primary btn-block"><span
+                                    <button id="wiki_sign_up" type="submit" class="btn btn-primary btn-block"><span
                                             class="glyphicon glyphicon-ok"></span> Sign up</button>
                                 </div>
 

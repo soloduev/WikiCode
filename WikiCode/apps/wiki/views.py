@@ -151,58 +151,75 @@ def create_user(request):
     # Получаем данные формы
     form = request.POST
 
-    # Создаем нового пользователя
-    user = DjangoUser.objects.create_user(form["user_nickname"],
-                                          form["user_email"],
-                                          form["user_password"])
+    # Проверяем на существование такого имени и email.
+    # Осли проверка успешна, пользователя не создаем
+    try:
+            simple1 = WikiUser.objects.get(nickname=form["user_nickname"])
+    except WikiUser.DoesNotExist:
+        try:
+            simple2 = WikiUser.objects.get(email=form["user_email"])
+        except WikiUser.DoesNotExist:
 
-    stat = Statistics.objects.get(id_statistics=1)
-    # Необходимо для создания id пользователей
-    total_reg_users = stat.users_total_reg
-    stat.users_total_reg += 1
-    stat.users_reg += 1
-    stat.save()
+            # Создаем нового пользователя
+            user = DjangoUser.objects.create_user(form["user_nickname"],
+                                                  form["user_email"],
+                                                  form["user_password"])
 
-    # Создаем нового юзера
-    new_wiki_user = WikiUser(user=user,
-                             nickname=form["user_nickname"],
-                             email=form["user_email"],
-                             id_user=total_reg_users,
-                             avatar="none.jpg",
-                             name="anonymous",
-                             likes=0,
-                             publications=0,
-                             imports=0,
-                             comments=0,
-                             imports_it=0,
-                             commented_it=0)
+            stat = Statistics.objects.get(id_statistics=1)
+            # Необходимо для создания id пользователей
+            total_reg_users = stat.users_total_reg
+            stat.users_total_reg += 1
+            stat.users_reg += 1
+            stat.save()
 
-    new_wiki_user.save()
+            # Создаем нового юзера
+            new_wiki_user = WikiUser(user=user,
+                                     nickname=form["user_nickname"],
+                                     email=form["user_email"],
+                                     id_user=total_reg_users,
+                                     avatar="none.jpg",
+                                     name="anonymous",
+                                     likes=0,
+                                     publications=0,
+                                     imports=0,
+                                     comments=0,
+                                     imports_it=0,
+                                     commented_it=0)
 
-    user = authenticate(username=form["user_nickname"], password=form["user_password"])
+            new_wiki_user.save()
 
-    if user is not None:
-        if user.is_active:
-            login(request, user)
-        else:
-            print(">>>>>>>>>>>>>> WIKI ERROR: disabled account")
-            ...
-    else:
-        print(">>>>>>>>>>>>>> WIKI ERROR: invalid login")
-        ...
+            user = authenticate(username=form["user_nickname"], password=form["user_password"])
 
-    all_publications = Publication.objects.all()
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                else:
+                    print(">>>>>>>>>>>>>> WIKI ERROR: disabled account")
+                    ...
+            else:
+                print(">>>>>>>>>>>>>> WIKI ERROR: invalid login")
+                ...
 
-    if request.user.is_authenticated():
-        user_data = (request.user.email)
-    else:
-        user_data = ("None")
+            all_publications = Publication.objects.all()
 
+            if request.user.is_authenticated():
+                user_data = (request.user.email)
+            else:
+                user_data = ("None")
+
+            context = {
+                "all_publications": all_publications,
+                "user_data": user_data,
+            }
+            return render(request, 'wiki/index.html', context)
+        context = {
+            "error": "Пользователь с таким Email уже существует"
+        }
+        return render(request, 'wiki/registration.html', context)
     context = {
-        "all_publications": all_publications,
-        "user_data": user_data,
+        "error": "Пользователь с таким Nickname уже существует"
     }
-    return render(request, 'wiki/index.html', context)
+    return render(request, 'wiki/registration.html', context)
 
 
 def login_user(request):
