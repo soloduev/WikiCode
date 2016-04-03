@@ -24,10 +24,4 @@ urlpatterns = [
     url(r'^registration/check_nickname/$', views.check_nickname, name='check_nickname'),
     url(r'^registration/check_email/$', views.check_email, name='check_email'),
 
-
-    url(r'^testform/$', views.testform, name='testform'),
-
-
-    url(r'^test/$', views.test, name='test'),
-
 ]
