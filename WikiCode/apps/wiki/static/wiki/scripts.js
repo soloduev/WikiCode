@@ -1,17 +1,17 @@
 $.fn.extend({
     treed: function (o) {
 
-      var openedClass = 'glyphicon-minus-sign';
-      var closedClass = 'glyphicon-plus-sign';
+        var openedClass = 'glyphicon-minus-sign';
+        var closedClass = 'glyphicon-plus-sign';
 
-      if (typeof o != 'undefined'){
-        if (typeof o.openedClass != 'undefined'){
-        openedClass = o.openedClass;
-        }
-        if (typeof o.closedClass != 'undefined'){
-        closedClass = o.closedClass;
-        }
-      };
+        if (typeof o != 'undefined'){
+            if (typeof o.openedClass != 'undefined'){
+                openedClass = o.openedClass;
+            }
+            if (typeof o.closedClass != 'undefined'){
+                closedClass = o.closedClass;
+            }
+        };
 
         //initialize each of the top levels
         var tree = $(this);
@@ -30,11 +30,11 @@ $.fn.extend({
             branch.children().children().toggle();
         });
         //fire event from the dynamically added icon
-      tree.find('.branch .indicator').each(function(){
-        $(this).on('click', function () {
-            $(this).closest('li').click();
+        tree.find('.branch .indicator').each(function(){
+            $(this).on('click', function () {
+                $(this).closest('li').click();
+            });
         });
-      });
         //fire event to open branch if the li contains an anchor instead of text
         tree.find('.branch>a').each(function () {
             $(this).on('click', function (e) {
@@ -72,3 +72,74 @@ $(document).ready(function () {
 
 //-------------------------------------------------
 
+//Этот кусок скрипта относится к форме регистрации пользователей
+//-------------------------------------------------
+
+//Проверка имени пользователя
+
+$("#wiki_nickname").on("change", function () {
+    if($("#wiki_nickname").val().length < 3 && $("#wiki_nickname").val() !== "")
+    {
+        $("#wiki_nickname_message").text("Nickname должен быть от 3 до 12 символов");
+        $("#wiki_nickname_message").attr("style","color: red;");
+    }
+    else if($("#wiki_nickname").val() === "")
+    {
+        $("#wiki_nickname_message").text("Your Nickname");
+        $("#wiki_nickname_message").attr("style","color: black;");
+    }
+    else
+    {
+        $("#wiki_nickname_message").text("Your Nickname");
+        $("#wiki_nickname_message").attr("style","color: black;");
+        //Отправляем ajax запрос на сервер
+        $.ajax({
+            type: "GET",
+            url: "check_nickname/",
+            data:{
+                'nickname':$("#wiki_nickname").val(),
+            },
+            dataType: "text",
+            cache: false,
+            success: function(data){
+                if (data == 'ok'){
+                    $("#wiki_nickname_message").text("Такой Nickname уже существует!");
+                    $("#wiki_nickname_message").attr("style","color: red;");
+                }
+                else
+                {
+                    $("#wiki_nickname_message").text("Correct Nickname!");
+                    $("#wiki_nickname_message").attr("style","color: green;");
+                }
+            }
+        });
+    }
+});
+
+//Проверка почты пользователя
+
+$("#wiki_email").on("change", function () {
+
+    $("#wiki_email_message").text("Your Email");
+    $("#wiki_email_message").attr("style","color: black;");
+    //Отправляем ajax запрос на сервер
+    $.ajax({
+        type: "GET",
+        url: "check_email/",
+        data:{
+            'email':$("#wiki_email").val(),
+        },
+        dataType: "text",
+        cache: false,
+        success: function(data){
+            if (data == 'ok'){
+                $("#wiki_email_message").text("Такой Email уже существует!");
+                $("#wiki_email_message").attr("style","color: red;");
+            }
+        }
+    });
+
+});
+
+
+//-------------------------------------------------

@@ -381,4 +381,39 @@ def tree_manager(request):
 
 def check_nickname(request):
     """Ajax представление. Проверка на существование такого nickname в базе данных"""
-    pass
+
+    if request.method == "GET":
+        request.session['nickname'] = request.GET['nickname']
+        nickname = request.GET['nickname']
+
+        try:
+            user = WikiUser.objects.get(nickname=nickname)
+        except WikiUser.DoesNotExist:
+            if nickname.lower() == "admin":
+                return HttpResponse('ok', content_type='text/html')
+            else:
+                return HttpResponse('no', content_type='text/html')
+
+        return HttpResponse('ok', content_type='text/html')
+    else:
+        return HttpResponse('no', content_type='text/html')
+
+
+def check_email(request):
+    """Ajax представление. Проверка на существование такого email в базе данных"""
+
+    if request.method == "GET":
+        request.session['email'] = request.GET['email']
+        email = request.GET['email']
+
+        try:
+            user = WikiUser.objects.get(email=email)
+        except WikiUser.DoesNotExist:
+            if email == "diahorver@gmail.com":
+                return HttpResponse('ok', content_type='text/html')
+            else:
+                return HttpResponse('no', content_type='text/html')
+
+        return HttpResponse('ok', content_type='text/html')
+    else:
+        return HttpResponse('no', content_type='text/html')

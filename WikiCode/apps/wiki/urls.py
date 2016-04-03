@@ -21,6 +21,9 @@ urlpatterns = [
     url(r'^login_user/$', views.login_user, name='login_user'),
     url(r'^logout_user/$', views.logout_user, name='logout_user'),
 
+    url(r'^registration/check_nickname/$', views.check_nickname, name='check_nickname'),
+    url(r'^registration/check_email/$', views.check_email, name='check_email'),
+
 
     url(r'^testform/$', views.testform, name='testform'),
 

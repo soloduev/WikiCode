@@ -66,18 +66,18 @@
                             {% csrf_token %}
 
                                 <div class="row">
-                                    <label>Your Nickname</label>
+                                    <label id="wiki_nickname_message">Your Nickname</label>
                                 </div>
                                 <div class="row">
-                                    <input type="text" name="user_nickname" placeholder="Nickname" class="btn-block"  autofocus required style="height: 30px;">
+                                    <input id="wiki_nickname" type="text" name="user_nickname" placeholder="Nickname" class="btn-block"  autofocus required style="height: 30px;">
                                 </div>
                                 <br>
 
                                 <div class="row">
-                                    <label>Your Email</label>
+                                    <label id="wiki_email_message">Your Email</label>
                                 </div>
                                 <div class="row">
-                                    <input type="email" name="user_email" placeholder="example@example.com" class="btn-block"  required
+                                    <input id="wiki_email" type="email" name="user_email" placeholder="example@example.com" class="btn-block"  required
                                            style="height: 30px;">
                                 </div>
                                 <br>
