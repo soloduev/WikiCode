@@ -1,9 +1,11 @@
 from django.shortcuts import render
+
+from WikiCode.apps.wiki.models import User as WikiUser
 from .models import Publication, Statistics
 from django.template import RequestContext, loader
 from django.http import HttpResponse
 from .mymarkdown import mdsplit
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User as DjangoUser
 from django.contrib.auth import logout
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -150,15 +152,55 @@ def create_user(request):
     form = request.POST
 
     # Создаем нового пользователя
-    user = User.objects.create_user(form["user_nickname"], form["user_email"], form["user_password"])
-    user.save()
+    user = DjangoUser.objects.create_user(form["user_nickname"],
+                                          form["user_email"],
+                                          form["user_password"])
 
-    print(">>>>>> WikiCode >>>>>>")
-    print("Создан новый пользователь: "+form["user_nickname"])
+    stat = Statistics.objects.get(id_statistics=1)
+    # Необходимо для создания id пользователей
+    total_reg_users = stat.users_total_reg
+    stat.users_total_reg += 1
+    stat.users_reg += 1
+    stat.save()
+
+    # Создаем нового юзера
+    new_wiki_user = WikiUser(user=user,
+                             nickname=form["user_nickname"],
+                             email=form["user_email"],
+                             id_user=total_reg_users,
+                             avatar="none.jpg",
+                             name="anonymous",
+                             likes=0,
+                             publications=0,
+                             imports=0,
+                             comments=0,
+                             imports_it=0,
+                             commented_it=0)
+
+    new_wiki_user.save()
+
+    user = authenticate(username=form["user_nickname"], password=form["user_password"])
+
+    if user is not None:
+        if user.is_active:
+            login(request, user)
+        else:
+            print(">>>>>>>>>>>>>> WIKI ERROR: disabled account")
+            ...
+    else:
+        print(">>>>>>>>>>>>>> WIKI ERROR: invalid login")
+        ...
 
     all_publications = Publication.objects.all()
+
+    if request.user.is_authenticated():
+        user_data = (request.user.email)
+    else:
+        user_data = ("None")
+
     context = {
         "all_publications": all_publications,
+        "user_data": user_data,
     }
     return render(request, 'wiki/index.html', context)
 
@@ -335,3 +377,8 @@ def tree_manager(request):
         "user_data": user_data,
     }
     return render(request, 'wiki/tree_manager.html', context)
+
+
+def check_nickname(request):
+    """Ajax представление. Проверка на существование такого nickname в базе данных"""
+    pass

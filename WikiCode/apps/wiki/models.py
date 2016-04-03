@@ -1,7 +1,9 @@
 from django.db import models
+from django.contrib.auth.models import User as DjangoUser
 
 
 class User(models.Model):
+    user = models.OneToOneField(DjangoUser)
     id_user = models.BigIntegerField()
     name = models.CharField(max_length=100)
     nickname = models.CharField(max_length=100)
@@ -58,7 +60,10 @@ class Comment(models.Model):
 
 class Statistics(models.Model):
     id_statistics = models.IntegerField()
+    # Зарегестрировано юзеров
     users_reg = models.BigIntegerField()
+    # Зарегестрировано юзеров за всю историю
+    users_total_reg = models.BigIntegerField(default=0)
     user_online = models.BigIntegerField()
     publications_create = models.BigIntegerField()
     publications_delete = models.BigIntegerField()
