@@ -1,12 +1,34 @@
-<!DOCTYPE html><html><title>Пост о Lua</title><xmp theme="cerulean" style="display:none;">### Код на луа: ###
+<!DOCTYPE html><html><title>Тестовый конспект</title><xmp theme="spacelab" style="display:none;">## Заголовок тестового конспекта ##
 
+Код на питоне:
 
 ```
-sum = function(x,y)
-        return x + y 
-      end
+def get_index(request):
 
-print(sum(2,2))
+    all_publications = Publication.objects.all()
+
+    context = {
+            "all_publications": all_publications,
+            "user_data": check_auth(request)
+    }
+
+    return render(request, 'wiki/index.html', context)
 ```
 
-Программируйте на Lua!!!!</xmp><script src="http://strapdownjs.com/v/0.2/strapdown.js"></script></html>
+
+Еще код на питоне:
+```
+def get_index(request):
+
+    all_publications = Publication.objects.all()
+
+    context = {
+            "all_publications": all_publications,
+            "user_data": check_auth(request)
+    }
+
+    return render(request, 'wiki/index.html', context)
+```
+
+Учитесь программировать!
+</xmp><script src="http://strapdownjs.com/v/0.2/strapdown.js"></script></html>
