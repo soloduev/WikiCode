@@ -31,82 +31,7 @@
                                 </div>
                                 <div class="row">
                                     <ul id="tree2">
-                                        <li><a href="#">Personal</a>
-
-                                            <ul>
-                                                <li>Preview publication<a href="#" class="btn btn-xs btn-link"><span
-                                                        class="glyphicon glyphicon-share-alt"></span></a></li>
-                                                <li><a href="#">Lessons</a>
-                                                    <ul>
-                                                        <li><a href="#">Java</a>
-                                                            <ul>
-                                                                <li>Lesson1<a href="#" class="btn btn-xs btn-link"><span
-                                                                        class="glyphicon glyphicon-share-alt"></span></a>
-                                                                </li>
-                                                                <li>Lesson2<a href="#" class="btn btn-xs btn-link"><span
-                                                                        class="glyphicon glyphicon-share-alt"></span></a>
-                                                                </li>
-                                                                <li>Lesson3<a href="#" class="btn btn-xs btn-link"><span
-                                                                        class="glyphicon glyphicon-share-alt"></span></a>
-                                                                </li>
-                                                            </ul>
-                                                        </li>
-                                                        <li><a href="#">C++</a>
-                                                            <ul>
-                                                                <li>Lesson1<a href="#" class="btn btn-xs btn-link"><span
-                                                                        class="glyphicon glyphicon-share-alt"></span></a>
-                                                                </li>
-                                                                <li>Lesson2<a href="#" class="btn btn-xs btn-link"><span
-                                                                        class="glyphicon glyphicon-share-alt"></span></a>
-                                                                </li>
-                                                                <li>Lesson3<a href="#" class="btn btn-xs btn-link"><span
-                                                                        class="glyphicon glyphicon-share-alt"></span></a>
-                                                                </li>
-                                                            </ul>
-                                                        </li>
-                                                        <li>Scala<a href="#" class="btn btn-xs btn-link"><span
-                                                                class="glyphicon glyphicon-share-alt"></span></a></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="#">Imports</a>
-                                            <ul>
-                                                <li><a href="#">Spring</a>
-                                                    <ul>
-                                                        <li><a href="#">Spring boot</a>
-                                                            <ul>
-                                                                <li>Lesson1<a href="#" class="btn btn-xs btn-link"><span
-                                                                        class="glyphicon glyphicon-share-alt"></span></a>
-                                                                </li>
-                                                                <li>Lesson2<a href="#" class="btn btn-xs btn-link"><span
-                                                                        class="glyphicon glyphicon-share-alt"></span></a>
-                                                                </li>
-                                                                <li>Lesson3<a href="#" class="btn btn-xs btn-link"><span
-                                                                        class="glyphicon glyphicon-share-alt"></span></a>
-                                                                </li>
-                                                                <li>Lesson4<a href="#" class="btn btn-xs btn-link"><span
-                                                                        class="glyphicon glyphicon-share-alt"></span></a>
-                                                                </li>
-                                                                <li>Lesson5<a href="#" class="btn btn-xs btn-link"><span
-                                                                        class="glyphicon glyphicon-share-alt"></span></a>
-                                                                </li>
-                                                            </ul>
-                                                        </li>
-                                                        <li><a href="#">Data Bases</a>
-                                                            <ul>
-                                                                <li>Lesson1<a href="#" class="btn btn-xs btn-link"><span
-                                                                        class="glyphicon glyphicon-share-alt"></span></a>
-                                                                </li>
-                                                                <li>Lesson2<a href="#" class="btn btn-xs btn-link"><span
-                                                                        class="glyphicon glyphicon-share-alt"></span></a>
-                                                                </li>
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </li>
+                                        <!--Здесь должен располагаться сгенерированный html preview дерева-->
                                     </ul>
                                 </div>
                             </div>
@@ -194,23 +119,24 @@
 
         $("#jstree").jstree({
 
-                    "types" : {
-                        "folder" : {
-                            "icon" : "glyphicon glyphicon-folder-open"
-                        },
-                        "publ": {
-                            "icon": "glyphicon glyphicon-list-alt"
-                        },
-                        "contents": {
-                            "icon": "glyphicon glyphicon-bookmark"
-                        },
-                        "test": {
-                            "icon": "glyphicon glyphicon-check"
-                        },
-                    },
+            "types" : {
+                "folder" : {
+                    "icon" : "glyphicon glyphicon-folder-open"
+                },
+                "publ": {
+                    "icon": "glyphicon glyphicon-list-alt"
+                },
+                "contents": {
+                    "icon": "glyphicon glyphicon-bookmark"
+                },
+                "test": {
+                    "icon": "glyphicon glyphicon-check"
+                },
+            },
 
-                "plugins" : [ "wholerow", "types" ]
+            "plugins" : [ "wholerow", "types" ]
         });
 
     </script>
 {% endblock %}
+

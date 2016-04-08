@@ -16,6 +16,100 @@ class WikiTree(object):
         else:
             self.__print_error("user_id not int")
 
+    def generate_html_preview(self):
+        """Генерирует html текст превью wiki дерева"""
+
+        # Сначала генерируем супер карту
+        paths = self.tree.split("\n")
+        elements = []
+        max = 0
+        for i in range(1, len(paths)):
+            elements.append([
+                paths[i],
+                self.__get_num_level(paths[i]),
+                self.__convert_line_to_html(paths[i]),
+                paths[i].split(":")[0]
+            ])
+            if max < elements[len(elements)-1][1]:
+                max = elements[len(elements)-1][1]
+            if elements[len(elements)-1][0] == '':
+                del elements[len(elements)-1]
+        index = 0
+        while max != 1:
+            if index == len(elements):
+                max-=1
+                index = 0
+                continue
+            else:
+                elem = elements[index]
+                if elem[1] == max:
+                    insert_html = elem[2]
+                    find_name = ""
+                    if self.__get_type(elem[0]) == "folder":
+                        first = elem[0][:elem[0].rfind("/")]
+                        find_name = first[:first.rfind("/")+1]
+                    elif self.__get_type(elem[0]) == "publ":
+                        find_name = elem[0][:elem[0].rfind('/')+1]
+                    for i in range(0,len(elements)):
+                        if elements[i][3] == find_name:
+                            elements[i][2] = self.__insert_elem_to_folder(elements[i][2], insert_html)
+                            break
+                index+=1
+
+        #Теперь компонуем обе папки вместе:
+        return elements[0][2] + elements[1][2]
+
+
+    def __get_type(self, line):
+        """Возвращает тип строки: folder или publ или user_id"""
+        if line.count(".publ") == 1:
+            return "publ"
+        if line.count("user_id") == 0:
+            return "folder"
+        else:
+            return "user_id"
+
+    def __convert_line_to_html(self, line):
+        """Определяет тип строки и возвращает html блок этой структуры"""
+        if line.count(":") != 0:
+            split = line.split(":")
+            id = split[1]
+            path = split[0]
+            if path.endswith("/"):
+                # Значит это папка
+                part1 = '<li><a href="#">'
+                path_split = path.split("/")
+                part2 = path_split[len(path_split)-2]
+                part3 = '</a>\n<ul>\n</ul>\n</li>\n'
+                return part1 + part2 + part3
+            elif path.endswith(".publ"):
+                # Значит это публикация
+                part1 = '<li>'
+                path_split = path.split("/")
+                part2 = path_split[len(path_split)-1]
+                part2 = part2[:len(part2)-5]
+                part3 = '<a href="#" class="btn btn-xs btn-link"><span class="glyphicon glyphicon-share-alt"></span></a></li>\n'
+                return part1 + part2 + part3
+        return ""
+
+    def __get_num_level(self, path):
+        """Возвращает на каком уровне находится файл"""
+        num_slash = path.count("/")
+        if path.count(".publ") == 1:
+            # Если это публикация
+            return num_slash + 1
+        else:
+            # Если это папка
+            return num_slash
+
+
+
+    def __insert_elem_to_folder(self, html_folder1, html_folder2):
+        """Вставляет папку в конец папки, возвращает получившийся тег"""
+        part1 = html_folder1[:html_folder1.rfind("</ul>")]
+        return part1 + html_folder2 + '</ul>\n</li>\n'
+
+
     def __print_error(self, error_message):
         print("--------WikiTree---Error--------")
         print("Error message:")
@@ -309,8 +403,31 @@ class WikiTree(object):
 # Testing class
 wt = WikiTree(11)
 wt.add_folder("Personal/", "Java")
-wt.add_publication("Personal/Java/", "new", 23)
-wt.rename_publication("Personal/Java/new.publ", "old")
-print("PARAM:"+str(wt.get_param_publication("Personal/Java/old.publ", 2)))
-
+wt.add_folder("Personal/", "C++")
+wt.add_publication("Personal/Java/", "Lesson1", 1)
+wt.add_publication("Personal/Java/", "Lesson2", 2)
+wt.add_publication("Personal/C++/", "Lesson1", 3)
+wt.add_publication("Personal/C++/", "Lesson2", 4)
+wt.add_publication("Personal/C++/", "Lesson3", 5)
+wt.add_publication("Personal/C++/", "Lesson4", 6)
+wt.add_folder("Imports/", "Top")
+wt.add_folder("Personal/C++/", "Intermediate")
+wt.add_publication("Personal/C++/Intermediate/", "L1", 6)
+wt.add_publication("Personal/C++/Intermediate/", "L2", 6)
+wt.add_publication("Personal/C++/Intermediate/", "L3", 6)
+wt.add_folder("Personal/C++/", "Pro")
+wt.add_publication("Personal/C++/Pro/", "Pro1", 6)
+wt.add_publication("Personal/C++/Intermediate/", "L4", 6)
+wt.add_publication("Personal/C++/", "Lesson5", 6)
+wt.add_publication("Personal/C++/", "Lesson6", 6)
+wt.add_publication("Personal/C++/Intermediate/", "L6", 6)
+wt.add_publication("Personal/C++/Pro/", "Pro2", 6)
+wt.add_publication("Personal/C++/Intermediate/", "L7", 6)
+wt.add_publication("Personal/C++/Pro/", "Pro3", 6)
+wt.add_publication("Personal/C++/Pro/", "Pro4", 6)
+wt.add_publication("Personal/C++/Pro/", "Pro5", 6)
+wt.add_publication("Personal/C++/Pro/", "Pro6", 6)
+wt.print_tree()
+print("--------------")
+print(wt.generate_html_preview())
 
