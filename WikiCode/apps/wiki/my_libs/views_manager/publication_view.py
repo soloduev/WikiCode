@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render
-
 from WikiCode.apps.wiki.models import Publication, Statistics
 from .auth import check_auth
 from WikiCode.apps.wiki.mymarkdown import mdsplit
@@ -9,7 +8,6 @@ from django.http import HttpResponse
 
 
 def get_create(request):
-
     context = {
         "user_data": check_auth(request),
     }
@@ -18,7 +16,6 @@ def get_create(request):
 
 
 def get_edit(request):
-
     context = {
 
     }
@@ -34,18 +31,18 @@ def get_page(request, id):
     print(arr)
     numbers = []
     paragraphs = []
-    for i in range(0,len(arr)):
-        numbers.append(str(i+1))
+    for i in range(0, len(arr)):
+        numbers.append(str(i + 1))
         paragraphs.append({
-            "index": str(i+1),
+            "index": str(i + 1),
             "text": arr[i]
         })
 
     context = {
         "publication": publication,
-        "paragraphs":paragraphs,
-        "numbers":numbers,
-        "user_data":check_auth(request),
+        "paragraphs": paragraphs,
+        "numbers": numbers,
+        "user_data": check_auth(request),
     }
 
     return render(request, 'wiki/page.html', context)
@@ -58,8 +55,9 @@ def get_create_page(request):
     if request.POST.get('secret') == "off":
         with open("WikiCode/apps/wiki/generate_pages/gen_page.gen", "r", encoding='utf-8') as f:
             gen_page = f.read()
-        first_part = '<!DOCTYPE html><html><title>' + form["title"] + '</title><xmp theme="' + form[
-            "theme"].lower() + '" style="display:none;">'
+        first_part = "<!DOCTYPE html><html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"><title>" + \
+                     form["title"] + '</title></head><xmp theme="' + form[
+                         "theme"].lower() + '" style="display:none;">'
         second_part = form["text"]
         ready_page = first_part + second_part + gen_page
         stat = Statistics.objects.get(id_statistics=1)
@@ -101,7 +99,7 @@ def get_create_page(request):
 
         context = {
             "all_publications": all_publications,
-            "user_data" : check_auth(request),
+            "user_data": check_auth(request),
         }
         return render(request, 'wiki/index.html', context)
     else:
