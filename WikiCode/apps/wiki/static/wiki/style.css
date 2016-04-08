@@ -455,3 +455,76 @@ Follow me on Twitter @maridlcrmn
     }
 }
 
+/*Что касается index.html*/
+
+.box {
+    border-radius: 3px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    padding: 10px 25px;
+    text-align: right;
+    display: block;
+    margin-top: 60px;
+    transition: all 0.5s ease 0s;
+}
+
+.box:hover {
+    border-radius: 3px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.70), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    padding: 10px 25px;
+    text-align: right;
+    display: block;
+    margin-top: 60px;
+    transition: all 0.5s ease 0s;
+}
+
+.info h4 {
+    font-size: 26px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+.info > p {
+    color: #717171;
+    font-size: 16px;
+    padding-top: 10px;
+    text-align: justify;
+}
+
+#read_publ {
+    background-color: #024f81;
+    border-radius: 2px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    color: #fff;
+    transition: all 0.5s ease 0s;
+}
+
+#read_publ:hover {
+    background-color: #4da6d9;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
+    color: #fff;
+    transition: all 0.5s ease 0s;
+}
+
+#reads_publ, #imports_publ, #likes_publ, #author_publ {
+    background-color: #ffffff;
+    border-radius: 0px;
+    border-color: #ffffff;
+    color: #000000;
+    transition: all 0.5s ease 0s;
+}
+
+#reads_publ:hover,#imports_publ:hover,#likes_publ:hover {
+    background-color: #ffffff;
+    border-radius: 0px;
+    border-color: #ffffff;
+    color: #000000;
+}
+
+#author_publ:hover
+{
+    background-color: #ffffff;
+    border-radius: 0px;
+    border-color: #ffffff;
+    color: #024f81;
+    transition: all 0.5s ease 0s;
+}
+
