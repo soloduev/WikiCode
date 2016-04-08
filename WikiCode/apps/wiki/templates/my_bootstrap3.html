@@ -24,6 +24,8 @@
     <link href={% static "wiki/flippant/flippant.css" %} type="text/css" rel="stylesheet">
     <!--Bootstrap-tags-->
     <link href={% static "wiki/bootstrap-tags/css/bootstrap-tags.css"%} rel="stylesheet" type="text/css">
+    <!--jsTree-->
+    <link href={% static "wiki/jsTree/themes/default/style.min.css"%} rel="stylesheet" >
 </head>
 
 <body>
@@ -44,5 +46,7 @@
 <script src={% static "wiki/flippant/flippant.js" %}></script>
 <!--Подключаем библиотеку для динамических тегов bootstrap-tags-->
 <script src={% static "wiki/bootstrap-tags/js/bootstrap-tags.js" %}></script>
+<!--Подключаем библиотеку для динамических файловых деревье jsTree-->
+<script src={% static "wiki/jsTree/jstree.min.js"%}></script>
 {% block add_script %}{% endblock %}
 </html>

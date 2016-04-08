@@ -142,198 +142,38 @@
                                     <div class="col-md-12">
                                         <br>
                                     </div>
+
+                                    <!--Динамическое дерево-->
                                     <div class="col-md-12">
-                                        <a href="#" class="btn-xs btn-link"><span class="glyphicon glyphicon-home"></span></a>
-                                        <b>/</b>
-                                        <a href="#" class="btn-xs btn-link">Personal</a>
-                                        <b>/</b>
-                                        <a href="#" class="btn-xs btn-link">Lessons</a>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <hr>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="btn-group">
-                                            <a href="#" class="btn btn-xs btn-link"><span
-                                                    class="glyphicon glyphicon-arrow-left"></span> Back</a>
+                                        <div id="jstree">
+                                            <ul>
+                                                <li data-jstree='{ "type" : "folder" }'>Personal
+                                                    <ul>
+                                                        <li data-jstree='{ "type" : "folder" }'>Lessons C++</li>
+                                                        <li data-jstree='{ "type" : "folder" }'><a href="#">Lessons Java</a></li>
+                                                        <li data-jstree='{ "type" : "folder" }'>Lessons Python
+                                                            <ul>
+                                                                <li data-jstree='{ "type" : "contents" }'>Contents</li>
+                                                                <li data-jstree='{ "type" : "publ" }'>HelloWorld!</li>
+                                                                <li data-jstree='{ "type" : "publ" }'>Lesson 1</li>
+                                                                <li data-jstree='{ "type" : "publ" }'>Lesson 2</li>
+                                                                <li data-jstree='{ "type" : "publ" }'>Lesson 3</li>
+                                                                <li data-jstree='{ "type" : "publ" }'>Lesson 4</li>
+                                                                <li data-jstree='{ "type" : "test" }'>Test you</li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li data-jstree='{ "type" : "folder" }'>Imports
+                                                    <ul>
+                                                        <li data-jstree='{ "type" : "folder" }'>Docs</li>
+                                                        <li data-jstree='{ "type" : "folder" }'><a href="#">C++</a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
-                                        <br>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <table class="table"
-                                               style="border-left: 1px solid #d5d5d5;border-right: 1px solid #d5d5d5;border-bottom: 1px solid #d5d5d5;border-top: 1px solid #d5d5d5;">
-                                            <thead>
-                                            <tr>
-                                                <th>
-                                                    Name
-                                                </th>
-                                                <th>
-                                                    Type
-                                                </th>
-                                                <th>
-                                                    Access level
-                                                </th>
-                                                <th>
-                                                    Manage buttons
-                                                </th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr>
-                                                <td>
-                                                    <a href="#" class="btn btn-xs btn-link"><span
-                                                            class="glyphicon glyphicon-folder-open"></span> Java</a>
-                                                </td>
-                                                <td>
-                                                    Folder
-                                                </td>
-                                                <td>
-                                                    Public
-                                                </td>
-                                                <td>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-info-sign"></span></a>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-pencil"></span></a>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-move"></span></a>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-download"></span></a>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-remove"></span></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <a href="#" class="btn btn-xs btn-link"><span
-                                                            class="glyphicon glyphicon-bookmark"></span> Contents</a>
-                                                </td>
-                                                <td>
-                                                    Contents
-                                                </td>
-                                                <td>
-                                                    Public
-                                                </td>
-                                                <td>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-info-sign"></span></a>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-pencil"></span></a>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-move"></span></a>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-download"></span></a>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-remove"></span></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <a href="#" class="btn btn-xs btn-link"><span
-                                                            class="glyphicon glyphicon-list-alt"></span> Lesson 1</a>
-                                                </td>
-                                                <td>
-                                                    Publication
-                                                </td>
-                                                <td>
-                                                    Public
-                                                </td>
-                                                <td>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-info-sign"></span></a>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-pencil"></span></a>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-move"></span></a>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-download"></span></a>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-remove"></span></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <a href="#" class="btn btn-xs btn-link"><span
-                                                            class="glyphicon glyphicon-list-alt"></span> Lesson 2</a>
-                                                </td>
-                                                <td>
-                                                    Publication
-                                                </td>
-                                                <td>
-                                                    Public
-                                                </td>
-                                                <td>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-info-sign"></span></a>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-pencil"></span></a>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-move"></span></a>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-download"></span></a>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-remove"></span></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <a href="#" class="btn btn-xs btn-link"><span
-                                                            class="glyphicon glyphicon-list-alt"></span> Lesson 3</a>
-                                                </td>
-                                                <td>
-                                                    Publication
-                                                </td>
-                                                <td>
-                                                    Public
-                                                </td>
-                                                <td>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-info-sign"></span></a>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-pencil"></span></a>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-move"></span></a>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-download"></span></a>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-remove"></span></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <a href="#" class="btn btn-xs btn-link"><span
-                                                            class="glyphicon glyphicon-check"></span> Test</a>
-                                                </td>
-                                                <td>
-                                                    Test
-                                                </td>
-                                                <td>
-                                                    Public
-                                                </td>
-                                                <td>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-info-sign"></span></a>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-pencil"></span></a>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-move"></span></a>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-download"></span></a>
-                                                    <a href="#" class="btn btn-xs btn-default"><span
-                                                            class="glyphicon glyphicon-remove"></span></a>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                        <div class="alert alert-info">
-                                            Please Wait...
-                                        </div>
-                                        <div class="alert alert-success" style="display:none;">
-                                            <span class="glyphicon glyphicon-ok"></span> Drag table row and cange Order
-                                        </div>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -343,4 +183,34 @@
         </div>
     </div>
     </div>
+{% endblock %}
+
+{% block add_script %}
+
+    <script>
+
+        $.jstree.defaults.core.themes.variant = "large";
+
+
+        $("#jstree").jstree({
+
+                    "types" : {
+                        "folder" : {
+                            "icon" : "glyphicon glyphicon-folder-open"
+                        },
+                        "publ": {
+                            "icon": "glyphicon glyphicon-list-alt"
+                        },
+                        "contents": {
+                            "icon": "glyphicon glyphicon-bookmark"
+                        },
+                        "test": {
+                            "icon": "glyphicon glyphicon-check"
+                        },
+                    },
+
+                "plugins" : [ "wholerow", "types" ]
+        });
+
+    </script>
 {% endblock %}
