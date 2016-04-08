@@ -8,6 +8,7 @@ class User(models.Model):
     name = models.CharField(max_length=100)
     nickname = models.CharField(max_length=100)
     email = models.EmailField(max_length=100)
+    tree = models.TextField()
     likes = models.BigIntegerField()
     publications = models.BigIntegerField()
     imports = models.BigIntegerField()
