@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Менеджер по управлению деревьями в WikiCode. version 0.3:
+# Менеджер по управлению деревьями в WikiCode. version 0.31:
 
 
 class WikiTree(object):
@@ -15,6 +15,10 @@ class WikiTree(object):
                 self.__print_error("user_id < 0")
         else:
             self.__print_error("user_id not int")
+
+
+    def load_tree(self, tree):
+        self.tree = tree
 
     def generate_html_dynamic(self):
         """Генерирует html динамического wiki дерева"""
@@ -464,36 +468,3 @@ class WikiTree(object):
                         break
         except AttributeError:
             self.__print_error("дерево не создано")
-
-
-# Testing class
-wt = WikiTree(11)
-wt.add_folder("Personal/", "Java")
-wt.add_folder("Personal/", "C++")
-wt.add_publication("Personal/Java/", "Lesson1", 1)
-wt.add_publication("Personal/Java/", "Lesson2", 2)
-wt.add_publication("Personal/C++/", "Lesson1", 3)
-wt.add_publication("Personal/C++/", "Lesson2", 4)
-wt.add_publication("Personal/C++/", "Lesson3", 5)
-wt.add_publication("Personal/C++/", "Lesson4", 6)
-wt.add_folder("Imports/", "Top")
-wt.add_folder("Personal/C++/", "Intermediate")
-wt.add_publication("Personal/C++/Intermediate/", "L1", 6)
-wt.add_publication("Personal/C++/Intermediate/", "L2", 6)
-wt.add_publication("Personal/C++/Intermediate/", "L3", 6)
-wt.add_folder("Personal/C++/", "Pro")
-wt.add_publication("Personal/C++/Pro/", "Pro1", 6)
-wt.add_publication("Personal/C++/Intermediate/", "L4", 6)
-wt.add_publication("Personal/C++/", "Lesson5", 6)
-wt.add_publication("Personal/C++/", "Lesson6", 6)
-wt.add_publication("Personal/C++/Intermediate/", "L6", 6)
-wt.add_publication("Personal/C++/Pro/", "Pro2", 6)
-wt.add_publication("Personal/C++/Intermediate/", "L7", 6)
-wt.add_publication("Personal/C++/Pro/", "Pro3", 6)
-wt.add_publication("Personal/C++/Pro/", "Pro4", 6)
-wt.add_publication("Personal/C++/Pro/", "Pro5", 6)
-wt.add_publication("Personal/C++/Pro/", "Pro6", 6)
-wt.print_tree()
-print("--------------")
-print(wt.generate_html_dynamic())
-
