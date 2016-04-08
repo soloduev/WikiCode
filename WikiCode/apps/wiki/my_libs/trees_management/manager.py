@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Менеджер по управлению деревьями в WikiCode. version 0.2:
+# Менеджер по управлению деревьями в WikiCode. version 0.3:
 
 
 class WikiTree(object):
@@ -15,6 +15,49 @@ class WikiTree(object):
                 self.__print_error("user_id < 0")
         else:
             self.__print_error("user_id not int")
+
+    def generate_html_dynamic(self):
+        """Генерирует html динамического wiki дерева"""
+
+        # Сначала генерируем супер карту
+        paths = self.tree.split("\n")
+        elements = []
+        max = 0
+        for i in range(1, len(paths)):
+            elements.append([
+                paths[i],
+                self.__get_num_level(paths[i]),
+                self.__convert_line_to_dynamic_html(paths[i]),
+                paths[i].split(":")[0]
+            ])
+            if max < elements[len(elements)-1][1]:
+                max = elements[len(elements)-1][1]
+            if elements[len(elements)-1][0] == '':
+                del elements[len(elements)-1]
+        index = 0
+        while max != 1:
+            if index == len(elements):
+                max-=1
+                index = 0
+                continue
+            else:
+                elem = elements[index]
+                if elem[1] == max:
+                    insert_html = elem[2]
+                    find_name = ""
+                    if self.__get_type(elem[0]) == "folder":
+                        first = elem[0][:elem[0].rfind("/")]
+                        find_name = first[:first.rfind("/")+1]
+                    elif self.__get_type(elem[0]) == "publ":
+                        find_name = elem[0][:elem[0].rfind('/')+1]
+                    for i in range(0,len(elements)):
+                        if elements[i][3] == find_name:
+                            elements[i][2] = self.__insert_elem_to_folder(elements[i][2], insert_html)
+                            break
+                index+=1
+
+        #Теперь компонуем обе папки вместе:
+        return elements[0][2] + elements[1][2]
 
     def generate_html_preview(self):
         """Генерирует html текст превью wiki дерева"""
@@ -89,6 +132,29 @@ class WikiTree(object):
                 part2 = path_split[len(path_split)-1]
                 part2 = part2[:len(part2)-5]
                 part3 = '<a href="#" class="btn btn-xs btn-link"><span class="glyphicon glyphicon-share-alt"></span></a></li>\n'
+                return part1 + part2 + part3
+        return ""
+
+    def __convert_line_to_dynamic_html(self, line):
+        """Определяет тип строки и возвращает html блок этой структуры, для динамического wiki дерева"""
+        if line.count(":") != 0:
+            split = line.split(":")
+            id = split[1]
+            path = split[0]
+            if path.endswith("/"):
+                # Значит это папка
+                part1 = "<li data-jstree='{ \"type\" : \"folder\" }'>"
+                path_split = path.split("/")
+                part2 = path_split[len(path_split)-2]
+                part3 = '\n<ul>\n</ul>\n</li>\n'
+                return part1 + part2 + part3
+            elif path.endswith(".publ"):
+                # Значит это публикация
+                part1 = "<li data-jstree='{ \"type\" : \"publ\" }'>"
+                path_split = path.split("/")
+                part2 = path_split[len(path_split)-1]
+                part2 = part2[:len(part2)-5]
+                part3 = '</li>\n'
                 return part1 + part2 + part3
         return ""
 
@@ -429,5 +495,5 @@ wt.add_publication("Personal/C++/Pro/", "Pro5", 6)
 wt.add_publication("Personal/C++/Pro/", "Pro6", 6)
 wt.print_tree()
 print("--------------")
-print(wt.generate_html_preview())
+print(wt.generate_html_dynamic())
 
