@@ -12,7 +12,7 @@ def get_tree_manager(request):
     user_data = check_auth(request)
     try:
         user = User.objects.get(email=user_data)
-        wt = WikiTree(0)
+        wt = WikiTree(user.id_user)
         wt.load_tree(user.tree)
 
         context = {
@@ -41,7 +41,7 @@ def get_add_folder_in_tree(request):
 
         try:
             user = User.objects.get(email=user_data)
-            wt = WikiTree(0)
+            wt = WikiTree(user.id_user)
             wt.load_tree(user.tree)
             wt.add_folder(path,folder_name)
             user.tree = wt.get_tree()
