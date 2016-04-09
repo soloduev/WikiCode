@@ -26,5 +26,6 @@ urlpatterns = [
 
     # События в менеджере дерева
     url(r'^tree_manager/add_folder_in_tree/$', views.add_folder_in_tree, name='add_folder_in_tree'),
+    url(r'^tree_manager/del_elem_in_tree/$', views.del_elem_in_tree, name='del_elem_in_tree'),
 
 ]

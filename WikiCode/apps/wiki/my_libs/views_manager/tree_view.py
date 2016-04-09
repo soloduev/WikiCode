@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 from .auth import check_auth
-from WikiCode.apps.wiki.models import User
+from WikiCode.apps.wiki.models import User, Publication
 from WikiCode.apps.wiki.my_libs.trees_management.manager import WikiTree
 
 
@@ -57,3 +57,9 @@ def get_add_folder_in_tree(request):
 
     else:
         return HttpResponse('no', content_type='text/html')
+
+
+def get_del_elem_in_tree(request):
+    """Ajax представление. Удаление элемента в дереве пользователя"""
+
+    return HttpResponse('ok', content_type='text/html')

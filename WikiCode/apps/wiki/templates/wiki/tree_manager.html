@@ -61,14 +61,18 @@
                                                 <button type="button" class="btn btn-default">Test <span
                                                         class="glyphicon glyphicon-check"></span></button>
 
-                                                <button type="button" class="btn btn-default">Sort <span
+                                                <button type="button" class="btn btn-default"><i class="fa fa-pencil"></i>
+                                                </button>
+
+                                                <button type="button" class="btn btn-default"><span
                                                         class="glyphicon glyphicon-sort"></span></button>
 
-                                                <button type="button"" class="btn btn-default">Multi select <span
-                                                    class="glyphicon glyphicon-collapse-down"></span></button>
+                                                <button id="del-element-in-tree"type="button" class="btn btn-default"><span
+                                                    class="glyphicon glyphicon-remove"></span></button>
                                             </div>
                                         </form>
                                     </div>
+                                    <!--Скрытый блок добавления папки-->
                                     <div id="div_folder_name_input" class="col-xs-12" style="display: none;">
                                         <span><h4>Add New Folder</h4></span>
                                         <div class="row">
@@ -89,7 +93,21 @@
                                             </div>
 
                                         </div>
+                                    </div>
+                                    <!--Скрытый блок подтверждения удаления элемента-->
+                                    <div id="div_accept_delete_elem"class="col-xs-12" style="display: none;">
+                                        <span><h4 id="deleter-text-tree-manager">Delete? </h4></span>
+                                        <div class="row">
+                                            <div class="col-xs-12 text-left">
+                                                <div class="btn-group">
+                                                    <button id="yes_delete_elem_in_tree" class="btn btn-default">Yes <span
+                                                            class="glyphicon glyphicon-check"></span></button>
+                                                    <button id="no_delete_elem_in_tree" class="btn btn-default">No <span
+                                                            class="glyphicon glyphicon-remove"></span></button>
+                                                </div>
+                                            </div>
 
+                                        </div>
                                     </div>
 
                                     <div class="col-md-12">

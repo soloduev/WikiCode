@@ -16,6 +16,7 @@ $("#jstree")
         if(adding_folder_to !== "NONE" && adding_folder_to != selected_file_in_tree)
         {
             $("#div_folder_name_input").attr("style", "display: none;");
+            $("#div_accept_delete_elem").attr("style", "display: none;");
             $("#panel_inputs").attr("style", "");
         }
 
@@ -84,7 +85,51 @@ $("#accept_add_folder_in_wiki_tree").click(function () {
     }
 });
 
+//Удаление элемента из дерева
+$("#del-element-in-tree").click(function () {
+
+    if(selected_file_in_tree !== "NONE_SELECT")
+    {
+        $("#div_accept_delete_elem").attr("style", "");
+        $("#panel_inputs").attr("style", "display: none;");
+        var str = ''+selected_file_in_tree;
+        var arr = str.split(":");
+        $("#deleter-text-tree-manager").text("Delete "+arr[0]+" ?");
+        adding_folder_to = selected_file_in_tree;
+    }
+
+});
 
 
+//Отмена удаления
+$("#no_delete_elem_in_tree").click(function () {
+    $("#div_accept_delete_elem").attr("style", "display: none;");
+    $("#panel_inputs").attr("style", "");
+    adding_folder_to = "NONE";
+});
+
+
+//Подтверждение удаления элемента
+$("#yes_delete_elem_in_tree").click(function () {
+
+    if(selected_file_in_tree !== "NONE_SELECT")
+    {
+        $.ajax({
+            type: "GET",
+            url: "del_elem_in_tree/",
+            data:{
+                'answer':''+selected_file_in_tree,
+            },
+            dataType: "text",
+            cache: false,
+            success: function(data){
+                if (data == 'ok'){
+                    location.reload();
+                }
+            }
+        });
+    }
+
+});
 
 
