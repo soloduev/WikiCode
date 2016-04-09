@@ -32,6 +32,7 @@
                                 <div class="row">
                                     <ul id="tree2">
                                         <!--Здесь должен располагаться сгенерированный html preview дерева-->
+                                        {{ preview_tree|safe }}
                                     </ul>
                                 </div>
                             </div>
@@ -73,6 +74,7 @@
                                         <div id="jstree">
                                             <ul>
                                                 <!--Здесь должен располагаться сгенерированный html код, для динамического дерева-->
+                                                {{ dynamic_tree|safe }}
                                             </ul>
                                         </div>
                                     </div>
