@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Менеджер по управлению деревьями в WikiCode. version 0.33:
+# Менеджер по управлению деревьями в WikiCode. version 0.34:
 
 
 class WikiTree(object):
@@ -111,6 +111,47 @@ class WikiTree(object):
         #Теперь компонуем обе папки вместе:
         return elements[0][2] + elements[1][2]
 
+
+    def generate_html_dynamic_folders(self):
+        """Генерирует html динамического wiki дерева без публикаций. Только папки."""
+
+        # Сначала генерируем супер карту
+        paths = self.tree.split("\n")
+        elements = []
+        max = 0
+        for i in range(1, len(paths)):
+            elements.append([
+                paths[i],
+                self.__get_num_level(paths[i]),
+                self.__convert_line_to_dynamic_html(paths[i]),
+                paths[i].split(":")[0]
+            ])
+            if max < elements[len(elements)-1][1]:
+                max = elements[len(elements)-1][1]
+            if elements[len(elements)-1][0] == '':
+                del elements[len(elements)-1]
+        index = 0
+        while max != 1:
+            if index == len(elements):
+                max-=1
+                index = 0
+                continue
+            else:
+                elem = elements[index]
+                if elem[1] == max:
+                    insert_html = elem[2]
+                    find_name = ""
+                    if self.__get_type(elem[0]) == "folder":
+                        first = elem[0][:elem[0].rfind("/")]
+                        find_name = first[:first.rfind("/")+1]
+                    for i in range(0,len(elements)):
+                        if elements[i][3] == find_name:
+                            elements[i][2] = self.__insert_elem_to_folder(elements[i][2], insert_html)
+                            break
+                index+=1
+
+        #Теперь компонуем обе папки вместе:
+        return elements[0][2] + elements[1][2]
 
     def __get_type(self, line):
         """Возвращает тип строки: folder или publ или user_id"""
