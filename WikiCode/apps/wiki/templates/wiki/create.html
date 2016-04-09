@@ -26,25 +26,44 @@
                         <div class="col-xs-1"></div>
                         <div class="col-xs-10">
                             <h3>Folder</h3>
+
                             <div class="row">
                                 <div class="col-xs-10">
-                                    <input required id="lt-markdown-folder" name="folder" type="text" class="form-control btn-block"
+                                    <input required id="lt-markdown-folder" name="folder" type="text"
+                                           class="form-control btn-block"
                                            placeholder="Input the path folder..."
                                            style="height: 30px; font-family: Consolas; border-radius: 0px;"/>
                                 </div>
                                 <div class="col-xs-2">
-                                    <button id="lt-markdown-set-path" type="button" class="btn btn-default btn-block"  style="height: 30px; border-radius: 0px;"><i class="fa fa-folder-open-o">...</i></button>
+                                    <button id="lt-markdown-set-path" type="button" class="btn btn-default btn-block"
+                                            style="height: 30px; border-radius: 0px;"><i
+                                            class="fa fa-folder-open-o">...</i></button>
                                 </div>
                             </div>
+                            <div id="div-lt-choose-folder" style="display: none;">
+                                <h3>Choose Folder:</h3>
+                                <hr>
+                                <div id="jstree">
+                                    <ul>
+                                        <!--Здесь должен располагаться сгенерированный html код, для динамического дерева-->
+                                        {{ dynamic_tree|safe }}
+                                    </ul>
+                                </div>
+                                <hr>
+                            </div>
                             <p>
+
                             <h3>Title</h3>
-                            <input required id="lt-markdown-title" name="title" type="text" class="form-control btn-block"
+                            <input required id="lt-markdown-title" name="title" type="text"
+                                   class="form-control btn-block"
                                    placeholder="Input title for this publication..."
                                    style="height: 30px; font-family: Consolas; border-radius: 0px;"/>
 
                             <p>
+
                             <h3>Description</h3>
-                            <textarea required id="lt-markdown-description" name="description" type="text" class="form-control btn-block"
+                            <textarea required id="lt-markdown-description" name="description" type="text"
+                                      class="form-control btn-block"
                                       placeholder="Input description..."
                                       style="height: 100px; font-family: Consolas; resize: none; border-radius: 0px;"></textarea>
 
@@ -56,7 +75,7 @@
                                 <div class="col-xs-9">
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-primary" data-toggle="dropdown"
-                                                href="#dropdown-1"  style="border-radius: 0px;">
+                                                href="#dropdown-1" style="border-radius: 0px;">
                                             <i class="fa fa-header">
                                                 <span></span>
                                             </i>
@@ -178,7 +197,8 @@
                                 </div>
                             </div>
                             <p></p>
-                        <textarea required id="lt-markdown-textarea" name="text" class="form-control btn-block" rows="15"
+                        <textarea required id="lt-markdown-textarea" name="text" class="form-control btn-block"
+                                  rows="15"
                                   style="resize: none; font-family: Consolas; border-radius: 0px;"
                                   placeholder="Input Markdown text..." wrap="soft"></textarea>
                             <input id="lt-markdown-secret" content="secret" name="secret" type="text" hidden
@@ -201,6 +221,7 @@
                     </div>
                     <div class="row">
                         <br>
+
                         <div class="text-center">
                             <label class=""><input type="checkbox"> Public</label>
                         </div>
@@ -237,4 +258,9 @@
             </div>
         </form>
     </div>
+{% endblock %}
+
+{% block add_script %}
+    {% load staticfiles %}
+    <script src={% static "wiki/create_publication_scripts/actions.js" %}></script>
 {% endblock %}

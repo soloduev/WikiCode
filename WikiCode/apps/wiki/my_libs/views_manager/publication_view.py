@@ -5,14 +5,28 @@ from .auth import check_auth
 from WikiCode.apps.wiki.mymarkdown import mdsplit
 from django.template import RequestContext, loader
 from django.http import HttpResponse
+from WikiCode.apps.wiki.models import User
+from WikiCode.apps.wiki.my_libs.trees_management.manager import WikiTree
 
 
 def get_create(request):
-    context = {
-        "user_data": check_auth(request),
-    }
+    user_data = check_auth(request)
+    try:
+        user = User.objects.get(email=user_data)
+        wt = WikiTree(user.id_user)
+        wt.load_tree(user.tree)
 
-    return render(request, 'wiki/create.html', context)
+        context = {
+            "user_data": user_data,
+            "dynamic_tree": wt.generate_html_dynamic(),
+        }
+
+        return render(request, 'wiki/create.html', context)
+    except User.DoesNotExist:
+        context = {
+            "user_data": user_data,
+        }
+        return render(request, 'wiki/create.html', context)
 
 
 def get_edit(request):
