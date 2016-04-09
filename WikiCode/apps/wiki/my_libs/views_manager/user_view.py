@@ -8,6 +8,7 @@ from WikiCode.apps.wiki.models import Statistics
 from WikiCode.apps.wiki.models import Publication
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login
+from WikiCode.apps.wiki.my_libs.trees_management.manager import WikiTree
 
 
 def get_user(request):
@@ -46,11 +47,15 @@ def get_create_user(request):
             stat.users_reg += 1
             stat.save()
 
+            # Создаем дерево по умолчанию для юзера
+            new_tree = WikiTree(total_reg_users)
+
             # Создаем нового юзера
             new_wiki_user = WikiUser(user=user,
                                      nickname=form["user_nickname"],
                                      email=form["user_email"],
                                      id_user=total_reg_users,
+                                     tree=new_tree.get_tree(),
                                      avatar="none.jpg",
                                      name="anonymous",
                                      likes=0,
