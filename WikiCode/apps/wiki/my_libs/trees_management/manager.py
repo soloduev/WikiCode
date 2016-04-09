@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Менеджер по управлению деревьями в WikiCode. version 0.32:
+# Менеджер по управлению деревьями в WikiCode. version 0.33:
 
 
 class WikiTree(object):
@@ -152,14 +152,14 @@ class WikiTree(object):
             path = split[0]
             if path.endswith("/"):
                 # Значит это папка
-                part1 = "<li data-jstree='{ \"type\" : \"folder\" }'>"
+                part1 = "<li data-jstree='{ \"type\" : \"folder\" }' id='"+line+"'>"
                 path_split = path.split("/")
                 part2 = path_split[len(path_split)-2]
                 part3 = '\n<ul>\n</ul>\n</li>\n'
                 return part1 + part2 + part3
             elif path.endswith(".publ"):
                 # Значит это публикация
-                part1 = "<li data-jstree='{ \"type\" : \"publ\" }'>"
+                part1 = "<li data-jstree='{ \"type\" : \"publ\" }'id='"+line+"'>"
                 path_split = path.split("/")
                 part2 = path_split[len(path_split)-1]
                 part2 = part2[:len(part2)-5]
