@@ -18,7 +18,7 @@ def get_create(request):
 
         context = {
             "user_data": user_data,
-            "dynamic_tree": wt.generate_html_dynamic(),
+            "dynamic_tree": wt.generate_html_dynamic_folders(),
         }
 
         return render(request, 'wiki/create.html', context)
@@ -65,6 +65,16 @@ def get_page(request, id):
 def get_create_page(request):
     # Получаем данные формы
     form = request.POST
+    # Получаем пользователя
+    user_data = check_auth(request)
+    try:
+        user = User.objects.get(email=user_data)
+    except User.DoesNotExist:
+        context = {
+            "user_data": user_data,
+        }
+        print("ERROR!!!!--------------")
+        return render(request, 'wiki/index.html', context)
     # Проверяем, чего хотим сделать
     if request.POST.get('secret') == "off":
         with open("WikiCode/apps/wiki/generate_pages/gen_page.gen", "r", encoding='utf-8') as f:
@@ -88,7 +98,7 @@ def get_create_page(request):
         newid = num + 1
         new_publication = Publication(
             id_publication=newid,
-            id_author=0,
+            id_author=user.id_user,
             title=form["title"],
             description=form["description"],
             text=form["text"],
@@ -101,7 +111,7 @@ def get_create_page(request):
             is_marks=False,
             is_comments=False,
             tags=form["tags"],
-            tree_path="",
+            tree_path=form["folder"]+":"+str(newid),
             comments=0,
             imports=0,
             marks=0,
@@ -109,11 +119,20 @@ def get_create_page(request):
             read=0,
             edits=0)
         new_publication.save()
+
+        # Загружаем дерево пользователя
+        wt = WikiTree(user.id_user)
+        wt.load_tree(user.tree)
+        # Добавляем этот конспект в папку
+        wt.add_publication(form["folder"],form["title"],newid)
+        user.tree = wt.get_tree()
+        user.save()
+
         all_publications = Publication.objects.all()
 
         context = {
             "all_publications": all_publications,
-            "user_data": check_auth(request),
+            "user_data": user_data,
         }
         return render(request, 'wiki/index.html', context)
     else:

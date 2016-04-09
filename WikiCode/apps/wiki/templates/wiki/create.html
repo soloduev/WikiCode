@@ -40,12 +40,21 @@
                                             class="fa fa-folder-open-o">...</i></button>
                                 </div>
                             </div>
-                            <div id="div-lt-choose-folder" style="display: none;">
-                                <h3>Choose Folder:</h3>
-                                <hr>
+                            <div id="div-lt-choose-folder" style="display: none;border: 1px solid #ececec;background-color: #ffffff;box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.70), 0 2px 10px 0 rgba(0, 0, 0, 0.12);">
+                                <div class="row">
+                                    <div class="col-xs-12  text-right">
+                                        <a id="lt-markdown-close-choose" type="button" class="btn btn-default"
+                                            style="height: 30px; border: 0px solid white;border-radius: 0px;"><i
+                                            class="fa fa-remove"></i></a>
+                                    </div>
+                                    <div class="col-xs-12">
+
+                                    </div>
+
+                                </div>
                                 <div id="jstree">
                                     <ul>
-                                        <!--Здесь должен располагаться сгенерированный html код, для динамического дерева-->
+                                        <!--Здесь должен располагаться сгенерированный html код, для динамического дерева без папок-->
                                         {{ dynamic_tree|safe }}
                                     </ul>
                                 </div>

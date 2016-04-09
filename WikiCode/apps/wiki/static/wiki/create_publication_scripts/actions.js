@@ -5,7 +5,9 @@
 $("#jstree")
 // listen for event
     .on('changed.jstree', function (e, data) {
-
+        var full_path = ''+data.selected;
+        var arr = full_path.split(':');
+        $("#lt-markdown-folder").val(arr[0]);
     })
     // create the instance
     .jstree({
@@ -33,6 +35,12 @@ $("#jstree")
 //Просмотр папок, для определения той, в которой хотим создать конспект
 $("#lt-markdown-set-path").click(function () {
 
-    $("#div-lt-choose-folder").attr("style", "");
-
+    //$("#div-lt-choose-folder").attr("style", "");
+    $("#div-lt-choose-folder").fadeIn(500);
+    //$("#div-lt-choose-folder").fadeOut(1000);
 });
+
+$("#lt-markdown-close-choose").click(function () {
+    $("#div-lt-choose-folder").fadeOut(500);
+});
+
