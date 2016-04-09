@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Менеджер по управлению деревьями в WikiCode. version 0.31:
+# Менеджер по управлению деревьями в WikiCode. version 0.32:
 
 
 class WikiTree(object):
@@ -18,7 +18,12 @@ class WikiTree(object):
 
 
     def load_tree(self, tree):
+        """Позволяет загрузить пользователю сторонее дерево"""
         self.tree = tree
+
+    def get_tree(self):
+        """Возвращает дерево пользователя в виде строки"""
+        return self.tree
 
     def generate_html_dynamic(self):
         """Генерирует html динамического wiki дерева"""
