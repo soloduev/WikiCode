@@ -25,16 +25,28 @@
                     <div class="row">
                         <div class="col-xs-1"></div>
                         <div class="col-xs-10">
+                            <h3>Folder</h3>
+                            <div class="row">
+                                <div class="col-xs-10">
+                                    <input required id="lt-markdown-folder" name="folder" type="text" class="form-control btn-block"
+                                           placeholder="Input the path folder..."
+                                           style="height: 30px; font-family: Consolas; border-radius: 0px;"/>
+                                </div>
+                                <div class="col-xs-2">
+                                    <button id="lt-markdown-set-path" type="button" class="btn btn-default btn-block"  style="height: 30px; border-radius: 0px;"><i class="fa fa-folder-open-o">...</i></button>
+                                </div>
+                            </div>
+                            <p>
                             <h3>Title</h3>
-                            <input required id="lt-markdown-title" name="title" type="text" class="btn-block"
+                            <input required id="lt-markdown-title" name="title" type="text" class="form-control btn-block"
                                    placeholder="Input title for this publication..."
-                                   style="height: 30px; font-family: Consolas;"/>
+                                   style="height: 30px; font-family: Consolas; border-radius: 0px;"/>
 
                             <p>
                             <h3>Description</h3>
-                            <textarea required id="lt-markdown-description" name="description" type="text" class="btn-block"
-                                   placeholder="Input description..."
-                                   style="height: 100px; font-family: Consolas; resize: none;"></textarea>
+                            <textarea required id="lt-markdown-description" name="description" type="text" class="form-control btn-block"
+                                      placeholder="Input description..."
+                                      style="height: 100px; font-family: Consolas; resize: none; border-radius: 0px;"></textarea>
 
                             <p>
 
@@ -116,40 +128,40 @@
                                     </li>
                                     <li>
                                         <input id="lt-markdown-cur-theme" type="text" readonly
-                                               class="btn-block text-center" value="Cerulean"
-                                               name="theme">
+                                               class="form-control btn-block text-center" value="Cerulean"
+                                               name="theme" style="border-radius: 0px;">
                                     </li>
                                     <li>
                                         <button type="button" class="btn btn-default" id="lt-markdown-theme1"
-                                                style="width: 141px;">United
+                                                style="width: 141px; border-radius: 0px;">United
                                         </button>
                                         <button type="button" class="btn btn-default" id="lt-markdown-theme2"
-                                                style="width: 141px;">Cerulean
+                                                style="width: 141px; border-radius: 0px;">Cerulean
                                         </button>
                                         <button type="button" class="btn btn-default" id="lt-markdown-theme3"
-                                                style="width: 141px;">Cyborg
+                                                style="width: 141px; border-radius: 0px;">Cyborg
                                         </button>
                                     </li>
                                     <li>
                                         <button type="button" class="btn btn-default" id="lt-markdown-theme4"
-                                                style="width: 141px;">Journal
+                                                style="width: 141px; border-radius: 0px;">Journal
                                         </button>
                                         <button type="button" class="btn btn-default" id="lt-markdown-theme5"
-                                                style="width: 141px;">Readable
+                                                style="width: 141px; border-radius: 0px;">Readable
                                         </button>
                                         <button type="button" class="btn btn-default" id="lt-markdown-theme6"
-                                                style="width: 141px;">Simplex
+                                                style="width: 141px; border-radius: 0px;">Simplex
                                         </button>
                                     </li>
                                     <li>
                                         <button type="button" class="btn btn-default" id="lt-markdown-theme7"
-                                                style="width: 141px;">Slate
+                                                style="width: 141px; border-radius: 0px;">Slate
                                         </button>
                                         <button type="button" class="btn btn-default" id="lt-markdown-theme8"
-                                                style="width: 141px;">Spacelab
+                                                style="width: 141px; border-radius: 0px;">Spacelab
                                         </button>
                                         <button type="button" class="btn btn-default" id="lt-markdown-theme9"
-                                                style="width: 141px;">Superhero
+                                                style="width: 141px; border-radius: 0px;">Superhero
                                         </button>
                                     </li>
 
@@ -166,8 +178,8 @@
                                 </div>
                             </div>
                             <p></p>
-                        <textarea required id="lt-markdown-textarea" name="text" class="btn-block" rows="15"
-                                  style="resize: none; font-family: Consolas;"
+                        <textarea required id="lt-markdown-textarea" name="text" class="form-control btn-block" rows="15"
+                                  style="resize: none; font-family: Consolas; border-radius: 0px;"
                                   placeholder="Input Markdown text..." wrap="soft"></textarea>
                             <input id="lt-markdown-secret" content="secret" name="secret" type="text" hidden
                                    value="off"/>
@@ -185,7 +197,7 @@
                      style="border-left: 1px solid #d5d5d5;border-right: 1px solid #d5d5d5;border-bottom: 1px solid #d5d5d5;
                  min-height: 715px;">
                     <div class="row">
-                            <label class="text-center btn-primary btn-block">OPTIONS</label>
+                        <label class="text-center btn-primary btn-block">OPTIONS</label>
                     </div>
                     <div class="row">
                         <br>
