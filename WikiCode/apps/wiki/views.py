@@ -79,3 +79,6 @@ def check_nickname(request):
 
 def check_email(request):
     return registration_view.get_check_email(request)
+
+def add_folder_in_tree(request):
+    return tree_view.get_add_folder_in_tree(request)

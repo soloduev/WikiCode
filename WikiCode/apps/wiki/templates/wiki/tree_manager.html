@@ -44,10 +44,10 @@
                                     <br>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div id="panel_inputs" class="col-md-12">
                                         <div class="btn-group">
-                                            <a href="#" class="btn btn-default">Add <span
-                                                    class="glyphicon glyphicon-folder-open"></span></a>
+                                            <button id="add_folder_in_wiki_tree" class="btn btn-default">Add <span
+                                                    class="glyphicon glyphicon-folder-open"></span></button>
 
                                             <a href="#" class="btn btn-default">Create <span
                                                     class="glyphicon glyphicon-list"></span></a>
@@ -65,6 +65,29 @@
                                                     class="glyphicon glyphicon-collapse-down"></span></a>
                                         </div>
                                     </div>
+                                    <div id="div_folder_name_input" class="col-xs-12" style="display: none;">
+                                        <span><h4>Add New Folder</h4></span>
+                                        <div class="row">
+                                            <div class="col-xs-4">
+                                                <input  type="text" class="form-control" id="folder_name_input" placeholder="New Folder Name..." autofocus
+                                                        style="border-radius: 0px;"/>
+                                            </div>
+                                            <div class="col-xs-4 text-left">
+                                                <div class="btn-group">
+                                                    <button id="accept_add_folder_in_wiki_tree" class="btn btn-default">Add <span
+                                                            class="glyphicon glyphicon-folder-open"></span></button>
+                                                    <button id="cancel_add_folder_in_wiki_tree" class="btn btn-default">Cancel <span
+                                                            class="glyphicon glyphicon-remove"></span></button>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4">
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
                                     <div class="col-md-12">
                                         <br>
                                     </div>
@@ -91,32 +114,7 @@
 {% endblock %}
 
 {% block add_script %}
-
-    <script>
-
-        $.jstree.defaults.core.themes.variant = "large";
-
-
-        $("#jstree").jstree({
-
-            "types" : {
-                "folder" : {
-                    "icon" : "glyphicon glyphicon-folder-open"
-                },
-                "publ": {
-                    "icon": "glyphicon glyphicon-list-alt"
-                },
-                "contents": {
-                    "icon": "glyphicon glyphicon-bookmark"
-                },
-                "test": {
-                    "icon": "glyphicon glyphicon-check"
-                },
-            },
-
-            "plugins" : [ "wholerow", "types" ]
-        });
-
-    </script>
+    {% load staticfiles %}
+    <script src={% static "wiki/tree_manager_scripts/actions.js"%}></script>
 {% endblock %}
 

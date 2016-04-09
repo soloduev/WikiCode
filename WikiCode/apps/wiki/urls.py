@@ -24,4 +24,7 @@ urlpatterns = [
     url(r'^registration/check_nickname/$', views.check_nickname, name='check_nickname'),
     url(r'^registration/check_email/$', views.check_email, name='check_email'),
 
+    # События в менеджере дерева
+    url(r'^tree_manager/add_folder_in_tree/$', views.add_folder_in_tree, name='add_folder_in_tree'),
+
 ]
