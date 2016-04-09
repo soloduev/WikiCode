@@ -6,11 +6,13 @@ $.jstree.defaults.core.themes.variant = "large";
 
 var selected_file_in_tree = "NONE_SELECT";
 var adding_folder_to = "NONE";
+$("#choose-folder-secret").val("NONE");
 
 $("#jstree")
 // listen for event
     .on('changed.jstree', function (e, data) {
         selected_file_in_tree = data.selected;
+        $("#choose-folder-secret").val(selected_file_in_tree);
         if(adding_folder_to !== "NONE" && adding_folder_to != selected_file_in_tree)
         {
             $("#div_folder_name_input").attr("style", "display: none;");

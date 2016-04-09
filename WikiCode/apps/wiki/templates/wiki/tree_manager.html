@@ -45,25 +45,29 @@
                                 </div>
                                 <div class="row">
                                     <div id="panel_inputs" class="col-md-12">
-                                        <div class="btn-group">
-                                            <button id="add_folder_in_wiki_tree" class="btn btn-default">Add <span
-                                                    class="glyphicon glyphicon-folder-open"></span></button>
+                                        <form action="{% url 'create' %}" method="post">
+                                            {% csrf_token %}
+                                            <div class="btn-group">
+                                                <button type="button" id="add_folder_in_wiki_tree" class="btn btn-default">Add <span
+                                                        class="glyphicon glyphicon-folder-open"></span></button>
 
-                                            <a href="#" class="btn btn-default">Create <span
-                                                    class="glyphicon glyphicon-list"></span></a>
+                                                <button id="add_publ_in_wiki_tree" class="btn btn-default">Create <span
+                                                        class="glyphicon glyphicon-list"></span></button>
+                                                <input id="choose-folder-secret" content="secret" name="folder_publ" type="text" hidden value="off"/>
 
-                                            <a href="#" class="btn btn-default">Generate <span
-                                                    class="glyphicon glyphicon-bookmark"></span></a>
+                                                <button type="button" class="btn btn-default">Generate <span
+                                                        class="glyphicon glyphicon-bookmark"></span></button>
 
-                                            <a href="#" class="btn btn-default">Test <span
-                                                    class="glyphicon glyphicon-check"></span></a>
+                                                <button type="button" class="btn btn-default">Test <span
+                                                        class="glyphicon glyphicon-check"></span></button>
 
-                                            <a href="#" class="btn btn-default">Sort <span
-                                                    class="glyphicon glyphicon-sort"></span></a>
+                                                <button type="button" class="btn btn-default">Sort <span
+                                                        class="glyphicon glyphicon-sort"></span></button>
 
-                                            <a href="#" class="btn btn-default">Multi select <span
-                                                    class="glyphicon glyphicon-collapse-down"></span></a>
-                                        </div>
+                                                <button type="button"" class="btn btn-default">Multi select <span
+                                                    class="glyphicon glyphicon-collapse-down"></span></button>
+                                            </div>
+                                        </form>
                                     </div>
                                     <div id="div_folder_name_input" class="col-xs-12" style="display: none;">
                                         <span><h4>Add New Folder</h4></span>

@@ -1,5 +1,4 @@
-from django.shortcuts import render
-
+# -*- coding: utf-8 -*-
 from WikiCode.apps.wiki.my_libs.views_manager import index_view
 from WikiCode.apps.wiki.my_libs.views_manager import about_view
 from WikiCode.apps.wiki.my_libs.views_manager import publication_view

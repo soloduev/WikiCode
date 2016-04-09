@@ -12,6 +12,14 @@ from WikiCode.apps.wiki.my_libs.trees_management.manager import WikiTree
 def get_create(request):
     user_data = check_auth(request)
     try:
+        # Получения пути к папке, где хотим создать конспект
+        path = ""
+        full_path = str(request.POST.get('folder_publ'))
+
+        if full_path != "None" and full_path != "NONE":
+            path = full_path.split(":")[0]
+            if path.count(".publ") == 1:
+                path = path[:path.rfind("/")+1]
         user = User.objects.get(email=user_data)
         wt = WikiTree(user.id_user)
         wt.load_tree(user.tree)
@@ -19,6 +27,7 @@ def get_create(request):
         context = {
             "user_data": user_data,
             "dynamic_tree": wt.generate_html_dynamic_folders(),
+            "path": path,
         }
 
         return render(request, 'wiki/create.html', context)
