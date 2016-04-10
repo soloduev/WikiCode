@@ -68,7 +68,7 @@
                                                         class="glyphicon glyphicon-sort"></span></button>
 
                                                 <button id="del-element-in-tree"type="button" class="btn btn-default"><span
-                                                    class="glyphicon glyphicon-remove"></span></button>
+                                                        class="glyphicon glyphicon-remove"></span></button>
                                             </div>
                                         </form>
                                     </div>
@@ -133,10 +133,43 @@
         </div>
     </div>
     </div>
+
+    <nav id="context-menu" class="context-menu">
+        <ul class="context-menu__items">
+            <li class="context-menu__item">
+                <a href="#" class="context-menu__link" data-action="Open" style="text-decoration: none;"><i class="fa fa-eye"></i> Open</a>
+            </li>
+            <li class="context-menu__item">
+                <a href="#" class="context-menu__link" data-action="Info" style="text-decoration: none;"><i class="fa fa-info-circle"></i> Info</a>
+            </li>
+            <li class="context-menu__item">
+                <a href="#" class="context-menu__link" data-action="Edit" style="text-decoration: none;"><i class="fa fa-edit"></i> Edit</a>
+            </li>
+            <li class="context-menu__item">
+                <a href="#" class="context-menu__link" data-action="Create folder" style="text-decoration: none;"><i class="fa fa-folder-open"></i> Create Folder</a>
+            </li>
+            <li class="context-menu__item">
+                <a href="#" class="context-menu__link" data-action="Create publ" style="text-decoration: none;"><i class="fa fa-list-alt"></i> Create Publication</a>
+            </li>
+            <li class="context-menu__item">
+                <a href="#" class="context-menu__link" data-action="Rename Folder" style="text-decoration: none;"><i class="fa fa-text-width"></i> Rename folder</a>
+            </li>
+            <li class="context-menu__item">
+                <a href="#" class="context-menu__link" data-action="Sort" style="text-decoration: none;"><i class="fa fa-sort"></i> Sort publications</a>
+            </li>
+            <li class="context-menu__item">
+                <a href="#" class="context-menu__link" data-action="Delete Folder" style="text-decoration: none;"><i class="fa fa-times"></i> Delete Folder</a>
+            </li>
+        </ul>
+    </nav>
+
+
 {% endblock %}
 
 {% block add_script %}
     {% load staticfiles %}
     <script src={% static "wiki/tree_manager_scripts/actions.js"%}></script>
+    <script src={% static "wiki/tree_context_menu/script.js"%}></script>
+    <link href={% static "wiki/tree_context_menu/style.css" %} type="text/css" rel="stylesheet">
 {% endblock %}
 

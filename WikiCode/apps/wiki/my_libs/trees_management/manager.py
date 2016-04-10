@@ -207,14 +207,14 @@ class WikiTree(object):
             path = split[0]
             if path.endswith("/"):
                 # Значит это папка
-                part1 = "<li data-jstree='{ \"type\" : \"folder\" }' id='"+line+"'>"
+                part1 = "<li class=\"task\" data-id=\""+line+"\" data-jstree='{ \"type\" : \"folder\" }' id='"+line+"'>"
                 path_split = path.split("/")
                 part2 = path_split[len(path_split)-2]
                 part3 = '\n<ul>\n</ul>\n</li>\n'
                 return part1 + part2 + part3
             elif path.endswith(".publ"):
                 # Значит это публикация
-                part1 = "<li data-jstree='{ \"type\" : \"publ\" }'id='"+line+"'>"
+                part1 = "<li class=\"task\" data-id=\""+line+"\" data-jstree='{ \"type\" : \"publ\" }'id='"+line+"'>"
                 path_split = path.split("/")
                 part2 = path_split[len(path_split)-1]
                 part2 = part2[:len(part2)-5]
