@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Менеджер по управлению деревьями в WikiCode. version 0.36:
+# Менеджер по управлению деревьями в WikiCode. version 0.37:
 
 
 class WikiTree(object):
@@ -195,7 +195,7 @@ class WikiTree(object):
                 path_split = path.split("/")
                 part2 = path_split[len(path_split)-1]
                 part2 = part2[:len(part2)-5]
-                part3 = '<a href="#" class="btn btn-xs btn-link"><span class="glyphicon glyphicon-share-alt"></span></a></li>\n'
+                part3 = '<a href="/page/'+str(id)+'" class="btn btn-xs btn-link"><span class="glyphicon glyphicon-share-alt"></span></a></li>\n'
                 return part1 + part2 + part3
         return ""
 
