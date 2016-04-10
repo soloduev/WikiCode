@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Менеджер по управлению деревьями в WikiCode. version 0.35:
+# Менеджер по управлению деревьями в WikiCode. version 0.36:
 
 
 class WikiTree(object):
@@ -11,6 +11,7 @@ class WikiTree(object):
                 self.tree += "Personal/:" + str(user_id) + "\n"
                 self.tree += "Imports/:" + str(user_id) + "\n"
                 self.user_id = str(user_id)
+                self.__set_last_symbol()
             else:
                 self.__print_error("user_id < 0")
         else:
@@ -20,6 +21,7 @@ class WikiTree(object):
     def load_tree(self, tree):
         """Позволяет загрузить пользователю сторонее дерево"""
         self.tree = tree
+        self.__set_last_symbol()
 
     def get_tree(self):
         """Возвращает дерево пользователя в виде строки"""
@@ -28,7 +30,7 @@ class WikiTree(object):
 
     def generate_html_dynamic(self):
         """Генерирует html динамического wiki дерева"""
-
+        self.__set_last_symbol()
         # Сначала генерируем супер карту
         paths = self.tree.split("\n")
         elements = []
@@ -71,7 +73,7 @@ class WikiTree(object):
 
     def generate_html_preview(self):
         """Генерирует html текст превью wiki дерева"""
-
+        self.__set_last_symbol()
         # Сначала генерируем супер карту
         paths = self.tree.split("\n")
         elements = []
@@ -115,7 +117,7 @@ class WikiTree(object):
 
     def generate_html_dynamic_folders(self):
         """Генерирует html динамического wiki дерева без публикаций. Только папки."""
-
+        self.__set_last_symbol()
         # Сначала генерируем супер карту
         paths = self.tree.split("\n")
         elements = []
@@ -270,6 +272,7 @@ class WikiTree(object):
     def print_tree(self):
         """Выводит содержимое дерева в виде строк"""
         try:
+            self.__set_last_symbol()
             print(self.tree)
         except AttributeError:
             self.__print_error("дерево не создано")
@@ -280,6 +283,7 @@ class WikiTree(object):
         Если вы хотите создать глобальную папку, в аргумент path передаете строку 'global'.
         """
         try:
+            self.__set_last_symbol()
             if str(type(path)) != "<class 'str'>":
                 self.__print_error("аргумент path не является строкой")
             elif str(type(name_folder)) != "<class 'str'>":
@@ -305,6 +309,7 @@ class WikiTree(object):
         Третий параметр - это id данной публикации.
         """
         try:
+            self.__set_last_symbol()
             if str(type(path)) != "<class 'str'>":
                 self.__print_error("аргумент path не является строкой")
             elif len(path) <= 1 or not path.endswith("/"):
@@ -327,6 +332,7 @@ class WikiTree(object):
     def print_first_path(self):
         """Напечатать в виде строк самый верхний уровень дерева"""
         try:
+            self.__set_last_symbol()
             total = ""
             paths = self.tree.split("\n")
             for i in range(1, len(paths)):
@@ -341,6 +347,7 @@ class WikiTree(object):
         """Напечатать в виде строк все содержание конкретной папки"""
         # Количество уровней в той папке, которую ищем
         try:
+            self.__set_last_symbol()
             if str(type(path_folder)) != "<class 'str'>":
                 self.__print_error("аргумент path_folder не является строкой")
             elif len(path_folder) <= 1 or not path_folder.endswith("/"):
@@ -365,6 +372,7 @@ class WikiTree(object):
     def rename_publication(self, path_publ, new_name):
         """Изменяет имя публикации по указанному пути"""
         try:
+            self.__set_last_symbol()
             if str(type(path_publ)) != "<class 'str'>":
                 self.__print_error("аргумент path_publ не является строкой")
             elif len(path_publ) <= 1 or not path_publ.endswith(".publ"):
@@ -394,6 +402,7 @@ class WikiTree(object):
     def delete_publication(self, path_publ):
         """Удаляет публикацию по указанному пути"""
         try:
+            self.__set_last_symbol()
             if str(type(path_publ)) != "<class 'str'>":
                 self.__print_error("аргумент path_publ не является строкой")
             elif len(path_publ) <= 1 or not path_publ.endswith(".publ"):
@@ -415,6 +424,7 @@ class WikiTree(object):
     def delete_folder(self, path_folder):
         """Удаляет папку и все ее внутреннее содержимое по указанному пути"""
         try:
+            self.__set_last_symbol()
             if str(type(path_folder)) != "<class 'str'>":
                 self.__print_error("аргумент path_folder не является строкой")
             elif len(path_folder) <= 1 or not path_folder.endswith("/"):
@@ -436,6 +446,7 @@ class WikiTree(object):
     def get_nums_publications(self):
         """Возвращает количество публикаций в дереве"""
         try:
+            self.__set_last_symbol()
             total = 0
             paths = self.tree.split("\n")
             for i in range(1, len(paths)):
@@ -449,6 +460,7 @@ class WikiTree(object):
     def get_all_publications_paths(self):
         """Возвращает пути ко всем публикациям в дереве, в виде списка"""
         try:
+            self.__set_last_symbol()
             total = []
             paths = self.tree.split("\n")
             for i in range(1, len(paths)):
@@ -462,6 +474,7 @@ class WikiTree(object):
     def get_param_publication(self, path_publ, num_param):
         """Возвращает значение параметра публикации"""
         try:
+            self.__set_last_symbol()
             if str(type(path_publ)) != "<class 'str'>":
                 self.__print_error("аргумент path_folder не является строкой")
             elif len(path_publ) <= 1 or not path_publ.endswith(".publ"):
@@ -481,6 +494,7 @@ class WikiTree(object):
     def print_all_publications_paths(self):
         """Печатает пути ко всем публикациям в дереве"""
         try:
+            self.__set_last_symbol()
             paths = self.tree.split("\n")
             for i in range(1, len(paths)):
                 path = paths[i].split(":")[0]
@@ -495,6 +509,7 @@ class WikiTree(object):
         Второй аргумент - новое имя этой папки.
         """
         try:
+            self.__set_last_symbol()
             if str(type(path_folder)) != "<class 'str'>":
                 self.__print_error("аргумент path_folder не является строкой")
             elif len(path_folder) <= 1 or not path_folder.endswith("/"):
@@ -527,8 +542,3 @@ class WikiTree(object):
         except AttributeError:
             self.__print_error("дерево не создано")
 
-
-wt = WikiTree(1)
-wt.add_folder("Personal/","MyLessons")
-wt.add_publication("Personal/MyLessons/", "new", 1)
-wt.print_tree()
