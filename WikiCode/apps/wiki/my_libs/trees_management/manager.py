@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Менеджер по управлению деревьями в WikiCode. version 0.34:
+# Менеджер по управлению деревьями в WikiCode. version 0.35:
 
 
 class WikiTree(object):
@@ -23,6 +23,7 @@ class WikiTree(object):
 
     def get_tree(self):
         """Возвращает дерево пользователя в виде строки"""
+        self.__set_last_symbol()
         return self.tree
 
     def generate_html_dynamic(self):
@@ -152,6 +153,17 @@ class WikiTree(object):
 
         #Теперь компонуем обе папки вместе:
         return elements[0][2] + elements[1][2]
+
+    def __set_last_symbol(self):
+        """Функция делает так, чтобы последний символ в дереве был переводом строки"""
+        tree_str = self.tree
+        while True:
+            if tree_str.endswith('\n'):
+                tree_str = tree_str[:len(tree_str)-1]
+            else:
+                tree_str += '\n'
+                break
+        self.tree = tree_str
 
     def __get_type(self, line):
         """Возвращает тип строки: folder или publ или user_id"""
@@ -514,3 +526,9 @@ class WikiTree(object):
                         break
         except AttributeError:
             self.__print_error("дерево не создано")
+
+
+wt = WikiTree(1)
+wt.add_folder("Personal/","MyLessons")
+wt.add_publication("Personal/MyLessons/", "new", 1)
+wt.print_tree()
