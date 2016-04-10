@@ -9,15 +9,29 @@ from WikiCode.apps.wiki.models import Publication
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login
 from WikiCode.apps.wiki.my_libs.trees_management.manager import WikiTree
+from WikiCode.apps.wiki.models import User
 
 
 def get_user(request):
 
-    context = {
-        "user_data" : check_auth(request),
-    }
+    user_data = check_auth(request)
+    try:
+        user = User.objects.get(email=user_data)
+        wt = WikiTree(user.id_user)
+        wt.load_tree(user.tree)
 
-    return render(request, 'wiki/user.html', context)
+        context = {
+            "user_data": user_data,
+            "preview_tree": wt.generate_html_preview(),
+            "user":user,
+        }
+
+        return render(request, 'wiki/user.html', context)
+    except User.DoesNotExist:
+        context = {
+            "user_data": user_data,
+        }
+        return render(request, 'wiki/user.html', context)
 
 
 def get_create_user(request):

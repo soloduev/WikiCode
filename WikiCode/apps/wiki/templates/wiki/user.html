@@ -21,54 +21,8 @@
                 </div>
                 <div class="row">
                     <ul id="tree2">
-                        <li><a href="#">Personal</a>
-
-                            <ul>
-                                <li>Preview publication</li>
-                                <li>Lessons
-                                    <ul>
-                                        <li>Java
-                                            <ul>
-                                                <li>Lesson1</li>
-                                                <li>Lesson2</li>
-                                                <li>Lesson3</li>
-                                            </ul>
-                                        </li>
-                                        <li>C++
-                                            <ul>
-                                                <li>Lesson1</li>
-                                                <li>Lesson2</li>
-                                                <li>Lesson3</li>
-                                            </ul>
-                                        </li>
-                                        <li>Scala</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>Imports
-                            <ul>
-                                <li>Spring
-                                    <ul>
-                                        <li>Spring boot
-                                            <ul>
-                                                <li>Lesson1</li>
-                                                <li>Lesson2</li>
-                                                <li>Lesson3</li>
-                                                <li>Lesson4</li>
-                                                <li>Lesson5</li>
-                                            </ul>
-                                        </li>
-                                        <li>Data Bases
-                                            <ul>
-                                                <li>Lesson1</li>
-                                                <li>Lesson2</li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
+                        <!--Здесь должно располгататься сгенерированное дерево пользователя -->
+                        {{ preview_tree|safe }}
                     </ul>
                 </div>
             </div>
@@ -85,9 +39,9 @@
 
                             <div class="[ info-card-details ] animate">
                                 <div class="[ info-card-header ]">
-                                    <h1> User Name </h1>
+                                    <h1> {{ user.nickname }} </h1>
 
-                                    <h3> Nikname User </h3>
+                                    <h3> {{ user.name }} </h3>
                                 </div>
                                 <div class="[ info-card-detail ]">
                                     <!-- Description -->
@@ -118,17 +72,17 @@
                                 <label class="text-left btn-block" id="title-elem-page">Commented it</label>
                             </div>
                             <div class="col-md-8 col-sm-6  col-xs-6">
-                                <label class="text-left btn-block">Vasya Pupkin</label>
-                                <label class="text-left btn-block">Anonymus</label>
-                                <label class="text-left btn-block">example@mail.ru</label>
+                                <label class="text-left btn-block">{{ user.name }}</label>
+                                <label class="text-left btn-block">{{ user.nickname }}</label>
+                                <label class="text-left btn-block">{{ user.email }}</label>
                                 <hr>
-                                <label class="text-left btn-block">24</label>
-                                <label class="text-left btn-block">56</label>
-                                <label class="text-left btn-block">349</label>
+                                <label class="text-left btn-block">{{ user.publications }}</label>
+                                <label class="text-left btn-block">{{ user.imports }}</label>
+                                <label class="text-left btn-block">{{ user.comments }}</label>
                                 <hr>
-                                <label class="text-left btn-block">127 <i class="btn-link text-center" style="width: 60px;">Like!</i></label>
-                                <label class="text-left btn-block">81</label>
-                                <label class="text-left btn-block">1243</label>
+                                <label class="text-left btn-block">{{ user.likes }} <i class="btn-link text-center" style="width: 60px;">Like!</i></label>
+                                <label class="text-left btn-block">{{ user.imports_it }}</label>
+                                <label class="text-left btn-block">{{ user.commented_it }}</label>
                             </div>
                         </div>
                     </div>
