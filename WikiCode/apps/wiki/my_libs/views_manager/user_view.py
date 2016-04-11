@@ -44,7 +44,7 @@ def get_user(request, id):
             return render(request, 'wiki/user.html', context)
 
     except User.DoesNotExist:
-        return get_error_page(request, user_data, ["Sorry, user is not defined!","Page not found: 'user/"+str(id)+"/'"])
+        return get_error_page(request, ["Sorry, user is not defined!","Page not found: 'user/"+str(id)+"/'"])
 
 
 def get_create_user(request):

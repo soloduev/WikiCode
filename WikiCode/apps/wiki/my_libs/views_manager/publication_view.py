@@ -7,7 +7,7 @@ from django.template import RequestContext, loader
 from django.http import HttpResponse
 from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.my_libs.trees_management.manager import WikiTree
-
+from WikiCode.apps.wiki.my_libs.views_manager.error_view import get_error_page
 
 def get_create(request):
     user_data = check_auth(request)
@@ -49,29 +49,32 @@ def get_edit(request):
 
 
 def get_page(request, id):
-    publication = Publication.objects.get(id_publication=id)
-    # Разбиваем весь текст на абзацы
-    md_text = publication.text
-    arr = mdsplit.mdSplit(md_text)
-    print(arr)
-    numbers = []
-    paragraphs = []
-    for i in range(0, len(arr)):
-        numbers.append(str(i + 1))
-        paragraphs.append({
-            "index": str(i + 1),
-            "text": arr[i]
-        })
+    try:
+        publication = Publication.objects.get(id_publication=id)
+        # Разбиваем весь текст на абзацы
+        md_text = publication.text
+        arr = mdsplit.mdSplit(md_text)
+        print(arr)
+        numbers = []
+        paragraphs = []
+        for i in range(0, len(arr)):
+            numbers.append(str(i + 1))
+            paragraphs.append({
+                "index": str(i + 1),
+                "text": arr[i]
+            })
 
-    context = {
-        "publication": publication,
-        "paragraphs": paragraphs,
-        "numbers": numbers,
-        "user_data": check_auth(request),
-        "user_id": get_user_id(request),
-    }
+        context = {
+            "publication": publication,
+            "paragraphs": paragraphs,
+            "numbers": numbers,
+            "user_data": check_auth(request),
+            "user_id": get_user_id(request),
+        }
 
-    return render(request, 'wiki/page.html', context)
+        return render(request, 'wiki/page.html', context)
+    except Publication.DoesNotExist:
+        return get_error_page(request, ["This is publication not found!", "Page not found: page/"+str(id)+"/"])
 
 
 def get_create_page(request):
