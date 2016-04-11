@@ -58,6 +58,17 @@ $("#add_folder_in_wiki_tree").click(function () {
     }
 });
 
+//Добавление папки в дерево из контекстного меню
+$("#add_folder_in_wiki_tree_context").click(function () {
+
+    if(selected_file_in_tree !== "NONE_SELECT")
+    {
+        $("#div_folder_name_input").attr("style", "");
+        $("#panel_inputs").attr("style", "display: none;");
+        adding_folder_to = selected_file_in_tree
+    }
+});
+
 //Отмена добавления папки в дерево
 $("#cancel_add_folder_in_wiki_tree").click(function () {
     $("#div_folder_name_input").attr("style", "display: none;");
