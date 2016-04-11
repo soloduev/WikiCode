@@ -1,0 +1,54 @@
+{% extends 'main.html' %}
+{% load bootstrap3 %}
+{% block page_name %}
+    <div class="container" style="margin-top: 50px;" >
+        <div class="row">
+            <br>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12"
+                 style="border-left: 1px solid #d5d5d5;border-right: 1px solid #d5d5d5;min-height:500px;border-bottom: 1px solid #d5d5d5;">
+                <div class="row">
+                    <label class="text-center btn-primary btn-block">ERROR</label>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2"></div>
+                    <div class="col-xs-8 text-center"><h2>Oops!</h2></div>
+                    <div class="col-xs-2"></div>
+                    <br>
+                </div>
+                <hr>
+                {% for er in error %}
+                    <div class="row">
+                        <div class="col-xs-2"></div>
+                        <div class="col-xs-8 text-center"><h4 style="color: green;">{{ er }}</h4></div>
+                        <div class="col-xs-2"></div>
+                    </div>
+                {% endfor %}
+                <hr>
+                <div class="row">
+                    <div class="col-xs-2"></div>
+                    <div class="col-xs-8 text-center"><a href="{% url 'index' %}" class="btn btn-default" style="width: 200px;">Ok</a></div>
+                    <div class="col-xs-2"></div>
+                    <br>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-xs-2"></div>
+                    <div class="col-xs-8 text-center"><button class="btn btn-default" style="width: 200px;">Report an error</button></div>
+                    <div class="col-xs-2"></div>
+                    <br>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </div>
+{% endblock %}

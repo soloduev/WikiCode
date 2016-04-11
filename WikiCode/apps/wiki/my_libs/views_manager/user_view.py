@@ -10,7 +10,7 @@ from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login
 from WikiCode.apps.wiki.my_libs.trees_management.manager import WikiTree
 from WikiCode.apps.wiki.models import User
-
+from WikiCode.apps.wiki.my_libs.views_manager.error_view import get_error_page
 
 def get_user(request, id):
 
@@ -44,11 +44,7 @@ def get_user(request, id):
             return render(request, 'wiki/user.html', context)
 
     except User.DoesNotExist:
-        context = {
-            "user_data": user_data,
-            "user_id": get_user_id(request),
-        }
-        return render(request, 'wiki/user.html', context)
+        return get_error_page(request, user_data, ["Sorry, user is not defined!","Page not found: 'user/"+str(id)+"/'"])
 
 
 def get_create_user(request):
