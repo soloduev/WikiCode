@@ -23,6 +23,7 @@ class User(models.Model):
 class Publication(models.Model):
     id_publication = models.BigIntegerField()
     id_author = models.BigIntegerField()
+    nickname_author = models.CharField(max_length=100)
     title = models.CharField(max_length=200)
     description = models.TextField(max_length=500)
     text = models.TextField()
