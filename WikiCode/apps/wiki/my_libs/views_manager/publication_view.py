@@ -108,6 +108,7 @@ def get_create_page(request):
         new_publication = Publication(
             id_publication=newid,
             id_author=user.id_user,
+            nickname_author=user.nickname,
             title=form["title"],
             description=form["description"],
             text=form["text"],
