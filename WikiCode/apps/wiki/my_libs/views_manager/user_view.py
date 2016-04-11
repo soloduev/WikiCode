@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from .auth import check_auth
+from .auth import check_auth, get_user_id
 from django.shortcuts import render
 from WikiCode.apps.wiki.models import User as WikiUser
 from django.contrib.auth.models import User as DjangoUser
@@ -12,24 +12,41 @@ from WikiCode.apps.wiki.my_libs.trees_management.manager import WikiTree
 from WikiCode.apps.wiki.models import User
 
 
-def get_user(request):
+def get_user(request, id):
 
     user_data = check_auth(request)
     try:
         user = User.objects.get(email=user_data)
-        wt = WikiTree(user.id_user)
-        wt.load_tree(user.tree)
+        if user.id_user == id:
+            wt = WikiTree(user.id_user)
+            wt.load_tree(user.tree)
 
-        context = {
-            "user_data": user_data,
-            "preview_tree": wt.generate_html_preview(),
-            "user":user,
-        }
+            context = {
+                "user_data": user_data,
+                "user_id": get_user_id(request),
+                "preview_tree": wt.generate_html_preview(),
+                "user":user,
+            }
 
-        return render(request, 'wiki/user.html', context)
+            return render(request, 'wiki/user.html', context)
+        else:
+            other_user = User.objects.get(id_user=id)
+            wt = WikiTree(other_user.id_user)
+            wt.load_tree(other_user.tree)
+
+            context = {
+                "user_data": user_data,
+                "user_id": get_user_id(request),
+                "preview_tree": wt.generate_html_preview(),
+                "user":other_user,
+            }
+
+            return render(request, 'wiki/user.html', context)
+
     except User.DoesNotExist:
         context = {
             "user_data": user_data,
+            "user_id": get_user_id(request),
         }
         return render(request, 'wiki/user.html', context)
 
@@ -103,11 +120,13 @@ def get_create_user(request):
         context = {
             "error": "Пользователь с таким Email уже существует",
             "user_data": check_auth(request),
+            "user_id": get_user_id(request),
         }
         return render(request, 'wiki/registration.html', context)
     context = {
         "error": "Пользователь с таким Nickname уже существует",
         "user_data": check_auth(request),
+        "user_id": get_user_id(request),
     }
     return render(request, 'wiki/registration.html', context)
 
@@ -134,6 +153,7 @@ def get_login_user(request):
     context = {
         "all_publications": all_publications,
         "user_data": check_auth(request),
+        "user_id": get_user_id(request),
     }
 
     return render(request, 'wiki/index.html', context)
@@ -147,6 +167,7 @@ def get_logout_user(request):
     context = {
         "all_publications": all_publications,
         "user_data": check_auth(request),
+        "user_id": get_user_id(request),
     }
 
     return render(request, 'wiki/index.html', context)

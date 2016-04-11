@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render
 from WikiCode.apps.wiki.models import Publication, Statistics
-from .auth import check_auth
+from .auth import check_auth, get_user_id
 from WikiCode.apps.wiki.mymarkdown import mdsplit
 from django.template import RequestContext, loader
 from django.http import HttpResponse
@@ -26,6 +26,7 @@ def get_create(request):
 
         context = {
             "user_data": user_data,
+            "user_id": get_user_id(request),
             "dynamic_tree": wt.generate_html_dynamic_folders(),
             "path": path,
         }
@@ -34,6 +35,7 @@ def get_create(request):
     except User.DoesNotExist:
         context = {
             "user_data": user_data,
+            "user_id": get_user_id(request),
         }
         return render(request, 'wiki/create.html', context)
 
@@ -66,6 +68,7 @@ def get_page(request, id):
         "paragraphs": paragraphs,
         "numbers": numbers,
         "user_data": check_auth(request),
+        "user_id": get_user_id(request),
     }
 
     return render(request, 'wiki/page.html', context)
@@ -81,6 +84,7 @@ def get_create_page(request):
     except User.DoesNotExist:
         context = {
             "user_data": user_data,
+            "user_id": get_user_id(request),
         }
         print("ERROR!!!!--------------")
         return render(request, 'wiki/index.html', context)
@@ -145,6 +149,7 @@ def get_create_page(request):
         context = {
             "all_publications": all_publications,
             "user_data": user_data,
+            "user_id": get_user_id(request),
         }
         return render(request, 'wiki/index.html', context)
     else:

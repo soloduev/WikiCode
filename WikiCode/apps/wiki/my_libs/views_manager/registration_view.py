@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from .auth import check_auth
+from .auth import check_auth, get_user_id
 from django.shortcuts import render
 from WikiCode.apps.wiki.models import User as WikiUser
 from django.http import HttpResponse
@@ -10,6 +10,7 @@ def get_registration(request):
 
     context = {
         "user_data" : check_auth(request),
+        "user_id": get_user_id(request),
     }
 
     return render(request, 'wiki/registration.html', context)

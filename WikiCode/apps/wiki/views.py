@@ -42,8 +42,8 @@ def settings(request):
 
 
 @login_required
-def user(request):
-    return user_view.get_user(request)
+def user(request, id):
+    return user_view.get_user(request, id)
 
 
 def registration(request):

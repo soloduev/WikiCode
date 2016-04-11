@@ -36,7 +36,7 @@
                                aria-expanded="false" aria-controls="nav-collapse2" style="border-radius: 0px;">Sign in</a>
                         </li>
                     {% else %}
-                        <li><a href="{% url 'user' %}"><b>{{ user_data }}</b></a></li>
+                        <li><a href="/user/{{ user_id }}/"><b>{{ user_data }}</b></a></li>
                         <li>
                             <a href="{% url 'logout_user' %}" class="btn btn-default btn-outline btn-circle" style="border-radius: 0px;">Log out</a>
                         </li>

@@ -2,8 +2,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from .auth import check_auth
-from WikiCode.apps.wiki.models import User, Publication
+from .auth import check_auth, get_user_id
+from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.my_libs.trees_management.manager import WikiTree
 
 
@@ -17,6 +17,7 @@ def get_tree_manager(request):
 
         context = {
             "user_data": user_data,
+            "user_id": get_user_id(request),
             "preview_tree": wt.generate_html_preview(),
             "dynamic_tree": wt.generate_html_dynamic(),
         }
@@ -25,6 +26,7 @@ def get_tree_manager(request):
     except User.DoesNotExist:
         context = {
             "user_data": user_data,
+            "user_id": get_user_id(request),
         }
         return render(request, 'wiki/tree_manager.html', context)
 
@@ -52,6 +54,7 @@ def get_add_folder_in_tree(request):
         except User.DoesNotExist:
             context = {
                 "user_data": user_data,
+                "user_id": get_user_id(request),
             }
             return render(request, 'wiki/tree_manager.html', context)
 

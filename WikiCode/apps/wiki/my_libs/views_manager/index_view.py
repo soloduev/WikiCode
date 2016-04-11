@@ -3,6 +3,8 @@ from django.shortcuts import render
 
 from WikiCode.apps.wiki.models import Publication
 from .auth import check_auth
+from .auth import get_user_id
+
 
 
 def get_index(request):
@@ -11,7 +13,8 @@ def get_index(request):
 
     context = {
             "all_publications": all_publications,
-            "user_data": check_auth(request)
+            "user_data": check_auth(request),
+            "user_id": get_user_id(request),
     }
 
     return render(request, 'wiki/index.html', context)
