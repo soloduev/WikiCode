@@ -39,7 +39,12 @@ $("#jstree")
             },
         },
 
-        "plugins" : [ "wholerow", "types" ]
+
+        "plugins" : [ "wholerow", "types"],
+
+        "core" : {
+            "multiple" : false,
+        },
     });
 
 //Добавление папки в дерево

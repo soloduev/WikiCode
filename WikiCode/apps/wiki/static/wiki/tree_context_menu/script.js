@@ -1,5 +1,5 @@
 (function() {
-  
+
   "use strict";
 
   //////////////////////////////////////////////////////////////////////////////
@@ -13,14 +13,14 @@
   /**
    * Function to check if we clicked inside an element with a particular class
    * name.
-   * 
+   *
    * @param {Object} e The event
    * @param {String} className The class name to check against
    * @return {Boolean}
    */
   function clickInsideElement( e, className ) {
     var el = e.srcElement || e.target;
-    
+
     if ( el.classList.contains(className) ) {
       return el;
     } else {
@@ -36,7 +36,7 @@
 
   /**
    * Get's exact position of event.
-   * 
+   *
    * @param {Object} e The event passed in
    * @return {Object} Returns the x and y position
    */
@@ -45,7 +45,7 @@
     var posy = 0;
 
     if (!e) var e = window.event;
-    
+
     if (e.pageX || e.pageY) {
       posx = e.pageX;
       posy = e.pageY;
@@ -67,7 +67,7 @@
   //
   //////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
-  
+
   /**
    * Variables.
    */
@@ -115,6 +115,60 @@
       if ( taskItemInContext ) {
         e.preventDefault();
         toggleMenuOn();
+        // Здесь необходимо выбрать какое контекстное меню отображать
+
+        var str_line = ''+taskItemInContext.getAttribute("data-id");
+
+        $('#jstree').jstree(true).deselect_all();
+        $('#jstree').jstree(true).select_node(str_line);
+
+
+        if(str_line.indexOf(".publ")!=-1)
+        {
+          //Это конспект
+          //Показываем нужные
+
+          $("#lt-context-menu-2").attr("style", "");
+          $("#lt-context-menu-3").attr("style", "");
+          $("#lt-context-menu-3-0").attr("style", "");
+          $("#lt-context-menu-3-1").attr("style", "");
+          $("#lt-context-menu-1").attr("style", "");
+          $("#lt-context-menu-10").attr("style", "");
+          //Скрываем не нужные опции контекстного меню
+          $("#lt-context-menu-4").attr("style", "display: none;");
+          $("#lt-context-menu-5").attr("style", "display: none;");
+          $("#lt-context-menu-6").attr("style", "display: none;");
+          $("#lt-context-menu-7").attr("style", "display: none;");
+          $("#lt-context-menu-8").attr("style", "display: none;");
+          $("#lt-context-menu-9").attr("style", "display: none;");
+        }
+        else{
+          var path = ''+str_line.split(":")[0];
+          if(path[path.length-1] === "/")
+          {
+            //Это папка
+            //Скрываем не нужные опции контекстного меню
+            $("#lt-context-menu-2").attr("style", "display: none;");
+            $("#lt-context-menu-3").attr("style", "display: none;");
+            $("#lt-context-menu-3-0").attr("style", "display: none;");
+            $("#lt-context-menu-3-1").attr("style", "display: none;");
+            $("#lt-context-menu-1").attr("style", "display: none;");
+            $("#lt-context-menu-10").attr("style", "display: none;");
+            //Показываем нужные
+            $("#lt-context-menu-4").attr("style", "");
+            $("#lt-context-menu-5").attr("style", "");
+            $("#lt-context-menu-6").attr("style", "");
+            $("#lt-context-menu-7").attr("style", "");
+            $("#lt-context-menu-8").attr("style", "");
+            $("#lt-context-menu-9").attr("style", "");
+          }
+          else {
+            //Это другой файл
+          }
+        }
+
+
+
         positionMenu(e);
       } else {
         taskItemInContext = null;
@@ -184,7 +238,7 @@
 
   /**
    * Positions the menu properly.
-   * 
+   *
    * @param {Object} e The event
    */
   function positionMenu(e) {
@@ -213,7 +267,7 @@
 
   /**
    * Dummy action function that logs an action when a menu item link is clicked
-   * 
+   *
    * @param {HTMLElement} link The link that was clicked
    */
   function menuItemListener( link ) {
