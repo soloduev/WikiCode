@@ -12,7 +12,7 @@
     </div>
 {% endblock %}
 {% block content %}
-    <div class="container">
+    <div id="main-block" class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12"
                  style="border-left: 1px solid #d5d5d5;border-right: 1px solid #d5d5d5;min-height:500px;border-bottom: 1px solid #d5d5d5;">
@@ -36,14 +36,14 @@
                 <hr>
                 <div class="row">
                     <div class="col-xs-2"></div>
-                    <div class="col-xs-8 text-center"><a href="{% url 'index' %}" class="btn btn-default" style="width: 200px;">Ok</a></div>
+                    <div class="col-xs-8 text-center"><a href="{% url 'index' %}" id="wiki-style-btn" class="btn">Ok</a></div>
                     <div class="col-xs-2"></div>
                     <br>
                 </div>
                 <hr>
                 <div class="row">
                     <div class="col-xs-2"></div>
-                    <div class="col-xs-8 text-center"><button class="btn btn-default" style="width: 200px;">Report an error</button></div>
+                    <div class="col-xs-8 text-center"><button id="wiki-style-btn" class="btn">Report an error</button></div>
                     <div class="col-xs-2"></div>
                     <br>
                 </div>
@@ -51,4 +51,9 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block add_script %}
+    {% load staticfiles %}
+    <link href={% static "wiki/wiki_styles/error.css" %} type="text/css" rel="stylesheet">
 {% endblock %}

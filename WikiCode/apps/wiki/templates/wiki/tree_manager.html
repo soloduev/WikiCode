@@ -12,7 +12,7 @@
     </div>
 {% endblock %}
 {% block content %}
-    <div class="container">
+    <div id="main-block" class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12"
                  style="border-left: 1px solid #d5d5d5;border-right: 1px solid #d5d5d5;min-height:500px;border-bottom: 1px solid #d5d5d5;">
@@ -119,6 +119,7 @@
                                                 {{ dynamic_tree|safe }}
                                             </ul>
                                         </div>
+                                        <br>
                                     </div>
 
                                 </div>
@@ -168,5 +169,6 @@
     <script src={% static "wiki/tree_manager_scripts/actions.js"%}></script>
     <script src={% static "wiki/tree_context_menu/script.js"%}></script>
     <link href={% static "wiki/tree_context_menu/style.css" %} type="text/css" rel="stylesheet">
+    <link href={% static "wiki/wiki_styles/tree_manager.css" %} type="text/css" rel="stylesheet">
 {% endblock %}
 

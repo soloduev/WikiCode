@@ -14,7 +14,7 @@
 {% block content %}
     <div class="container">
         <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12"
+            <div id="main-block" class="col-xs-12 col-sm-12 col-md-12"
                  style="border-left: 1px solid #d5d5d5;border-right: 1px solid #d5d5d5;min-height:500px;border-bottom: 1px solid #d5d5d5;">
                 <div class="row">
                     <label class="text-center btn-primary btn-block">ABOUT WIKICODE</label>
@@ -26,7 +26,14 @@
             </div>
         </div>
     </div>
+
     <div class="container">
+        <div class="row">
+            <br>
+        </div>
+    </div>
+
+    <div id="sub-block" class="container">
         <div class="row">
             <div class="col-xs-6 col-sm-6 col-md-3"
                  style="border-left: 1px solid #d5d5d5;min-height:200px;border-bottom: 1px solid #d5d5d5;">
@@ -70,7 +77,14 @@
             </div>
         </div>
     </div>
-        <div class="container">
+
+    <div class="container">
+        <div class="row">
+            <br>
+        </div>
+    </div>
+
+    <div id="donate-block" class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12"
                  style="border-left: 1px solid #d5d5d5;border-right: 1px solid #d5d5d5;min-height:500px;border-bottom: 1px solid #d5d5d5;">
@@ -84,4 +98,9 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block add_script %}
+    {% load staticfiles %}
+    <link href={% static "wiki/wiki_styles/about.css" %} type="text/css" rel="stylesheet">
 {% endblock %}

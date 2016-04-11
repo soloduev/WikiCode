@@ -12,10 +12,9 @@
     </div>
 {% endblock %}
 {% block content %}
-    <div class="container">
+    <div id="main-block" class="container">
         <div class="row">
-            <div class="col-xs-12 col-sm-4 col-md-4"
-                 style="border-left: 1px solid #d5d5d5;min-height:335px;border-bottom: 1px solid #d5d5d5;">
+            <div class="col-xs-12 col-sm-4 col-md-4">
                 <div class="row">
                     <a id="a-tree-manager" href="{% url 'tree_manager' %}"><label class="text-center btn-primary btn-block">TREE PROJECTS</label></a>
                 </div>
@@ -27,7 +26,7 @@
                 </div>
             </div>
             <div class="col-xs-12 col-sm-8 col-md-8"
-                 style="border-left: 1px solid #d5d5d5;border-right: 1px solid #d5d5d5;border-bottom: 1px solid #d5d5d5;
+                 style="border-left: 1px solid #d5d5d5;
                  min-height: 250px;">
                 <div class="row">
                     <label class="text-center btn-primary btn-block">USER INFORMATION</label>
@@ -114,9 +113,9 @@
                                             </div>
                                             <div class="col-md-4 col-xs-4 text-right">
 
-                                                <label class="btn-primary text-center btn-block">
+                                                <button id="wiki-style-btn" class="btn text-center btn-block">
                                                     Read
-                                                </label>
+                                                </button>
                                             </div>
 
                                         </div>
@@ -162,9 +161,9 @@
                                             </div>
                                             <div class="col-md-4 col-xs-4 text-right">
 
-                                                <label class="btn-primary text-center btn-block">
+                                                <button id="wiki-style-btn" class="btn text-center btn-block">
                                                     Read
-                                                </label>
+                                                </button>
                                             </div>
 
                                         </div>
@@ -188,9 +187,9 @@
                                             </div>
                                             <div class="col-md-4 col-xs-4 text-right">
 
-                                                <label class="btn-primary text-center btn-block">
+                                                <button id="wiki-style-btn" class="btn text-center btn-block">
                                                     Read
-                                                </label>
+                                                </button>
                                             </div>
 
                                         </div>

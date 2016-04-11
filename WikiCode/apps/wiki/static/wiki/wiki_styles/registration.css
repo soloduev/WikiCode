@@ -1,9 +1,3 @@
-#a-tree-manager
-{
-    color: white;
-    text-decoration: none;
-}
-
 #main-block{
     border-left: 1px solid #d5d5d5;
     border-right: 1px solid #d5d5d5;
@@ -13,7 +7,16 @@
     transition: all 0.5s ease 0s;
 }
 
-#wiki-style-btn {
+
+#reg-panel {
+    border-radius: 3px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    display: block;
+    margin-top: 30px;
+    transition: all 0.5s ease 0s;
+}
+
+#wiki_sign_up{
     background-color: #024f81;
     border-radius: 0px;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
@@ -21,9 +24,9 @@
     transition: all 0.5s ease 0s;
 }
 
-
-#wiki-style-btn:hover {
+#wiki_sign_up:hover{
     background-color: #4da6d9;
+    border-radius: 0px;
     box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
     color: #fff;
     transition: all 0.5s ease 0s;

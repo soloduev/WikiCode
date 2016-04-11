@@ -17,8 +17,7 @@
             {% csrf_token %}
             <div class="row">
 
-                <div class="col-xs-12 col-sm-10 col-md-10"
-                     style="border-left: 1px solid #d5d5d5;min-height:500px;border-bottom: 1px solid #d5d5d5;">
+                <div id="main-block" class="col-xs-12 col-sm-10 col-md-10">
                     <div class="row">
                         <label class="text-center btn-primary btn-block">CREATE NEW PUBLICATION</label>
                     </div>
@@ -84,7 +83,7 @@
                             <div class="row">
                                 <div class="col-xs-9">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-primary" data-toggle="dropdown"
+                                        <button id="wiki-style-btn" type="button" class="btn" data-toggle="dropdown"
                                                 href="#dropdown-1" style="border-radius: 0px;">
                                             <i class="fa fa-header">
                                                 <span></span>
@@ -119,29 +118,29 @@
                                 </li>
                             </ul>
                             </span>
-                                        <button type="button" class="btn btn-primary" id="lt-markdown-bold"><i
+                                        <button type="button" class="btn" id="lt-markdown-bold"><i
                                                 class="fa fa-bold"></i></button>
-                                        <button type="button" class="btn btn-primary" id="lt-markdown-italic"><i
+                                        <button type="button" class="btn" id="lt-markdown-italic"><i
                                                 class="fa fa-italic"></i>
                                         </button>
-                                        <button type="button" class="btn btn-primary" id="lt-markdown-ol"><i
+                                        <button type="button" class="btn" id="lt-markdown-ol"><i
                                                 class="fa fa-list-ol"></i></button>
-                                        <button type="button" class="btn btn-primary" id="lt-markdown-ul"><i
+                                        <button type="button" class="btn" id="lt-markdown-ul"><i
                                                 class="fa fa-list-ul"></i></button>
-                                        <button type="button" class="btn btn-primary" id="lt-markdown-code"><i
+                                        <button type="button" class="btn" id="lt-markdown-code"><i
                                                 class="fa fa-code"></i></button>
                                         </button>
-                                        <button type="button" class="btn btn-primary" id="lt-markdown-line"><i
+                                        <button type="button" class="btn" id="lt-markdown-line"><i
                                                 class="fa fa-minus"></i></button>
                                         </button>
-                                        <button type="button" class="btn btn-primary" id="lt-markdown-quote"><i
+                                        <button type="button" class="btn" id="lt-markdown-quote"><i
                                                 class="fa fa-quote-left"></i></button>
                                         </button>
-                                        <button type="button" class="btn btn-primary" id="lt-markdown-link"><i
+                                        <button type="button" class="btn" id="lt-markdown-link"><i
                                                 class="fa fa-link"></i></button>
-                                        <button type="button" class="btn btn-primary" id="lt-markdown-img"><i
+                                        <button type="button" class="btn" id="lt-markdown-img"><i
                                                 class="fa fa-image"></i></button>
-                                        <button type="button" class="btn btn-primary dropdown-toggle"
+                                        <button type="button" class="btn dropdown-toggle"
                                                 id="lt-markdown-choose-theme"
                                                 data-toggle="dropdown"
                                                 href="#dropdown-4"
@@ -200,7 +199,7 @@
                                     </div>
                                 </div>
                                 <div class="col-xs-3 text-right">
-                                    <button id="form-input" type="submit" class="btn btn-primary"
+                                    <button id="form-input" type="submit" class="btn"
                                             style="border-radius: 0px;"><i
                                             class="fa fa-eye"></i> Preview
                                     </button>
@@ -223,9 +222,7 @@
                     </div>
 
                 </div>
-                <div class="col-xs-12 col-sm-2 col-md-2"
-                     style="border-left: 1px solid #d5d5d5;border-right: 1px solid #d5d5d5;border-bottom: 1px solid #d5d5d5;
-                 min-height: 715px;">
+                <div id="options-block" class="col-xs-12 col-sm-2 col-md-2">
                     <div class="row">
                         <label class="text-center btn-primary btn-block">OPTIONS</label>
                     </div>
@@ -263,7 +260,8 @@
                 </div>
             </div>
             <div class="row">
-                <button id="send" type="submit" class="btn btn-block btn-primary" style="border-radius: 0px;">Create
+                <hr>
+                <button id="send" type="submit" class="btn btn-block">Create
                 </button>
             </div>
         </form>
@@ -273,4 +271,5 @@
 {% block add_script %}
     {% load staticfiles %}
     <script src={% static "wiki/create_publication_scripts/actions.js" %}></script>
+    <link href={% static "wiki/wiki_styles/create.css" %} type="text/css" rel="stylesheet">
 {% endblock %}
