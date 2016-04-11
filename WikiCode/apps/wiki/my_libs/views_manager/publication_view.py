@@ -135,6 +135,8 @@ def get_create_page(request):
         # Добавляем этот конспект в папку
         wt.add_publication(form["folder"],form["title"],newid)
         user.tree = wt.get_tree()
+        # Увеличиваем количество публикаций в статистике у пользователя
+        user.publications += 1
         user.save()
 
         all_publications = Publication.objects.all()
