@@ -78,10 +78,10 @@ WSGI_APPLICATION = 'WikiCode.wsgi.application'
 
 DATABASES = {
   'default': {
-      'ENGINE': 'django.db.backends.postgresql_psycopg2',
-      'NAME': 'myDB',
+      'ENGINE': 'django.db.backends.mysql',
+      'NAME': 'wikidb',
       'USER': 'wikiadmin',
-      'PASSWORD': 'clri4gdi',
+      'PASSWORD': '1234567890',
       'HOST': '',
       'PORT': '',
             }
@@ -126,7 +126,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = "C:/PhytonProjects/WikiCode/media"
+MEDIA_ROOT = "/home/lazytroll/Develop/PythonProjects/wikicode/WikiCode/media"
 MEDIA_URL = '/media/'
 
 LOGIN_URL = '/registration/'
