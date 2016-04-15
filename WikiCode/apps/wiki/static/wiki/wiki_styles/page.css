@@ -2,11 +2,12 @@
     border-left: 1px solid #d5d5d5;
     border-right: 1px solid #d5d5d5;
     border-bottom: 1px solid #d5d5d5;
+    min-height:300px;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
     transition: all 0.5s ease 0s;
 }
 
-#wiki-style-btn {
+#wiki-style-btn, #cancelinput, #editinput {
     background-color: #024f81;
     border-radius: 0px;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
@@ -15,9 +16,37 @@
 }
 
 
-#wiki-style-btn:hover {
+#wiki-style-btn:hover, #cancelinput:hover, #editinput:hover {
     background-color: #4da6d9;
     box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
     color: #fff;
     transition: all 0.5s ease 0s;
+}
+
+#flip-row
+{
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.70), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    transition: all 0.5s ease 0s;
+}
+
+#wikicode-like-publ,
+#wikicode-import-publ,
+#wikicode-download-publ,
+#wikicode-name-author {
+    background-color: #ffffff;
+    border-radius: 0px;
+    border-color: #ffffff;
+    color: #000000;
+    transition: all 0.5s ease 0s;
+}
+
+#wikicode-like-publ:hover,
+#wikicode-import-publ:hover,
+#wikicode-download-publ:hover,
+#wikicode-name-author:hover {
+    background-color: #ffffff;
+    border-radius: 0px;
+    border-color: #ffffff;
+    color: #49c5ec;
 }

@@ -55,7 +55,7 @@ def get_page(request, id):
                 "index": str(i + 1),
                 "text": arr[i]
             })
-
+        #/ home / lazytroll / Develop / PythonProjects / wikicode / media / publications / 3.html
         context = {
             "publication": publication,
             "paragraphs": paragraphs,

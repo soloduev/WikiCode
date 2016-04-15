@@ -53,8 +53,7 @@
 	height: 95%;
 	padding: 1em;
 	box-sizing: border-box;
-	background: rgba(211,211,211,0.7);
-	box-shadow: 0 0 10px rgba(0,0,0,0.5);
+	background: rgba(255, 255, 255, 0);
 }
 
 .flippant-modal-dark, .flippant-modal-dark p { color: white;}

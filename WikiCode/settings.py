@@ -126,7 +126,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = "/home/lazytroll/Develop/PythonProjects/wikicode/WikiCode/media"
+MEDIA_ROOT = "/home/lazytroll/Develop/PythonProjects/wikicode/media"
 MEDIA_URL = '/media/'
 
 LOGIN_URL = '/registration/'
