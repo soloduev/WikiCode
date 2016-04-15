@@ -43,6 +43,13 @@ def get_create(request):
 def get_page(request, id):
     try:
         publication = Publication.objects.get(id_publication=id)
+        try:
+            user = User.objects.get(id_user=publication.id_author)
+            wt = WikiTree(user.id_user)
+            wt.load_tree(user.tree)
+        except User.DoesNotExist:
+            return get_error_page(request, ["Не удалось загрузить юзера. Его уже не существует!"])
+
         # Разбиваем весь текст на абзацы
         md_text = publication.text
         arr = mdsplit.mdSplit(md_text)
@@ -62,6 +69,7 @@ def get_page(request, id):
             "numbers": numbers,
             "user_data": check_auth(request),
             "user_id": get_user_id(request),
+            "preview_tree": wt.generate_html_preview(),
         }
 
         return render(request, 'wiki/page.html', context)

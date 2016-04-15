@@ -32,8 +32,8 @@
 
 #wikicode-like-publ,
 #wikicode-import-publ,
-#wikicode-download-publ,
-#wikicode-name-author {
+#wikicode-download-publ
+{
     background-color: #ffffff;
     border-radius: 0px;
     border-color: #ffffff;
@@ -49,4 +49,77 @@
     border-radius: 0px;
     border-color: #ffffff;
     color: #49c5ec;
+    transition: all 0.5s ease 0s;
+}
+
+#wikicode-name-author
+{
+    background-color: #ffffff;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
+    border-radius: 0px;
+    border-color: #ffffff;
+    color: #000000;
+    height:40px;
+    transition: all 0.5s ease 0s;
+}
+#wikicode-name-author:hover
+{
+    background-color: #ffffff;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
+    border-radius: 0px;
+    color: #49c5ec;
+    height:40px;
+    transition: all 0.5s ease 0s;
+}
+
+#pollSlider-button,#like-pollSlider-button,#info-pollSlider-button{
+    border: 0px solid white;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
+    border-radius: 0px;
+    position:fixed;
+    width:42px;
+    height:42px;
+    left:-15px;
+    background: rgba(255,255,255,1);
+    top:89px;
+    z-index: 9999;
+    transition: all 0.5s ease 0s;
+}
+
+#pollSlider-button:hover,#like-pollSlider-button:hover,#info-pollSlider-button:hover{
+    border: 0px solid white;
+    background-color: #ffffff;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
+    border-radius: 0px;
+    position:fixed;
+    width:80px;
+    height:42px;
+    left:-10px;
+    color: #2f89c1;
+    top:89px;
+    z-index: 9999;
+    transition: all 0.5s ease 0s;
+}
+
+#like-pollSlider-button{
+    top:150px;
+}
+
+#info-pollSlider-button{
+    top:210px;
+}
+
+#like-pollSlider-button:hover{
+    top:150px;
+}
+
+#info-pollSlider-button:hover{
+    top:210px;
+}
+
+#wiki-left-page{
+    background-color: white;
+    z-index: 1000;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.70), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    transition: all 0.5s ease 0s;
 }
