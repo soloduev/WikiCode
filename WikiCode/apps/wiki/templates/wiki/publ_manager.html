@@ -14,16 +14,17 @@
 {% block content %}
     <div class="container">
         <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12"
-                 style="border-left: 1px solid #d5d5d5;border-right: 1px solid #d5d5d5;min-height:500px;border-bottom: 1px solid #d5d5d5;">
+            <div id="main-block" class="col-xs-12 col-sm-12 col-md-12">
                 <div class="row">
-                    <label class="text-center btn-primary btn-block">DELETE PUBLICATION</label>
+                    <label class="text-center btn-primary btn-block">УПРАВЛЕНИЕ КОНСПЕКТОМ</label>
                 </div>
-                <div class="row">
-
-                </div>
-
             </div>
+
         </div>
     </div>
+{% endblock %}
+
+{% block add_script %}
+    {% load staticfiles %}
+    <link href={% static "wiki/wiki_styles/publ_manager.css" %} type="text/css" rel="stylesheet">
 {% endblock %}
