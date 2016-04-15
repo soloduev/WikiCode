@@ -25,20 +25,20 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar-collapse-2">
                 <ul class="nav navbar-nav navbar-right">
-                    <li id="nav-bar-button1"><a href="{% url 'tree_manager' %}">MyTree</a></li>
-                    <li id="nav-bar-button2"><a href="{% url 'create' %}">Create</a></li>
-                    <li id="nav-bar-button3"><a href="{% url 'settings' %}">Settings</a></li>
-                    <li id="nav-bar-button4"><a href="{% url 'help' %}">Help</a></li>
-                    <li id="nav-bar-button5"><a href="{% url 'about' %}">About</a></li>
+                    <li id="nav-bar-button1"><a href="{% url 'tree_manager' %}">Мое Дерево</a></li>
+                    <li id="nav-bar-button2"><a href="{% url 'create' %}">Создать</a></li>
+                    <li id="nav-bar-button3"><a href="{% url 'settings' %}">Настройки</a></li>
+                    <li id="nav-bar-button4"><a href="{% url 'help' %}">Помощь</a></li>
+                    <li id="nav-bar-button5"><a href="{% url 'about' %}">О платформе</a></li>
                     {% if user_data == "None" %}
                         <li>
                             <a class="btn btn-default btn-outline btn-circle" data-toggle="collapse" href="#nav-collapse2"
-                               aria-expanded="false" aria-controls="nav-collapse2" style="border-radius: 0px;">Sign in</a>
+                               aria-expanded="false" aria-controls="nav-collapse2" style="border-radius: 0px;">Войти</a>
                         </li>
                     {% else %}
                         <li><a href="/user/{{ user_id }}/"><b>{{ user_data }}</b></a></li>
                         <li>
-                            <a href="{% url 'logout_user' %}" class="btn btn-default btn-outline btn-circle" style="border-radius: 0px;">Log out</a>
+                            <a href="{% url 'logout_user' %}" class="btn btn-default btn-outline btn-circle" style="border-radius: 0px;">Выйти</a>
                         </li>
                     {% endif %}
 
@@ -53,14 +53,14 @@
                                    style="border-radius: 0px;"/>
                         </div>
                         <div class="form-group">
-                            <label class="sr-only" for="Password">Password</label>
+                            <label class="sr-only" for="Password">Пароль</label>
                             <input type="password" class="form-control" id="Password" name="user_password"  placeholder="Password" required
                                    style="border-radius: 0px;"/>
                         </div>
-                        <button type="submit" class="btn btn-primary" style="border-radius: 0px;" href="{% url 'login_user' %}">Sign in</button>
+                        <button type="submit" class="btn btn-primary" style="border-radius: 0px;" href="{% url 'login_user' %}">Войти</button>
                         <div class="form-group">
                             <a class="btn btn-primary" style="border-radius: 0px;"
-                               href="{% url 'registration' %}">Registration</a>
+                               href="{% url 'registration' %}">Регистрация</a>
                         </div>
                     </form>
                 </div>

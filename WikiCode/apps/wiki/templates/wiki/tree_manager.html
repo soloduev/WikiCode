@@ -21,7 +21,7 @@
                         <div class="row">
                             <div class="col-md-4" style="border-right: 1px solid #d5d5d5;min-height:500px;">
                                 <div class="row">
-                                    <label class="text-center btn-primary btn-block">MY TREE</label>
+                                    <label class="text-center btn-primary btn-block">МОЕ ДЕРЕВО</label>
                                 </div>
                                 <div class="row">
                                     <br>
@@ -35,7 +35,7 @@
                             </div>
                             <div class="col-md-8" style="min-height:500px;">
                                 <div class="row">
-                                    <label class="text-center btn-primary btn-block">TREE MANAGER</label>
+                                    <label class="text-center btn-primary btn-block">УПРАВЛЕНИЕ ДЕРЕВОМ</label>
                                 </div>
                                 <div class="row">
                                     <br>
@@ -45,17 +45,17 @@
                                         <form action="{% url 'create' %}" method="post">
                                             {% csrf_token %}
                                             <div class="btn-group">
-                                                <button type="button" id="add_folder_in_wiki_tree" class="btn btn-default">Add <span
+                                                <button type="button" id="add_folder_in_wiki_tree" class="btn btn-default">Добавить <span
                                                         class="glyphicon glyphicon-folder-open"></span></button>
 
-                                                <button id="add_publ_in_wiki_tree" class="btn btn-default">Create <span
+                                                <button id="add_publ_in_wiki_tree" class="btn btn-default">Создать <span
                                                         class="glyphicon glyphicon-list"></span></button>
                                                 <input id="choose-folder-secret" content="secret" name="folder_publ" type="text" hidden value="off"/>
 
-                                                <button type="button" class="btn btn-default">Generate <span
+                                                <button type="button" class="btn btn-default">Сгенерировать <span
                                                         class="glyphicon glyphicon-bookmark"></span></button>
 
-                                                <button type="button" class="btn btn-default">Test <span
+                                                <button type="button" class="btn btn-default">Тест <span
                                                         class="glyphicon glyphicon-check"></span></button>
 
                                                 <button type="button" class="btn btn-default"><i class="fa fa-pencil"></i>
@@ -71,17 +71,17 @@
                                     </div>
                                     <!--Скрытый блок добавления папки-->
                                     <div id="div_folder_name_input" class="col-xs-12" style="display: none;">
-                                        <span><h4>Add New Folder</h4></span>
+                                        <span><h4>Добавить новую папку</h4></span>
                                         <div class="row">
                                             <div class="col-xs-4">
-                                                <input  type="text" class="form-control" id="folder_name_input" placeholder="New Folder Name..." autofocus
+                                                <input  type="text" class="form-control" id="folder_name_input" placeholder="Имя новой папки..." autofocus
                                                         style="border-radius: 0px;"/>
                                             </div>
                                             <div class="col-xs-4 text-left">
                                                 <div class="btn-group">
-                                                    <button id="accept_add_folder_in_wiki_tree" class="btn btn-default">Add <span
+                                                    <button id="accept_add_folder_in_wiki_tree" class="btn btn-default">Добавить <span
                                                             class="glyphicon glyphicon-folder-open"></span></button>
-                                                    <button id="cancel_add_folder_in_wiki_tree" class="btn btn-default">Cancel <span
+                                                    <button id="cancel_add_folder_in_wiki_tree" class="btn btn-default">Отмена <span
                                                             class="glyphicon glyphicon-remove"></span></button>
                                                 </div>
                                             </div>
@@ -93,13 +93,13 @@
                                     </div>
                                     <!--Скрытый блок подтверждения удаления элемента-->
                                     <div id="div_accept_delete_elem"class="col-xs-12" style="display: none;">
-                                        <span><h4 id="deleter-text-tree-manager">Delete? </h4></span>
+                                        <span><h4 id="deleter-text-tree-manager">Удаоить? </h4></span>
                                         <div class="row">
                                             <div class="col-xs-12 text-left">
                                                 <div class="btn-group">
-                                                    <button id="yes_delete_elem_in_tree" class="btn btn-default">Yes <span
+                                                    <button id="yes_delete_elem_in_tree" class="btn btn-default">Да <span
                                                             class="glyphicon glyphicon-check"></span></button>
-                                                    <button id="no_delete_elem_in_tree" class="btn btn-default">No <span
+                                                    <button id="no_delete_elem_in_tree" class="btn btn-default">Нет <span
                                                             class="glyphicon glyphicon-remove"></span></button>
                                                 </div>
                                             </div>
@@ -135,40 +135,40 @@
     <nav id="context-menu" class="context-menu">
         <ul class="context-menu__items">
             <li id="lt-context-menu-2"  class="context-menu__item">
-                <a href="#" class="context-menu__link" data-action="Info" style="text-decoration: none;"><i class="fa fa-info-circle"></i> Info</a>
+                <a href="#" class="context-menu__link" data-action="Info" style="text-decoration: none;"><i class="fa fa-info-circle"></i> Информация</a>
             </li>
             <li id="lt-context-menu-1" class="context-menu__item">
-                <a href="#" class="context-menu__link" data-action="Open" style="text-decoration: none;"><i class="fa fa-eye"></i> Open</a>
+                <a href="#" class="context-menu__link" data-action="Open" style="text-decoration: none;"><i class="fa fa-eye"></i> Открыть</a>
             </li>
             <li id="lt-context-menu-3"  class="context-menu__item">
-                <a href="#" class="context-menu__link" data-action="Settings" style="text-decoration: none;"><i class="fa fa-gear"></i> Settings</a>
+                <a href="#" class="context-menu__link" data-action="Settings" style="text-decoration: none;"><i class="fa fa-gear"></i> Настройки</a>
             </li>
             <li id="lt-context-menu-3-0"  class="context-menu__item">
-                <a href="#" class="context-menu__link" data-action="Move Publ" style="text-decoration: none;"><i class="fa fa-hand-grab-o"></i> Move Publication</a>
+                <a href="#" class="context-menu__link" data-action="Move Publ" style="text-decoration: none;"><i class="fa fa-hand-grab-o"></i> Переместить</a>
             </li>
             <li id="lt-context-menu-3-1"  class="context-menu__item">
-                <a href="#" class="context-menu__link" data-action="Settings" style="text-decoration: none;"><i class="fa fa-graduation-cap"></i> Set Preview</a>
+                <a href="#" class="context-menu__link" data-action="Settings" style="text-decoration: none;"><i class="fa fa-graduation-cap"></i> Сделать превью-конспектом</a>
             </li>
             <li id="lt-context-menu-4"  class="context-menu__item">
-                <a id="add_folder_in_wiki_tree_context" href="#" class="context-menu__link" data-action="Create folder" style="text-decoration: none;"><i class="fa fa-folder-open"></i> Create Folder</a>
+                <a id="add_folder_in_wiki_tree_context" href="#" class="context-menu__link" data-action="Create folder" style="text-decoration: none;"><i class="fa fa-folder-open"></i> Создать папку</a>
             </li>
             <li id="lt-context-menu-5"  class="context-menu__item">
-                <a href="#" class="context-menu__link" data-action="Create publ" style="text-decoration: none;"><i class="fa fa-list-alt"></i> Create Publication</a>
+                <a href="#" class="context-menu__link" data-action="Create publ" style="text-decoration: none;"><i class="fa fa-list-alt"></i> Создать конспект</a>
             </li>
             <li id="lt-context-menu-6"  class="context-menu__item">
-                <a href="#" class="context-menu__link" data-action="Rename Folder" style="text-decoration: none;"><i class="fa fa-text-width"></i> Rename folder</a>
+                <a href="#" class="context-menu__link" data-action="Rename Folder" style="text-decoration: none;"><i class="fa fa-text-width"></i> Переименовать</a>
             </li>
             <li id="lt-context-menu-9"  class="context-menu__item">
-                <a href="#" class="context-menu__link" data-action="Move Folder" style="text-decoration: none;"><i class="fa fa-hand-grab-o"></i> Move Folder</a>
+                <a href="#" class="context-menu__link" data-action="Move Folder" style="text-decoration: none;"><i class="fa fa-hand-grab-o"></i> Переместить</a>
             </li>
             <li id="lt-context-menu-7"  class="context-menu__item">
-                <a href="#" class="context-menu__link" data-action="Sort" style="text-decoration: none;"><i class="fa fa-sort"></i> Sort publications</a>
+                <a href="#" class="context-menu__link" data-action="Sort" style="text-decoration: none;"><i class="fa fa-sort"></i> Сортировать конспекты</a>
             </li>
             <li id="lt-context-menu-8"  class="context-menu__item">
-                <a href="#" class="context-menu__link" data-action="Delete Folder" style="text-decoration: none;"><i class="fa fa-times"></i> Delete Folder</a>
+                <a href="#" class="context-menu__link" data-action="Delete Folder" style="text-decoration: none;"><i class="fa fa-times"></i> Удалить папку</a>
             </li>
             <li id="lt-context-menu-10"  class="context-menu__item">
-                <a href="#" class="context-menu__link" data-action="Delete Publ" style="text-decoration: none;"><i class="fa fa-times"></i> Delete Publication</a>
+                <a href="#" class="context-menu__link" data-action="Delete Publ" style="text-decoration: none;"><i class="fa fa-times"></i> DУдалить конспект</a>
             </li>
         </ul>
     </nav>

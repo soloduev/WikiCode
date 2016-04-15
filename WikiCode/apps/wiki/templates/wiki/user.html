@@ -16,7 +16,7 @@
         <div class="row">
             <div class="col-xs-12 col-sm-4 col-md-4">
                 <div class="row">
-                    <a id="a-tree-manager" href="{% url 'tree_manager' %}"><label class="text-center btn-primary btn-block">TREE PROJECTS</label></a>
+                    <a id="a-tree-manager" href="{% url 'tree_manager' %}"><label class="text-center btn-primary btn-block">ДЕРЕВО КОНСПЕКТОВ</label></a>
                 </div>
                 <div class="row">
                     <ul id="tree2">
@@ -29,7 +29,7 @@
                  style="border-left: 1px solid #d5d5d5;
                  min-height: 250px;">
                 <div class="row">
-                    <label class="text-center btn-primary btn-block">USER INFORMATION</label>
+                    <label class="text-center btn-primary btn-block">ИНФОРМАЦИЯ О ПОЛЬЗОВАТЕЛЕ</label>
                 </div>
                 <div class="row">
                     <div class="col-md-4 hidden-sm hidden-xs">
@@ -44,7 +44,7 @@
                                 </div>
                                 <div class="[ info-card-detail ]">
                                     <!-- Description -->
-                                    <p>You can do "like" this user</p>
+                                    <p>Вы можете поставить "like" этому пользователю</p>
 
                                     <div class="social">
                                         <a href=""
@@ -57,20 +57,20 @@
                     </div>
                     <div class="col-md-8 col-sm-12">
                         <div class="row btn-block">
-                            <div class="col-md-4 col-sm-6 col-xs-6" style="border-right: solid 1px #d5d5d5;">
-                                <label class="text-left btn-block" id="title-elem-page">User name</label>
-                                <label class="text-left btn-block" id="title-elem-page">Nickname</label>
-                                <label class="text-left btn-block" id="title-elem-page">E-Mail</label>
+                            <div class="col-md-6 col-sm-6 col-xs-6" style="border-right: solid 1px #d5d5d5;">
+                                <label class="text-left btn-block" id="title-elem-page">Имя</label>
+                                <label class="text-left btn-block" id="title-elem-page">Никнейм</label>
+                                <label class="text-left btn-block" id="title-elem-page">Почта</label>
                                 <hr>
-                                <label class="text-left btn-block" id="title-elem-page">Publications</label>
-                                <label class="text-left btn-block" id="title-elem-page">Imports</label>
-                                <label class="text-left btn-block" id="title-elem-page">Commentaries</label>
+                                <label class="text-left btn-block" id="title-elem-page">Конспектов</label>
+                                <label class="text-left btn-block" id="title-elem-page">Сохраненных</label>
+                                <label class="text-left btn-block" id="title-elem-page">Комментировал</label>
                                 <hr>
-                                <label class="text-left btn-block" id="title-elem-page">Likes</label>
-                                <label class="text-left btn-block" id="title-elem-page">Import it</label>
-                                <label class="text-left btn-block" id="title-elem-page">Commented it</label>
+                                <label class="text-left btn-block" id="title-elem-page">Понравился раз</label>
+                                <label class="text-left btn-block" id="title-elem-page">Его сохранили</label>
+                                <label class="text-left btn-block" id="title-elem-page">Его комментировали</label>
                             </div>
-                            <div class="col-md-8 col-sm-6  col-xs-6">
+                            <div class="col-md-6 col-sm-6  col-xs-6">
                                 <label class="text-left btn-block">{{ user.name }}</label>
                                 <label class="text-left btn-block">{{ user.nickname }}</label>
                                 <label class="text-left btn-block">{{ user.email }}</label>
@@ -93,15 +93,15 @@
                             <ul class="nav nav-tabs ">
                                 <li class="active">
                                     <a href="#tab_default_1" data-toggle="tab">
-                                        Preview publication </a>
+                                        Превью конспект </a>
                                 </li>
                                 <li>
                                     <a href="#tab_default_2" data-toggle="tab">
-                                        Top  publication</a>
+                                        Лучший конспект</a>
                                 </li>
                                 <li>
                                     <a href="#tab_default_3" data-toggle="tab">
-                                        Last publication </a>
+                                        Последний конспект </a>
                                 </li>
                             </ul>
                             <div class="tab-content">
@@ -114,7 +114,7 @@
                                             <div class="col-md-4 col-xs-4 text-right">
 
                                                 <button id="wiki-style-btn" class="btn text-center btn-block">
-                                                    Read
+                                                    Читать
                                                 </button>
                                             </div>
 
@@ -162,7 +162,7 @@
                                             <div class="col-md-4 col-xs-4 text-right">
 
                                                 <button id="wiki-style-btn" class="btn text-center btn-block">
-                                                    Read
+                                                    Читать
                                                 </button>
                                             </div>
 
@@ -188,7 +188,7 @@
                                             <div class="col-md-4 col-xs-4 text-right">
 
                                                 <button id="wiki-style-btn" class="btn text-center btn-block">
-                                                    Read
+                                                    Читать
                                                 </button>
                                             </div>
 
