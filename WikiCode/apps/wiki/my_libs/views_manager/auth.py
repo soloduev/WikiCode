@@ -14,8 +14,11 @@ def check_auth(request):
 
 def get_user_id(request):
     user_data = check_auth(request)
-    id_user = 0;
-    if user_data != "None":
-        user = User.objects.get(email=user_data)
-        id_user = user.id_user
-    return id_user
+    id_user = -1;
+    try:
+        if user_data != "None":
+            user = User.objects.get(email=user_data)
+            id_user = user.id_user
+        return id_user
+    except User.DoesNotExist:
+        return -1;

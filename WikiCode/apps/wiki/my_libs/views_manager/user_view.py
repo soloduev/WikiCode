@@ -20,15 +20,18 @@ def get_user(request, id):
         if user.id_user == id:
             wt = WikiTree(user.id_user)
             wt.load_tree(user.tree)
+            user_id = get_user_id(request)
+            if user_id != -1:
+                context = {
+                    "user_data": user_data,
+                    "user_id": user_id,
+                    "preview_tree": wt.generate_html_preview(),
+                    "user":user,
+                }
 
-            context = {
-                "user_data": user_data,
-                "user_id": get_user_id(request),
-                "preview_tree": wt.generate_html_preview(),
-                "user":user,
-            }
-
-            return render(request, 'wiki/user.html', context)
+                return render(request, 'wiki/user.html', context)
+            else:
+                return get_error_page(request, ["Sorry, id user problem!", "Page not found: 'user/" + str(id) + "/'"])
         else:
             other_user = User.objects.get(id_user=id)
             wt = WikiTree(other_user.id_user)
@@ -101,10 +104,10 @@ def get_create_user(request):
                     login(request, user)
                 else:
                     print(">>>>>>>>>>>>>> WIKI ERROR: disabled account")
-                    ...
+
             else:
                 print(">>>>>>>>>>>>>> WIKI ERROR: invalid login")
-                ...
+
 
             all_publications = Publication.objects.all()
 
@@ -139,10 +142,10 @@ def get_login_user(request):
             login(request, user)
         else:
             print(">>>>>>>>>>>>>> WIKI ERROR: disabled account")
-            ...
+
     else:
         print(">>>>>>>>>>>>>> WIKI ERROR: invalid login")
-        ...
+
 
     all_publications = Publication.objects.all()
 
