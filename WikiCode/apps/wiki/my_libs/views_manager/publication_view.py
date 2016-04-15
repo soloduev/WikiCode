@@ -55,7 +55,7 @@ def get_page(request, id):
                 "index": str(i + 1),
                 "text": arr[i]
             })
-        #/ home / lazytroll / Develop / PythonProjects / wikicode / media / publications / 3.html
+
         context = {
             "publication": publication,
             "paragraphs": paragraphs,
@@ -126,7 +126,8 @@ def get_create_page(request):
             marks=0,
             likes=0,
             read=0,
-            edits=0)
+            edits=0,
+            downloads=0)
         new_publication.save()
 
         # Загружаем дерево пользователя

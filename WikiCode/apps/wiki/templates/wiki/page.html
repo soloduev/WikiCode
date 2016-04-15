@@ -24,9 +24,9 @@
                             <div class="col-md-6 col-xs-12">
                                 <div class="container-fluid text-left">
                                     <div class="row">
-                                        <button id="wikicode-name-author" href="#" class="btn" style="height: 26px;"><span
+                                        <a id="wikicode-name-author" href="/user/{{ publication.id_author }}" class="btn" style="height: 26px;"><span
                                                 class="glyphicon glyphicon-user"></span>
-                                            Vasya Pupkin</button>
+                                            {{ publication.nickname_author }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -35,13 +35,13 @@
                                     <div class="row">
                                         <div class="btn-group">
                                             <a id="wikicode-like-publ" href="#" class="btn"><span
-                                                    class="glyphicon glyphicon-thumbs-up"></span> (345)</a>
+                                                    class="glyphicon glyphicon-thumbs-up"></span> ({{ publication.likes }})</a>
 
-                                            <a id="wikicode-import-publ" href="#" class="btn"><span class="glyphicon glyphicon-import"></span> (14)</a>
+                                            <a id="wikicode-import-publ" href="#" class="btn"><span class="glyphicon glyphicon-import"></span> ({{ publication.imports }})</a>
 
 
                                             <a id="wikicode-download-publ" href="#" class="btn"><span
-                                                    class="glyphicon glyphicon-download"></span> (51)</a>
+                                                    class="glyphicon glyphicon-download"></span> ({{ publication.downloads }})</a>
                                         </div>
                                     </div>
                                 </div>

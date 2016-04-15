@@ -43,6 +43,7 @@ class Publication(models.Model):
     likes = models.BigIntegerField()
     read = models.BigIntegerField()
     edits = models.BigIntegerField()
+    downloads = models.BigIntegerField()
     def __str__(self):
         return str(self.id_publication)
 
