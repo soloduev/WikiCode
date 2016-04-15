@@ -80,15 +80,38 @@
 
                             <h3>Markdown Текст</h3>
                             </p>
-                            <div class="row">
-                                <div class="col-xs-9">
-                                    <div class="btn-group">
-                                        <button id="wiki-style-btn" type="button" class="btn" data-toggle="dropdown"
-                                                href="#dropdown-1" style="border-radius: 0px;">
-                                            <i class="fa fa-header">
-                                                <span></span>
-                                            </i>
-                                        </button>
+
+                            <div id="main-block" class="tabbable-panel">
+                                <div class="tabbable-line">
+                                    <ul class="nav nav-tabs ">
+                                        <li class="active">
+                                            <a href="#tab_default_1" data-toggle="tab">
+                                                Создать конспект </a>
+                                        </li>
+                                        <li>
+                                            <a href="#tab_default_2" data-toggle="tab">
+                                                Импортировать конспект</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tab_default_3" data-toggle="tab">
+                                                Справка по созданию </a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div class="tab-pane active" id="tab_default_1">
+                                            <div class="container-fluid">
+                                                <h4>Создавайте конспект красиво в редакторе StackEdit!</h4>
+                                                <button id="wiki-style-btn" class="btn" type="button">Создать конспект в редакторе</button>
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="col-xs-9">
+                                                        <div class="btn-group">
+                                                            <button id="wiki-style-btn" type="button" class="btn" data-toggle="dropdown"
+                                                                    href="#dropdown-1" style="border-radius: 0px;">
+                                                                <i class="fa fa-header">
+                                                                    <span></span>
+                                                                </i>
+                                                            </button>
                             <span class="text-right" id="dropdown-1">
                             <ul class="dropdown-menu">
                                 <li>
@@ -118,37 +141,37 @@
                                 </li>
                             </ul>
                             </span>
-                                        <button type="button" class="btn" id="lt-markdown-bold"><i
-                                                class="fa fa-bold"></i></button>
-                                        <button type="button" class="btn" id="lt-markdown-italic"><i
-                                                class="fa fa-italic"></i>
-                                        </button>
-                                        <button type="button" class="btn" id="lt-markdown-ol"><i
-                                                class="fa fa-list-ol"></i></button>
-                                        <button type="button" class="btn" id="lt-markdown-ul"><i
-                                                class="fa fa-list-ul"></i></button>
-                                        <button type="button" class="btn" id="lt-markdown-code"><i
-                                                class="fa fa-code"></i></button>
-                                        </button>
-                                        <button type="button" class="btn" id="lt-markdown-line"><i
-                                                class="fa fa-minus"></i></button>
-                                        </button>
-                                        <button type="button" class="btn" id="lt-markdown-quote"><i
-                                                class="fa fa-quote-left"></i></button>
-                                        </button>
-                                        <button type="button" class="btn" id="lt-markdown-link"><i
-                                                class="fa fa-link"></i></button>
-                                        <button type="button" class="btn" id="lt-markdown-img"><i
-                                                class="fa fa-image"></i></button>
-                                        <button type="button" class="btn dropdown-toggle"
-                                                id="lt-markdown-choose-theme"
-                                                data-toggle="dropdown"
-                                                href="#dropdown-4"
-                                                style="border-radius: 0px;">
-                                            <i class="fa fa-paint-brush">
-                                                <span class="caret"></span>
-                                            </i>
-                                        </button>
+                                                            <button type="button" class="btn" id="lt-markdown-bold"><i
+                                                                    class="fa fa-bold"></i></button>
+                                                            <button type="button" class="btn" id="lt-markdown-italic"><i
+                                                                    class="fa fa-italic"></i>
+                                                            </button>
+                                                            <button type="button" class="btn" id="lt-markdown-ol"><i
+                                                                    class="fa fa-list-ol"></i></button>
+                                                            <button type="button" class="btn" id="lt-markdown-ul"><i
+                                                                    class="fa fa-list-ul"></i></button>
+                                                            <button type="button" class="btn" id="lt-markdown-code"><i
+                                                                    class="fa fa-code"></i></button>
+                                                            </button>
+                                                            <button type="button" class="btn" id="lt-markdown-line"><i
+                                                                    class="fa fa-minus"></i></button>
+                                                            </button>
+                                                            <button type="button" class="btn" id="lt-markdown-quote"><i
+                                                                    class="fa fa-quote-left"></i></button>
+                                                            </button>
+                                                            <button type="button" class="btn" id="lt-markdown-link"><i
+                                                                    class="fa fa-link"></i></button>
+                                                            <button type="button" class="btn" id="lt-markdown-img"><i
+                                                                    class="fa fa-image"></i></button>
+                                                            <button type="button" class="btn dropdown-toggle"
+                                                                    id="lt-markdown-choose-theme"
+                                                                    data-toggle="dropdown"
+                                                                    href="#dropdown-4"
+                                                                    style="border-radius: 0px;">
+                                                                <i class="fa fa-paint-brush">
+                                                                    <span class="caret"></span>
+                                                                </i>
+                                                            </button>
                                 <span class="text-right" id="dropdown-4">
                                 <ul class="dropdown-menu" style="width: 432px;">
                                     <li class="text-center">
@@ -196,22 +219,53 @@
                                 </ul>
                             </span>
 
-                                    </div>
-                                </div>
-                                <div class="col-xs-3 text-right">
-                                    <button id="form-input" type="submit" class="btn"
-                                            style="border-radius: 0px;"><i
-                                            class="fa fa-eye"></i> Превью
-                                    </button>
-                                </div>
-                            </div>
-                            <p></p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-3 text-right">
+                                                        <button id="form-input" type="submit" class="btn"
+                                                                style="border-radius: 0px;"><i
+                                                                class="fa fa-eye"></i> Превью
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <p></p>
                         <textarea required id="lt-markdown-textarea" name="text" class="form-control btn-block"
                                   rows="15"
                                   style="resize: none; font-family: Courier; border-radius: 0px;"
                                   placeholder="Введите Markdown текст..." wrap="soft"></textarea>
-                            <input id="lt-markdown-secret" content="secret" name="secret" type="text" hidden
-                                   value="off"/>
+                                                <input id="lt-markdown-secret" content="secret" name="secret" type="text" hidden
+                                                       value="off"/>
+
+
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="tab_default_2">
+                                            <div class="container-fluid">
+                                                <h4>Вы можете импортировать конспект со своего компьютера, загрузив его в формате <b>*.wcode</b>
+                                                    или практически в любом другом из распрастраненных форматов, такие как
+                                                <b>*.txt, *.odt, *.doc, *.md, *.pdf</b></h4>
+                                                <button id="wiki-style-btn" class="btn" type="button">Импортировать</button>
+                                                <hr>
+                                                <h4>Также, вы можете импортировать свой конспект с <b>GitHub</b> или <b>Bitbucket</b>:</h4>
+                                                <button id="wiki-style-btn" class="btn" type="button">Импортировать с GitHub</button>
+                                                <button id="wiki-style-btn" class="btn" type="button">Импортировать с Bitbucket</button>
+                                                <hr>
+                                                <h4>Вы можете сгенерировать целую <b>документацию</b>, загрузив набор из папок.
+                                                    Название корневой папки, будет названием документации.</h4>
+                                                <button id="wiki-style-btn" class="btn" type="button">Импортировать документацию</button>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="tab_default_3">
+                                            <div class="container-fluid">
+                                                <h4>Здесь будет расположен конспект со справкой по созданию и синтаксису Markdown</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
                             <hr>
                             <p>
 
