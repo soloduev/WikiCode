@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Менеджер по управлению деревьями в WikiCode. version 0.37:
+# Менеджер по управлению деревьями в WikiCode. version 0.38:
 
 
 class WikiTree(object):
@@ -16,7 +16,6 @@ class WikiTree(object):
                 self.__print_error("user_id < 0")
         else:
             self.__print_error("user_id not int")
-
 
     def load_tree(self, tree):
         """Позволяет загрузить пользователю сторонее дерево"""
@@ -42,14 +41,14 @@ class WikiTree(object):
                 self.__convert_line_to_dynamic_html(paths[i]),
                 paths[i].split(":")[0]
             ])
-            if max < elements[len(elements)-1][1]:
-                max = elements[len(elements)-1][1]
-            if elements[len(elements)-1][0] == '':
-                del elements[len(elements)-1]
+            if max < elements[len(elements) - 1][1]:
+                max = elements[len(elements) - 1][1]
+            if elements[len(elements) - 1][0] == '':
+                del elements[len(elements) - 1]
         index = 0
         while max != 1:
             if index == len(elements):
-                max-=1
+                max -= 1
                 index = 0
                 continue
             else:
@@ -59,16 +58,16 @@ class WikiTree(object):
                     find_name = ""
                     if self.__get_type(elem[0]) == "folder":
                         first = elem[0][:elem[0].rfind("/")]
-                        find_name = first[:first.rfind("/")+1]
+                        find_name = first[:first.rfind("/") + 1]
                     elif self.__get_type(elem[0]) == "publ":
-                        find_name = elem[0][:elem[0].rfind('/')+1]
-                    for i in range(0,len(elements)):
+                        find_name = elem[0][:elem[0].rfind('/') + 1]
+                    for i in range(0, len(elements)):
                         if elements[i][3] == find_name:
                             elements[i][2] = self.__insert_elem_to_folder(elements[i][2], insert_html)
                             break
-                index+=1
+                index += 1
 
-        #Теперь компонуем обе папки вместе:
+        # Теперь компонуем обе папки вместе:
         return elements[0][2] + elements[1][2]
 
     def generate_html_preview(self):
@@ -85,14 +84,14 @@ class WikiTree(object):
                 self.__convert_line_to_html(paths[i]),
                 paths[i].split(":")[0]
             ])
-            if max < elements[len(elements)-1][1]:
-                max = elements[len(elements)-1][1]
-            if elements[len(elements)-1][0] == '':
-                del elements[len(elements)-1]
+            if max < elements[len(elements) - 1][1]:
+                max = elements[len(elements) - 1][1]
+            if elements[len(elements) - 1][0] == '':
+                del elements[len(elements) - 1]
         index = 0
         while max != 1:
             if index == len(elements):
-                max-=1
+                max -= 1
                 index = 0
                 continue
             else:
@@ -102,18 +101,17 @@ class WikiTree(object):
                     find_name = ""
                     if self.__get_type(elem[0]) == "folder":
                         first = elem[0][:elem[0].rfind("/")]
-                        find_name = first[:first.rfind("/")+1]
+                        find_name = first[:first.rfind("/") + 1]
                     elif self.__get_type(elem[0]) == "publ":
-                        find_name = elem[0][:elem[0].rfind('/')+1]
-                    for i in range(0,len(elements)):
+                        find_name = elem[0][:elem[0].rfind('/') + 1]
+                    for i in range(0, len(elements)):
                         if elements[i][3] == find_name:
                             elements[i][2] = self.__insert_elem_to_folder(elements[i][2], insert_html)
                             break
-                index+=1
+                index += 1
 
-        #Теперь компонуем обе папки вместе:
+        # Теперь компонуем обе папки вместе:
         return elements[0][2] + elements[1][2]
-
 
     def generate_html_dynamic_folders(self):
         """Генерирует html динамического wiki дерева без публикаций. Только папки."""
@@ -129,14 +127,14 @@ class WikiTree(object):
                 self.__convert_line_to_dynamic_html(paths[i]),
                 paths[i].split(":")[0]
             ])
-            if max < elements[len(elements)-1][1]:
-                max = elements[len(elements)-1][1]
-            if elements[len(elements)-1][0] == '':
-                del elements[len(elements)-1]
+            if max < elements[len(elements) - 1][1]:
+                max = elements[len(elements) - 1][1]
+            if elements[len(elements) - 1][0] == '':
+                del elements[len(elements) - 1]
         index = 0
         while max != 1:
             if index == len(elements):
-                max-=1
+                max -= 1
                 index = 0
                 continue
             else:
@@ -146,14 +144,14 @@ class WikiTree(object):
                     find_name = ""
                     if self.__get_type(elem[0]) == "folder":
                         first = elem[0][:elem[0].rfind("/")]
-                        find_name = first[:first.rfind("/")+1]
-                    for i in range(0,len(elements)):
+                        find_name = first[:first.rfind("/") + 1]
+                    for i in range(0, len(elements)):
                         if elements[i][3] == find_name:
                             elements[i][2] = self.__insert_elem_to_folder(elements[i][2], insert_html)
                             break
-                index+=1
+                index += 1
 
-        #Теперь компонуем обе папки вместе:
+        # Теперь компонуем обе папки вместе:
         return elements[0][2] + elements[1][2]
 
     def __set_last_symbol(self):
@@ -161,7 +159,7 @@ class WikiTree(object):
         tree_str = self.tree
         while True:
             if tree_str.endswith('\n'):
-                tree_str = tree_str[:len(tree_str)-1]
+                tree_str = tree_str[:len(tree_str) - 1]
             else:
                 tree_str += '\n'
                 break
@@ -186,16 +184,17 @@ class WikiTree(object):
                 # Значит это папка
                 part1 = '<li><a href="#">'
                 path_split = path.split("/")
-                part2 = path_split[len(path_split)-2]
+                part2 = path_split[len(path_split) - 2]
                 part3 = '</a>\n<ul>\n</ul>\n</li>\n'
                 return part1 + part2 + part3
             elif path.endswith(".publ"):
                 # Значит это публикация
                 part1 = '<li>'
                 path_split = path.split("/")
-                part2 = path_split[len(path_split)-1]
-                part2 = part2[:len(part2)-5]
-                part3 = '<a href="/page/'+str(id)+'" class="btn btn-xs btn-link"><span class="glyphicon glyphicon-share-alt"></span></a></li>\n'
+                part2 = path_split[len(path_split) - 1]
+                part2 = part2[:len(part2) - 5]
+                part3 = '<a href="/page/' + str(
+                    id) + '" class="btn btn-xs btn-link"><span class="glyphicon glyphicon-share-alt"></span></a></li>\n'
                 return part1 + part2 + part3
         return ""
 
@@ -207,17 +206,17 @@ class WikiTree(object):
             path = split[0]
             if path.endswith("/"):
                 # Значит это папка
-                part1 = "<li class=\"task\" data-id=\""+line+"\" data-jstree='{ \"type\" : \"folder\" }' id='"+line+"'>"
+                part1 = "<li class=\"task\" data-id=\"" + line + "\" data-jstree='{ \"type\" : \"folder\" }' id='" + line + "'>"
                 path_split = path.split("/")
-                part2 = path_split[len(path_split)-2]
+                part2 = path_split[len(path_split) - 2]
                 part3 = '\n<ul>\n</ul>\n</li>\n'
                 return part1 + part2 + part3
             elif path.endswith(".publ"):
                 # Значит это публикация
-                part1 = "<li class=\"task\" data-id=\""+line+"\" data-jstree='{ \"type\" : \"publ\" }'id='"+line+"'>"
+                part1 = "<li class=\"task\" data-id=\"" + line + "\" data-jstree='{ \"type\" : \"publ\" }'id='" + line + "'>"
                 path_split = path.split("/")
-                part2 = path_split[len(path_split)-1]
-                part2 = part2[:len(part2)-5]
+                part2 = path_split[len(path_split) - 1]
+                part2 = part2[:len(part2) - 5]
                 part3 = '</li>\n'
                 return part1 + part2 + part3
         return ""
@@ -232,13 +231,10 @@ class WikiTree(object):
             # Если это папка
             return num_slash
 
-
-
     def __insert_elem_to_folder(self, html_folder1, html_folder2):
         """Вставляет папку в конец папки, возвращает получившийся тег"""
         part1 = html_folder1[:html_folder1.rfind("</ul>")]
         return part1 + html_folder2 + '</ul>\n</li>\n'
-
 
     def __print_error(self, error_message):
         print("--------WikiTree---Error--------")
@@ -298,7 +294,8 @@ class WikiTree(object):
             elif self.__is_line(path) and not self.__is_line(path + name_folder + "/"):
                 self.tree += path + name_folder + "/:" + self.user_id + "\n"
             else:
-                self.__print_error("вы указали не верный путь к папке или папка которую вы хотите создать уже существует")
+                self.__print_error(
+                    "вы указали не верный путь к папке или папка которую вы хотите создать уже существует")
         except AttributeError:
             self.__print_error("дерево не создано")
 
@@ -327,7 +324,6 @@ class WikiTree(object):
             pass
         except AttributeError:
             self.__print_error("дерево не создано")
-
 
     def print_first_path(self):
         """Напечатать в виде строк самый верхний уровень дерева"""
@@ -367,7 +363,6 @@ class WikiTree(object):
                 print(total)
         except AttributeError:
             self.__print_error("дерево не создано")
-
 
     def rename_publication(self, path_publ, new_name):
         """Изменяет имя публикации по указанному пути"""
@@ -478,7 +473,8 @@ class WikiTree(object):
             if str(type(path_publ)) != "<class 'str'>":
                 self.__print_error("аргумент path_folder не является строкой")
             elif len(path_publ) <= 1 or not path_publ.endswith(".publ"):
-                self.__print_error("аргумент path_folder передан в неверном формате, пример: 'my_lesson/lesson_1.publ' ")
+                self.__print_error(
+                    "аргумент path_folder передан в неверном формате, пример: 'my_lesson/lesson_1.publ' ")
             else:
                 paths = self.tree.split("\n")
                 for i in range(1, len(paths)):
@@ -489,7 +485,7 @@ class WikiTree(object):
         except AttributeError:
             self.__print_error("дерево не создано")
         except IndexError:
-            self.__print_error("параметра с индексом "+str(num_param)+" у данной публикации не существует")
+            self.__print_error("параметра с индексом " + str(num_param) + " у данной публикации не существует")
 
     def print_all_publications_paths(self):
         """Печатает пути ко всем публикациям в дереве"""
@@ -542,3 +538,28 @@ class WikiTree(object):
         except AttributeError:
             self.__print_error("дерево не создано")
 
+    def check_folder_for_delete(self, path_folder):
+        """Проверяет, пустая ли папка. Необходимо для удаления"""
+        try:
+            self.__set_last_symbol()
+            if str(type(path_folder)) != "<class 'str'>":
+                self.__print_error("аргумент path_folder не является строкой")
+            elif len(path_folder) <= 1 or not path_folder.endswith("/"):
+                self.__print_error("аргумент path_publ передан в неверном формате, пример: 'my_lesson/' ")
+            else:
+                paths = self.tree.split("\n")
+                isFind = False
+                for i in range(1, len(paths)):
+                    path = paths[i].split(":")[0]
+                    if path.find(path_folder) != -1:
+                        if path != path_folder:
+                            return False
+                        else:
+                            isFind = True
+                if not isFind:
+                    self.__print_error("Указанной папки не существует! : " + str(path_folder))
+                else:
+                    return True
+
+        except AttributeError:
+            self.__print_error("дерево не создано")
