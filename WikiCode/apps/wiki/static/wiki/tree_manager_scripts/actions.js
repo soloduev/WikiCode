@@ -237,3 +237,18 @@ $("#yes_delete_elem_in_tree").click(function () {
 });
 
 
+//Открыть конспект. Действие их контекстного меню
+$("#open_publ_in_wiki_tree_context").click(function () {
+    var tree_path_str = ''+selected_file_in_tree;
+    var arr = tree_path_str.split(':');
+    var id = ''+arr[1];
+    location.href = '/page/'+id;
+});
+
+//Открыть настройки конспекта(панель управления конспектом) из контекстного меню
+$("#open_settings_publ_in_wiki_tree_context").click(function () {
+    var tree_path_str = ''+selected_file_in_tree;
+    var arr = tree_path_str.split(':');
+    var id = ''+arr[1];
+    location.href = '/publ_manager/'+id;
+});
