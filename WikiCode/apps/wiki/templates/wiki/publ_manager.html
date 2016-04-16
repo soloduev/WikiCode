@@ -18,8 +18,267 @@
                 <div class="row">
                     <label class="text-center btn-primary btn-block">УПРАВЛЕНИЕ КОНСПЕКТОМ</label>
                 </div>
-            </div>
 
+                <div class="row">
+                    <hr>
+                    <div class="col-xs-4"> <!-- required for floating -->
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs tabs-left">
+                            <li class="active"><a href="#tab-lest-id1" data-toggle="tab">Редактирование</a></li>
+                            <li><a href="#tab-lest-id3" data-toggle="tab">Отображение</a></li>
+                            <li><a href="#tab-lest-id4" data-toggle="tab">Доступ</a></li>
+                            <li><a href="#tab-lest-id5" data-toggle="tab">Версии</a></li>
+                            <li><a href="#tab-lest-id6" data-toggle="tab">Файлы</a></li>
+                            <li><a href="#tab-lest-id7" data-toggle="tab">Удаление</a></li>
+                        </ul>
+                        <hr>
+                    </div>
+                    <div class="col-xs-8">
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tab-lest-id1">
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <h4>Заголовок конспекта</h4>
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <input class="form-control btn-block" style="border-radius: 0px;font-family: Courier;" >
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <h4>Описание конспекта</h4>
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <textarea class="form-control btn-block" style="border-radius: 0px; resize: none; font-family: Courier;" rows="3" ></textarea>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <h4>Путь к конспекту</h4>
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <input class="form-control btn-block" style="border-radius: 0px;font-family: Courier;" >
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <h4>Markdown текст</h4>
+                                        <a class="btn-link">Редактировать в редакторе StackEdit</a>
+                                        <a class="btn-link">Справка по Markdown</a>
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <textarea class="form-control btn-block" style="border-radius: 0px; resize: none; font-family: Courier;"rows="12" ></textarea>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <h4>Теги конспекта</h4>
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <input class="form-control btn-block" style="border-radius: 0px;font-family: Courier;" >
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-xs-5">
+
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <button id="wiki-style-btn" class="btn btn-block">Сохранить изменения</button>
+                                    </div>
+                                </div>
+                                <br>
+
+                            </div>
+                            <div class="tab-pane" id="tab-lest-id3">
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <h4>Офорление конспекта</h4>
+                                    </div>
+                                    <div class="col-xs-7 text-right">
+                                        <input type="checkbox" style="border-radius: 0px;font-family: Courier; width: 25px;height: 25px;" >
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <h4>Тема оформления</h4>
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <input class="form-control btn-block" type="number" style="border-radius: 0px;font-family: Courier;" >
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <h4>Отображение тегов</h4>
+                                    </div>
+                                    <div class="col-xs-7 text-right">
+                                        <input type="checkbox" style="border-radius: 0px;font-family: Courier; width: 25px;height: 25px;" >
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <h4>Общее комментирование</h4>
+                                    </div>
+                                    <div class="col-xs-7 text-right">
+                                        <input type="checkbox" style="border-radius: 0px;font-family: Courier; width: 25px;height: 25px;" >
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <h4>Динамическое комментирование</h4>
+                                    </div>
+                                    <div class="col-xs-7 text-right">
+                                        <input type="checkbox" style="border-radius: 0px;font-family: Courier; width: 25px;height: 25px;" >
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <h4>Динамическое редактирование</h4>
+                                    </div>
+                                    <div class="col-xs-7 text-right">
+                                        <input type="checkbox" style="border-radius: 0px;font-family: Courier; width: 25px;height: 25px;" >
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <h4>Версии конспекта</h4>
+                                    </div>
+                                    <div class="col-xs-7 text-right">
+                                        <input type="checkbox" style="border-radius: 0px;font-family: Courier; width: 25px;height: 25px;" >
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <h4>Возможность редактирования</h4>
+                                    </div>
+                                    <div class="col-xs-7 text-right">
+                                        <input type="checkbox" style="border-radius: 0px;font-family: Courier; width: 25px;height: 25px;" >
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <h4>Возможность скачивания</h4>
+                                    </div>
+                                    <div class="col-xs-7 text-right">
+                                        <input type="checkbox" style="border-radius: 0px;font-family: Courier; width: 25px;height: 25px;" >
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <h4>Возможность сохранения</h4>
+                                    </div>
+                                    <div class="col-xs-7 text-right">
+                                        <input type="checkbox" style="border-radius: 0px;font-family: Courier; width: 25px;height: 25px;" >
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <h4>Отображение ссылок</h4>
+                                    </div>
+                                    <div class="col-xs-7 text-right">
+                                        <input type="checkbox" style="border-radius: 0px;font-family: Courier; width: 25px;height: 25px;" >
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <h4>Отображение файлов</h4>
+                                    </div>
+                                    <div class="col-xs-7 text-right">
+                                        <input type="checkbox" style="border-radius: 0px;font-family: Courier; width: 25px;height: 25px;" >
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-xs-5">
+
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <button id="wiki-style-btn" class="btn btn-block">Сохранить изменения</button>
+                                    </div>
+                                </div>
+                                <br>
+                            </div>
+                            <div class="tab-pane" id="tab-lest-id4">
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <h4>Уровень доступа</h4>
+                                    </div>
+                                    <div class="col-xs-7 text-right">
+                                        <input class="form-control btn-block" type="number" style="border-radius: 0px;font-family: Courier;" >
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <h4>Контрибьюторы</h4>
+                                    </div>
+                                    <div class="col-xs-7 text-right">
+                                        <button class="btn btn-block btn-default">Назначить нового</button>
+                                        <input class="form-control btn-block" type="number" style="border-radius: 0px;font-family: Courier;" >
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <h4>Черный список</h4>
+                                    </div>
+                                    <div class="col-xs-7 text-right">
+                                        <button class="btn btn-block btn-default">Добавить пользователя</button>
+                                        <input class="form-control btn-block" type="number" style="border-radius: 0px;font-family: Courier;" >
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-xs-5">
+
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <button id="wiki-style-btn" class="btn btn-block">Сохранить изменения</button>
+                                    </div>
+                                </div>
+                                <br>
+
+                            </div>
+                            <div class="tab-pane" id="tab-lest-id5">
+                                <h4>Текущая ветка:</h4>
+                            </div>
+                            <div class="tab-pane" id="tab-lest-id6">
+                                <h4>Все файлы:</h4>
+                            </div>
+                            <div class="tab-pane" id="tab-lest-id7">
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <h4>Удаление конспекта</h4>
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <button id="wiki-style-btn" class="btn btn-block">Удалить конспект</button>
+                                    </div>
+                                </div>
+                                <br>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+
+                </div>
+
+            </div>
         </div>
     </div>
 {% endblock %}
@@ -27,4 +286,5 @@
 {% block add_script %}
     {% load staticfiles %}
     <link href={% static "wiki/wiki_styles/publ_manager.css" %} type="text/css" rel="stylesheet">
+    <link href={% static "wiki/bootstrapfiles/css/bootsrtap-vertical.css" %} type="text/css" rel="stylesheet">
 {% endblock %}
