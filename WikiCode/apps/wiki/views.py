@@ -95,3 +95,7 @@ def check_folder_for_delete(request):
 
 def delete_publ_in_tree(request):
     return tree_view.get_delete_publ_in_tree(request)
+
+
+def rename_publ_in_tree(request):
+    return tree_view.get_rename_publ_in_tree(request)

@@ -17,6 +17,7 @@ $("#jstree")
         {
             $("#div_folder_name_input").attr("style", "display: none;");
             $("#div_accept_delete_elem").attr("style", "display: none;");
+            $("#div_rename_publ_input").attr("style", "display: none;");
             $("#panel_inputs").attr("style", "");
         }
 
@@ -58,7 +59,7 @@ $("#add_folder_in_wiki_tree").click(function () {
         }
         else
         {
-           $("#div_folder_name_input").attr("style", "");
+            $("#div_folder_name_input").attr("style", "");
             $("#panel_inputs").attr("style", "display: none;");
             adding_folder_to = selected_file_in_tree
         }
@@ -92,28 +93,28 @@ $("#delete_folder_in_wiki_tree_context").click(function () {
             //Далее проверка, есть ли конспекты в папке:
 
             $.ajax({
-            type: "GET",
-            url: "check_folder_for_delete/",
-            data:{
-                'answer':''+selected_file_in_tree,
-            },
-            dataType: "text",
-            cache: false,
-            success: function(data){
-                if (data == 'ok'){
-                    $("#div_accept_delete_elem").attr("style", "");
-                    $("#panel_inputs").attr("style", "display: none;");
-                    var str = ''+selected_file_in_tree;
-                    var arr = str.split(":");
-                    $("#deleter-text-tree-manager").text("Delete "+arr[0]+" ?");
-                    adding_folder_to = selected_file_in_tree;
+                type: "GET",
+                url: "check_folder_for_delete/",
+                data:{
+                    'answer':''+selected_file_in_tree,
+                },
+                dataType: "text",
+                cache: false,
+                success: function(data){
+                    if (data == 'ok'){
+                        $("#div_accept_delete_elem").attr("style", "");
+                        $("#panel_inputs").attr("style", "display: none;");
+                        var str = ''+selected_file_in_tree;
+                        var arr = str.split(":");
+                        $("#deleter-text-tree-manager").text("Delete "+arr[0]+" ?");
+                        adding_folder_to = selected_file_in_tree;
+                    }
+                    else
+                    {
+                        //Говорим, что удалять можно только пустые папки
+                    }
                 }
-                else
-                {
-                    //Говорим, что удалять можно только пустые папки
-                }
-            }
-        });
+            });
         }
     }
 });
@@ -170,28 +171,28 @@ $("#del-element-in-tree").click(function () {
             //Далее проверка, есть ли конспекты в папке:
 
             $.ajax({
-            type: "GET",
-            url: "check_folder_for_delete/",
-            data:{
-                'answer':''+selected_file_in_tree,
-            },
-            dataType: "text",
-            cache: false,
-            success: function(data){
-                if (data == 'ok'){
-                    $("#div_accept_delete_elem").attr("style", "");
-                    $("#panel_inputs").attr("style", "display: none;");
-                    var str = ''+selected_file_in_tree;
-                    var arr = str.split(":");
-                    $("#deleter-text-tree-manager").text("Delete "+arr[0]+" ?");
-                    adding_folder_to = selected_file_in_tree;
+                type: "GET",
+                url: "check_folder_for_delete/",
+                data:{
+                    'answer':''+selected_file_in_tree,
+                },
+                dataType: "text",
+                cache: false,
+                success: function(data){
+                    if (data == 'ok'){
+                        $("#div_accept_delete_elem").attr("style", "");
+                        $("#panel_inputs").attr("style", "display: none;");
+                        var str = ''+selected_file_in_tree;
+                        var arr = str.split(":");
+                        $("#deleter-text-tree-manager").text("Delete "+arr[0]+" ?");
+                        adding_folder_to = selected_file_in_tree;
+                    }
+                    else
+                    {
+                        //Говорим, что удалять можно только пустые папки
+                    }
                 }
-                else
-                {
-                    //Говорим, что удалять можно только пустые папки
-                }
-            }
-        });
+            });
         }
     }
 
@@ -251,4 +252,56 @@ $("#open_settings_publ_in_wiki_tree_context").click(function () {
     var arr = tree_path_str.split(':');
     var id = ''+arr[1];
     location.href = '/publ_manager/'+id;
+});
+
+//Переименовать конспект из контекстного меню
+$("#rename_publ_in_wiki_tree_context").click(function () {
+    if(selected_file_in_tree !== "NONE_SELECT") {
+        if (('' + selected_file_in_tree).indexOf(".publ") != -1) {
+            $("#div_rename_publ_input").attr("style", "");
+            $("#panel_inputs").attr("style", "display: none;");
+            adding_folder_to = selected_file_in_tree
+        }
+        else
+        {
+
+        }
+    }
+});
+
+//Отмена переименовывания конспекта
+$("#cancel_rename_publ_in_wiki_tree").click(function () {
+    $("#div_rename_publ_input").attr("style", "display: none;");
+    $("#panel_inputs").attr("style", "");
+    adding_folder_to = "NONE";
+});
+
+//Подтверждение переименовывания конспекта
+$("#accept_rename_publ_in_wiki_tree").click(function () {
+
+    if (selected_file_in_tree !== "NONE_SELECT") {
+        if (('' + selected_file_in_tree).indexOf(".publ") != -1) {
+
+            new_name_publ = $("#rename_publ_input").val();
+            $.ajax({
+                type: "GET",
+                url: "rename_publ_in_tree/",
+                data:{
+                    'answer':''+new_name_publ+"^^^"+selected_file_in_tree,
+                },
+                dataType: "text",
+                cache: false,
+                success: function(data){
+                    if (data == 'ok'){
+                        location.reload();
+                    }
+                }
+            });
+
+        }
+        else
+        {
+
+        }
+    }
 });

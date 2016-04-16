@@ -128,7 +128,6 @@
           //Это конспект
           //Показываем нужные
 
-          $("#lt-context-menu-2").attr("style", "");
           $("#lt-context-menu-3").attr("style", "");
           $("#lt-context-menu-3-0").attr("style", "");
           $("#lt-context-menu-3-1").attr("style", "");
@@ -148,7 +147,6 @@
           {
             //Это папка
             //Скрываем не нужные опции контекстного меню
-            $("#lt-context-menu-2").attr("style", "display: none;");
             $("#lt-context-menu-3").attr("style", "display: none;");
             $("#lt-context-menu-3-0").attr("style", "display: none;");
             $("#lt-context-menu-3-1").attr("style", "display: none;");

@@ -175,3 +175,49 @@ def get_delete_publ_in_tree(request):
 
     else:
         return HttpResponse('no', content_type='text/html')
+
+
+def get_rename_publ_in_tree(request):
+    """Ajax представление. Переименование конспекта конспекта."""
+
+    if request.method == "GET":
+        answer = request.GET.get('answer')
+        user_data = check_auth(request)
+        arr = str(answer).split("^^^")
+        new_name_publ = arr[0]
+        path = arr[1].split(":")[0]
+        id = arr[1].split(":")[1]
+
+        try:
+            user = User.objects.get(email=user_data)
+            publication = Publication.objects.get(id_publication=id)
+            wt = WikiTree(user.id_user)
+            wt.load_tree(user.tree)
+            is_rename = wt.rename_publication(path,new_name_publ)
+            # Пока переименование конспекта осуществиться даже, если конспект с таким именем уже существует
+            if is_rename:
+                publication.title = new_name_publ
+                user.tree = wt.get_tree()
+                # Теперь переименовываем заголовок конспекта внутри его html содержания
+                with open("WikiCode/apps/wiki/generate_pages/gen_page.gen", "r", encoding='utf-8') as f:
+                    gen_page = f.read()
+                first_part = "<!DOCTYPE html><html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"><title>" + \
+                             new_name_publ + '</title></head><xmp theme="' + publication.theme.lower() + '" style="display:none;">'
+                second_part = publication.text
+                ready_page = first_part + second_part + gen_page
+                f = open("media/publications/" + id + ".html", 'tw', encoding='utf-8')
+                f.close()
+
+                with open("media/publications/" + id + ".html", "wb") as f:
+                    f.write(ready_page.encode("utf-8"))
+                publication.save()
+                user.save()
+
+            return HttpResponse('ok', content_type='text/html')
+        except User.DoesNotExist:
+            return HttpResponse('no', content_type='text/html')
+        except Publication.DoesNotExist:
+            return HttpResponse('no', content_type='text/html')
+
+    else:
+        return HttpResponse('no', content_type='text/html')

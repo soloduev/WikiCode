@@ -94,7 +94,7 @@
 
                                     <!--Скрытый блок подтверждения удаления элемента-->
                                     <div id="div_accept_delete_elem"class="col-xs-12" style="display: none;">
-                                        <span><h4 id="deleter-text-tree-manager">Удаоить? </h4></span>
+                                        <span><h4 id="deleter-text-tree-manager">Удалить? </h4></span>
                                         <div class="row">
                                             <div class="col-xs-12 text-left">
                                                 <div class="btn-group">
@@ -107,6 +107,26 @@
 
                                         </div>
                                     </div>
+
+                                    <!--Скрытый блок подтверждения переименования конспекта-->
+                                    <div id="div_rename_publ_input" class="col-xs-12" style="display: none;">
+                                        <span><h4>Переменовать конспект</h4></span>
+                                        <div class="row">
+                                            <div class="col-xs-4">
+                                                <input  type="text" class="form-control" id="rename_publ_input" placeholder="Новое имя конспекта..." autofocus
+                                                        style="border-radius: 0px;"/>
+                                            </div>
+                                            <div class="col-xs-8 text-left">
+                                                <div class="btn-group">
+                                                    <button id="accept_rename_publ_in_wiki_tree" class="btn btn-default">Переименовать <span
+                                                            class="glyphicon glyphicon-list"></span></button>
+                                                    <button id="cancel_rename_publ_in_wiki_tree" class="btn btn-default">Отмена <span
+                                                            class="glyphicon glyphicon-remove"></span></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
 
                                     <div class="col-md-12">
                                         <br>
@@ -135,14 +155,11 @@
 
     <nav id="context-menu" class="context-menu">
         <ul class="context-menu__items">
-            <li id="lt-context-menu-2"  class="context-menu__item">
-                <a href="#" class="context-menu__link" data-action="Info" style="text-decoration: none;"><i class="fa fa-info-circle"></i> Информация</a>
-            </li>
             <li id="lt-context-menu-1" class="context-menu__item">
                 <a id="open_publ_in_wiki_tree_context" href="#" class="context-menu__link" data-action="Open" style="text-decoration: none;"><i class="fa fa-eye"></i> Открыть</a>
             </li>
             <li id="lt-context-menu-6-1"  class="context-menu__item">
-                <a href="#" class="context-menu__link" data-action="Rename Publ" style="text-decoration: none;"><i class="fa fa-text-width"></i> Переименовать</a>
+                <a id="rename_publ_in_wiki_tree_context" href="#" class="context-menu__link" data-action="Rename Publ" style="text-decoration: none;"><i class="fa fa-text-width"></i> Переименовать</a>
             </li>
             <li id="lt-context-menu-3"  class="context-menu__item">
                 <a id="open_settings_publ_in_wiki_tree_context" href="#" class="context-menu__link" data-action="Settings" style="text-decoration: none;"><i class="fa fa-gear"></i> Настройки</a>
