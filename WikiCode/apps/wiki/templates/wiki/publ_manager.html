@@ -267,7 +267,7 @@
                                         <h4>Удаление конспекта</h4>
                                     </div>
                                     <div class="col-xs-7">
-                                        <button id="wiki-style-btn" class="btn btn-block">Удалить конспект</button>
+                                        <button id="wiki-style-btn" class="btn btn-block" data-toggle="modal" data-target="#myModal">Удалить конспект</button>
                                     </div>
                                 </div>
                                 <br>
@@ -281,10 +281,42 @@
             </div>
         </div>
     </div>
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Вы действительно хотите удалить этот конспект?</h4>
+                    <h4 class="modal-title" id="myModalLabel"><b>{{ tree_path }}</b></h4>
+                    <h4 class="modal-title" id="myModalLabel"><b>{{ publication.title }}</b></h4>
+                </div>
+                <div class="modal-body">
+                    <label><h4>ВНИМАНИЕ:</h4></label>
+                    <h4>После удаления конспекта, все пользователи, сохранившие его к себе в дерево, потеряют к нему доступ.</h4>
+                    <h4>После удаления конспекта, будут удалены все его версии, файлы, ссылки и комментарии.</h4>
+                    <h4>После удаления конспекта, вы потеряете его "Лайки", "Сохранения", "Просмотры"  и т.д. Соответственно, ваша общая статистика может пострадать.</h4>
+                    <h4>Удаление конспекта НЕОБРАТИМАЯ операция. Вы не сможете его потом восстановить.</h4>
+                    <hr>
+                    <h4>Вы уверены, что хотите его удалить?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
+                    <button id="wiki-style-btn-delete-publ"type="button" class="btn">Да, я хочу его удалить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 {% endblock %}
 
 {% block add_script %}
     {% load staticfiles %}
+    <script src={% static "wiki/wiki_scripts/publ_manager.js"%}></script>
     <link href={% static "wiki/wiki_styles/publ_manager.css" %} type="text/css" rel="stylesheet">
     <link href={% static "wiki/bootstrapfiles/css/bootsrtap-vertical.css" %} type="text/css" rel="stylesheet">
 {% endblock %}

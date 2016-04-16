@@ -133,7 +133,7 @@
           $("#lt-context-menu-3-0").attr("style", "");
           $("#lt-context-menu-3-1").attr("style", "");
           $("#lt-context-menu-1").attr("style", "");
-          $("#lt-context-menu-10").attr("style", "");
+          $("#lt-context-menu-6-1").attr("style", "");
           //Скрываем не нужные опции контекстного меню
           $("#lt-context-menu-4").attr("style", "display: none;");
           $("#lt-context-menu-5").attr("style", "display: none;");
@@ -153,7 +153,7 @@
             $("#lt-context-menu-3-0").attr("style", "display: none;");
             $("#lt-context-menu-3-1").attr("style", "display: none;");
             $("#lt-context-menu-1").attr("style", "display: none;");
-            $("#lt-context-menu-10").attr("style", "display: none;");
+            $("#lt-context-menu-6-1").attr("style", "display: none;");
             //Показываем нужные
             $("#lt-context-menu-4").attr("style", "");
             $("#lt-context-menu-5").attr("style", "");
@@ -272,6 +272,22 @@
    */
   function menuItemListener( link ) {
     console.log( "Task ID - " + taskItemInContext.getAttribute("data-id") + ", Task action - " + link.getAttribute("data-action"));
+    //
+    if(link.getAttribute("data-action") === "Open")
+    {
+      var tree_path_str = ''+taskItemInContext.getAttribute("data-id");
+      var arr = tree_path_str.split(':');
+      var id = ''+arr[1];
+      location.href = '/page/'+id;
+    }
+    if(link.getAttribute("data-action") === "Settings")
+    {
+      var tree_path_str = ''+taskItemInContext.getAttribute("data-id");
+      var arr = tree_path_str.split(':');
+      var id = ''+arr[1];
+      location.href = '/publ_manager/'+id;
+    }
+
     toggleMenuOff();
   }
 
