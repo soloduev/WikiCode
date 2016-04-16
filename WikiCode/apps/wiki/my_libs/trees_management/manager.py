@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Менеджер по управлению деревьями в WikiCode. version 0.38:
+# Менеджер по управлению деревьями в WikiCode. version 0.4:
 
 
 class WikiTree(object):
@@ -425,16 +425,20 @@ class WikiTree(object):
             elif len(path_folder) <= 1 or not path_folder.endswith("/"):
                 self.__print_error("аргумент path_folder передан в неверном формате, пример: 'my_lesson/' ")
             else:
-                paths = self.tree.split("\n")
-                for i in range(1, len(paths)):
-                    path = paths[i].split(":")[0]
-                    if path == path_folder:
-                        new_tree = ""
-                        for n in range(0, len(paths)):
-                            if n != i and paths[n].find(path_folder) != 0:
-                                new_tree += paths[n] + "\n"
-                        self.tree = new_tree
-                        break
+                if path_folder == "Personal/" or path_folder == "Imports/":
+                    self.__print_error("Удалять корневые папки запрещено!")
+                    return
+                else:
+                    paths = self.tree.split("\n")
+                    for i in range(1, len(paths)):
+                        path = paths[i].split(":")[0]
+                        if path == path_folder:
+                            new_tree = ""
+                            for n in range(0, len(paths)):
+                                if n != i and paths[n].find(path_folder) != 0:
+                                    new_tree += paths[n] + "\n"
+                            self.tree = new_tree
+                            break
         except AttributeError:
             self.__print_error("дерево не создано")
 
