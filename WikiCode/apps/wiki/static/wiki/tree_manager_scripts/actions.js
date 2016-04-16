@@ -78,6 +78,47 @@ $("#add_folder_in_wiki_tree_context").click(function () {
     }
 });
 
+//Удаление папки из дерева из контекстного меню
+$("#delete_folder_in_wiki_tree_context").click(function () {
+
+    if(selected_file_in_tree !== "NONE_SELECT")
+    {
+        if((''+selected_file_in_tree).indexOf(".publ") != -1)
+        {
+
+        }
+        else
+        {
+            //Далее проверка, есть ли конспекты в папке:
+
+            $.ajax({
+            type: "GET",
+            url: "check_folder_for_delete/",
+            data:{
+                'answer':''+selected_file_in_tree,
+            },
+            dataType: "text",
+            cache: false,
+            success: function(data){
+                if (data == 'ok'){
+                    $("#div_accept_delete_elem").attr("style", "");
+                    $("#panel_inputs").attr("style", "display: none;");
+                    var str = ''+selected_file_in_tree;
+                    var arr = str.split(":");
+                    $("#deleter-text-tree-manager").text("Delete "+arr[0]+" ?");
+                    adding_folder_to = selected_file_in_tree;
+                }
+                else
+                {
+                    //Говорим, что удалять можно только пустые папки
+                }
+            }
+        });
+        }
+    }
+});
+
+
 //Отмена добавления папки в дерево
 $("#cancel_add_folder_in_wiki_tree").click(function () {
     $("#div_folder_name_input").attr("style", "display: none;");
