@@ -118,6 +118,11 @@ $("#delete_folder_in_wiki_tree_context").click(function () {
     }
 });
 
+//Создание конспекта в выбранной папке из контекстного меню
+$("#create_publ_in_wiki_tree_context").click(function () {
+    $("#add_publ_in_wiki_tree").click();
+});
+
 
 //Отмена добавления папки в дерево
 $("#cancel_add_folder_in_wiki_tree").click(function () {
