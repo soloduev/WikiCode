@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Менеджер по управлению деревьями в WikiCode. version 0.4:
+# Менеджер по управлению деревьями в WikiCode. version 0.41:
 
 
 class WikiTree(object):
@@ -370,12 +370,16 @@ class WikiTree(object):
             self.__set_last_symbol()
             if str(type(path_publ)) != "<class 'str'>":
                 self.__print_error("аргумент path_publ не является строкой")
+                return False
             elif len(path_publ) <= 1 or not path_publ.endswith(".publ"):
                 self.__print_error("аргумент path_publ передан в неверном формате, пример: 'my_lesson/lesson_1.publ' ")
+                return False
             elif str(type(new_name)) != "<class 'str'>":
                 self.__print_error("аргумент new_name не является строкой")
+                return False
             elif self.__is_forbidden_symbols(new_name):
                 self.__print_error("аргумент new_name содержит запрещенные символы")
+                return False
             else:
                 paths = self.tree.split("\n")
                 for i in range(1, len(paths)):
@@ -391,8 +395,10 @@ class WikiTree(object):
                         new_path += ":" + paths[i].split(":")[1]
                         self.tree = self.tree.replace(paths[i], new_path)
                         break
+            return True
         except AttributeError:
             self.__print_error("дерево не создано")
+            return False
 
     def delete_publication(self, path_publ):
         """Удаляет публикацию по указанному пути"""
