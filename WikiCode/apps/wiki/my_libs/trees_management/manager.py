@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Менеджер по управлению деревьями в WikiCode. version 0.41:
+# Менеджер по управлению деревьями в WikiCode. version 0.42:
 
 
 class WikiTree(object):
@@ -394,8 +394,8 @@ class WikiTree(object):
                         new_path += new_name + ".publ"
                         new_path += ":" + paths[i].split(":")[1]
                         self.tree = self.tree.replace(paths[i], new_path)
-                        break
-            return True
+                        return True
+                return False
         except AttributeError:
             self.__print_error("дерево не создано")
             return False
@@ -518,12 +518,16 @@ class WikiTree(object):
             self.__set_last_symbol()
             if str(type(path_folder)) != "<class 'str'>":
                 self.__print_error("аргумент path_folder не является строкой")
+                return False
             elif len(path_folder) <= 1 or not path_folder.endswith("/"):
                 self.__print_error("аргумент path_publ передан в неверном формате, пример: 'my_lesson/' ")
+                return False
             elif str(type(new_name)) != "<class 'str'>":
                 self.__print_error("аргумент new_name не является строкой")
+                return False
             elif self.__is_forbidden_symbols(new_name):
                 self.__print_error("аргумент new_name содержит запрещенные символы")
+                return False
             else:
                 paths = self.tree.split("\n")
                 for i in range(1, len(paths)):
@@ -544,9 +548,11 @@ class WikiTree(object):
                                 if tree_lines[i].find(path_folder) == 0:
                                     new_line = tree_lines[i].replace(path_folder, new_path)
                                     self.tree = self.tree.replace(paths[i], new_line)
-                        break
+                                    return True
+                return False
         except AttributeError:
             self.__print_error("дерево не создано")
+            return False
 
     def check_folder_for_delete(self, path_folder):
         """Проверяет, пустая ли папка. Необходимо для удаления"""
