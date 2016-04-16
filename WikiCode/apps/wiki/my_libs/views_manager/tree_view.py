@@ -68,7 +68,59 @@ def get_add_folder_in_tree(request):
 def get_del_elem_in_tree(request):
     """Ajax представление. Удаление элемента в дереве пользователя"""
 
-    return HttpResponse('ok', content_type='text/html')
+    if request.method == "GET":
+        path_publ = request.GET.get('answer')
+        user_data = check_auth(request)
+
+        if path_publ.split(":")[0] == "Personal/" or path_publ.split(":")[0] == "Imports/":
+            return HttpResponse('no', content_type='text/html')
+
+        try:
+            user = User.objects.get(email=user_data)
+            wt = WikiTree(user.id_user)
+            wt.load_tree(user.tree)
+
+            if wt.check_folder_for_delete(path_publ.split(":")[0]):
+                wt.delete_folder(path_publ.split(":")[0])
+                user.tree = wt.get_tree()
+                user.save()
+                return HttpResponse('ok', content_type='text/html')
+            else:
+                return HttpResponse('no', content_type='text/html')
+
+        except User.DoesNotExist:
+            return HttpResponse('no', content_type='text/html')
+
+    else:
+        return HttpResponse('no', content_type='text/html')
+
+
+
+def get_check_folder_for_delete(request):
+    """Ajax представление. Проверка папку на пустоту, для ее удаления"""
+
+    if request.method == "GET":
+        path_publ = request.GET.get('answer')
+        user_data = check_auth(request)
+
+        if path_publ.split(":")[0] == "Personal/" or path_publ.split(":")[0] == "Imports/":
+            return HttpResponse('no', content_type='text/html')
+
+        try:
+            user = User.objects.get(email=user_data)
+            wt = WikiTree(user.id_user)
+            wt.load_tree(user.tree)
+
+            if wt.check_folder_for_delete(path_publ.split(":")[0]):
+                return HttpResponse('ok', content_type='text/html')
+            else:
+                return HttpResponse('no', content_type='text/html')
+
+        except User.DoesNotExist:
+            return HttpResponse('no', content_type='text/html')
+
+    else:
+        return HttpResponse('no', content_type='text/html')
 
 
 def get_delete_publ_in_tree(request):

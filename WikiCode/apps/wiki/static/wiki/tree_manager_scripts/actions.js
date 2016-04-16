@@ -52,9 +52,16 @@ $("#add_folder_in_wiki_tree").click(function () {
 
     if(selected_file_in_tree !== "NONE_SELECT")
     {
-        $("#div_folder_name_input").attr("style", "");
-        $("#panel_inputs").attr("style", "display: none;");
-        adding_folder_to = selected_file_in_tree
+        if((''+selected_file_in_tree).indexOf(".publ") != -1)
+        {
+
+        }
+        else
+        {
+           $("#div_folder_name_input").attr("style", "");
+            $("#panel_inputs").attr("style", "display: none;");
+            adding_folder_to = selected_file_in_tree
+        }
     }
 });
 
@@ -63,9 +70,11 @@ $("#add_folder_in_wiki_tree_context").click(function () {
 
     if(selected_file_in_tree !== "NONE_SELECT")
     {
+
         $("#div_folder_name_input").attr("style", "");
         $("#panel_inputs").attr("style", "display: none;");
         adding_folder_to = selected_file_in_tree
+
     }
 });
 
@@ -106,12 +115,38 @@ $("#del-element-in-tree").click(function () {
 
     if(selected_file_in_tree !== "NONE_SELECT")
     {
-        $("#div_accept_delete_elem").attr("style", "");
-        $("#panel_inputs").attr("style", "display: none;");
-        var str = ''+selected_file_in_tree;
-        var arr = str.split(":");
-        $("#deleter-text-tree-manager").text("Delete "+arr[0]+" ?");
-        adding_folder_to = selected_file_in_tree;
+        if((''+selected_file_in_tree).indexOf(".publ") != -1)
+        {
+
+        }
+        else
+        {
+            //Далее проверка, есть ли конспекты в папке:
+
+            $.ajax({
+            type: "GET",
+            url: "check_folder_for_delete/",
+            data:{
+                'answer':''+selected_file_in_tree,
+            },
+            dataType: "text",
+            cache: false,
+            success: function(data){
+                if (data == 'ok'){
+                    $("#div_accept_delete_elem").attr("style", "");
+                    $("#panel_inputs").attr("style", "display: none;");
+                    var str = ''+selected_file_in_tree;
+                    var arr = str.split(":");
+                    $("#deleter-text-tree-manager").text("Delete "+arr[0]+" ?");
+                    adding_folder_to = selected_file_in_tree;
+                }
+                else
+                {
+                    //Говорим, что удалять можно только пустые папки
+                }
+            }
+        });
+        }
     }
 
 });
@@ -130,20 +165,27 @@ $("#yes_delete_elem_in_tree").click(function () {
 
     if(selected_file_in_tree !== "NONE_SELECT")
     {
-        $.ajax({
-            type: "GET",
-            url: "del_elem_in_tree/",
-            data:{
-                'answer':''+selected_file_in_tree,
-            },
-            dataType: "text",
-            cache: false,
-            success: function(data){
-                if (data == 'ok'){
-                    location.reload();
+        if((''+selected_file_in_tree).indexOf(".publ") != -1)
+        {
+
+        }
+        else
+        {
+            $.ajax({
+                type: "GET",
+                url: "del_elem_in_tree/",
+                data:{
+                    'answer':''+selected_file_in_tree,
+                },
+                dataType: "text",
+                cache: false,
+                success: function(data){
+                    if (data == 'ok'){
+                        location.reload();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
 });
