@@ -221,3 +221,11 @@ def get_rename_publ_in_tree(request):
 
     else:
         return HttpResponse('no', content_type='text/html')
+
+
+def get_rename_folder_in_tree(request):
+    """Ajax представление. Переименование папки"""
+
+    # Важно понимать, что при переименовывании папки, все конспекты внутри него, МЕНЯЮТ СВОЙ ПУТЬ В ДЕРЕВЕ!!!
+    return HttpResponse('no', content_type='text/html')
+

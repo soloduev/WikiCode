@@ -18,6 +18,7 @@ $("#jstree")
             $("#div_folder_name_input").attr("style", "display: none;");
             $("#div_accept_delete_elem").attr("style", "display: none;");
             $("#div_rename_publ_input").attr("style", "display: none;");
+            $("#div_rename_folder_input").attr("style", "display: none;");
             $("#panel_inputs").attr("style", "");
         }
 
@@ -301,6 +302,68 @@ $("#accept_rename_publ_in_wiki_tree").click(function () {
         }
         else
         {
+
+        }
+    }
+});
+
+//Переименовывание папки из контекстного меню
+$("#rename_folder_in_wiki_tree_context").click(function () {
+    if(selected_file_in_tree !== "NONE_SELECT")
+    {
+        if((''+selected_file_in_tree).indexOf(".publ") != -1)
+        {
+
+        }
+        else {
+            var name_folder = ('' + selected_file_in_tree).split(":")[0];
+            if (name_folder !== "Personal/" && name_folder !== "Imports/")
+            {
+                $("#div_rename_folder_input").attr("style", "");
+                $("#panel_inputs").attr("style", "display: none;");
+                adding_folder_to = selected_file_in_tree;
+            }
+
+        }
+
+
+    }
+});
+
+//Отмена переименовывания папки
+$("#cancel_rename_folder_in_wiki_tree").click(function () {
+    $("#div_rename_folder_input").attr("style", "display: none;");
+    $("#panel_inputs").attr("style", "");
+    adding_folder_to = "NONE";
+});
+
+
+//Подтверждение переименовывания папки
+$("#accept_rename_folder_in_wiki_tree").click(function () {
+
+    if (selected_file_in_tree !== "NONE_SELECT") {
+        if (('' + selected_file_in_tree).indexOf(".publ") != -1) {
+
+
+        }
+        else
+        {
+            new_name_folder = $("#rename_folder_input").val();
+            
+            $.ajax({
+                type: "GET",
+                url: "rename_folder_in_tree/",
+                data:{
+                    'answer':''+new_name_folder+"^^^"+selected_file_in_tree,
+                },
+                dataType: "text",
+                cache: false,
+                success: function(data){
+                    if (data == 'ok'){
+                        location.reload();
+                    }
+                }
+            });
 
         }
     }

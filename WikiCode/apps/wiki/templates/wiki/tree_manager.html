@@ -127,6 +127,26 @@
                                         </div>
                                     </div>
 
+                                    <!--Скрытый блок подтверждения переименования папки-->
+                                    <div id="div_rename_folder_input" class="col-xs-12" style="display: none;">
+                                        <span><h4>Переменовать папку</h4></span>
+                                        <div class="row">
+                                            <div class="col-xs-4">
+                                                <input  type="text" class="form-control" id="rename_folder_input" placeholder="Новое имя папки..." autofocus
+                                                        style="border-radius: 0px;"/>
+                                            </div>
+                                            <div class="col-xs-8 text-left">
+                                                <div class="btn-group">
+                                                    <button id="accept_rename_folder_in_wiki_tree" class="btn btn-default">Переименовать <span
+                                                            class="glyphicon glyphicon-list"></span></button>
+                                                    <button id="cancel_rename_folder_in_wiki_tree" class="btn btn-default">Отмена <span
+                                                            class="glyphicon glyphicon-remove"></span></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
 
                                     <div class="col-md-12">
                                         <br>
@@ -177,7 +197,7 @@
                 <a id="create_publ_in_wiki_tree_context" href="#" class="context-menu__link" data-action="Create publ" style="text-decoration: none;"><i class="fa fa-list-alt"></i> Создать конспект</a>
             </li>
             <li id="lt-context-menu-6"  class="context-menu__item">
-                <a href="#" class="context-menu__link" data-action="Rename Folder" style="text-decoration: none;"><i class="fa fa-text-width"></i> Переименовать</a>
+                <a id="rename_folder_in_wiki_tree_context" href="#" class="context-menu__link" data-action="Rename Folder" style="text-decoration: none;"><i class="fa fa-text-width"></i> Переименовать</a>
             </li>
             <li id="lt-context-menu-9"  class="context-menu__item">
                 <a href="#" class="context-menu__link" data-action="Move Folder" style="text-decoration: none;"><i class="fa fa-hand-grab-o"></i> Переместить</a>

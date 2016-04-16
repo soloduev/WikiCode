@@ -99,3 +99,7 @@ def delete_publ_in_tree(request):
 
 def rename_publ_in_tree(request):
     return tree_view.get_rename_publ_in_tree(request)
+
+
+def rename_folder_in_tree(request):
+    return tree_view.get_rename_folder_in_tree(request)
