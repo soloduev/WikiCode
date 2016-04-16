@@ -128,7 +128,7 @@ def get_create_page(request):
             is_marks=False,
             is_comments=False,
             tags=form["tags"],
-            tree_path=form["folder"]+":"+str(newid),
+            tree_path=form["folder"]+form["title"]+".publ:"+str(newid),
             comments=0,
             imports=0,
             marks=0,
