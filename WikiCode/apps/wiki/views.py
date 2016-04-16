@@ -87,3 +87,7 @@ def add_folder_in_tree(request):
 
 def del_elem_in_tree(request):
     return tree_view.get_del_elem_in_tree(request)
+
+
+def delete_publ_in_tree(request):
+    return tree_view.get_delete_publ_in_tree(request)
