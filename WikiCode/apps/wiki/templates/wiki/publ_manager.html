@@ -42,7 +42,7 @@
                                         <h4>Заголовок конспекта</h4>
                                     </div>
                                     <div class="col-xs-7">
-                                        <input class="form-control btn-block" style="border-radius: 0px;font-family: Courier;" >
+                                        <input class="form-control btn-block" style="border-radius: 0px;font-family: Courier;" value="{{ publication.title }}">
                                     </div>
                                 </div>
                                 <br>
@@ -51,7 +51,7 @@
                                         <h4>Описание конспекта</h4>
                                     </div>
                                     <div class="col-xs-7">
-                                        <textarea class="form-control btn-block" style="border-radius: 0px; resize: none; font-family: Courier;" rows="3" ></textarea>
+                                        <textarea class="form-control btn-block" style="border-radius: 0px; resize: none; font-family: Courier;" rows="3" >{{ publication.description }}</textarea>
                                     </div>
                                 </div>
                                 <br>
@@ -60,7 +60,7 @@
                                         <h4>Путь к конспекту</h4>
                                     </div>
                                     <div class="col-xs-7">
-                                        <input class="form-control btn-block" style="border-radius: 0px;font-family: Courier;" >
+                                        <input class="form-control btn-block" style="border-radius: 0px;font-family: Courier;" value="{{ tree_path }}">
                                     </div>
                                 </div>
                                 <br>
@@ -71,7 +71,7 @@
                                         <a class="btn-link">Справка по Markdown</a>
                                     </div>
                                     <div class="col-xs-7">
-                                        <textarea class="form-control btn-block" style="border-radius: 0px; resize: none; font-family: Courier;"rows="12" ></textarea>
+                                        <textarea class="form-control btn-block" style="border-radius: 0px; resize: none; font-family: Courier;"rows="12" >{{ publication.text }}</textarea>
                                     </div>
                                 </div>
                                 <br>

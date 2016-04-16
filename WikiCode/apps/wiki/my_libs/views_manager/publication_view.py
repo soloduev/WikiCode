@@ -174,14 +174,22 @@ def get_create_page(request):
 def get_publ_manager(request, id):
     """Запускает страницу управления конспектом"""
 
-    # Получаем пользователя
-    user_data = check_auth(request)
+    try:
+        publication = Publication.objects.get(id_publication=id)
 
-    context = {
-        "user_data": user_data,
-        "user_id": get_user_id(request),
-    }
-    return render(request, 'wiki/publ_manager.html', context)
+        # Получаем пользователя
+        user_data = check_auth(request)
+
+        context = {
+            "user_data": user_data,
+            "user_id": get_user_id(request),
+            "publication":publication,
+            "tree_path":publication.tree_path.split(":")[0],
+        }
+        return render(request, 'wiki/publ_manager.html', context)
+
+    except Publication.DoesNotExist:
+        return get_error_page(request, ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
 
 
 
