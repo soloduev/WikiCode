@@ -75,11 +75,12 @@ class CommentBlock(models.Model):
 
 class Comment(models.Model):
     comment_block = models.ForeignKey(CommentBlock, on_delete=models.CASCADE)
+    num_position = models.BigIntegerField()
     id_author = models.BigIntegerField()
     nickname_author = models.CharField(max_length=100)
     rating = models.BigIntegerField()
     text = models.TextField()
-    data = models.DateField()
+    data = models.CharField(max_length=100)
     id_author_answer = models.BigIntegerField()
     nickname_author_answer = models.CharField(max_length=100)
     def __str__(self):
