@@ -19,7 +19,7 @@
 
 
 from django.shortcuts import render
-from WikiCode.apps.wiki.models import Publication, Statistics
+from WikiCode.apps.wiki.models import Publication, Statistics, CommentBlock
 from .auth import check_auth, get_user_id
 from WikiCode.apps.wiki.mymarkdown import mdsplit
 from django.template import RequestContext, loader
@@ -156,6 +156,11 @@ def get_create_page(request):
             edits=0,
             downloads=0)
         new_publication.save()
+
+        new_comment_block = CommentBlock(
+            id_publication=newid,
+            last_id=0)
+        new_comment_block.save()
 
         # Загружаем дерево пользователя
         wt = WikiTree(user.id_user)
