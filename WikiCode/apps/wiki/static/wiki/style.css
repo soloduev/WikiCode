@@ -46,10 +46,16 @@ Follow me on Twitter @maridlcrmn
     .nav-collapse>li { float: none; }
 }
 
+#nav-bar-button1 { font-size: 12px; }
+#nav-bar-button2 {  font-size: 12px; }
+#nav-bar-button3 { font-size: 12px; }
+#nav-bar-button5 { font-size: 12px;  }
+
+
+
 #nav-bar-button1:hover {  border-bottom: 4px solid #2b669a;  }
 #nav-bar-button2:hover {  border-bottom: 4px solid #2b669a;  }
 #nav-bar-button3:hover {  border-bottom: 4px solid #2b669a;  }
-#nav-bar-button4:hover {  border-bottom: 4px solid #2b669a;  }
 #nav-bar-button5:hover {  border-bottom: 4px solid #2b669a;  }
 
 .social:hover {

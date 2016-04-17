@@ -46,7 +46,6 @@
                     <li id="nav-bar-button1"><a href="{% url 'tree_manager' %}">Мое Дерево</a></li>
                     <li id="nav-bar-button2"><a href="{% url 'create' %}">Создать</a></li>
                     <li id="nav-bar-button3"><a href="{% url 'settings' %}">Настройки</a></li>
-                    <li id="nav-bar-button4"><a href="{% url 'help' %}">Помощь</a></li>
                     <li id="nav-bar-button5"><a href="{% url 'about' %}">О платформе</a></li>
                     {% if user_data == "None" %}
                         <li>
@@ -56,7 +55,7 @@
                     {% else %}
                         <li><a href="/user/{{ user_id }}/"><b>{{ user_data }}</b></a></li>
                         <li>
-                            <a href="{% url 'logout_user' %}" class="btn btn-default btn-outline btn-circle" style="border-radius: 0px;">Выйти</a>
+                            <a href="{% url 'logout_user' %}" class="btn btn-default btn-outline btn-circle" style="border-radius: 0px;"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
                         </li>
                     {% endif %}
 

@@ -21,7 +21,6 @@
 from WikiCode.apps.wiki.my_libs.views_manager import index_view
 from WikiCode.apps.wiki.my_libs.views_manager import about_view
 from WikiCode.apps.wiki.my_libs.views_manager import publication_view
-from WikiCode.apps.wiki.my_libs.views_manager import help_view
 from WikiCode.apps.wiki.my_libs.views_manager import settings_view
 from WikiCode.apps.wiki.my_libs.views_manager import user_view
 from WikiCode.apps.wiki.my_libs.views_manager import registration_view
@@ -40,10 +39,6 @@ def about(request):
 @login_required
 def create(request):
     return publication_view.get_create(request)
-
-
-def help(request):
-    return help_view.get_help(request)
 
 
 def page(request, id):
