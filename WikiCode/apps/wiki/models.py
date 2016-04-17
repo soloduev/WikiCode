@@ -67,19 +67,6 @@ class Publication(models.Model):
         return str(self.id_publication)
 
 
-class Comment(models.Model):
-    id_comment = models.BigIntegerField()
-    id_author = models.BigIntegerField()
-    id_publication = models.BigIntegerField()
-    date = models.DateTimeField()
-    text = models.TextField()
-    addressee = models.CharField(max_length=100,blank=True)
-    position = models.CharField(max_length=100) # right, left, down
-    height = models.IntegerField(blank=True)
-    def __str__(self):
-        return str(self.id_comment)
-
-
 class Statistics(models.Model):
     id_statistics = models.IntegerField()
     # Зарегестрировано юзеров
@@ -97,16 +84,6 @@ class Statistics(models.Model):
     def __str__(self):
         return str(self.id_statistics)
 
-
-class Notification(models.Model):
-    id_notification = models.BigIntegerField()
-    id_author = models.BigIntegerField()
-    id_publication = models.BigIntegerField()
-    author_to = models.BigIntegerField()
-    type = models.CharField(max_length=100)
-    text = models.TextField()
-    def __str__(self):
-        return str(self.id_notification)
 
 
 
