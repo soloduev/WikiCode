@@ -66,6 +66,26 @@ class Publication(models.Model):
     def __str__(self):
         return str(self.id_publication)
 
+class CommentBlock(models.Model):
+    id_publication = models.BigIntegerField()
+    last_id = models.BigIntegerField()
+    def __str__(self):
+        return str(self.id_publication)
+
+
+class Comment(models.Model):
+    comment_block = models.ForeignKey(CommentBlock, on_delete=models.CASCADE)
+    id_author = models.BigIntegerField()
+    nickname_author = models.CharField(max_length=100)
+    rating = models.BigIntegerField()
+    text = models.TextField()
+    data = models.DateField()
+    id_author_answer = models.BigIntegerField()
+    nickname_author_answer = models.CharField(max_length=100)
+    def __str__(self):
+        return str(self.comment_block)
+
+
 
 class Statistics(models.Model):
     id_statistics = models.IntegerField()

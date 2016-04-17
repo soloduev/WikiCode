@@ -19,7 +19,7 @@
 
 from django.contrib import admin
 from .models import User
-from .models import Publication, Statistics
+from .models import Publication, Statistics, CommentBlock, Comment
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User as DjangoUser
 # Register your models here.
@@ -39,3 +39,5 @@ admin.site.register(DjangoUser, UserAdmin)
 
 admin.site.register(Publication)
 admin.site.register(Statistics)
+admin.site.register(CommentBlock)
+admin.site.register(Comment)
