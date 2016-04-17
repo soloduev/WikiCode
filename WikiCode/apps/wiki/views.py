@@ -122,3 +122,7 @@ def rename_publ_in_tree(request):
 
 def rename_folder_in_tree(request):
     return tree_view.get_rename_folder_in_tree(request)
+
+
+def add_comment_in_wiki_page(request, id):
+    return publication_view.get_add_comment_in_wiki_page(request, id)

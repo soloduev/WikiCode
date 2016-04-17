@@ -19,7 +19,7 @@
 
 
 from django.shortcuts import render
-from WikiCode.apps.wiki.models import Publication, Statistics, CommentBlock
+from WikiCode.apps.wiki.models import Publication, Statistics, CommentBlock, Comment
 from .auth import check_auth, get_user_id
 from WikiCode.apps.wiki.mymarkdown import mdsplit
 from django.template import RequestContext, loader
@@ -27,6 +27,7 @@ from django.http import HttpResponse
 from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.my_libs.trees_management.manager import WikiTree
 from WikiCode.apps.wiki.my_libs.views_manager.error_view import get_error_page
+import datetime
 
 def get_create(request):
     user_data = check_auth(request)
@@ -82,6 +83,18 @@ def get_page(request, id):
                 "text": arr[i]
             })
 
+        # Теперь загружаем комментарии
+
+        try:
+            comment_block = CommentBlock.objects.get(id_publication=id)
+            all_comments = Comment.objects.filter(comment_block=comment_block)
+        except CommentBlock.DoesNotExist:
+            print("WIKI ERROR: Блок комментариев не обнаружен")
+        except Comment.DoesNotExist:
+            print("WIKI ERROR: Список комментариев не обнаружен")
+
+
+
         context = {
             "publication": publication,
             "paragraphs": paragraphs,
@@ -89,6 +102,7 @@ def get_page(request, id):
             "user_data": check_auth(request),
             "user_id": get_user_id(request),
             "preview_tree": wt.generate_html_preview(),
+            "all_comments": all_comments,
         }
 
         return render(request, 'wiki/page.html', context)
@@ -216,21 +230,55 @@ def get_publ_manager(request, id):
         return get_error_page(request, ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
 
 
+def get_add_comment_in_wiki_page(request, id):
+    """Ajax представление. Добавляет коммент к публикации."""
+
+    try:
+        comment_block = CommentBlock.objects.get(id_publication=id)
+        publication = Publication.objects.get(id_publication=id)
+
+        # Получаем пользователя
+        user_data = check_auth(request)
+
+        # Получаем сообщение
+        comment_message = request.GET.get('comment_message')
+
+        #Получаем текущую дату
+        date = str(datetime.datetime.now())
+        date = date[:len(date)-7]
+
+        #Получаем пользователя оставившего комментарий
+        id = int(get_user_id(request))
+        user = User.objects.get(id_user=id)
+        user.comments += 1
+
+        #Получаем пользователя получившего комментарий
+        user2 = User.objects.get(id_user=publication.id_author)
+        user2.commented_it += 1
 
 
+        # Создаем новый комментарий
+        new_comment = Comment(comment_block=comment_block,
+                              num_position=comment_block.last_id+1,
+                              id_author=user.id_user,
+                              nickname_author=user.nickname,
+                              rating=0,
+                              text=comment_message,
+                              data=date,
+                              id_author_answer=0,
+                              nickname_author_answer="")
 
+        new_comment.save()
+        comment_block.last_id += 1
+        comment_block.save()
+        user2.save()
+        user.save()
 
+        return HttpResponse('ok', content_type='text/html')
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    except CommentBlock.DoesNotExist:
+        return get_error_page(request, ["This is comment block not found!"])
+    except Publication.DoesNotExist:
+        return get_error_page(request, ["This is publication not found!"])
+    except User.DoesNotExist:
+        return get_error_page(request, ["This is user is not found!"])

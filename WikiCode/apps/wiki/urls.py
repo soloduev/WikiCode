@@ -52,5 +52,8 @@ urlpatterns = [
     # События на странице управления конспектом
     url(r'^publ_manager/delete_publ_in_tree/$', views.delete_publ_in_tree, name='delete_publ_in_tree'),
 
+    # События на странице конспекта
+    url(r'^page/(?P<id>[0-9]+)/add_comment_in_wiki_page/$', views.add_comment_in_wiki_page, name='add_comment_in_wiki_page'),
+
 
 ]

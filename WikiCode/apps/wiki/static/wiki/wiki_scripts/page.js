@@ -31,3 +31,31 @@
 
     });
   }) (jQuery);
+
+
+//Добавление комментария к конспекту
+$("#wiki-style-btn-add-comment").click(function () {
+
+    if(($("#add-comment-wiki-page").val().length >=10))
+    {
+        comment_message = $("#add-comment-wiki-page").val();
+        $.ajax({
+                type: "GET",
+                url: "add_comment_in_wiki_page/",
+                data:{
+                    'comment_message':''+comment_message,
+                },
+                dataType: "text",
+                cache: false,
+                success: function(data){
+                    if (data == 'ok'){
+                        location.reload();
+                    }
+                    else
+                    {
+                        //Говорим, что комментарий добавить не удалось(
+                    }
+                }
+            });
+    }
+});
