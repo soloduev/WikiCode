@@ -115,8 +115,8 @@
                                                 <div class="col-xs-12">
                                                     <div class="row">
                                                         <br>
-                                                                <label for="comment">Ваш Комментарий</label>
-                                                                <textarea id="add-comment-wiki-page" name="comment" class="form-control" rows="3" style="resize: none; border-radius: 0px;"></textarea>
+                                                        <label for="comment">Ваш Комментарий</label>
+                                                        <textarea id="add-comment-wiki-page" name="comment" class="form-control" rows="3" style="resize: none; border-radius: 0px;"></textarea>
                                                     </div>
                                                     <div class="row">
                                                         <br>
@@ -153,48 +153,17 @@
 
                                             </div>
                                             <div class="tab-pane" id="tab_default_3">
-                                                <style>
-                                                    .md-btn:hover {
-                                                        background-color: white;
-                                                        border-radius: 0px;
-                                                        color: #337ab7;
-                                                    }
-
-                                                    .md-btn {
-                                                        border: 0px solid black;
-                                                        background-color: white;
-                                                        color: white;
-                                                    }
-
-                                                    .md-comment:hover {
-                                                        background-color: white;
-                                                        border-radius: 0px;
-                                                        color: #337ab7;
-                                                    }
-
-                                                    .md-comment {
-                                                        border: 0px solid black;
-                                                        background-color: white;
-                                                        color: white;
-                                                    }
-                                                </style>
-
                                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                                     <div class="row">
-                                                        {% for elem in numbers %}
-                                                            <div class="col-xs-1 col-sm-1 col-md-1">
-                                                                <div class="row">
-                                                                    <a class="md-btn btn btn-default btn-block"
-                                                                       id="md-btn-{{ elem }}"><i
-                                                                            class="md-ico fa fa-pencil-square-o fa-2x"></i></a>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-xs-11 col-sm-11 col-md-11">
-                                                                <div class="row">
+                                                        <ul class="border">
+                                                            {% for elem in numbers %}
+                                                                <li id="li-md-wikicode-{{ elem }}">
                                                                     <div class="md-hover" id="markdown-row-{{ elem }}"></div>
-                                                                </div>
-                                                            </div>
-                                                        {% endfor %}
+
+                                                                </li>
+                                                            {% endfor %}
+                                                        </ul>
+
                                                     </div>
                                                 </div>
 
@@ -212,6 +181,7 @@
 
                                             </div>
                                             <div class="tab-pane" id="tab_default_4">
+
 
                                             </div>
                                             <div class="tab-pane" id="tab_default_5">
@@ -255,14 +225,23 @@
         </div>
     </div>
     <button class="btn-lg" id="pollSlider-button"><span class="glyphicon glyphicon-tree-deciduous"></span> </button>
-     <button class="btn-lg" id="like-pollSlider-button"><span class="glyphicon glyphicon-thumbs-up"></span> </button>
-     <button class="btn-lg" id="info-pollSlider-button"><span class="glyphicon glyphicon-info-sign"></span> </button>
+    <button class="btn-lg" id="like-pollSlider-button"><span class="glyphicon glyphicon-thumbs-up"></span> </button>
+    <button class="btn-lg" id="info-pollSlider-button"><span class="glyphicon glyphicon-info-sign"></span> </button>
     <div id="wiki-left-page" class="sb-slidebar sb-left sb-width-custom">
         <br><br><br><br><br>
         <label class="btn-block btn-primary text-center">ДЕРЕВО ПОЛЬЗОВАТЕЛЯ</label>
         <ul id="tree2">
             <!--Здесь должно располгататься сгенерированное дерево пользователя -->
             {{ preview_tree|safe }}
+        </ul>
+    </div>
+
+    <!--Выпадающее меню при нажатии на абзац-->
+    <div id="context-dinamic-menu" style="display: none;">
+        <ul id="wiki-style-btns-options">
+            <li id="wiki-style-btn-option-1" class="btn" style="width: 35px;border-radius: 25px; padding-left: 10px;"><i class="fa fa-pencil"></i></li>
+            <li id="wiki-style-btn-option-2" class="btn" style="width: 35px;border-radius: 25px; padding-left: 10px;"><i class="fa fa-exclamation-triangle"></i></li>
+            <li id="wiki-style-btn-option-3" class="btn" style="width: 35px;border-radius: 25px; padding-left: 10px;"><i class="fa fa-comment-o"></i></li>
         </ul>
     </div>
 {% endblock %}
@@ -277,49 +256,54 @@
         $(init);
 
 
-        var startDiv = '<div class="container"><div class="row"><div class="col-md-2"></div><div id="flip-row" class="col-md-8"><br>';
-        var header = '<label class="text-center btn-primary btn-block">РЕДАКТИРОВАТЬ БЛОК</label>';
-        var textarea1 = '<p><textarea id="edittext" required class="form-control btn-block newtext" rows="15" style="resize: none; border-radius:0px; font-family: Courier;color: #0f0f0f;" wrap="soft">';
-        var textarea2 = '</textarea></p>';
-        var comments = '<p><input type="text" required class="form-control btn-block" rows="2" style="resize: none;border-radius:0px; font-family: Courier;color: #0f0f0f;" wrap="soft" placeholder="Enter your comments..."></textarea></p>';
-        var editInput = '<button id="editinput" type="submit" class="btn btn-block btn-primary btnedit" style="border-radius: 0px;">Edit </button>';
-        var cancelInput = '<button id="cancelinput" type="submit" class="btn btn-block btn-primary btncancel" style="border-radius: 0px;">Cancel </button><br>';
-        var endDiv = '</div><div class="col-md-2"></div></div></div>';
-
+        li_is_moved = false;
         {% for p in paragraphs %}
-            var back{{ p.index|escapejs }};
             var md{{ p.index|escapejs }} = '{{ p.text|escapejs }}';
             document.getElementById('markdown-row-{{ p.index|escapejs }}').innerHTML = marked(md{{ p.index|escapejs }});
-            $('#md-btn-{{ p.index|escapejs }}').attr('style', 'height: ' + $('#markdown-row-{{ p.index|escapejs }}').height() + 'px;');
 
-            var front{{ p.index|escapejs }} = document.getElementById("markdown-row-{{ p.index|escapejs }}")
-                    , back_content
-                    , back{{ p.index|escapejs }};
+
+            document.getElementById('li-md-wikicode-{{ p.index|escapejs }}').onmousemove = function(e) {
+                var div = document.getElementById('li-md-wikicode-{{ p.index|escapejs }}');
+                var rect = div.getBoundingClientRect();
+                var x = e.offsetX==undefined?e.layerX:e.offsetX;
+                var y = e.offsetY==undefined?e.layerY:e.offsetY;
+                if(rect.width - x < 30 && y > 0 && y <= rect.height)
+                {
+                    $("#li-md-wikicode-{{ p.index|escapejs }}").attr("style", "border-right: 3px solid #225a84;background-color: #F1F1F1;");
+                    li_is_moved = true;
+                }
+                else
+                {
+                    $(".border li").attr("style", "padding: 10px 10px;margin-bottom: 0px;border-right: 3px solid #c9c9c9;transition: all 0.5s ease 0s;");
+                    li_is_moved = false;
+                }
+            };
+
+            document.getElementById('li-md-wikicode-{{ p.index|escapejs }}').onmouseout = function(e) {
+                $(".border li").attr("style", "padding: 10px 10px;margin-bottom: 0px;border-right: 3px solid #c9c9c9;transition: all 0.5s ease 0s;");
+                li_is_moved = false;
+            };
+
+            document.getElementById('li-md-wikicode-{{ p.index|escapejs }}').onclick = function (e) {
+                if(li_is_moved)
+                {
+                    console.log("Нажад абзац {{ p.index|escapejs }}!");
+                    console.log(event.clientX + " - "+event.clientY);
+                    var div = document.getElementById('li-md-wikicode-{{ p.index|escapejs }}');
+                    var rect = div.getBoundingClientRect();
+                    $("#context-dinamic-menu").attr("style", "position: fixed; right:"+(rect.right-rect.width-18)+"px; top:"+(rect.top+rect.height/2-20)+"px; z-index: 9999;");
+                }
+            };
+
+            //$("#circle-comment-{{ p.index|escapejs }}").attr("style", "position: relative;position: absolute; width:10px; height:10px; background-color: black; top: 100px;")
 
         {% endfor %}
 
-        function init() {
-            {% for p in paragraphs %}
-                $('#md-btn-{{ p.index|escapejs }}').bind('click', flip{{ p.index|escapejs }});
-            {% endfor %}
-        }
+        $(document).mouseup(function()
+        {
+            $("#context-dinamic-menu").hide();
 
-        {% for p in paragraphs %}
-            function flip{{ p.index|escapejs }}() {
-                back{{ p.index|escapejs }} = flippant.flip(front{{ p.index|escapejs }}, startDiv + header + textarea1 + md{{ p.index|escapejs }} + textarea2 + comments + editInput + cancelInput + endDiv, 'modal');
-                back{{ p.index|escapejs }}.addEventListener('click', function (e) {
-                    if (e.target.classList.contains('btncancel')) {
-                        back{{ p.index|escapejs }}.close();
-                    }
-                    else if (e.target.classList.contains('btnedit')) {
-                        md{{ p.index|escapejs }} = back{{ p.index|escapejs }}.querySelector('textarea').value;
-                        document.getElementById('markdown-row-{{ p.index|escapejs }}').innerHTML = marked(md{{ p.index|escapejs }});
-                        $('#md-btn-{{ p.index|escapejs }}').attr('style', 'height: ' + $('#markdown-row-{{ p.index|escapejs }}').height() + 'px;');
-                        back{{ p.index|escapejs }}.close();
-                    }
-                })
-            }
-        {% endfor %}
+        });
 
         //То что касается тегов
         $(function() {
