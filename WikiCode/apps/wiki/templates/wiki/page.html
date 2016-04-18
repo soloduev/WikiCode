@@ -271,6 +271,7 @@
                 {
                     $("#li-md-wikicode-{{ p.index|escapejs }}").attr("style", "border-right: 3px solid #225a84;background-color: #F1F1F1;");
                     li_is_moved = true;
+                    $("#context-dinamic-menu").attr("style", "position: fixed;opacity: 1; right:"+(rect.right-rect.width-18)+"px; top:"+(rect.top+rect.height/2-20)+"px; z-index: 9999;transition: all 0.5s ease 0s;");
                 }
                 else
                 {
@@ -284,16 +285,6 @@
                 li_is_moved = false;
             };
 
-            document.getElementById('li-md-wikicode-{{ p.index|escapejs }}').onclick = function (e) {
-                if(li_is_moved)
-                {
-                    console.log("Нажад абзац {{ p.index|escapejs }}!");
-                    console.log(event.clientX + " - "+event.clientY);
-                    var div = document.getElementById('li-md-wikicode-{{ p.index|escapejs }}');
-                    var rect = div.getBoundingClientRect();
-                    $("#context-dinamic-menu").attr("style", "position: fixed; right:"+(rect.right-rect.width-18)+"px; top:"+(rect.top+rect.height/2-20)+"px; z-index: 9999;");
-                }
-            };
 
             //$("#circle-comment-{{ p.index|escapejs }}").attr("style", "position: relative;position: absolute; width:10px; height:10px; background-color: black; top: 100px;")
 
