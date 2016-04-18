@@ -133,6 +133,7 @@ def get_create_user(request):
             context = {
                 "all_publications": all_publications,
                 "user_data": check_auth(request),
+                "user_id": get_user_id(request),
             }
             return render(request, 'wiki/index.html', context)
         context = {
