@@ -255,11 +255,16 @@
     <script>
         $(init);
 
-
+        //Номер выбранного параграфа
+        var num_paragraph =  "";
+        var md_text = [];
         li_is_moved = false;
+        var selectText = "";
+        var isEdit = false;
         {% for p in paragraphs %}
-            var md{{ p.index|escapejs }} = '{{ p.text|escapejs }}';
-            document.getElementById('markdown-row-{{ p.index|escapejs }}').innerHTML = marked(md{{ p.index|escapejs }});
+
+            md_text[{{ p.index|escapejs }}] = '{{ p.text|escapejs }}';
+            document.getElementById('markdown-row-{{ p.index|escapejs }}').innerHTML = marked(md_text[{{ p.index|escapejs }}]);
 
 
             document.getElementById('li-md-wikicode-{{ p.index|escapejs }}').onmousemove = function(e) {
@@ -267,8 +272,9 @@
                 var rect = div.getBoundingClientRect();
                 var x = e.offsetX==undefined?e.layerX:e.offsetX;
                 var y = e.offsetY==undefined?e.layerY:e.offsetY;
-                if(rect.width - x < 30 && y > 0 && y <= rect.height)
+                if(rect.width - x < 30 && y > 0 && y <= rect.height && !isEdit)
                 {
+                    num_paragraph = ""+{{ p.index|escapejs }};
                     $("#li-md-wikicode-{{ p.index|escapejs }}").attr("style", "border-right: 3px solid #225a84;background-color: #F1F1F1;");
                     li_is_moved = true;
                     $("#context-dinamic-menu").attr("style", "position: fixed;opacity: 1; right:"+(rect.right-rect.width-18)+"px; top:"+(rect.top+rect.height/2-20)+"px; z-index: 9999;transition: all 0.5s ease 0s;");
@@ -286,14 +292,50 @@
             };
 
 
-            //$("#circle-comment-{{ p.index|escapejs }}").attr("style", "position: relative;position: absolute; width:10px; height:10px; background-color: black; top: 100px;")
 
         {% endfor %}
+
+
+
+        function selectChange() {
+                selectText = $("#dynamic-paragraph").val();
+        };
+
+        //Динамическое редактирование
+        $("#wiki-style-btn-option-1").on("click", function () {
+
+            isEdit = true;
+            //Получаем все необходимые данные с абазаца
+            var height = $('#li-md-wikicode-'+num_paragraph+'').css('height');
+            selectText = md_text[parseInt(num_paragraph)];
+
+            //Заменяем элемент списка на input
+            $("#markdown-row-"+num_paragraph+"")
+                    .replaceWith(
+                            '<textarea class="form-control dyn-par" id="dynamic-paragraph"' +
+                            'onKeyUp="selectChange()"' +
+                            'style="height:'+height+';' +
+                            '">' +
+                            selectText +
+                            '</textarea>');
+            $(".dyn-par").focus();
+
+            //Как только теряем фокус:
+            $("#dynamic-paragraph").blur(function () {
+
+                //Применяем все и возвращаем все обратно
+                $("#dynamic-paragraph").replaceWith(
+                                            '<div class="md-hover" id="markdown-row-'+num_paragraph+'"></div>'
+                                        );
+                document.getElementById('markdown-row-'+num_paragraph).innerHTML = marked(selectText);
+                md_text[parseInt(num_paragraph)] = selectText;
+                isEdit = false;
+            });
+        });
 
         $(document).mouseup(function()
         {
             $("#context-dinamic-menu").hide();
-
         });
 
         //То что касается тегов
