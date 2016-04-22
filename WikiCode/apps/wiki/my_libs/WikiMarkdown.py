@@ -1,0 +1,150 @@
+#   # -*- coding: utf-8 -*-
+#
+#   Copyright (C) 2016 Igor Soloduev <diahorver@gmail.com>
+#
+#   This file is part of WikiCode.
+#
+#   WikiCode is free software: you can redistribute it and/or modify
+#   it under the terms of the GNU Affero General Public License as published by
+#   the Free Software Foundation, either version 3 of the License, or
+#   (at your option) any later version.
+#
+#   WikiCode is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU Affero General Public License for more details.
+#
+#   You should have received a copy of the GNU Affero General Public License
+#   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
+
+
+# WikiMarkdown version 0.1
+# Класс для разбивки Markdown текста на логические абзацы
+# Возможности:
+# Может разбивать
+# -Заголовки(Пока поддерживает заголовки # формата)
+# -Обычный текст
+# -Участки кода обозначенные как ```
+# -Участи кода обозначенные отступами в 4 пробела
+
+
+class WikiMarkdown(object):
+    def __init__(self):
+        pass
+
+    def split(self, markdown_text):
+        """Главный метод. Разбивает markdown текст на логические абзацы"""
+
+        # Сначала разбиваем текст построчно
+        lines = self.__split_lines(markdown_text)
+
+        # Далее проходим по строкам и создаем логические абзацы
+        # Итоговый список логических абзацев
+        paragraphs = []
+        logic_paragraph = ""
+        index = 0
+        while index < len(lines):
+            # Если начался блок кода
+            # Формируем логический абзац до тех пор, пока блок кода не закроется
+            if self.__is_start_end_code(lines[index]):
+                if logic_paragraph!="":
+                    paragraphs.append(logic_paragraph)
+                    logic_paragraph = ""
+                logic_paragraph+=lines[index]+"\n"
+                index+=1
+                is_end = False
+                while index < len(lines):
+                    if self.__is_start_end_code(lines[index]):
+                        if logic_paragraph.count("\n") != 1:
+                            logic_paragraph += lines[index] + "\n"
+                            paragraphs.append(logic_paragraph)
+                            logic_paragraph = ""
+                            is_end = True
+                            break
+                        else:
+                            logic_paragraph = ""
+                            break
+                    else:
+                        logic_paragraph += lines[index] + "\n"
+                    index+=1
+                if not is_end:
+                    logic_paragraph += "```\n"
+                    paragraphs.append(logic_paragraph)
+                    logic_paragraph = ""
+                index += 1
+            elif self.__is_code_tab(lines[index]):
+                if logic_paragraph != "":
+                    paragraphs.append(logic_paragraph)
+                    logic_paragraph = ""
+                logic_paragraph += lines[index] + "\n"
+                index += 1
+                is_end = False
+                while index < len(lines):
+                    if not self.__is_code_tab(lines[index]):
+                        paragraphs.append(logic_paragraph)
+                        logic_paragraph = ""
+                        is_end = True
+                        break
+                    else:
+                        logic_paragraph += lines[index] + "\n"
+                    index += 1
+                if not is_end:
+                    paragraphs.append(logic_paragraph)
+                    logic_paragraph = ""
+            elif lines[index] == "":
+                logic_paragraph = ""
+                index += 1
+            else:
+                if logic_paragraph == "":
+                    logic_paragraph += lines[index] + "\n"
+                    paragraphs.append(logic_paragraph)
+                    logic_paragraph = ""
+                    index+=1
+
+
+        return paragraphs
+
+    def print_paragraphs(self, paragraphs: []):
+        for line in paragraphs:
+            print(line, end="")
+            print("____________")
+
+
+    def __split_lines(self, text: str) -> []:
+        """Разбивает текст на строчки. Возвращает список строк"""
+        lines = text.split("\n")
+        return lines
+
+    def __is_title(self, line: str) -> bool:
+        """Проверяет, является ли строка заголовком"""
+        if line.find("#") == 0:
+            return True
+        else:
+            return False
+
+    def __is_start_end_code(self, line: str) -> bool:
+        """Проверяет, начало это блока кода или конец"""
+        if line.find("```") == 0:
+            return True
+        else:
+            return False
+
+    def __is_code_tab(self, line: str) -> bool:
+        """Проверяет, блок ли это кода"""
+        if line.find("    ") == 0:
+            return True
+        else:
+            return False
+
+    def __is_quote_block(self, line: str) -> bool:
+        """Проверяет, блок ли это цитаты"""
+        if line.find(">") == 0:
+             return True
+        elif line.find(" >") == 0:
+            return True
+        elif line.find("  >") == 0:
+            return True
+        elif line.find("   >") == 0:
+            return True
+        else:
+            return False
