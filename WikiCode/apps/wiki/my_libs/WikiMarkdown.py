@@ -18,7 +18,7 @@
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# WikiMarkdown version 0.2
+# WikiMarkdown version 0.3
 # Класс для разбивки Markdown текста на логические абзацы
 # Возможности:
 # Может разбивать
@@ -26,6 +26,7 @@
 # -Обычный текст
 # -Участки кода обозначенные как ```
 # -Участи кода обозначенные отступами в 4 пробела
+# -Списки
 
 
 class WikiMarkdown(object):
@@ -110,6 +111,25 @@ class WikiMarkdown(object):
                     paragraphs.append(lines[index] + "\n")
                     logic_paragraph = ""
                     index += 1
+            elif self.__is_start_end_lists(lines[index]):
+                if logic_paragraph != "":
+                    paragraphs.append(logic_paragraph)
+                    logic_paragraph = ""
+                logic_paragraph += lines[index] + "\n"
+                index += 1
+                is_end = False
+                while index < len(lines):
+                    if not self.__is_start_end_lists(lines[index]):
+                        paragraphs.append(logic_paragraph)
+                        logic_paragraph = ""
+                        is_end = True
+                        break
+                    else:
+                        logic_paragraph += lines[index] + "\n"
+                    index += 1
+                if not is_end:
+                    paragraphs.append(logic_paragraph)
+                    logic_paragraph = ""
             elif self.__is_void(lines[index]):
                 logic_paragraph = ""
                 index += 1
@@ -197,3 +217,29 @@ class WikiMarkdown(object):
                 return is_line
             else:
                 return False
+
+    def __is_start_end_lists(self, line: str) -> bool:
+        """Проверяет, начало это блока списка или конец"""
+        length_line = len(line)
+        if line.find(".") == 1:
+            if str(type(int(line[0]))) == "<class 'int'>":
+                return True
+        if line.find(".") == 2:
+            if str(type(int(line[0]))) == "<class 'int'>" and str(type(int(line[1]))) == "<class 'int'>":
+                return True
+        if line.find(".") == 3:
+            if str(type(int(line[0]))) == "<class 'int'>" and str(type(int(line[1]))) == "<class 'int'>" and str(type(int(line[2]))) == "<class 'int'>":
+                return True
+
+        if length_line >= 2:
+            if line[0] == "*" and line[1] == " ":
+                return True
+            elif line[0] == "-" and line[1] == " ":
+                return True
+            elif line[0] == " " and line[1] == "*":
+                return True
+            elif line[0] == " " and line[1] == "-":
+                return True
+            else:
+                return False
+
