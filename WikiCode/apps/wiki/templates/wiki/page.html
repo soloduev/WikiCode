@@ -338,19 +338,19 @@
                 if(!isEdit)
                 {
                     num_paragraph = ""+{{ p.index|escapejs }};
-                    $("#markdown-row-{{ p.index|escapejs }}").attr("style", "padding: 3px 10px;border-right: 3px solid #225a84;background-color: #F1F1F1;transition: all 0.5s ease 0s;");
+                    $("#markdown-row-{{ p.index|escapejs }}").attr("style", "padding: 3px 20px;border-right: 3px solid #225a84;background-color: #F1F1F1;transition: all 0.5s ease 0s;");
                     li_is_moved = true;
                     $("#context-dinamic-menu").attr("style", "position: fixed;opacity: 1; right:"+(rect.right-rect.width-18)+"px; top:"+(rect.top+rect.height/2-20)+"px; z-index: 9999;transition: all 0.5s ease 0s;");
                 }
                 else
                 {
-                    $(".border li .md-hover").attr("style", "padding: 3px 10px;border-right: 3px solid #c9c9c9;transition: all 0.5s ease 0s;;");
+                    $(".border li .md-hover").attr("style", "padding: 3px 20px;border-right: 3px solid #c9c9c9;transition: all 0.5s ease 0s;;");
                     li_is_moved = false;
                 }
             };
 
             document.getElementById('li-md-wikicode-{{ p.index|escapejs }}').onmouseout = function(e) {
-                $(".border li .md-hover").attr("style", "padding: 3px 10px;border-right: 3px solid #c9c9c9;transition: all 0.5s ease 0s;");
+                $(".border li .md-hover").attr("style", "padding: 3px 20px;border-right: 3px solid #c9c9c9;transition: all 0.5s ease 0s;");
                 li_is_moved = false;
             };
 
