@@ -85,7 +85,27 @@
         </div><!-- /.container -->
     </nav><!-- /.navbar -->
 
-
+    <!-- Модальное окно указывающее, что элмент находится в разработке -->
+    <div class="modal fade" id="modal_develop_func" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Данная функция находится в разработке!</h4>
+                </div>
+                <div class="modal-body">
+                    <label><h4>Данная функция на стадии разработки. Совсем скоро вы сможете ей воспользоваться.</h4></label>
+                    <label><h4>Возможно, в следующей версии платформы данный функционал будет реализован.</h4></label>
+                    <label><h4>Следите за нашей разработкой на <a href="https://github.com/LazyTroll/WikiCode">GitHub</a></h4></label>
+                    <label><h4>Спасибо что пользуетесь платформой WikiCode.ru!</h4></label>
+                    <label><h4>С уважением, администрация сайта.</h4></label>
+                </div>
+                <div class="modal-footer">
+                    <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     {% block page_name %}
 
