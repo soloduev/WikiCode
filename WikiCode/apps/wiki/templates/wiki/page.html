@@ -241,7 +241,7 @@
         <ul id="wiki-style-btns-options">
             <li id="wiki-style-btn-option-1" class="btn" style="width: 35px;border-radius: 25px; padding-left: 10px;"><i class="fa fa-pencil"></i></li>
             <li id="wiki-style-btn-option-2" class="btn" data-toggle="modal" data-target="#modal_add_error" style="width: 35px;border-radius: 25px; padding-left: 10px;"><i class="fa fa-exclamation-triangle"></i></li>
-            <li id="wiki-style-btn-option-3" class="btn" style="width: 35px;border-radius: 25px; padding-left: 10px;"><i class="fa fa-comment-o"></i></li>
+            <li id="wiki-style-btn-option-3" class="btn" data-toggle="modal" data-target="#modal_chat" style="width: 35px;border-radius: 25px; padding-left: 10px;"><i class="fa fa-comment-o"></i></li>
         </ul>
     </div>
 
@@ -262,6 +262,56 @@
                 <div class="modal-footer">
                     <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
                     <button id="wiki-style-btn"type="button" class="btn">Добавить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для сообщений к конкретному абзацу -->
+    <div class="modal fade" id="modal_chat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Комментирование параграфа</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="paragraph_input_comment"></div>
+                    <hr>
+                    <!--Экземпляр сообщения-->
+                    <div class="micro-comment-block-wiki">
+
+                        <!--Имя автора комментария-->
+                        <span class="text-left"><b><a href="" style="text-decoration: none;"> Vasya</a></b> (17.07.2016 13:45:36)</span>
+                        <!--Сообщение-->
+                        <p>А как это вообще работает?</p>
+                        <p></p>
+                    </div>
+                    <!--Экземпляр сообщения-->
+                    <div class="micro-comment-block-wiki">
+
+                        <!--Имя автора комментария-->
+                        <span class="text-left"><b><a href="" style="text-decoration: none;"> Petya</a></b> (17.07.2016 13:45:36)</span>
+                        <!--Сообщение-->
+                        <p>Молча</p>
+                        <p></p>
+                    </div>
+                    <!--Экземпляр сообщения-->
+                    <div class="micro-comment-block-wiki">
+
+                        <!--Имя автора комментария-->
+                        <span class="text-left"><b><a href="" style="text-decoration: none;"> Petya</a></b> (17.07.2016 13:45:36)</span>
+                        <!--Сообщение-->
+                        <p>Какой то комментарий...Какой то комментарий...Какой то комментарий...Какой то комментарий...Какой то комментарий...Какой то комментарий...</p>
+                        <p></p>
+                    </div>
+                    <hr>
+                    <label><h4>Ваш комментарий:</h4></label>
+                    <textarea class="form-control" style="resize: none; border-radius: 0px; font-family: Courier;" rows="3" placeholder="Ваш комментарий..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
+                    <button id="wiki-style-btn" type="button" class="btn">Добавить</button>
                 </div>
             </div>
         </div>
@@ -320,7 +370,7 @@
 
 
         function selectChange() {
-                selectText = $("#dynamic-paragraph").val();
+            selectText = $("#dynamic-paragraph").val();
         };
 
         //Динамическое редактирование
@@ -347,8 +397,8 @@
 
                 //Применяем все и возвращаем все обратно
                 $("#dynamic-paragraph").replaceWith(
-                                            '<div class="md-hover" id="markdown-row-'+num_paragraph+'"></div>'
-                                        );
+                        '<div class="md-hover" id="markdown-row-'+num_paragraph+'"></div>'
+                );
                 document.getElementById('markdown-row-'+num_paragraph).innerHTML = marked(selectText);
                 md_text[parseInt(num_paragraph)] = selectText;
                 isEdit = false;
@@ -361,7 +411,11 @@
         });
 
         $("#wiki-style-btn-option-2").on('click', function () {
-           document.getElementById('paragraph_input_error').innerHTML = marked(md_text[num_paragraph]);
+            document.getElementById('paragraph_input_error').innerHTML = marked(md_text[num_paragraph]);
+        });
+
+        $("#wiki-style-btn-option-3").on('click', function () {
+            document.getElementById('paragraph_input_comment').innerHTML = marked(md_text[num_paragraph]);
         });
 
         //То что касается тегов

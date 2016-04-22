@@ -199,6 +199,23 @@
     transition: all 0.5s ease 0s;
 }
 
+.micro-comment-block-wiki
+{
+    padding-left: 10px;
+    padding-bottom: 2px;
+    border-left: 2px solid #dcdcdc;
+    transition: all 0.5s ease 0s;
+}
+
+.micro-comment-block-wiki:hover
+{
+    padding-left: 10px;
+    padding-bottom: 2px;
+    border-left: 2px solid #2b669a;
+    background-color: #efefef;
+    transition: all 0.5s ease 0s;
+}
+
 
 /*Все что касайтеся динамического конспекта*/
 
