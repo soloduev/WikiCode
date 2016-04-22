@@ -240,9 +240,31 @@
     <div id="context-dinamic-menu" style="display: none;">
         <ul id="wiki-style-btns-options">
             <li id="wiki-style-btn-option-1" class="btn" style="width: 35px;border-radius: 25px; padding-left: 10px;"><i class="fa fa-pencil"></i></li>
-            <li id="wiki-style-btn-option-2" class="btn" style="width: 35px;border-radius: 25px; padding-left: 10px;"><i class="fa fa-exclamation-triangle"></i></li>
+            <li id="wiki-style-btn-option-2" class="btn" data-toggle="modal" data-target="#modal_add_error" style="width: 35px;border-radius: 25px; padding-left: 10px;"><i class="fa fa-exclamation-triangle"></i></li>
             <li id="wiki-style-btn-option-3" class="btn" style="width: 35px;border-radius: 25px; padding-left: 10px;"><i class="fa fa-comment-o"></i></li>
         </ul>
+    </div>
+
+    <!-- Модальное окно для указания на ошибку -->
+    <div class="modal fade" id="modal_add_error" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Нашли ошибку в параграфе? Сообщите автору!</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="paragraph_input_error"></div>
+                    <hr>
+                    <label><h4>Опишите ошибку:</h4></label>
+                    <textarea class="form-control" style="resize: none; border-radius: 0px; font-family: Courier;" rows="6" placeholder="Опишите найденную Вами ошибку/неточность и прочее..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
+                    <button id="wiki-style-btn"type="button" class="btn">Добавить</button>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
 
@@ -336,6 +358,10 @@
         $(document).mouseup(function()
         {
             $("#context-dinamic-menu").hide();
+        });
+
+        $("#wiki-style-btn-option-2").on('click', function () {
+           document.getElementById('paragraph_input_error').innerHTML = marked(md_text[num_paragraph]);
         });
 
         //То что касается тегов
