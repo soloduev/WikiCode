@@ -307,6 +307,10 @@
             </div>
         </div>
     </div>
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'wiki/highlight/styles/github.css'%}">
+    <script type="text/javascript" src="{% static 'wiki/highlight/highlight.pack.js'%}"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
 {% endblock %}
 
 {% block add_script %}
