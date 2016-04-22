@@ -114,17 +114,20 @@
 
     {% endblock %}
     {% block footer %}
+        {% load staticfiles %}
         <div class="container">
             <div class="row">
                 <hr/>
                 <div class="text-center center-block">
-                    <p class="txt-railway">- WikiCode.com -</p>
                     <br/>
-                    <a href="https://www.facebook.com/"><i class="fa fa-facebook-square fa-3x social"></i></a>
-                    <a href="https://twitter.com/"><i class="fa fa-twitter-square fa-3x social"></i></a>
-                    <a href="https://plus.google.com/"><i
-                            class="fa fa-google-plus-square fa-3x social"></i></a>
-                    <a href=""><i class="fa fa-envelope-square fa-3x social"></i></a>
+                    <p>Copyright &copy; 2016 Igor Soloduev</p>
+                    <a href="https://vk.com/wikicode_ru"><i class="fa fa-vk fa-3x social"></i></a>
+                    <a href="https://github.com/LazyTroll/WikiCode"><i class="fa fa-github fa-3x social"></i></a>
+                    <a href="https://bitbucket.org/LazyTroll/wikicode"><i class="fa fa-bitbucket fa-3x social"></i></a>
+                    <a href=""><i class="fa fa-facebook-official fa-3x social"></i></a>
+                    <br/>
+                    <hr/>
+                    <img src="{% static 'wiki/images/agplv3.png' %}">
                 </div>
                 <hr/>
             </div>
