@@ -21,7 +21,7 @@
 from django.shortcuts import render
 from WikiCode.apps.wiki.models import Publication, Statistics, CommentBlock, Comment
 from .auth import check_auth, get_user_id
-from WikiCode.apps.wiki.mymarkdown import mdsplit
+from WikiCode.apps.wiki.my_libs.WikiMarkdown import WikiMarkdown
 from django.template import RequestContext, loader
 from django.http import HttpResponse
 from WikiCode.apps.wiki.models import User
@@ -72,8 +72,8 @@ def get_page(request, id):
 
         # Разбиваем весь текст на абзацы
         md_text = publication.text
-        arr = mdsplit.mdSplit(md_text)
-        print(arr)
+        wm = WikiMarkdown()
+        arr = wm.split(md_text)
         numbers = []
         paragraphs = []
         for i in range(0, len(arr)):

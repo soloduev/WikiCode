@@ -18,11 +18,11 @@
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# WikiMarkdown version 0.1
+# WikiMarkdown version 0.2
 # Класс для разбивки Markdown текста на логические абзацы
 # Возможности:
 # Может разбивать
-# -Заголовки(Пока поддерживает заголовки # формата)
+# -Заголовки
 # -Обычный текст
 # -Участки кода обозначенные как ```
 # -Участи кода обозначенные отступами в 4 пробела
@@ -43,6 +43,7 @@ class WikiMarkdown(object):
         paragraphs = []
         logic_paragraph = ""
         index = 0
+        print(lines)
         while index < len(lines):
             # Если начался блок кода
             # Формируем логический абзац до тех пор, пока блок кода не закроется
@@ -91,7 +92,25 @@ class WikiMarkdown(object):
                 if not is_end:
                     paragraphs.append(logic_paragraph)
                     logic_paragraph = ""
-            elif lines[index] == "":
+            elif self.__is_line_split(lines[index]):
+                if len(paragraphs) >= 1:
+                    paragraphs[len(paragraphs)-1] += lines[index] + "\n"
+                    logic_paragraph = ""
+                    index+=1
+                else:
+                    paragraphs.append(lines[index] + "\n")
+                    logic_paragraph = ""
+                    index += 1
+            elif self.__is_title_line(lines[index]):
+                if len(paragraphs) >= 1:
+                    paragraphs[len(paragraphs) - 1] += lines[index] + "\n"
+                    logic_paragraph = ""
+                    index += 1
+                else:
+                    paragraphs.append(lines[index] + "\n")
+                    logic_paragraph = ""
+                    index += 1
+            elif self.__is_void(lines[index]):
                 logic_paragraph = ""
                 index += 1
             else:
@@ -148,3 +167,33 @@ class WikiMarkdown(object):
             return True
         else:
             return False
+
+    def __is_void(self, line: str) -> bool:
+        is_empty = True
+        if line == "":
+            return True
+        for char in line:
+            if char != " " and char != "\n" and char != "\r":
+                is_empty = False
+        return is_empty
+
+    def __is_line_split(self, line: str) -> bool:
+        """Проверяем, разделяющая ли это линия?"""
+        if line.find("* * *") == 0:
+            return True
+        else:
+            return False
+
+    def __is_title_line(self, line: str) -> bool:
+        """Проверяем, это не линия заголовка?"""
+        is_line = True
+        if line == "":
+            return False
+        else:
+            if line[0] == "=" or line[0] == "-":
+                for char in line:
+                    if char != "=" and char != "-" and char != "\r":
+                        is_line = False
+                return is_line
+            else:
+                return False
