@@ -93,7 +93,27 @@ def get_page(request, id):
         except Comment.DoesNotExist:
             print("WIKI ERROR: Список комментариев не обнаружен")
 
+        prgrphs = []
 
+        # Теперь загружаем динамические комментарии
+        try:
+            db_paragraphs = Paragraphs.objects.get(id_publication=id)
+            dynamic_comments_paragraphs = DynamicCommentParagraph.objects.filter(paragraphs=db_paragraphs)
+            for elem in dynamic_comments_paragraphs:
+                if elem.is_comment == True:
+                    # Получаем все комментарии к этому блоку
+                    dynamic_comments = DynamicComment.objects.filter(dynamic_comment_paragraph=elem)
+                    block = {'num_pos': elem.num_position, 'comments': dynamic_comments}
+                    prgrphs.append(block)
+
+        except Paragraphs.DoesNotExist:
+            print("WIKI ERROR: Paragraphs не обнаружен")
+        except DynamicCommentParagraph.DoesNotExist:
+            print("WIKI ERROR: DynamicCommentParagraph не обнаружен")
+        except DynamicComment.DoesNotExist:
+            print("WIKI ERROR: DynamicComment не обнаружен")
+
+        print(prgrphs)
 
         context = {
             "publication": publication,
@@ -103,6 +123,7 @@ def get_page(request, id):
             "user_id": get_user_id(request),
             "preview_tree": wt.generate_html_preview(),
             "all_comments": all_comments,
+            "prgrphs": prgrphs,
         }
 
         return render(request, 'wiki/page.html', context)
@@ -347,6 +368,7 @@ def get_add_dynamic_comment_in_wiki_page(request, id):
 
         new_dynamic_comment.save()
         dynamic_comment_paragraph.last_id += 1
+        dynamic_comment_paragraph.is_comment = True
         dynamic_comment_paragraph.save()
         user.save()
 

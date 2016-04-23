@@ -44,7 +44,6 @@ class WikiMarkdown(object):
         paragraphs = []
         logic_paragraph = ""
         index = 0
-        print(lines)
         while index < len(lines):
             # Если начался блок кода
             # Формируем логический абзац до тех пор, пока блок кода не закроется

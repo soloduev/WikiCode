@@ -261,9 +261,11 @@
                     <h4 class="modal-title" id="myModalLabel">Комментирование параграфа</h4>
                 </div>
                 <div class="modal-body">
-                    <div id="paragraph_input_comment"></div>
+                    <div id="paragraph_input_md_paragraph" style="background-color: #e9e9e9"></div>
                     <hr>
-                    <!--Сюда необходимо пихать сгенерированные div блоки комментария-->
+                    <div id="paragraph_input_comment">
+                        <!--Сюда необходимо пихать сгенерированные div блоки комментария-->
+                    </div>
                     <hr>
                     <label><h4>Ваш комментарий:</h4></label>
                     <textarea id="wiki-input-dynamic-comment" class="form-control" style="resize: none; border-radius: 0px; font-family: Courier;" rows="3" placeholder="Ваш комментарий..."></textarea>
@@ -277,18 +279,20 @@
     </div>
 
     <!--Сгенерированные динамические комментарии-->
-    <!--Экземпляр сообщения-->
-    <div id="dynamic-comment-paragraph-id" >
-        <div class="micro-comment-block-wiki">
-
-            <!--Имя автора комментария-->
-            <span class="text-left"><b><a href="" style="text-decoration: none;"> Vasya</a></b> (17.07.2016 13:45:36)</span>
-            <!--Сообщение-->
-            <p>А как это вообще работает?</p>
-            <p></p>
+    {% for p in prgrphs %}
+        <div id="dynamic-comment-paragraph-{{ p.num_pos|safe }}" >
+            {% for elem in p.comments %}
+                <!--Экземпляр сообщения-->
+                <div class="micro-comment-block-wiki">
+                    <!--Имя автора комментария-->
+                    <span class="text-left"><b><a href="/user/{{ elem.id_author }}" style="text-decoration: none;"> {{ elem.nickname_author }}</a></b> ({{ elem.data }})</span>
+                    <!--Сообщение-->
+                    <p>{{ elem.text }}</p>
+                    <p></p>
+                </div>
+            {% endfor %}
         </div>
-    </div>
-
+    {% endfor %}
 
     {% load staticfiles %}
     <link rel="stylesheet" href="{% static 'wiki/highlight/styles/github.css'%}">
@@ -424,7 +428,13 @@
         });
 
         $("#wiki-style-btn-option-3").on('click', function () {
-            document.getElementById('paragraph_input_comment').innerHTML = marked(md_text[num_paragraph]);
+            document.getElementById('paragraph_input_md_paragraph').innerHTML = marked(md_text[num_paragraph]);
+            var insert_data =  $("#dynamic-comment-paragraph-"+num_paragraph).html();
+            if(insert_data !== undefined)
+                $("#paragraph_input_comment").html(insert_data);
+            else{
+                $("#paragraph_input_comment").html("<h4>Комментариев к этому блоку пока нет. Станьте первым!</h4>");
+            }
         });
 
         //То что касается тегов
