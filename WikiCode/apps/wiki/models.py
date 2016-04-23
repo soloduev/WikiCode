@@ -86,6 +86,33 @@ class Comment(models.Model):
     def __str__(self):
         return str(self.comment_block)
 
+# Единый набор всех динамичных параграфов для одного конспекта
+class Paragraphs(models.Model):
+    id_publication = models.BigIntegerField()
+    last_id = models.BigIntegerField()
+    def __str__(self):
+        return str(self.id_publication)
+
+
+# Отдельный динамический параграф в конспекте
+class DynamicCommentParagraph(models.Model):
+    paragraphs = models.ForeignKey(Paragraphs, on_delete=models.CASCADE)
+    num_position = models.BigIntegerField()
+    is_comment = models.BooleanField(default=False)
+    def __str__(self):
+        return str(self.paragraphs)
+
+
+# Отдельный динамичный комментарий
+class DynamicComment(models.Model):
+    dynamic_comment_paragraph = models.ForeignKey(DynamicCommentParagraph, on_delete=models.CASCADE)
+    num_position = models.BigIntegerField()
+    id_author = models.BigIntegerField()
+    nickname_author = models.CharField(max_length=100)
+    text = models.TextField()
+    data = models.CharField(max_length=100)
+    def __str__(self):
+        return str(self.dynamic_comment_paragraph)
 
 
 class Statistics(models.Model):
