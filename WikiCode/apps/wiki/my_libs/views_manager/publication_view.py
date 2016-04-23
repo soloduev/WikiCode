@@ -19,7 +19,7 @@
 
 
 from django.shortcuts import render
-from WikiCode.apps.wiki.models import Publication, Statistics, CommentBlock, Comment, Paragraphs, DynamicCommentParagraph, DynamicComment
+from WikiCode.apps.wiki.models import Publication, Statistics, CommentBlock, Comment, Paragraphs, DynamicCommentParagraph, DynamicComment, Like
 from .auth import check_auth, get_user_id
 from WikiCode.apps.wiki.my_libs.WikiMarkdown import WikiMarkdown
 from django.template import RequestContext, loader
@@ -113,7 +113,6 @@ def get_page(request, id):
         except DynamicComment.DoesNotExist:
             print("WIKI ERROR: DynamicComment не обнаружен")
 
-        print(prgrphs)
 
         context = {
             "publication": publication,
@@ -382,3 +381,49 @@ def get_add_dynamic_comment_in_wiki_page(request, id):
         return get_error_page(request, ["This is user is not found!"])
     except DynamicCommentParagraph.DoesNotExist:
         return get_error_page(request, ["This is DynamicCommentParagraph is not found!"])
+
+
+def get_like_wiki_page(request, id):
+    """Ajax представление. Добавляет или убирает like с публикации"""
+    try:
+        # Получаем пользователя захотевшего поставить лайк
+        id_user = int(get_user_id(request))
+
+        if id_user==-1:
+            return HttpResponse('no', content_type='text/html')
+        else:
+            # Получаем текущую дату
+            date = str(datetime.datetime.now())
+            date = date[:len(date) - 7]
+
+            # Получаем User
+            user = User.objects.get(id_user=id_user)
+            # Получаем публикацию на которой произошел лайк
+            publication = Publication.objects.get(id_publication=id)
+
+            # Проверяем, не стоит ли like уже у этого пользователя на этот конспект
+            is_set = False
+            try:
+                like = Like.objects.get(id_user=id_user, id_publ_like=id)
+                # Лайк стоит, убираем
+                like.delete()
+                publication.likes-=1
+                publication.save()
+            except Like.DoesNotExist:
+                # Лайк не стоит. Ставим
+                new_like = Like(id_user=id_user,
+                                nickname=user.nickname,
+                                type="publ",
+                                id_publ_like=id,
+                                id_user_like=-1,
+                                date=date)
+                new_like.save()
+                publication.likes+=1
+                publication.save()
+
+
+            return HttpResponse('ok', content_type='text/html')
+    except User.DoesNotExist:
+        return get_error_page(request, ["This is user is not found!"])
+    except Publication.DoesNotExist:
+        return get_error_page(request, ["This is Publication is not found!"])

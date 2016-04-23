@@ -40,7 +40,7 @@ class User(models.Model):
 
 class Like(models.Model):
     id_user = models.BigIntegerField()
-    nickname = models.BigIntegerField()
+    nickname = models.CharField(max_length=100)
     type = models.CharField(max_length=100) # Тип либо publ, либо user
     id_publ_like = models.BigIntegerField(blank=True)
     id_user_like = models.BigIntegerField(blank=True)

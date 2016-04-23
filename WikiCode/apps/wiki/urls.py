@@ -54,6 +54,7 @@ urlpatterns = [
     # События на странице конспекта
     url(r'^page/(?P<id>[0-9]+)/add_comment_in_wiki_page/$', views.add_comment_in_wiki_page, name='add_comment_in_wiki_page'),
     url(r'^page/(?P<id>[0-9]+)/add_dynamic_comment_in_wiki_page/$', views.add_dynamic_comment_in_wiki_page, name='add_dynamic_comment_in_wiki_page'),
+    url(r'^page/(?P<id>[0-9]+)/like_wiki_page/$', views.like_wiki_page, name='like_wiki_page'),
 
 
 ]
