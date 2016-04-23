@@ -75,27 +75,27 @@
                                     <div class="tabbable-pills">
                                         <ul class="nav nav-tabs" style="border-bottom: none;">
                                             <li class="active">
-                                                <a href="#tab_default_1" data-toggle="tab">
+                                                <a href="#tab_default_1" data-toggle="tab" id="wiki-publ-tab-1">
                                                     Конспект </a>
                                             </li>
                                             <li>
-                                                <a href="#tab_default_3" data-toggle="tab">
+                                                <a href="#tab_default_3" data-toggle="tab" id="wiki-publ-tab-2">
                                                     Оглавление </a>
                                             </li>
                                             <li>
-                                                <a href="#tab_default_4" data-toggle="tab">
+                                                <a href="#tab_default_4" data-toggle="tab" id="wiki-publ-tab-3">
                                                     Файлы </a>
                                             </li>
                                             <li>
-                                                <a href="#tab_default_5" data-toggle="tab">
+                                                <a href="#tab_default_5" data-toggle="tab" id="wiki-publ-tab-4">
                                                     Ссылки </a>
                                             </li>
                                             <li>
-                                                <a href="#tab_default_6" data-toggle="tab">
+                                                <a href="#tab_default_6" data-toggle="tab" id="wiki-publ-tab-5">
                                                     Версии </a>
                                             </li>
                                             <li>
-                                                <a href="#tab_default_7" data-toggle="tab">
+                                                <a href="#tab_default_7" data-toggle="tab" id="wiki-publ-tab-6">
                                                     Настройки </a>
                                             </li>
                                         </ul>
@@ -280,6 +280,11 @@
 
     <!--Сгенерированные динамические комментарии-->
     {% for p in prgrphs %}
+        <div id="context-dinamic-commenting-{{ p.num_pos|safe }}" class="wikicode-commenting-mark" style="display: none;">
+            <ul id="wiki-style-btns-options">
+                <li id="wiki-style-btn-option-commenting" class="btn" style="width: 35px;border-radius: 25px; padding-left: 10px;"><i class="fa fa-comment-o"></i></li>
+            </ul>
+        </div>        <div hidden>
         <div id="dynamic-comment-paragraph-{{ p.num_pos|safe }}" >
             {% for elem in p.comments %}
                 <!--Экземпляр сообщения-->
@@ -292,6 +297,7 @@
                 </div>
             {% endfor %}
         </div>
+    </div>
     {% endfor %}
 
     {% load staticfiles %}
@@ -352,20 +358,16 @@
                 }
                 else
                 {
-                    $(".border li .md-hover").attr("style", "padding: 3px 20px;border-right: 3px solid #c9c9c9;transition: all 0.5s ease 0s;;");
+                    $(".border li .md-hover").attr("style", "padding: 3px 20px;border-right: 3px solid #c9c9c9;");
                     li_is_moved = false;
                 }
             };
 
             document.getElementById('li-md-wikicode-{{ p.index|escapejs }}').onmouseout = function(e) {
-                $(".border li .md-hover").attr("style", "padding: 3px 20px;border-right: 3px solid #c9c9c9;transition: all 0.5s ease 0s;");
+                $(".border li .md-hover").attr("style", "padding: 3px 20px;border-right: 3px solid #c9c9c9;");
                 li_is_moved = false;
             };
-
-
-
         {% endfor %}
-
 
 
         function selectChange() {
@@ -401,6 +403,7 @@
                 document.getElementById('markdown-row-'+num_paragraph).innerHTML = marked(selectText);
                 md_text[parseInt(num_paragraph)] = selectText;
                 isEdit = false;
+                update_comment_marks();
             });
         });
 
@@ -419,6 +422,7 @@
 
         $(window).resize(function () {
             $("#context-dinamic-menu").hide();
+            update_comment_marks();
         });
 
 
@@ -469,5 +473,46 @@
                 }
             });
         });
+
+
+
+        update_comment_marks();
+        //Очень важная функция обновления положения динамических кнопок, показывающих, что у данного абзаца, оставлен комментарий
+        function update_comment_marks() {
+            //Обязательно на время переносимся вверх, чтобы расставить в правильных местах значки комментариев
+            var cur_scroll_y = window.scrollY;
+            window.scrollTo(0, 0);
+            {% for p in  prgrphs%}
+                    var div = document.getElementById('li-md-wikicode-{{ p.num_pos|escapejs }}');
+                    var rect = div.getBoundingClientRect();
+                    $("#context-dinamic-commenting-{{ p.num_pos|escapejs }}").attr("style", "position: absolute;opacity: 1; right:"+(rect.right-rect.width-18)+"px; top:"+(rect.top+rect.height/2-20)+"px; z-index: 100;transition: all 0.5s ease 0s;");
+            {% endfor %}
+            window.scrollTo(0, cur_scroll_y);
+        }
+
+        //Переключение вкладок
+        $("#wiki-publ-tab-1").on("click", function () {
+            $(".wikicode-commenting-mark").show();
+        });
+        $("#wiki-publ-tab-2").on("click", function () {
+            $(".wikicode-commenting-mark").hide();
+        });
+        $("#wiki-publ-tab-3").on("click", function () {
+            $(".wikicode-commenting-mark").hide();
+        });
+        $("#wiki-publ-tab-4").on("click", function () {
+            $(".wikicode-commenting-mark").hide();
+        });
+        $("#wiki-publ-tab-5").on("click", function () {
+            $(".wikicode-commenting-mark").hide();
+        });
+        $("#wiki-publ-tab-6").on("click", function () {
+            $(".wikicode-commenting-mark").hide();
+        });
+        $("#wiki-publ-tab-7").on("click", function () {
+            $(".wikicode-commenting-mark").hide();
+        });
+
+
     </script>
 {% endblock %}

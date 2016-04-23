@@ -23,7 +23,6 @@
     border-bottom: 1px solid #d5d5d5;
     min-height:300px;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-    transition: all 0.5s ease 0s;
 }
 
 #wiki-style-btn,
@@ -34,7 +33,6 @@
     border-radius: 0px;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
     color: #fff;
-    transition: all 0.5s ease 0s;
 }
 #wiki-style-btn-option-1,
 #wiki-style-btn-option-2,
@@ -48,7 +46,8 @@
 }
 #wiki-style-btn-option-1:hover,
 #wiki-style-btn-option-2:hover,
-#wiki-style-btn-option-3:hover
+#wiki-style-btn-option-3:hover,
+#wiki-style-btn-option-commenting
 {
     background-color: #225a84;
     box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
@@ -236,7 +235,6 @@
 .border li .md-hover{
     padding: 3px 20px;
     border-right: 3px solid #c9c9c9;
-    transition: all 0.5s ease 0s;
 }
 
 #dynamic-paragraph
@@ -244,5 +242,4 @@
     resize: none;
     border-radius: 0px;
     font-family: Courier;
-    transition: all 0.5s ease 0s;
 }
