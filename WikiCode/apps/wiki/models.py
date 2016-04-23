@@ -99,6 +99,7 @@ class DynamicCommentParagraph(models.Model):
     paragraphs = models.ForeignKey(Paragraphs, on_delete=models.CASCADE)
     num_position = models.BigIntegerField()
     is_comment = models.BooleanField(default=False)
+    last_id = models.BigIntegerField()
     def __str__(self):
         return str(str(self.paragraphs)+"_"+str(self.num_position))
 
