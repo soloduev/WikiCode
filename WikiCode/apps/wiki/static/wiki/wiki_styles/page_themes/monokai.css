@@ -78,6 +78,17 @@
     top:210px;
 }
 
+
+/*Кнопка оставленного комментария*/
+#wiki-style-btn-option-commenting
+{
+    background-color: #ea397e;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
+    color: #fff;
+    transition: all 0.5s ease 0s;
+}
+
+
 /*Выпадающие динамические кнопки*/
 #wiki-style-btn-option-1,
 #wiki-style-btn-option-2,
