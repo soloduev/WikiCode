@@ -303,3 +303,60 @@ def get_add_comment_in_wiki_page(request, id):
         return get_error_page(request, ["This is publication not found!"])
     except User.DoesNotExist:
         return get_error_page(request, ["This is user is not found!"])
+
+
+
+def get_add_dynamic_comment_in_wiki_page(request, id):
+    """Ajax представление. Добавляет динамический комментарий к азбзацу публикации."""
+
+    try:
+        paragraphs = Paragraphs.objects.get(id_publication=id)
+        publication = Publication.objects.get(id_publication=id)
+
+        # Получаем пользователя
+        user_data = check_auth(request)
+
+        # Получаем сообщение
+        comment_message = request.GET.get('comment_message')
+        # Получаем номер параграфа в данной публикации
+        num_paragraph = request.GET.get('num_paragraph')
+        print(comment_message)
+        print(num_paragraph)
+        # Получаем текущую дату
+        date = str(datetime.datetime.now())
+        date = date[:len(date) - 7]
+
+        # Получаем пользователя оставившего комментарий
+        id = int(get_user_id(request))
+        user = User.objects.get(id_user=id)
+        user.comments += 1
+
+
+        # Получаем тот параграф, в который мы хотим добавить комментарий
+        dynamic_comment_paragraph =  DynamicCommentParagraph.objects.get(num_position=int(num_paragraph))
+
+        # Создаем новый динамический комментарий
+
+        new_dynamic_comment = DynamicComment(
+            dynamic_comment_paragraph=dynamic_comment_paragraph,
+            num_position=dynamic_comment_paragraph.last_id + 1,
+            id_author=user.id_user,
+            nickname_author=user.nickname,
+            text=comment_message,
+            data=date)
+
+        new_dynamic_comment.save()
+        dynamic_comment_paragraph.last_id += 1
+        dynamic_comment_paragraph.save()
+        user.save()
+
+        return HttpResponse('ok', content_type='text/html')
+
+    except Paragraphs.DoesNotExist:
+        return get_error_page(request, ["This is paragraphs not found!"])
+    except Publication.DoesNotExist:
+        return get_error_page(request, ["This is publication not found!"])
+    except User.DoesNotExist:
+        return get_error_page(request, ["This is user is not found!"])
+    except DynamicCommentParagraph.DoesNotExist:
+        return get_error_page(request, ["This is DynamicCommentParagraph is not found!"])

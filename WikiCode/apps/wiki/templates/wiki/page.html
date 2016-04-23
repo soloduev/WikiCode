@@ -263,40 +263,14 @@
                 <div class="modal-body">
                     <div id="paragraph_input_comment"></div>
                     <hr>
-                    <!--Экземпляр сообщения-->
-                    <div class="micro-comment-block-wiki">
-
-                        <!--Имя автора комментария-->
-                        <span class="text-left"><b><a href="" style="text-decoration: none;"> Vasya</a></b> (17.07.2016 13:45:36)</span>
-                        <!--Сообщение-->
-                        <p>А как это вообще работает?</p>
-                        <p></p>
-                    </div>
-                    <!--Экземпляр сообщения-->
-                    <div class="micro-comment-block-wiki">
-
-                        <!--Имя автора комментария-->
-                        <span class="text-left"><b><a href="" style="text-decoration: none;"> Petya</a></b> (17.07.2016 13:45:36)</span>
-                        <!--Сообщение-->
-                        <p>Молча</p>
-                        <p></p>
-                    </div>
-                    <!--Экземпляр сообщения-->
-                    <div class="micro-comment-block-wiki">
-
-                        <!--Имя автора комментария-->
-                        <span class="text-left"><b><a href="" style="text-decoration: none;"> Petya</a></b> (17.07.2016 13:45:36)</span>
-                        <!--Сообщение-->
-                        <p>Какой то комментарий...Какой то комментарий...Какой то комментарий...Какой то комментарий...Какой то комментарий...Какой то комментарий...</p>
-                        <p></p>
-                    </div>
+                    <!--Сюда необходимо пихать сгенерированные div блоки комментария-->
                     <hr>
                     <label><h4>Ваш комментарий:</h4></label>
-                    <textarea class="form-control" style="resize: none; border-radius: 0px; font-family: Courier;" rows="3" placeholder="Ваш комментарий..."></textarea>
+                    <textarea id="wiki-input-dynamic-comment" class="form-control" style="resize: none; border-radius: 0px; font-family: Courier;" rows="3" placeholder="Ваш комментарий..."></textarea>
                 </div>
                 <div class="modal-footer">
                     <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
-                    <button id="wiki-style-btn" type="button" class="btn">Добавить</button>
+                    <button id="wiki-style-btn-add-dynamic-comment" type="button" class="btn">Добавить</button>
                 </div>
             </div>
         </div>
@@ -458,6 +432,31 @@
             $('#publ-tags').tags({
                 readOnly: true,
                 tagData:["c++", "beginning"],
+            });
+        });
+
+        /*Ajax запрос на добавления комментария*/
+        //Добавление комментария к конспекту
+        $("#wiki-style-btn-add-dynamic-comment").click(function () {
+            comment_message = $("#wiki-input-dynamic-comment").val();
+            $.ajax({
+                type: "GET",
+                url: "add_dynamic_comment_in_wiki_page/",
+                data:{
+                    'comment_message':''+comment_message,
+                    'num_paragraph':''+num_paragraph,
+                },
+                dataType: "text",
+                cache: false,
+                success: function(data){
+                    if (data == 'ok'){
+                        location.reload();
+                    }
+                    else
+                    {
+                        //Говорим, что комментарий добавить не удалось(
+                    }
+                }
             });
         });
     </script>
