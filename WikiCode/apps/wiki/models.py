@@ -100,7 +100,7 @@ class DynamicCommentParagraph(models.Model):
     num_position = models.BigIntegerField()
     is_comment = models.BooleanField(default=False)
     def __str__(self):
-        return str(self.paragraphs)
+        return str(str(self.paragraphs)+"_"+str(self.num_position))
 
 
 # Отдельный динамичный комментарий
@@ -112,7 +112,7 @@ class DynamicComment(models.Model):
     text = models.TextField()
     data = models.CharField(max_length=100)
     def __str__(self):
-        return str(self.dynamic_comment_paragraph)
+        return str(str(self.dynamic_comment_paragraph)+"_"+str(self.num_position))
 
 
 class Statistics(models.Model):

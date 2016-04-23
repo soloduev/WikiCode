@@ -19,7 +19,7 @@
 
 
 from django.shortcuts import render
-from WikiCode.apps.wiki.models import Publication, Statistics, CommentBlock, Comment
+from WikiCode.apps.wiki.models import Publication, Statistics, CommentBlock, Comment, Paragraphs, DynamicCommentParagraph, DynamicComment
 from .auth import check_auth, get_user_id
 from WikiCode.apps.wiki.my_libs.WikiMarkdown import WikiMarkdown
 from django.template import RequestContext, loader
@@ -171,10 +171,31 @@ def get_create_page(request):
             downloads=0)
         new_publication.save()
 
+        # Создаем пустой общий блок комментирования
         new_comment_block = CommentBlock(
             id_publication=newid,
             last_id=0)
         new_comment_block.save()
+
+        # Получаем количество параграфов
+        wm = WikiMarkdown()
+        size_paragraphs = len(wm.split(form["text"]))
+
+        # Создаем пустые динамичные параграфы комментирования
+        new_paragraphs = Paragraphs(
+            id_publication=newid,
+            last_id=size_paragraphs)
+        new_paragraphs.save()
+
+        # Соответственно создаем для каждого из них параграф
+        # Данная операция, ну совсем уж не быстрая, если конспект достаточно большой
+        for i in range(1, size_paragraphs):
+            dynamic_comment_paragraph = DynamicCommentParagraph(
+                paragraphs=new_paragraphs,
+                num_position=i,
+                is_comment=False)
+            dynamic_comment_paragraph.save()
+
 
         # Загружаем дерево пользователя
         wt = WikiTree(user.id_user)
