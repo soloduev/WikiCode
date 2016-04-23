@@ -246,11 +246,3 @@
     font-family: Courier;
     transition: all 0.5s ease 0s;
 }
-
-.md-hover
-{
-    font-family: "Source Sans Pro",sans-serif;
-    font-size: 17px;
-    line-height: 1.45;
-    color: #3f3f3f;
-}

@@ -38,7 +38,7 @@
                         <div class="col-xs-12 col-sm-12 col-md-12"
                              style="border: 1px solid #d5d5d5;min-height:105px;border-bottom: none;">
                             <div class="row">
-                                <label class="text-center btn-primary btn-block">{{ publication.title|upper }}</label>
+                                <label class="text-center btn-primary btn-block wikicode-theme-header">{{ publication.title|upper }}</label>
                             </div>
                             <div class="row">
                                 <br>
@@ -76,11 +76,11 @@
                                         <ul class="nav nav-tabs" style="border-bottom: none;">
                                             <li class="active">
                                                 <a href="#tab_default_1" data-toggle="tab">
-                                                    Стандартный режим </a>
+                                                    Конспект </a>
                                             </li>
                                             <li>
                                                 <a href="#tab_default_3" data-toggle="tab">
-                                                    Режим презентации </a>
+                                                    Оглавление </a>
                                             </li>
                                             <li>
                                                 <a href="#tab_default_4" data-toggle="tab">
@@ -160,13 +160,7 @@
                                                      style="border: 1px solid #d5d5d5;">
                                                     <div class="row">
 
-                                                        <iframe class="btn-block" id="frame1" name="frame1"
-                                                                src="{{ publication.html_page.url }}"
-                                                                onload="FrameManager.registerFrame(this)" scrolling="no"
-                                                                frameborder="0" marginheight="0"
-                                                                marginwidth="0">
-
-                                                        </iframe>
+                                                        <h4>Здесь будет сгенерировано оглавление</h4>
 
                                                     </div>
                                                 </div>
@@ -316,11 +310,28 @@
 {% block add_script %}
     {% load staticfiles %}
     <link href={% static "wiki/wiki_styles/page.css" %} type="text/css" rel="stylesheet">
+    <link href={% static "wiki/wiki_styles/page_themes/deafault.css" %} type="text/css" rel="stylesheet">
     <link href={% static "wiki/slidebars/styles/slidebars.min.css" %} type="text/css" rel="stylesheet">
     <script src={% static "wiki/wiki_scripts/page.js" %}></script>
     <script src={% static "wiki/slidebars/scripts/slidebars.min.js" %}></script>
     <script>
         $(init);
+
+        //Текущая тема оформления
+        var current_theme = "Default";
+        var theme_border_style;
+        if(current_theme == "United")
+        {
+            theme_border_style = "padding: 3px 20px;border-right: 3px solid #f76e2f;background-color: #F1F1F1;transition: all 0.5s ease 0s;";
+        }
+        else if(current_theme == "Monokai")
+        {
+            theme_border_style = "padding: 3px 20px;border-right: 3px solid #ea397e;background-color: #54554E;transition: all 0.5s ease 0s;";
+        }
+        else if(current_theme == "Default")
+        {
+            theme_border_style = "padding: 3px 20px;border-right: 3px solid #225a84;background-color: #F1F1F1;transition: all 0.5s ease 0s;";
+        }
 
         //Номер выбранного параграфа
         var num_paragraph =  "";
@@ -342,7 +353,7 @@
                 if(!isEdit)
                 {
                     num_paragraph = ""+{{ p.index|escapejs }};
-                    $("#markdown-row-{{ p.index|escapejs }}").attr("style", "padding: 3px 20px;border-right: 3px solid #225a84;background-color: #F1F1F1;transition: all 0.5s ease 0s;");
+                    $("#markdown-row-{{ p.index|escapejs }}").attr("style", theme_border_style);
                     li_is_moved = true;
                     $("#context-dinamic-menu").attr("style", "position: fixed;opacity: 1; right:"+(rect.right-rect.width-18)+"px; top:"+(rect.top+rect.height/2-20)+"px; z-index: 9999;transition: all 0.5s ease 0s;");
                 }
@@ -388,7 +399,7 @@
             $(".dyn-par").focus();
 
             //Как только теряем фокус:
-            $("#dynamic-paragraph").blur(function () {
+            $("#dynamic-paragraph").blur(function (e) {
 
                 //Применяем все и возвращаем все обратно
                 $("#dynamic-paragraph").replaceWith(
