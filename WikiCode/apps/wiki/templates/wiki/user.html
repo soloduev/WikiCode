@@ -127,49 +127,20 @@
                                     <div class="container-fluid">
                                         <div class="row">
                                             <div class="col-md-8 col-xs-8">
-                                                <h4 class="text-left">Title this publication</h4>
+                                                <h4 class="text-left" id="wiki-code-preview-title">Title this publication</h4>
                                             </div>
                                             <div class="col-md-4 col-xs-4 text-right">
 
-                                                <button id="wiki-style-btn" class="btn text-center btn-block">
+                                                <a id="wiki-style-btn-read-preview-publ" class="btn text-center btn-block">
                                                     Читать
-                                                </button>
+                                                </a>
                                             </div>
 
                                         </div>
                                     </div>
-                                    <p>
-                                        I'm in Tab 1.
-                                    </p>
-
-                                    <p>
-                                        Duis autem eum iriure dolor in hendrerit in vulputate velit esse molestie
-                                        consequat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
-                                        suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum
-                                        iriure dolor in hendrerit in vulputate velit esse molestie consequat. Duis autem
-                                        vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat.
-                                    </p>
-                                    <p>
-                                        Duis autem eum iriure dolor in hendrerit in vulputate velit esse molestie
-                                        consequat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
-                                        suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum
-                                        iriure dolor in hendrerit in vulputate velit esse molestie consequat. Duis autem
-                                        vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat.
-                                    </p>
-                                    <p>
-                                        Duis autem eum iriure dolor in hendrerit in vulputate velit esse molestie
-                                        consequat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
-                                        suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum
-                                        iriure dolor in hendrerit in vulputate velit esse molestie consequat. Duis autem
-                                        vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat.
-                                    </p>
-                                    <p>
-                                        Duis autem eum iriure dolor in hendrerit in vulputate velit esse molestie
-                                        consequat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
-                                        suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum
-                                        iriure dolor in hendrerit in vulputate velit esse molestie consequat. Duis autem
-                                        vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat.
-                                    </p>
+                                    <div id="wiki-code-prewiew-publ">
+                                        <!--Здесь должен располагаться сгенерированный превью-конспект-->
+                                    </div>
                                 </div>
                                 <div class="tab-pane" id="tab_default_2">
                                     <div class="container-fluid">
@@ -231,9 +202,27 @@
             </div>
         </div>
     </div>
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'wiki/highlight/styles/github.css'%}">
+    <script type="text/javascript" src="{% static 'wiki/highlight/highlight.pack.js'%}"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
 {% endblock %}
 
 {% block add_script %}
     {% load staticfiles %}
     <link href={% static "wiki/wiki_styles/user.css" %} type="text/css" rel="stylesheet">
+
+    <script>
+    $(init);
+        {% if prewiew_publ_text %}
+            document.getElementById('wiki-code-prewiew-publ').innerHTML = marked("{{ prewiew_publ_text|escapejs }}");
+            $("#wiki-code-preview-title").text("{{ prewiew_publ_title|escapejs }}");
+            $("#wiki-style-btn-read-preview-publ").show();
+            $("#wiki-style-btn-read-preview-publ").attr("href","/page/{{ prewiew_publ_id|escapejs }}");
+        {% else %}
+            document.getElementById('wiki-code-prewiew-publ').innerHTML = "<h4>Пользователь не указал свой preview конспект</h4>";
+            $("#wiki-code-preview-title").text("");
+            $("#wiki-style-btn-read-preview-publ").hide();
+        {% endif %}
+    </script>
 {% endblock %}

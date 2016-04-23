@@ -116,7 +116,7 @@
     transition: all 0.5s ease 0s;
 }
 
-#pollSlider-button,#like-pollSlider-button,#info-pollSlider-button{
+#pollSlider-button,#like-pollSlider-button, #contents-pollSlider-button {
     border: 0px solid white;
     box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
     border-radius: 0px;
@@ -130,7 +130,7 @@
     transition: all 0.5s ease 0s;
 }
 
-#pollSlider-button:hover,#like-pollSlider-button:hover,#info-pollSlider-button:hover{
+#pollSlider-button:hover,#like-pollSlider-button:hover, #contents-pollSlider-button:hover{
     border: 0px solid white;
     background-color: #ffffff;
     box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
@@ -149,7 +149,7 @@
     top:150px;
 }
 
-#info-pollSlider-button{
+#contents-pollSlider-button {
     top:210px;
 }
 
@@ -157,7 +157,7 @@
     top:150px;
 }
 
-#info-pollSlider-button:hover{
+#contents-pollSlider-button:hover{
     top:210px;
 }
 

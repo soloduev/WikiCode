@@ -35,6 +35,7 @@ class User(models.Model):
     imports_it = models.BigIntegerField()
     commented_it = models.BigIntegerField()
     avatar = models.ImageField(upload_to='avatars')
+    preview_publ_id = models.BigIntegerField()
     def __str__(self):
         return str(self.id_user)
 

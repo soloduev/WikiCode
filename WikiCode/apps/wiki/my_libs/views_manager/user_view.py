@@ -36,16 +36,30 @@ def get_user(request, id):
     user_data = check_auth(request)
     try:
         user = User.objects.get(email=user_data)
-        if user.id_user == id:
+        if str(get_user_id(request)) == id:
             wt = WikiTree(user.id_user)
             wt.load_tree(user.tree)
             user_id = get_user_id(request)
+            # Получаем текст превью публикации
+            try:
+                preview_publ = Publication.objects.get(id_publication=user.preview_publ_id)
+                preview_publ_text = preview_publ.text
+                prewiew_publ_title = preview_publ.title
+                prewiew_publ_id = preview_publ.id_publication
+            except Publication.DoesNotExist:
+                preview_publ_text = None
+                prewiew_publ_title = None
+                prewiew_publ_id = None
+
             if user_id != -1:
                 context = {
                     "user_data": user_data,
                     "user_id": user_id,
                     "preview_tree": wt.generate_html_preview(),
                     "user":user,
+                    "prewiew_publ_text":preview_publ_text,
+                    "prewiew_publ_title":prewiew_publ_title,
+                    "prewiew_publ_id":prewiew_publ_id,
                 }
 
                 return render(request, 'wiki/user.html', context)
