@@ -60,5 +60,25 @@ $("#wiki-style-btn-add-comment").click(function () {
     }
 });
 
-//Динамический конспект
+//Лайк конспекта
+$("#wikicode-like-publ").click(function () {
+    $.ajax({
+        type: "GET",
+        url: "like_wiki_page/",
+        data:{
+            'data':'',
+        },
+        dataType: "text",
+        cache: false,
+        success: function(data){
+            if (data == 'ok'){
+                location.reload();
+            }
+            else
+            {
+                //Говорим, что лайкнуть не удалось(
+            }
+        }
+    });
+});
 

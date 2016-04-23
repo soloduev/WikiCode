@@ -38,6 +38,19 @@ class User(models.Model):
     def __str__(self):
         return str(self.id_user)
 
+class Like(models.Model):
+    id_user = models.BigIntegerField()
+    nickname = models.BigIntegerField()
+    type = models.CharField(max_length=100) # Тип либо publ, либо user
+    id_publ_like = models.BigIntegerField(blank=True)
+    id_user_like = models.BigIntegerField(blank=True)
+    date = models.CharField(max_length=100)
+    def __str__(self):
+        return str("user:"+str(self.id_user)+
+                   " type:"+str(self.type)+
+                   " publ-like:"+str(self.id_publ_like)+
+                   " user-like:"+str(self.id_user_like))
+
 
 class Publication(models.Model):
     id_publication = models.BigIntegerField()
