@@ -98,37 +98,49 @@
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tab_default_1">
-                                    <div class="container-fluid">
-                                    {% for publ in all_publications reversed%}
-                                        <!-- Start publication-->
-                                        <div class="row">
-                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                                <div class="box">
-                                                    <div class="info">
-                                                        <a style="text-decoration: none; cursor: pointer;" href="/page/{{ publ.id_publication }}/"><h4 class="text-left">{{ publ.title }}</h4></a>
-                                                        <div style="cursor: pointer;" id="publ-tags" class="tag-list"></div>
-                                                        <br>
-                                                        <hr>
-                                                        <p>{{ publ.description }}</p>
-                                                        <hr>
-                                                        <div class="btn-group">
-                                                            <button id="reads_publ" href="" class="btn btn-default"><span class="glyphicon glyphicon-eye-open"></span> {{ publ.read }}</button>
-                                                            <button id="imports_publ" href="" class="btn btn-default"><span class="glyphicon glyphicon-import"></span> {{ publ.imports }}</button>
-                                                            <button id="likes_publ" href="" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-up"></span> {{ publ.likes }}</button>
-                                                            <a id="author_publ" href="/user/{{ publ.id_author }}" class="btn btn-default"><span class="glyphicon glyphicon-user"></span> {{ publ.nickname_author }}</a>
-                                                            <a id="read_publ" href="/page/{{ publ.id_publication }}/" class="btn btn-default">Читать</a>
+
+                                        {% for publ in all_publications reversed%}
+                                            <!-- Start publication-->
+                                            <div class="row">
+                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                    <div class="box">
+                                                        <div class="info">
+                                                            <a style="text-decoration: none; cursor: pointer;" href="/page/{{ publ.id_publication }}/"><h4 class="text-left">{{ publ.title }}</h4></a>
+                                                            <div style="cursor: pointer;" id="publ-tags" class="tag-list"></div>
+                                                            <br>
+                                                            <hr>
+                                                            <p>{{ publ.description }}</p>
+                                                            <hr>
+                                                            <div class="btn-group">
+                                                                <button id="reads_publ" href="" class="btn btn-default"><span class="glyphicon glyphicon-eye-open"></span> {{ publ.read }}</button>
+                                                                <button id="imports_publ" href="" class="btn btn-default"><span class="glyphicon glyphicon-import"></span> {{ publ.imports }}</button>
+                                                                <button id="likes_publ" href="" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-up"></span> {{ publ.likes }}</button>
+                                                                <a id="author_publ" href="/user/{{ publ.id_author }}" class="btn btn-default"><span class="glyphicon glyphicon-user"></span> {{ publ.nickname_author }}</a>
+                                                                <a id="read_publ" href="/page/{{ publ.id_publication }}/" class="btn btn-default">Читать</a>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <!--End publication-->
-                                    {% endfor %}
+                                            <!--End publication-->
+                                        {% endfor %}
+
+                                </div>
+                                <div class="tab-pane" id="tab_default_2">
+                                        <p></p>
+                                        <h4>Позже, здесь будут перечислены лучшие конспекты по запросу</h4>
                                     </div>
-                                    <div class="tab-pane" id="tab_default_4">
+                                    <div class="tab-pane" id="tab_default_3">
+                                        <p></p>
+                                        <h4>Позже, здесь будут перечислены последние конспекты по запросу</h4>
 
                                     </div>
-                                </div>
+
+                                    <div class="tab-pane" id="tab_default_4">
+                                        <p></p>
+                                        <h4>Позже, здесь будут перечислены самые популярные теги платформы</h4>
+
+                                    </div>
                             </div>
                         </div>
                     </div>
@@ -142,12 +154,12 @@
 {% block add_script %}
     {% load staticfiles %}
     <link href={% static "wiki/wiki_styles/index.css" %} type="text/css" rel="stylesheet">
-<script>
-    $(function() {
-        $('#publ-tags').tags({
-            readOnly: true,
-            tagData:["boilerplate", "tags"],
+    <script>
+        $(function() {
+            $('#publ-tags').tags({
+                readOnly: true,
+                tagData:["boilerplate", "tags"],
+            });
         });
-    });
-</script>
+    </script>
 {% endblock %}
