@@ -54,7 +54,7 @@
                         <div class="[ info-card ]">
                             <img style="width: 100%" src="http://placehold.it/240x240">
 
-                            <div class="[ info-card-details ] animate" style="overflow:  hidden;">
+                            <div class="[ info-card-details ] animate">
                                 <div class="[ info-card-header ]">
                                     <h1> {{ user.nickname }} </h1>
 
@@ -62,7 +62,7 @@
                                 </div>
                                 <div class="[ info-card-detail ]">
                                     <!-- Description -->
-                                    <p>Вы можете поставить "like" этому пользователю</p>
+                                    <p><h4>Like!</h4></p>
 
                                     <div class="social">
                                         <a  id="wiki-code-like-user" class="[ social-icon facebook ] animate"><span
@@ -145,53 +145,41 @@
                                     <div class="container-fluid">
                                         <div class="row">
                                             <div class="col-md-8 col-xs-8">
-                                                <h4 class="text-left">Title this publication</h4>
+                                                <h4 class="text-left" style="display: none;">Title this publication</h4>
                                             </div>
                                             <div class="col-md-4 col-xs-4 text-right">
 
-                                                <button id="wiki-style-btn" class="btn text-center btn-block">
+                                                <button id="wiki-style-btn" class="btn text-center btn-block" style="display: none;">
                                                     Читать
                                                 </button>
                                             </div>
 
                                         </div>
                                     </div>
-                                    <p>
-                                        Howdy, I'm in Tab 2.
-                                    </p>
-
-                                    <p>
-                                        Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit
-                                        lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure
-                                        dolor in hendrerit in vulputate velit esse molestie consequat. Ut wisi enim ad
-                                        minim veniam, quis nostrud exerci tation.
-                                    </p>
+                                    <p></p>
+                                    <h4>Здесь будет располагаться Ваш лучший конспект.</h4>
+                                    <p></p>
+                                    <h4>На данный момент, у Вас не создано ни одного конспекта! <a href="{% url 'create' %}">Создайте</a> Ваш первый конспект, прямо сейчас!</h4>
                                 </div>
                                 <div class="tab-pane" id="tab_default_3">
                                     <div class="container-fluid">
                                         <div class="row">
                                             <div class="col-md-8 col-xs-8">
-                                                <h4 class="text-left">Title this publication</h4>
+                                                <h4 class="text-left" style="display: none;">Title this publication</h4>
                                             </div>
                                             <div class="col-md-4 col-xs-4 text-right">
 
-                                                <button id="wiki-style-btn" class="btn text-center btn-block">
+                                                <button id="wiki-style-btn" class="btn text-center btn-block" style="display: none;">
                                                     Читать
                                                 </button>
                                             </div>
 
                                         </div>
                                     </div>
-                                    <p>
-                                        Howdy, I'm in Tab 3.
-                                    </p>
-
-                                    <p>
-                                        Duis autem vel eum iriure dolor in hendrerit in vulputate. Ut wisi enim ad minim
-                                        veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip
-                                        ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in
-                                        vulputate velit esse molestie consequat
-                                    </p>
+                                    <p></p>
+                                    <h4>Здесь будет располагаться Ваш последний конспект.</h4>
+                                    <p></p>
+                                    <h4>На данный момент, у Вас не создано ни одного конспекта! <a href="{% url 'create' %}">Создайте</a> Ваш первый конспект, прямо сейчас!</h4>
                                 </div>
                             </div>
                         </div>
@@ -213,7 +201,7 @@
     <script type="text/javascript" src="{% static 'wiki/wiki_scripts/user.js'%}"></script>
 
     <script>
-    $(init);
+        $(init);
         {% if prewiew_publ_text %}
             document.getElementById('wiki-code-prewiew-publ').innerHTML = marked("{{ prewiew_publ_text|escapejs }}");
             $("#wiki-code-preview-title").text("{{ prewiew_publ_title|escapejs }}");

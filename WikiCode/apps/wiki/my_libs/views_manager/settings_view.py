@@ -20,14 +20,34 @@
 
 from django.shortcuts import render
 
+from WikiCode.apps.wiki.models import User, Publication
+from WikiCode.apps.wiki.my_libs.views_manager.error_view import get_error_page
 from .auth import check_auth, get_user_id
 
 
 def get_settings(request):
 
-    context = {
-        "user_data":check_auth(request),
-        "user_id": get_user_id(request),
-    }
+    try:
+        id = get_user_id(request)
 
-    return render(request, 'wiki/settings.html', context)
+        # Получаем данные пользователя
+        user = User.objects.get(id_user=id)
+        prewiew_path_publ = ""
+        try:
+            preview_publ = Publication.objects.get(id_publication=user.preview_publ_id)
+            prewiew_path_publ = preview_publ.tree_path.split(":")[0]
+            prewiew_path_publ = prewiew_path_publ[:len(prewiew_path_publ)-5]
+        except Publication.DoesNotExist:
+            pass
+
+
+        context = {
+            "user_data":check_auth(request),
+            "user_id": id,
+            "user": user,
+            "prewiew_path_publ":prewiew_path_publ,
+        }
+
+        return render(request, 'wiki/settings.html', context)
+    except User.DoesNotExist:
+        get_error_page(request,["Sorry this user is not found!"])
