@@ -70,11 +70,25 @@ def get_user(request, id):
             wt = WikiTree(other_user.id_user)
             wt.load_tree(other_user.tree)
 
+            # Получаем текст превью публикации
+            try:
+                preview_publ = Publication.objects.get(id_publication=other_user.preview_publ_id)
+                preview_publ_text = preview_publ.text
+                prewiew_publ_title = preview_publ.title
+                prewiew_publ_id = preview_publ.id_publication
+            except Publication.DoesNotExist:
+                preview_publ_text = None
+                prewiew_publ_title = None
+                prewiew_publ_id = None
+
             context = {
                 "user_data": user_data,
                 "user_id": get_user_id(request),
                 "preview_tree": wt.generate_html_preview(),
                 "user":other_user,
+                "prewiew_publ_text": preview_publ_text,
+                "prewiew_publ_title": prewiew_publ_title,
+                "prewiew_publ_id": prewiew_publ_id,
             }
 
             return render(request, 'wiki/user.html', context)
