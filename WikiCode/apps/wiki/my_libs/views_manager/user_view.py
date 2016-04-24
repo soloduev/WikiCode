@@ -16,12 +16,11 @@
 #
 #   You should have received a copy of the GNU Affero General Public License
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
-
-
+from django.http import HttpResponse
 
 from .auth import check_auth, get_user_id
 from django.shortcuts import render
-from WikiCode.apps.wiki.models import User as WikiUser
+from WikiCode.apps.wiki.models import User as WikiUser, Like
 from django.contrib.auth.models import User as DjangoUser
 from WikiCode.apps.wiki.models import Statistics
 from WikiCode.apps.wiki.models import Publication
@@ -30,6 +29,7 @@ from django.contrib.auth import login
 from WikiCode.apps.wiki.my_libs.trees_management.manager import WikiTree
 from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.my_libs.views_manager.error_view import get_error_page
+import datetime
 
 def get_user(request, id):
 
@@ -218,3 +218,46 @@ def get_logout_user(request):
     }
 
     return render(request, 'wiki/index.html', context)
+
+
+def get_like_user(request, id):
+    """Ajax представление. Like определенному пользователю."""
+    try:
+        # Получаем пользователя захотевшего поставить лайк
+        id_user = int(get_user_id(request))
+
+        if id_user == -1:
+            return HttpResponse('no', content_type='text/html')
+        else:
+            # Получаем текущую дату
+            date = str(datetime.datetime.now())
+            date = date[:len(date) - 7]
+
+            # Получаем User
+            user_set = User.objects.get(id_user=id_user)
+            # Получаем пользователя на которого поставлен лайк
+            user_get = User.objects.get(id_user=id)
+
+            # Проверяем, не стоит ли like уже у этого пользователя на этого пользователя
+            is_set = False
+            try:
+                like = Like.objects.get(id_user=id_user, id_user_like=id)
+                # Лайк стоит, убираем
+                like.delete()
+                user_get.likes -= 1
+                user_get.save()
+            except Like.DoesNotExist:
+                # Лайк не стоит. Ставим
+                new_like = Like(id_user=id_user,
+                                nickname=user_set.nickname,
+                                type="user",
+                                id_publ_like=-1,
+                                id_user_like=id,
+                                date=date)
+                new_like.save()
+                user_get.likes += 1
+                user_get.save()
+
+            return HttpResponse('ok', content_type='text/html')
+    except User.DoesNotExist:
+        return get_error_page(request, ["This is user is not found!"])

@@ -134,3 +134,8 @@ def add_dynamic_comment_in_wiki_page(request, id):
 
 def like_wiki_page(request, id):
     return publication_view.get_like_wiki_page(request,id)
+
+
+@login_required
+def like_user(request, id):
+    return user_view.get_like_user(request, id)

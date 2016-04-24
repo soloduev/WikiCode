@@ -54,7 +54,7 @@
                         <div class="[ info-card ]">
                             <img style="width: 100%" src="http://placehold.it/240x240">
 
-                            <div class="[ info-card-details ] animate">
+                            <div class="[ info-card-details ] animate" style="overflow:  hidden;">
                                 <div class="[ info-card-header ]">
                                     <h1> {{ user.nickname }} </h1>
 
@@ -65,8 +65,7 @@
                                     <p>Вы можете поставить "like" этому пользователю</p>
 
                                     <div class="social">
-                                        <a href=""
-                                           class="[ social-icon facebook ] animate"><span
+                                        <a  id="wiki-code-like-user" class="[ social-icon facebook ] animate"><span
                                                 class="fa fa-thumbs-o-up"></span></a>
                                     </div>
                                 </div>
@@ -97,7 +96,7 @@
                                 <label class="text-left btn-block">{{ user.imports }}</label>
                                 <label class="text-left btn-block">{{ user.comments }}</label>
                                 <hr>
-                                <label class="text-left btn-block">{{ user.likes }} <i class="btn-link text-center" style="width: 60px;">Like!</i></label>
+                                <label class="text-left btn-block">{{ user.likes }} <a id="wiki-code-like-user-link" class="btn-link text-center" style="width: 60px;">Like!</a></label>
                                 <label class="text-left btn-block">{{ user.imports_it }}</label>
                                 <label class="text-left btn-block">{{ user.commented_it }}</label>
                             </div>
@@ -211,6 +210,7 @@
 {% block add_script %}
     {% load staticfiles %}
     <link href={% static "wiki/wiki_styles/user.css" %} type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="{% static 'wiki/wiki_scripts/user.js'%}"></script>
 
     <script>
     $(init);
