@@ -80,6 +80,17 @@ class Publication(models.Model):
     def __str__(self):
         return str(self.id_publication)
 
+
+# Модель просмотра страницы. Указывает кто просмотрел и когда
+class Viewing(models.Model):
+    id_user = models.BigIntegerField()
+    nickname = models.CharField(max_length=100)
+    id_publ = models.BigIntegerField()
+    date = models.CharField(max_length=100)
+    def __str__(self):
+        return str("user:" + str(self.id_user) +
+                   " publ:" + str(self.id_publ))
+
 class CommentBlock(models.Model):
     id_publication = models.BigIntegerField()
     last_id = models.BigIntegerField()
