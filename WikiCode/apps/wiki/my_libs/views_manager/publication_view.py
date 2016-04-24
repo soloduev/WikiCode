@@ -19,7 +19,8 @@
 
 
 from django.shortcuts import render
-from WikiCode.apps.wiki.models import Publication, Statistics, CommentBlock, Comment, Paragraphs, DynamicCommentParagraph, DynamicComment, Like
+from WikiCode.apps.wiki.models import Publication, Statistics, CommentBlock, Comment, Paragraphs, DynamicCommentParagraph, DynamicComment, Like, \
+    Viewing
 from .auth import check_auth, get_user_id
 from WikiCode.apps.wiki.my_libs.WikiMarkdown import WikiMarkdown
 from django.template import RequestContext, loader
@@ -62,6 +63,7 @@ def get_create(request):
 
 def get_page(request, id):
     try:
+        cur_user_id = get_user_id(request)
         publication = Publication.objects.get(id_publication=id)
         try:
             user = User.objects.get(id_user=publication.id_author)
@@ -113,13 +115,32 @@ def get_page(request, id):
         except DynamicComment.DoesNotExist:
             print("WIKI ERROR: DynamicComment не обнаружен")
 
+        # И перед тем как перейти на страницу, добавим ей просмотр, если этот пользователь еще не смотрел
+        # Этот конспект
+        try:
+            viewing = Viewing.objects.get(id_user=cur_user_id, id_publ=id)
+            # Просмотр стоит, ничего не добавляем
+        except Viewing.DoesNotExist:
+            # Просмотр не стоит. Ставим
+
+            # Получаем текущую дату
+            date = str(datetime.datetime.now())
+            date = date[:len(date) - 7]
+
+            new_viewing = Viewing(id_user=cur_user_id,
+                            nickname=user.nickname,
+                            id_publ=id,
+                            date=date)
+            new_viewing.save()
+            publication.read += 1
+            publication.save()
 
         context = {
             "publication": publication,
             "paragraphs": paragraphs,
             "numbers": numbers,
             "user_data": check_auth(request),
-            "user_id": get_user_id(request),
+            "user_id": cur_user_id,
             "preview_tree": wt.generate_html_preview(),
             "all_comments": all_comments,
             "prgrphs": prgrphs,

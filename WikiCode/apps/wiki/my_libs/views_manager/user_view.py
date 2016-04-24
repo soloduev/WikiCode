@@ -239,7 +239,6 @@ def get_like_user(request, id):
             user_get = User.objects.get(id_user=id)
 
             # Проверяем, не стоит ли like уже у этого пользователя на этого пользователя
-            is_set = False
             try:
                 like = Like.objects.get(id_user=id_user, id_user_like=id)
                 # Лайк стоит, убираем

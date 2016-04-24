@@ -19,7 +19,7 @@
 
 from django.contrib import admin
 from .models import User
-from .models import Publication, Statistics, CommentBlock, Comment, Paragraphs, DynamicCommentParagraph, DynamicComment, Like
+from .models import Publication, Statistics, CommentBlock, Comment, Paragraphs, DynamicCommentParagraph, DynamicComment, Like, Viewing
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User as DjangoUser
 # Register your models here.
@@ -45,3 +45,4 @@ admin.site.register(Paragraphs)
 admin.site.register(DynamicCommentParagraph)
 admin.site.register(DynamicComment)
 admin.site.register(Like)
+admin.site.register(Viewing)
