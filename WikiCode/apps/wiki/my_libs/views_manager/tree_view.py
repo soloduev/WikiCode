@@ -22,7 +22,7 @@ import os
 
 from django.http import HttpResponse
 from django.shortcuts import render
-
+from django.views.decorators.csrf import csrf_protect
 from WikiCode.apps.wiki.wiki_settings import wiki_settings
 from .auth import check_auth, get_user_id
 from WikiCode.apps.wiki.models import User, Publication, Statistics
@@ -30,7 +30,6 @@ from WikiCode.apps.wiki.my_libs.trees_management.manager import WikiTree
 
 
 def get_tree_manager(request):
-
     user_data = check_auth(request)
     try:
         user = User.objects.get(email=user_data)
@@ -53,6 +52,7 @@ def get_tree_manager(request):
         return render(request, 'wiki/tree_manager.html', context)
 
 
+@csrf_protect
 def get_add_folder_in_tree(request):
     """Ajax представление. Добавление папки в дерево пользователя"""
 
@@ -67,7 +67,7 @@ def get_add_folder_in_tree(request):
             user = User.objects.get(email=user_data)
             wt = WikiTree(user.id_user)
             wt.load_tree(user.tree)
-            wt.add_folder(path,folder_name)
+            wt.add_folder(path, folder_name)
             user.tree = wt.get_tree()
             user.save()
 
@@ -84,6 +84,7 @@ def get_add_folder_in_tree(request):
         return HttpResponse('no', content_type='text/html')
 
 
+@csrf_protect
 def get_del_elem_in_tree(request):
     """Ajax представление. Удаление элемента в дереве пользователя"""
 
@@ -114,7 +115,7 @@ def get_del_elem_in_tree(request):
         return HttpResponse('no', content_type='text/html')
 
 
-
+@csrf_protect
 def get_check_folder_for_delete(request):
     """Ajax представление. Проверка папку на пустоту, для ее удаления"""
 
@@ -142,6 +143,7 @@ def get_check_folder_for_delete(request):
         return HttpResponse('no', content_type='text/html')
 
 
+@csrf_protect
 def get_delete_publ_in_tree(request):
     """Ajax представление. Удаление конспекта."""
 
@@ -177,7 +179,7 @@ def get_delete_publ_in_tree(request):
             stat.publications_delete += 1
 
             # Удаляем html файл этой публикации
-            os.remove(wiki_settings.DELETE_PUBLICATION_PATH + str(id_publ) +".html")
+            os.remove(wiki_settings.DELETE_PUBLICATION_PATH + str(id_publ) + ".html")
 
             publication.delete()
             user.save()
@@ -196,6 +198,7 @@ def get_delete_publ_in_tree(request):
         return HttpResponse('no', content_type='text/html')
 
 
+@csrf_protect
 def get_rename_publ_in_tree(request):
     """Ajax представление. Переименование конспекта конспекта."""
 
@@ -212,7 +215,7 @@ def get_rename_publ_in_tree(request):
             publication = Publication.objects.get(id_publication=id)
             wt = WikiTree(user.id_user)
             wt.load_tree(user.tree)
-            is_rename = wt.rename_publication(path,new_name_publ)
+            is_rename = wt.rename_publication(path, new_name_publ)
             # Пока переименование конспекта осуществиться даже, если конспект с таким именем уже существует
             if is_rename:
                 publication.title = new_name_publ
@@ -242,6 +245,7 @@ def get_rename_publ_in_tree(request):
         return HttpResponse('no', content_type='text/html')
 
 
+@csrf_protect
 def get_rename_folder_in_tree(request):
     """Ajax представление. Переименование папки"""
 
@@ -249,6 +253,7 @@ def get_rename_folder_in_tree(request):
     return HttpResponse('no', content_type='text/html')
 
 
+@csrf_protect
 def get_set_preview_publ_in_tree(request):
     """Ajax представление. Установление preview конспекта"""
 
