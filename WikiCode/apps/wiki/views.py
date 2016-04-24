@@ -118,6 +118,9 @@ def rename_publ_in_tree(request):
 def rename_folder_in_tree(request):
     return tree_view.get_rename_folder_in_tree(request)
 
+def set_preview_publ_in_tree(request):
+    return tree_view.get_set_preview_publ_in_tree(request)
+
 
 @login_required
 def add_comment_in_wiki_page(request, id):

@@ -248,3 +248,24 @@ def get_rename_folder_in_tree(request):
     # Важно понимать, что при переименовывании папки, все конспекты внутри него, МЕНЯЮТ СВОЙ ПУТЬ В ДЕРЕВЕ!!!
     return HttpResponse('no', content_type='text/html')
 
+
+def get_set_preview_publ_in_tree(request):
+    """Ajax представление. Установление preview конспекта"""
+
+    if request.method == "GET":
+        publ = request.GET.get('publ')
+        user_id = get_user_id(request)
+
+        # Получаем id той публикации, которую хотим сделать превью
+        id_publ = int(publ.split(":")[1])
+
+        try:
+            user = User.objects.get(id_user=user_id)
+            user.preview_publ_id = id_publ
+            user.save()
+            return HttpResponse('ok', content_type='text/html')
+        except User.DoesNotExist:
+            return HttpResponse('no', content_type='text/html')
+
+    else:
+        return HttpResponse('no', content_type='text/html')
