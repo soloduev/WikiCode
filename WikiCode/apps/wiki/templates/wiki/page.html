@@ -58,7 +58,7 @@
                                                 <a id="wikicode-like-publ" href="#" class="btn"><span
                                                         class="glyphicon glyphicon-thumbs-up"></span> ({{ publication.likes }})</a>
 
-                                                <a id="wikicode-import-publ" href="#" class="btn"><span class="glyphicon glyphicon-import"></span> ({{ publication.imports }})</a>
+                                                <a id="wikicode-import-publ" data-toggle="modal" data-target="#modal_save_publ" class="btn"><span class="glyphicon glyphicon-import"></span> ({{ publication.imports }})</a>
 
 
                                                 <a id="wikicode-download-publ" href="#" class="btn"><span
@@ -268,6 +268,32 @@
             <li id="wiki-style-btn-option-2" class="btn" data-toggle="modal" data-target="#modal_add_error" style="width: 35px;border-radius: 25px; padding-left: 10px;"><i class="fa fa-exclamation-triangle"></i></li>
             <li id="wiki-style-btn-option-3" class="btn" data-toggle="modal" data-target="#modal_chat" style="width: 35px;border-radius: 25px; padding-left: 10px;"><i class="fa fa-comment-o"></i></li>
         </ul>
+    </div>
+
+    <!-- Модальное окно для сохранения конспекта -->
+    <div class="modal fade" id="modal_save_publ" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Выберите папку, в которую хотите сохранить этот конспект</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>Путь для сохранения:</h4>
+                    <input id="save-publ-path-folder" class="form-control" style="border-radius: 0px; font-family: Courier;" placeholder="Путь к папке...">
+                    <div id="jstree">
+                        <ul>
+                            <!--Здесь должен располагаться сгенерированный html код, для динамического дерева с одними папками-->
+                            {{ dynamic_tree|safe }}
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
+                    <button id="wiki-style-btn-save-publ"type="button" class="btn">Сохранить</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Модальное окно для указания на ошибку -->

@@ -115,6 +115,11 @@ def get_page(request, id):
         except DynamicComment.DoesNotExist:
             print("WIKI ERROR: DynamicComment не обнаружен")
 
+        # Загружаем дерево пользователя, который зашел на эту страницу
+        cur_user = User.objects.get(id_user=cur_user_id)
+        wt = WikiTree(cur_user.id_user)
+        wt.load_tree(cur_user.tree)
+
         # И перед тем как перейти на страницу, добавим ей просмотр, если этот пользователь еще не смотрел
         # Этот конспект
         try:
@@ -142,6 +147,7 @@ def get_page(request, id):
             "user_data": check_auth(request),
             "user_id": cur_user_id,
             "preview_tree": wt.generate_html_preview(),
+            "dynamic_tree": wt.generate_html_dynamic_folders(),
             "all_comments": all_comments,
             "prgrphs": prgrphs,
         }
@@ -456,3 +462,14 @@ def get_like_wiki_page(request, id):
         return get_error_page(request, ["This is user is not found!"])
     except Publication.DoesNotExist:
         return get_error_page(request, ["This is Publication is not found!"])
+
+
+def get_import_wiki_page(request, id):
+    """Ajax представление. Сохраняет публиацию к себе в дерево публикации"""
+
+    # Получаем путь к папке, в которой хотим сохранить конспект
+    path_folder = request.GET.get('path_folder')
+
+    print(path_folder)
+
+    return HttpResponse('ok', content_type='text/html')

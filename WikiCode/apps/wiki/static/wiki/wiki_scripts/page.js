@@ -20,6 +20,35 @@
 /**
  * Created by Igor on 11.04.2016.
  */
+$("#jstree")
+// listen for event
+    .on('changed.jstree', function (e, data) {
+        var full_path = ''+data.selected;
+        var arr = full_path.split(':');
+        $("#save-publ-path-folder").val(arr[0]);
+    })
+    // create the instance
+    .jstree({
+
+        "types" : {
+            "folder" : {
+                "icon" : "glyphicon glyphicon-folder-open"
+            },
+            "publ": {
+                "icon": "glyphicon glyphicon-list-alt"
+            },
+            "contents": {
+                "icon": "glyphicon glyphicon-bookmark"
+            },
+            "test": {
+                "icon": "glyphicon glyphicon-check"
+            },
+        },
+
+        "plugins" : [ "wholerow", "types" ]
+    });
+
+
 
 (function($) {
     $(document).ready(function() {
@@ -80,5 +109,32 @@ $("#wikicode-like-publ").click(function () {
             }
         }
     });
+});
+
+//Сохранение конспекта
+$("#wiki-style-btn-save-publ").click(function () {
+    var path_folder = $("#save-publ-path-folder").val()
+    if(path_folder !== "")
+    {
+        $.ajax({
+        type: "GET",
+        url: "import_wiki_page/",
+        data:{
+            'path_folder':''+path_folder,
+        },
+        dataType: "text",
+        cache: false,
+        success: function(data){
+            if (data == 'ok'){
+                location.href = '/tree_manager';
+            }
+            else
+            {
+                //Говорим, что лайкнуть не удалось(
+            }
+        }
+    });
+    }
+
 });
 

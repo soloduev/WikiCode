@@ -136,6 +136,9 @@ def like_wiki_page(request, id):
     return publication_view.get_like_wiki_page(request,id)
 
 
+def import_wiki_page(request, id):
+    return publication_view.get_import_wiki_page(request,id)
+
 @login_required
 def like_user(request, id):
     return user_view.get_like_user(request, id)
