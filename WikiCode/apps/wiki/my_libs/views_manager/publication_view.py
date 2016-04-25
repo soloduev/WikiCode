@@ -19,6 +19,8 @@
 
 
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_protect
+
 from WikiCode.apps.wiki.models import Publication, Statistics, CommentBlock, Comment, Paragraphs, DynamicCommentParagraph, DynamicComment, Like, \
     Viewing
 from .auth import check_auth, get_user_id
@@ -418,6 +420,7 @@ def get_add_dynamic_comment_in_wiki_page(request, id):
         return get_error_page(request, ["This is DynamicCommentParagraph is not found!"])
 
 
+@csrf_protect
 def get_like_wiki_page(request, id):
     """Ajax представление. Добавляет или убирает like с публикации"""
     try:
