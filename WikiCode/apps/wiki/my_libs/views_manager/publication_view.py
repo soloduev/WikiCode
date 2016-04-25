@@ -275,18 +275,26 @@ def get_publ_manager(request, id):
     """Запускает страницу управления конспектом"""
 
     try:
-        publication = Publication.objects.get(id_publication=id)
-
         # Получаем пользователя
         user_data = check_auth(request)
 
-        context = {
-            "user_data": user_data,
-            "user_id": get_user_id(request),
-            "publication":publication,
-            "tree_path":publication.tree_path.split(":")[0],
-        }
-        return render(request, 'wiki/publ_manager.html', context)
+        # Получаем конспект, который хотим управлять
+        publication = Publication.objects.get(id_publication=id)
+
+        # Проверяем, является ли автором этого конспекта тот пользователь
+        # Который захотел управлять этим конспектом
+        current_id = get_user_id(request)
+        if current_id == publication.id_author:
+
+            context = {
+                "user_data": user_data,
+                "user_id": current_id,
+                "publication":publication,
+                "tree_path":publication.tree_path.split(":")[0],
+            }
+            return render(request, 'wiki/publ_manager.html', context)
+        else:
+            return get_error_page(request, ["У Вас нет доступа к этому конспекту, чтобы управлять им!", "Вы не являетесь редактором конспекта page/" + str(id) + "/"])
 
     except Publication.DoesNotExist:
         return get_error_page(request, ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
