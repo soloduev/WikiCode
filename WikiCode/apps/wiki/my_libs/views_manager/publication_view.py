@@ -199,6 +199,10 @@ def get_create_page(request):
         with open("media/publications/" + name_page + ".html", "wb") as f:
             f.write(ready_page.encode("utf-8"))
         newid = num + 1
+        print(form["access"])
+        print(form["access_edit"])
+        print(form["publ_comment"])
+        print(form["dynamic_comment"])
         new_publication = Publication(
             id_publication=newid,
             id_author=user.id_user,
@@ -247,7 +251,8 @@ def get_create_page(request):
             dynamic_comment_paragraph = DynamicCommentParagraph(
                 paragraphs=new_paragraphs,
                 num_position=i,
-                is_comment=False)
+                is_comment=False,
+                last_id=0)
             dynamic_comment_paragraph.save()
 
 
