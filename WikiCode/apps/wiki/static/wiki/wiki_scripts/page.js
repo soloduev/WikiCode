@@ -21,37 +21,6 @@
  * Created by Igor on 11.04.2016.
  */
 
-//Использование POST запроса в AJAX и DJANGO
-// using jQuery
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie != '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-var csrftoken = getCookie('csrftoken');
-function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-}
-$.ajaxSetup({
-    beforeSend: function(xhr, settings) {
-        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-        }
-    }
-});
-
-
 
 $("#jstree")
 // listen for event
@@ -91,6 +60,7 @@ $("#jstree")
         });
 
 
+
     });
 }) (jQuery);
 
@@ -102,7 +72,7 @@ $("#wiki-style-btn-add-comment").click(function () {
     {
         comment_message = $("#add-comment-wiki-page").val();
         $.ajax({
-            type: "GET",
+            type: "POST",
             url: "add_comment_in_wiki_page/",
             data:{
                 'comment_message':''+comment_message,
@@ -150,7 +120,7 @@ $("#wiki-style-btn-save-publ").click(function () {
     if(path_folder !== "")
     {
         $.ajax({
-        type: "GET",
+        type: "POST",
         url: "import_wiki_page/",
         data:{
             'path_folder':''+path_folder,
@@ -163,7 +133,7 @@ $("#wiki-style-btn-save-publ").click(function () {
             }
             else
             {
-                //Говорим, что лайкнуть не удалось(
+
             }
         }
     });

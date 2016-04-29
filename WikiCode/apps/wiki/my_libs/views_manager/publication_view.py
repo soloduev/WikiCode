@@ -313,171 +313,184 @@ def get_publ_manager(request, id):
         return get_error_page(request, ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
 
 
+@csrf_protect
 def get_add_comment_in_wiki_page(request, id):
     """Ajax представление. Добавляет коммент к публикации."""
 
-    try:
-        comment_block = CommentBlock.objects.get(id_publication=id)
-        publication = Publication.objects.get(id_publication=id)
+    if request.method == "POST":
+        try:
+            comment_block = CommentBlock.objects.get(id_publication=id)
+            publication = Publication.objects.get(id_publication=id)
 
-        # Получаем пользователя
-        user_data = check_auth(request)
+            # Получаем пользователя
+            user_data = check_auth(request)
 
-        # Получаем сообщение
-        comment_message = request.GET.get('comment_message')
+            # Получаем сообщение
+            comment_message = request.POST.get('comment_message')
 
-        #Получаем текущую дату
-        date = str(datetime.datetime.now())
-        date = date[:len(date)-7]
+            #Получаем текущую дату
+            date = str(datetime.datetime.now())
+            date = date[:len(date)-7]
 
-        #Получаем пользователя оставившего комментарий
-        id = int(get_user_id(request))
-        user = User.objects.get(id_user=id)
-        user.comments += 1
+            #Получаем пользователя оставившего комментарий
+            id = int(get_user_id(request))
+            user = User.objects.get(id_user=id)
+            user.comments += 1
 
-        #Получаем пользователя получившего комментарий
-        user2 = User.objects.get(id_user=publication.id_author)
-        user2.commented_it += 1
-
-
-        # Создаем новый комментарий
-        new_comment = Comment(comment_block=comment_block,
-                              num_position=comment_block.last_id+1,
-                              id_author=user.id_user,
-                              nickname_author=user.nickname,
-                              rating=0,
-                              text=comment_message,
-                              data=date,
-                              id_author_answer=0,
-                              nickname_author_answer="")
-
-        new_comment.save()
-        comment_block.last_id += 1
-        comment_block.save()
-        user2.save()
-        user.save()
-
-        return HttpResponse('ok', content_type='text/html')
-
-    except CommentBlock.DoesNotExist:
-        return get_error_page(request, ["This is comment block not found!"])
-    except Publication.DoesNotExist:
-        return get_error_page(request, ["This is publication not found!"])
-    except User.DoesNotExist:
-        return get_error_page(request, ["This is user is not found!"])
+            #Получаем пользователя получившего комментарий
+            user2 = User.objects.get(id_user=publication.id_author)
+            user2.commented_it += 1
 
 
+            # Создаем новый комментарий
+            new_comment = Comment(comment_block=comment_block,
+                                  num_position=comment_block.last_id+1,
+                                  id_author=user.id_user,
+                                  nickname_author=user.nickname,
+                                  rating=0,
+                                  text=comment_message,
+                                  data=date,
+                                  id_author_answer=0,
+                                  nickname_author_answer="")
 
+            new_comment.save()
+            comment_block.last_id += 1
+            comment_block.save()
+            user2.save()
+            user.save()
+
+            return HttpResponse('ok', content_type='text/html')
+
+        except CommentBlock.DoesNotExist:
+            return get_error_page(request, ["This is comment block not found!"])
+        except Publication.DoesNotExist:
+            return get_error_page(request, ["This is publication not found!"])
+        except User.DoesNotExist:
+            return get_error_page(request, ["This is user is not found!"])
+    else:
+        return HttpResponse('no', content_type='text/html')
+
+
+@csrf_protect
 def get_add_dynamic_comment_in_wiki_page(request, id):
     """Ajax представление. Добавляет динамический комментарий к азбзацу публикации."""
 
-    try:
-        paragraphs = Paragraphs.objects.get(id_publication=id)
-        publication = Publication.objects.get(id_publication=id)
+    if request.method == "POST":
+        try:
+            paragraphs = Paragraphs.objects.get(id_publication=id)
+            publication = Publication.objects.get(id_publication=id)
 
-        # Получаем пользователя
-        user_data = check_auth(request)
+            # Получаем пользователя
+            user_data = check_auth(request)
 
-        # Получаем сообщение
-        comment_message = request.GET.get('comment_message')
-        # Получаем номер параграфа в данной публикации
-        num_paragraph = request.GET.get('num_paragraph')
-        print(comment_message)
-        print(num_paragraph)
-        # Получаем текущую дату
-        date = str(datetime.datetime.now())
-        date = date[:len(date) - 7]
+            # Получаем сообщение
+            comment_message = request.POST.get('comment_message')
+            # Получаем номер параграфа в данной публикации
+            num_paragraph = request.POST.get('num_paragraph')
+            print(comment_message)
+            print(num_paragraph)
+            # Получаем текущую дату
+            date = str(datetime.datetime.now())
+            date = date[:len(date) - 7]
 
-        # Получаем пользователя оставившего комментарий
-        id = int(get_user_id(request))
-        user = User.objects.get(id_user=id)
-        user.comments += 1
+            # Получаем пользователя оставившего комментарий
+            id = int(get_user_id(request))
+            user = User.objects.get(id_user=id)
+            user.comments += 1
 
 
-        # Получаем тот параграф, в который мы хотим добавить комментарий
-        dynamic_comment_paragraph =  DynamicCommentParagraph.objects.get(num_position=int(num_paragraph))
+            # Получаем тот параграф, в который мы хотим добавить комментарий
+            dynamic_comment_paragraph =  DynamicCommentParagraph.objects.get(num_position=int(num_paragraph))
 
-        # Создаем новый динамический комментарий
+            # Создаем новый динамический комментарий
 
-        new_dynamic_comment = DynamicComment(
-            dynamic_comment_paragraph=dynamic_comment_paragraph,
-            num_position=dynamic_comment_paragraph.last_id + 1,
-            id_author=user.id_user,
-            nickname_author=user.nickname,
-            text=comment_message,
-            data=date)
+            new_dynamic_comment = DynamicComment(
+                dynamic_comment_paragraph=dynamic_comment_paragraph,
+                num_position=dynamic_comment_paragraph.last_id + 1,
+                id_author=user.id_user,
+                nickname_author=user.nickname,
+                text=comment_message,
+                data=date)
 
-        new_dynamic_comment.save()
-        dynamic_comment_paragraph.last_id += 1
-        dynamic_comment_paragraph.is_comment = True
-        dynamic_comment_paragraph.save()
-        user.save()
+            new_dynamic_comment.save()
+            dynamic_comment_paragraph.last_id += 1
+            dynamic_comment_paragraph.is_comment = True
+            dynamic_comment_paragraph.save()
+            user.save()
 
-        return HttpResponse('ok', content_type='text/html')
+            return HttpResponse('ok', content_type='text/html')
 
-    except Paragraphs.DoesNotExist:
-        return get_error_page(request, ["This is paragraphs not found!"])
-    except Publication.DoesNotExist:
-        return get_error_page(request, ["This is publication not found!"])
-    except User.DoesNotExist:
-        return get_error_page(request, ["This is user is not found!"])
-    except DynamicCommentParagraph.DoesNotExist:
-        return get_error_page(request, ["This is DynamicCommentParagraph is not found!"])
+        except Paragraphs.DoesNotExist:
+            return get_error_page(request, ["This is paragraphs not found!"])
+        except Publication.DoesNotExist:
+            return get_error_page(request, ["This is publication not found!"])
+        except User.DoesNotExist:
+            return get_error_page(request, ["This is user is not found!"])
+        except DynamicCommentParagraph.DoesNotExist:
+            return get_error_page(request, ["This is DynamicCommentParagraph is not found!"])
+    else:
+        return HttpResponse('no', content_type='text/html')
 
 
 @csrf_protect
 def get_like_wiki_page(request, id):
     """Ajax представление. Добавляет или убирает like с публикации"""
-    try:
-        # Получаем пользователя захотевшего поставить лайк
-        id_user = int(get_user_id(request))
+    if request.method == "POST":
+        try:
+            # Получаем пользователя захотевшего поставить лайк
+            id_user = int(get_user_id(request))
 
-        if id_user==-1:
-            return HttpResponse('no', content_type='text/html')
-        else:
-            # Получаем текущую дату
-            date = str(datetime.datetime.now())
-            date = date[:len(date) - 7]
+            if id_user==-1:
+                return HttpResponse('no', content_type='text/html')
+            else:
+                # Получаем текущую дату
+                date = str(datetime.datetime.now())
+                date = date[:len(date) - 7]
 
-            # Получаем User
-            user = User.objects.get(id_user=id_user)
-            # Получаем публикацию на которой произошел лайк
-            publication = Publication.objects.get(id_publication=id)
+                # Получаем User
+                user = User.objects.get(id_user=id_user)
+                # Получаем публикацию на которой произошел лайк
+                publication = Publication.objects.get(id_publication=id)
 
-            # Проверяем, не стоит ли like уже у этого пользователя на этот конспект
-            is_set = False
-            try:
-                like = Like.objects.get(id_user=id_user, id_publ_like=id)
-                # Лайк стоит, убираем
-                like.delete()
-                publication.likes-=1
-                publication.save()
-            except Like.DoesNotExist:
-                # Лайк не стоит. Ставим
-                new_like = Like(id_user=id_user,
-                                nickname=user.nickname,
-                                type="publ",
-                                id_publ_like=id,
-                                id_user_like=-1,
-                                date=date)
-                new_like.save()
-                publication.likes+=1
-                publication.save()
-
-
-            return HttpResponse('ok', content_type='text/html')
-    except User.DoesNotExist:
-        return get_error_page(request, ["This is user is not found!"])
-    except Publication.DoesNotExist:
-        return get_error_page(request, ["This is Publication is not found!"])
+                # Проверяем, не стоит ли like уже у этого пользователя на этот конспект
+                is_set = False
+                try:
+                    like = Like.objects.get(id_user=id_user, id_publ_like=id)
+                    # Лайк стоит, убираем
+                    like.delete()
+                    publication.likes-=1
+                    publication.save()
+                except Like.DoesNotExist:
+                    # Лайк не стоит. Ставим
+                    new_like = Like(id_user=id_user,
+                                    nickname=user.nickname,
+                                    type="publ",
+                                    id_publ_like=id,
+                                    id_user_like=-1,
+                                    date=date)
+                    new_like.save()
+                    publication.likes+=1
+                    publication.save()
 
 
+                return HttpResponse('ok', content_type='text/html')
+        except User.DoesNotExist:
+            return get_error_page(request, ["This is user is not found!"])
+        except Publication.DoesNotExist:
+            return get_error_page(request, ["This is Publication is not found!"])
+    else:
+        return HttpResponse('no', content_type='text/html')
+
+@csrf_protect
 def get_import_wiki_page(request, id):
     """Ajax представление. Сохраняет публиацию к себе в дерево публикации"""
 
-    # Получаем путь к папке, в которой хотим сохранить конспект
-    path_folder = request.GET.get('path_folder')
+    if request.method == "POST":
+        # Получаем путь к папке, в которой хотим сохранить конспект
+        path_folder = request.POST.get('path_folder')
 
-    print(path_folder)
+        print(path_folder)
 
-    return HttpResponse('ok', content_type='text/html')
+        return HttpResponse('ok', content_type='text/html')
+    else:
+        return HttpResponse('no', content_type='text/html')

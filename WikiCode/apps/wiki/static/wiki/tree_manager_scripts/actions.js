@@ -113,7 +113,7 @@ $("#delete_folder_in_wiki_tree_context").click(function () {
             //Далее проверка, есть ли конспекты в папке:
 
             $.ajax({
-                type: "GET",
+                type: "POST",
                 url: "check_folder_for_delete/",
                 data:{
                     'answer':''+selected_file_in_tree,
@@ -161,7 +161,7 @@ $("#accept_add_folder_in_wiki_tree").click(function () {
     if(new_folder_name !== "")
     {
         $.ajax({
-            type: "GET",
+            type: "POST",
             url: "add_folder_in_tree/",
             data:{
                 'answer':new_folder_name+"^^^"+selected_file_in_tree,
@@ -191,7 +191,7 @@ $("#del-element-in-tree").click(function () {
             //Далее проверка, есть ли конспекты в папке:
 
             $.ajax({
-                type: "GET",
+                type: "POST",
                 url: "check_folder_for_delete/",
                 data:{
                     'answer':''+selected_file_in_tree,
@@ -239,7 +239,7 @@ $("#yes_delete_elem_in_tree").click(function () {
         else
         {
             $.ajax({
-                type: "GET",
+                type: "POST",
                 url: "del_elem_in_tree/",
                 data:{
                     'answer':''+selected_file_in_tree,
@@ -304,7 +304,7 @@ $("#accept_rename_publ_in_wiki_tree").click(function () {
 
             new_name_publ = $("#rename_publ_input").val();
             $.ajax({
-                type: "GET",
+                type: "POST",
                 url: "rename_publ_in_tree/",
                 data:{
                     'answer':''+new_name_publ+"^^^"+selected_file_in_tree,
@@ -370,7 +370,7 @@ $("#accept_rename_folder_in_wiki_tree").click(function () {
             new_name_folder = $("#rename_folder_input").val();
 
             $.ajax({
-                type: "GET",
+                type: "POST",
                 url: "rename_folder_in_tree/",
                 data:{
                     'answer':''+new_name_folder+"^^^"+selected_file_in_tree,
@@ -395,7 +395,7 @@ $("#set_preview_publ_in_wiki_tree_context").click(function () {
         if (('' + selected_file_in_tree).indexOf(".publ") != -1) {
 
             $.ajax({
-                type: "GET",
+                type: "POST",
                 url: "set_preview_publ_in_tree/",
                 data:{
                     'publ':''+selected_file_in_tree,

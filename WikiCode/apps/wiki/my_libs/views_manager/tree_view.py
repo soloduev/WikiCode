@@ -56,8 +56,8 @@ def get_tree_manager(request):
 def get_add_folder_in_tree(request):
     """Ajax представление. Добавление папки в дерево пользователя"""
 
-    if request.method == "GET":
-        answer = request.GET.get('answer')
+    if request.method == "POST":
+        answer = request.POST.get('answer')
         user_data = check_auth(request)
         split_answer = answer.split("^^^")
         folder_name = split_answer[0]
@@ -88,8 +88,8 @@ def get_add_folder_in_tree(request):
 def get_del_elem_in_tree(request):
     """Ajax представление. Удаление элемента в дереве пользователя"""
 
-    if request.method == "GET":
-        path_publ = request.GET.get('answer')
+    if request.method == "POST":
+        path_publ = request.POST.get('answer')
         user_data = check_auth(request)
 
         if path_publ.split(":")[0] == "Personal/" or path_publ.split(":")[0] == "Imports/":
@@ -119,8 +119,8 @@ def get_del_elem_in_tree(request):
 def get_check_folder_for_delete(request):
     """Ajax представление. Проверка папку на пустоту, для ее удаления"""
 
-    if request.method == "GET":
-        path_publ = request.GET.get('answer')
+    if request.method == "POST":
+        path_publ = request.POST.get('answer')
         user_data = check_auth(request)
 
         if path_publ.split(":")[0] == "Personal/" or path_publ.split(":")[0] == "Imports/":
@@ -147,8 +147,8 @@ def get_check_folder_for_delete(request):
 def get_delete_publ_in_tree(request):
     """Ajax представление. Удаление конспекта."""
 
-    if request.method == "GET":
-        path_publ = request.GET.get('answer')
+    if request.method == "POST":
+        path_publ = request.POST.get('answer')
         user_data = check_auth(request)
         arr = path_publ.split(":")
         id_publ = arr[1]
@@ -202,8 +202,8 @@ def get_delete_publ_in_tree(request):
 def get_rename_publ_in_tree(request):
     """Ajax представление. Переименование конспекта конспекта."""
 
-    if request.method == "GET":
-        answer = request.GET.get('answer')
+    if request.method == "POST":
+        answer = request.POST.get('answer')
         user_data = check_auth(request)
         arr = str(answer).split("^^^")
         new_name_publ = arr[0]
@@ -248,17 +248,20 @@ def get_rename_publ_in_tree(request):
 @csrf_protect
 def get_rename_folder_in_tree(request):
     """Ajax представление. Переименование папки"""
+    if request.method == "POST":
+        # Важно понимать, что при переименовывании папки, все конспекты внутри него, МЕНЯЮТ СВОЙ ПУТЬ В ДЕРЕВЕ!!!
 
-    # Важно понимать, что при переименовывании папки, все конспекты внутри него, МЕНЯЮТ СВОЙ ПУТЬ В ДЕРЕВЕ!!!
-    return HttpResponse('no', content_type='text/html')
+        return HttpResponse('no', content_type='text/html')
+    else:
+        return HttpResponse('no', content_type='text/html')
 
 
 @csrf_protect
 def get_set_preview_publ_in_tree(request):
     """Ajax представление. Установление preview конспекта"""
 
-    if request.method == "GET":
-        publ = request.GET.get('publ')
+    if request.method == "POST":
+        publ = request.POST.get('publ')
         user_id = get_user_id(request)
 
         # Получаем id той публикации, которую хотим сделать превью

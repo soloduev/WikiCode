@@ -28,7 +28,7 @@
 //Лайк пользователя
 $("#wiki-code-like-user").click(function () {
     $.ajax({
-        type: "GET",
+        type: "POST",
         url: "like_user/",
         data:{
             'data':'',
@@ -51,7 +51,7 @@ $("#wiki-code-like-user").click(function () {
 //Лайк пользователя c другой кнопки
 $("#wiki-code-like-user-link").click(function () {
     $.ajax({
-        type: "GET",
+        type: "POST",
         url: "like_user/",
         data:{
             'data':'',

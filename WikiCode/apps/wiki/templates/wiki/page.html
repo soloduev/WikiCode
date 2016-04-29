@@ -519,7 +519,7 @@
         $("#wiki-style-btn-add-dynamic-comment").click(function () {
             comment_message = $("#wiki-input-dynamic-comment").val();
             $.ajax({
-                type: "GET",
+                type: "POST",
                 url: "add_dynamic_comment_in_wiki_page/",
                 data:{
                     'comment_message':''+comment_message,
