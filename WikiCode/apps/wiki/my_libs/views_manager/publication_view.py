@@ -199,10 +199,28 @@ def get_create_page(request):
         with open("media/publications/" + name_page + ".html", "wb") as f:
             f.write(ready_page.encode("utf-8"))
         newid = num + 1
-        print(form["access"])
-        print(form["access_edit"])
-        print(form["publ_comment"])
-        print(form["dynamic_comment"])
+        access = request.POST.get("access")
+        access_edit = request.POST.get("access_edit")
+        public_comment = request.POST.get("public_comment")
+        dynamic_comment = request.POST.get("dynamic_comment")
+        _is_public = False
+        _is_private = False
+        _is_private_edit = False
+        _is_public_edit = False
+        _is_marks = False
+        _is_comments = False
+        if access == "public":
+            _is_public = True
+        else:
+            _is_private = True
+        if access_edit == "public":
+            _is_public_edit = True
+        else:
+            _is_private_edit = True
+        if public_comment == "true":
+            _is_comments = True
+        if dynamic_comment == "true":
+            _is_marks = True
         new_publication = Publication(
             id_publication=newid,
             id_author=user.id_user,
@@ -212,12 +230,12 @@ def get_create_page(request):
             text=form["text"],
             theme=form["theme"],
             html_page="publications/" + name_page + ".html",
-            is_private=False,
-            is_public=False,
-            is_private_edit=False,
-            is_public_edit=False,
-            is_marks=False,
-            is_comments=False,
+            is_private=_is_private,
+            is_public=_is_public,
+            is_private_edit=_is_private_edit,
+            is_public_edit=_is_public_edit,
+            is_marks=_is_marks,
+            is_comments=_is_comments,
             tags=form["tags"],
             tree_path=form["folder"]+form["title"]+".publ:"+str(newid),
             comments=0,

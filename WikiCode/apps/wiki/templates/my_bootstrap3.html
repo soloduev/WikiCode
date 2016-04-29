@@ -51,8 +51,6 @@
 {% if not 'javascript_in_head'|bootstrap_setting %}{% bootstrap_javascript jquery=True %}{% endif %}
 {% block bootstrap3_extra_script %}{% endblock %}
 </body>
-<!--Подключаем мою библиотеку для формы создания markdown'a-->
-<script src={% static "wiki/markdown_form/js/markdown-form.js" %}></script>
 <!--Подключаем скрипты для отображение полных фреймов-->
 <script src={% static "wiki/frames/postmessage/postmessage.js"%}></script>
 <script src={% static "wiki/frames/FrameManager.js" %}></script>

@@ -261,7 +261,7 @@
                                             <div class="container-fluid">
                                                 <h4>Вы можете импортировать конспект со своего компьютера, загрузив его в формате <b>*.wcode</b>
                                                     или практически в любом другом из распрастраненных форматов, такие как
-                                                <b>*.txt, *.odt, *.doc, *.md, *.pdf</b></h4>
+                                                    <b>*.txt, *.odt, *.doc, *.md, *.pdf</b></h4>
                                                 <button id="wiki-style-btn" class="btn" type="button" data-toggle="modal" data-target="#modal_develop_func">Импортировать</button>
                                                 <hr>
                                                 <h4>Также, вы можете импортировать свой конспект с <b>GitHub</b> или <b>Bitbucket</b>:</h4>
@@ -300,26 +300,25 @@
                     </div>
                     <div class="row">
                         <br>
+                        <div class="text-center">
 
-                        <div class="text-center">
-                            <label class=""><input type="checkbox"> Публичный</label>
-                        </div>
-                        <div class="text-center">
-                            <label class=""><input type="checkbox"> Приватный</label>
+                            <p><input name="access" type="radio" value="public" checked> Публичный</p>
+                            <p><input name="access" type="radio" value="private"> Приватный</p>
+
                         </div>
                         <hr>
                         <div class="text-center">
-                            <label class=""><input type="checkbox"> Защищенное редактирование</label>
-                        </div>
-                        <div class="text-center">
-                            <label class=""><input type="checkbox"> Публичное редактирование</label>
+
+                            <p><input name="access_edit" type="radio" value="private" checked> Защищенное редактирование</p>
+                            <p><input name="access_edit" type="radio" value="public"> Публичное редактирование</p>
+
                         </div>
                         <hr>
                         <div class="text-center">
-                            <label class=""><input type="checkbox"> Комментирование</label>
-                        </div>
-                        <div class="text-center">
-                            <label class=""><input type="checkbox"> Метки</label>
+
+                            <p><input name="public_comment" type="checkbox" value="true" checked> Общее комментирование</p>
+                            <p><input name="dynamic_comment" type="checkbox" value="true" checked> Динамичное комментирование</p>
+
                         </div>
                         <hr>
                         <div class="text-center">
@@ -343,5 +342,7 @@
 {% block add_script %}
     {% load staticfiles %}
     <script src={% static "wiki/create_publication_scripts/actions.js" %}></script>
+    <!--Подключаем мою библиотеку для формы создания markdown'a-->
+    <script src={% static "wiki/markdown_form/js/markdown-form.js" %}></script>
     <link href={% static "wiki/wiki_styles/create.css" %} type="text/css" rel="stylesheet">
 {% endblock %}
