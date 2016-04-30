@@ -123,7 +123,7 @@ def get_create_user(request):
             total_reg_users = stat.users_total_reg
             stat.users_total_reg += 1
             stat.users_reg += 1
-            stat.save()
+
 
             # Создаем дерево по умолчанию для юзера
             new_tree = WikiTree(total_reg_users)
@@ -141,9 +141,10 @@ def get_create_user(request):
                                      imports=0,
                                      comments=0,
                                      imports_it=0,
-                                     commented_it=0)
+                                     commented_it=0,
+                                     preview_publ_id=-1)
 
-            new_wiki_user.save()
+
 
             user = authenticate(username=form["user_nickname"], password=form["user_password"])
 
@@ -158,6 +159,10 @@ def get_create_user(request):
 
 
             all_publications = Publication.objects.all()
+
+            # Сохранение всех изменений в БД
+            new_wiki_user.save()
+            stat.save()
 
             context = {
                 "all_publications": all_publications,
