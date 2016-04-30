@@ -158,7 +158,7 @@ def get_create_user(request):
                 print(">>>>>>>>>>>>>> WIKI ERROR: invalid login")
 
 
-            all_publications = Publication.objects.all()
+            all_publications = Publication.objects.filter(is_public=True)
 
             # Сохранение всех изменений в БД
             new_wiki_user.save()
@@ -201,7 +201,7 @@ def get_login_user(request):
         print(">>>>>>>>>>>>>> WIKI ERROR: invalid login")
 
 
-    all_publications = Publication.objects.all()
+    all_publications = Publication.objects.filter(is_public=True)
 
     context = {
         "all_publications": all_publications,
@@ -215,7 +215,7 @@ def get_login_user(request):
 def get_logout_user(request):
 
     logout(request)
-    all_publications = Publication.objects.all()
+    all_publications = Publication.objects.filter(is_public=True)
 
     context = {
         "all_publications": all_publications,

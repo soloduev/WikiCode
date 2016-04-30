@@ -67,6 +67,13 @@ def get_page(request, id):
     try:
         cur_user_id = get_user_id(request)
         publication = Publication.objects.get(id_publication=id)
+
+        # Проверка доступа к конспекту
+        if publication.is_private:
+            if cur_user_id != publication.id_author:
+                return get_error_page(request, ["К сожалению, Вы не имеете доступ к этому конспекту!"])
+
+
         try:
             user = User.objects.get(id_user=publication.id_author)
             wt = WikiTree(user.id_user)
