@@ -28,7 +28,7 @@ from .auth import get_user_id
 
 def get_index(request):
 
-    all_publications = Publication.objects.all()
+    all_publications = Publication.objects.filter(is_public=True)
 
     context = {
             "all_publications": all_publications,
