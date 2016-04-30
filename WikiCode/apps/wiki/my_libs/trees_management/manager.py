@@ -19,7 +19,8 @@
 
 
 
-# Менеджер по управлению деревьями в WikiCode. version 0.42:
+# Менеджер по управлению деревьями в WikiCode. version 0.43:
+from WikiCode.apps.wiki.models import Publication
 
 
 class WikiTree(object):
@@ -232,7 +233,16 @@ class WikiTree(object):
                 return part1 + part2 + part3
             elif path.endswith(".publ"):
                 # Значит это публикация
-                part1 = "<li class=\"task\" data-id=\"" + line + "\" data-jstree='{ \"type\" : \"publ\" }'id='" + line + "'>"
+
+                # Узнаем какой у нее доступ, получая публикацию из БД
+                try:
+                    publ = Publication.objects.get(id_publication=id)
+                    if publ.is_private:
+                        part1 = "<li class=\"task\" data-id=\"" + line + "\" data-jstree='{ \"type\" : \"private\" }'id='" + line + "'>"
+                    else:
+                        part1 = "<li class=\"task\" data-id=\"" + line + "\" data-jstree='{ \"type\" : \"publ\" }'id='" + line + "'>"
+                except Publication.DoesNotExist:
+                    part1 = "<li class=\"task\" data-id=\"" + line + "\" data-jstree='{ \"type\" : \"publ\" }'id='" + line + "'>"
                 path_split = path.split("/")
                 part2 = path_split[len(path_split) - 1]
                 part2 = part2[:len(part2) - 5]

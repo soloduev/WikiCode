@@ -52,6 +52,9 @@ $("#jstree")
             "publ": {
                 "icon": "glyphicon glyphicon-list-alt"
             },
+            "private": {
+                "icon": "glyphicon glyphicon-lock"
+            },
             "contents": {
                 "icon": "glyphicon glyphicon-bookmark"
             },
