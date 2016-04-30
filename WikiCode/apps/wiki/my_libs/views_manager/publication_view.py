@@ -125,14 +125,17 @@ def get_page(request, id):
             print("WIKI ERROR: DynamicComment не обнаружен")
 
         # Загружаем дерево пользователя, который зашел на эту страницу
-        dynamic_tree = ""
-        try:
-            cur_user = User.objects.get(id_user=cur_user_id)
-            wt = WikiTree(cur_user.id_user)
-            wt.load_tree(cur_user.tree)
-            dynamic_tree = wt.generate_html_dynamic_folders()
-        except User.DoesNotExist:
-            pass
+        if cur_user_id != -1:
+            dynamic_tree = ""
+            try:
+                cur_user = User.objects.get(id_user=cur_user_id)
+                wt = WikiTree(cur_user.id_user)
+                wt.load_tree(cur_user.tree)
+                dynamic_tree = wt.generate_html_dynamic_folders()
+            except User.DoesNotExist:
+                pass
+        else:
+            dynamic_tree = ""
 
         # И перед тем как перейти на страницу, добавим ей просмотр, если этот пользователь еще не смотрел
         # Этот конспект
