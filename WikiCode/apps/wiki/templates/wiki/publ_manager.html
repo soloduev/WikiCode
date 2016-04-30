@@ -238,13 +238,16 @@
                                         <h4>Уровень доступа</h4>
                                     </div>
                                     <div class="col-xs-7 text-right">
-                                        <input class="form-control btn-block" type="number" style="border-radius: 0px;font-family: Courier;" >
+                                        <select class="form-control btn-block" style="border-radius: 0px;font-family: Courier;">
+                                            <option {% if publication.is_private %}selected{% endif %}>Приватный</option>
+                                            <option {% if publication.is_public %}selected{% endif %}>Публичный</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <br>
                                 <div class="row">
                                     <div class="col-xs-5">
-                                        <h4>Контрибьюторы</h4>
+                                        <h4>Редакторы</h4>
                                     </div>
                                     <div class="col-xs-7 text-right">
                                         <button class="btn btn-block btn-default">Назначить нового</button>

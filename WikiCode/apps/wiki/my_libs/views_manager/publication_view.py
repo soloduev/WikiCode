@@ -284,7 +284,7 @@ def get_create_page(request):
         user.publications += 1
         user.save()
 
-        all_publications = Publication.objects.all()
+        all_publications = Publication.objects.filter(is_public=True)
 
         context = {
             "all_publications": all_publications,
