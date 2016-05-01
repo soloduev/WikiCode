@@ -80,6 +80,16 @@ class Publication(models.Model):
     def __str__(self):
         return str(self.id_publication)
 
+# Модель редактора публикации
+class Editor(models.Model):
+    publication = models.ForeignKey(Publication, on_delete=models.CASCADE)
+    id_user = models.BigIntegerField()
+    nickname_user = models.CharField(max_length=100)
+    status = models.CharField(max_length=100)
+    def __str__(self):
+        return str("user:" + str(self.id_user) +
+                   " publ:" + str(self.publication))
+
 
 # Модель просмотра страницы. Указывает кто просмотрел и когда
 class Viewing(models.Model):
