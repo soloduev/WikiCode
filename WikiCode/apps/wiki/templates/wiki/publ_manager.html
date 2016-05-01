@@ -233,48 +233,59 @@
                                 <br>
                             </div>
                             <div class="tab-pane" id="tab-lest-id4">
-                                <div class="row">
-                                    <div class="col-xs-5">
-                                        <h4>Уровень доступа</h4>
+                                <form action="{% url 'save_access' publication.id_publication %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-xs-5">
+                                            <h4>Уровень доступа</h4>
+                                        </div>
+                                        <div class="col-xs-7 text-right">
+                                            <select class="form-control btn-block" style="border-radius: 0px;font-family: Courier;" name="level_access">
+                                                <option {% if publication.is_private %}selected{% endif %}>Приватный</option>
+                                                <option {% if publication.is_public %}selected{% endif %}>Публичный</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                    <div class="col-xs-7 text-right">
-                                        <select class="form-control btn-block" style="border-radius: 0px;font-family: Courier;">
-                                            <option {% if publication.is_private %}selected{% endif %}>Приватный</option>
-                                            <option {% if publication.is_public %}selected{% endif %}>Публичный</option>
-                                        </select>
+                                    <br><hr>
+                                    <div class="row">
+                                        <div class="col-xs-5">
+                                            <h4>Редакторы</h4>
+                                        </div>
+                                        <div class="col-xs-7 text-right">
+                                            <select  id="select-list-editors" class="form-control btn-block" style="border-radius: 0px;font-family: Courier;" name="publ_editors">
+                                                {% for editor in editors %}
+                                                    <option>{{ editor.nickname_user }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <button type="button" class="btn btn-block btn-default" style="border-radius: 0px;" data-toggle="modal" data-target="#modal_add_editor">Назначить нового</button>
+                                            <button id="remove-select-editor" type="button" class="btn btn-block btn-default" style="border-radius: 0px;">Убрать выбранного</button>
+                                        </div>
                                     </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-xs-5">
-                                        <h4>Редакторы</h4>
-                                    </div>
-                                    <div class="col-xs-7 text-right">
-                                        <button class="btn btn-block btn-default">Назначить нового</button>
-                                        <input class="form-control btn-block" type="number" style="border-radius: 0px;font-family: Courier;" >
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-xs-5">
-                                        <h4>Черный список</h4>
-                                    </div>
-                                    <div class="col-xs-7 text-right">
-                                        <button class="btn btn-block btn-default">Добавить пользователя</button>
-                                        <input class="form-control btn-block" type="number" style="border-radius: 0px;font-family: Courier;" >
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-xs-5">
+                                    <br><hr>
+                                    <div class="row">
+                                        <div class="col-xs-5">
 
-                                    </div>
-                                    <div class="col-xs-7">
-                                        <button id="wiki-style-btn" class="btn btn-block">Сохранить изменения</button>
-                                    </div>
-                                </div>
-                                <br>
+                                            <h4>Черный список</h4>
+                                        </div>
+                                        <div class="col-xs-7 text-right">
+                                            <select class="form-control btn-block" style="border-radius: 0px;font-family: Courier;" name="publ_black_list">
 
+                                            </select>
+                                            <button type="button" class="btn btn-block btn-default" style="border-radius: 0px;">Добавить пользователя</button>
+                                            <button type="button" class="btn btn-block btn-default" style="border-radius: 0px;">Убрать выбранного</button>
+                                        </div>
+                                    </div>
+                                    <br><hr>
+                                    <div class="row">
+                                        <div class="col-xs-5">
+
+                                        </div>
+                                        <div class="col-xs-7">
+                                            <button type="submit" id="wiki-style-btn" class="btn btn-block">Сохранить изменения</button>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </form>
                             </div>
                             <div class="tab-pane" id="tab-lest-id5">
                                 <h4>Текущая ветка:</h4>
@@ -332,6 +343,57 @@
             </div>
         </div>
     </div>
+
+    <!-- Модальное окно для добавления нового редактора конспекта -->
+    <div class="modal fade" id="modal_add_editor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Добавление нового редактора этого конспекта</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>Введите nickname пользователя, которого хотите назначить редактором:</h4>
+                    <input id="id_publ_for_add_editor" style="display: none;" hidden value="{{ publication.id_publication }}">
+                    <input id="input-for-add-editor" class="form-control" type="text" style="border-radius: 0px; font-family: Courier;" placeholder="Введите nickname...">
+                    <label id="info-message-for-add-editor"><h4></h4></label>
+                    <h4>Можете назначить редактором одного из своих коллег:</h4>
+                    <select class="form-control btn-block" style="border-radius: 0px;font-family: Courier;" name="my_colleagues">
+
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
+                    <button id="wiki-style-btn-add-editor"type="button" class="btn" data-dismiss="modal">Назначить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для управления черным списком -->
+    <div class="modal fade" id="modal_add_black_user" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Добавление нового редактора этого конспекта</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>Введите nickname пользователя, которого хотите назначить редактором:</h4>
+                    <input class="form-control" type="text" style="border-radius: 0px; font-family: Courier;" placeholder="Введите nickname...">
+                    <h4>Можете назначить редактором одного из своих коллег:</h4>
+                    <select class="form-control btn-block" style="border-radius: 0px;font-family: Courier;" name="my_colleagues">
+
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
+                    <button id="wiki-style-btn"type="button" class="btn">Назначить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
 {% endblock %}

@@ -25,6 +25,7 @@ from WikiCode.apps.wiki.my_libs.views_manager import settings_view
 from WikiCode.apps.wiki.my_libs.views_manager import user_view
 from WikiCode.apps.wiki.my_libs.views_manager import registration_view
 from WikiCode.apps.wiki.my_libs.views_manager import tree_view
+from WikiCode.apps.wiki.my_libs.views_manager import publ_manager_view
 from django.contrib.auth.decorators import login_required
 
 
@@ -111,6 +112,10 @@ def delete_publ_in_tree(request):
     return tree_view.get_delete_publ_in_tree(request)
 
 
+def save_access(request, id):
+    return publ_manager_view.get_save_access(request, id)
+
+
 def rename_publ_in_tree(request):
     return tree_view.get_rename_publ_in_tree(request)
 
@@ -142,3 +147,13 @@ def import_wiki_page(request, id):
 @login_required
 def like_user(request, id):
     return user_view.get_like_user(request, id)
+
+
+@login_required
+def check_nickname_for_add_editor(request):
+    return publ_manager_view.get_check_nickname_for_add_editor(request)
+
+
+@login_required
+def add_editor(request):
+    return publ_manager_view.get_add_editor(request)

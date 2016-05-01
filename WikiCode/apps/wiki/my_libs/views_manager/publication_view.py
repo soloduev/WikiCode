@@ -22,7 +22,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 
 from WikiCode.apps.wiki.models import Publication, Statistics, CommentBlock, Comment, Paragraphs, DynamicCommentParagraph, DynamicComment, Like, \
-    Viewing
+    Viewing, Editor
 from .auth import check_auth, get_user_id
 from WikiCode.apps.wiki.my_libs.WikiMarkdown import WikiMarkdown
 from django.template import RequestContext, loader
@@ -325,18 +325,22 @@ def get_publ_manager(request, id):
         user_data = check_auth(request)
 
         # Получаем конспект, который хотим управлять
-        publication = Publication.objects.get(id_publication=id)
+        _publication = Publication.objects.get(id_publication=id)
 
         # Проверяем, является ли автором этого конспекта тот пользователь
         # Который захотел управлять этим конспектом
         current_id = get_user_id(request)
-        if current_id == publication.id_author:
+        if current_id == _publication.id_author:
+
+            # Получаем всех редакторов данного конспекта
+            editors = Editor.objects.filter(publication=_publication)
 
             context = {
                 "user_data": user_data,
                 "user_id": current_id,
-                "publication":publication,
-                "tree_path":publication.tree_path.split(":")[0],
+                "publication":_publication,
+                "tree_path":_publication.tree_path.split(":")[0],
+                "editors":editors,
             }
             return render(request, 'wiki/publ_manager.html', context)
         else:
