@@ -56,6 +56,7 @@ $("#input-for-add-editor").on("input",function () {
         url: "check_nickname_for_add_editor/",
         data:{
             'nickname':$("#input-for-add-editor").val(),
+            'id_publ_for_add_editor':$("#id_publ_for_add_editor").val(),
         },
         dataType: "text",
         cache: false,
@@ -64,10 +65,17 @@ $("#input-for-add-editor").on("input",function () {
                 $("#info-message-for-add-editor").text("");
                 correct_nickname = true;
             }
+            else if(data == "author")
+            {
+                $("#info-message-for-add-editor").text("Вы и так являетесь автором данного конспекта");
+                $("#info-message-for-add-editor").attr("style","color: red;");
+                correct_nickname = false;
+            }
             else
             {
                 $("#info-message-for-add-editor").text("Такого пользователя не существует!");
                 $("#info-message-for-add-editor").attr("style","color: red;");
+                correct_nickname = false;
             }
         }
     });
@@ -90,7 +98,7 @@ $("#wiki-style-btn-add-editor").on('click', function () {
             cache: false,
             success: function(data){
                 if (data == 'ok'){
-                    location.reload();
+                    location.href = ""+$("#id_publ_for_add_editor").val();
                 }
                 else
                 {

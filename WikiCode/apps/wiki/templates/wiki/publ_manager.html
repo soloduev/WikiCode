@@ -246,21 +246,23 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <br><hr>
-                                    <div class="row">
-                                        <div class="col-xs-5">
-                                            <h4>Редакторы</h4>
+                                    {% if publication.is_private %}
+                                        <br><hr>
+                                        <div class="row">
+                                            <div class="col-xs-5">
+                                                <h4>Редакторы</h4>
+                                            </div>
+                                            <div class="col-xs-7 text-right">
+                                                <select  id="select-list-editors" class="form-control btn-block" style="border-radius: 0px;font-family: Courier;" name="publ_editors">
+                                                    {% for editor in editors %}
+                                                        <option>{{ editor.nickname_user }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <button type="button" class="btn btn-block btn-default" style="border-radius: 0px;" data-toggle="modal" data-target="#modal_add_editor">Назначить нового</button>
+                                                <button id="remove-select-editor" type="button" class="btn btn-block btn-default" style="border-radius: 0px;">Убрать выбранного</button>
+                                            </div>
                                         </div>
-                                        <div class="col-xs-7 text-right">
-                                            <select  id="select-list-editors" class="form-control btn-block" style="border-radius: 0px;font-family: Courier;" name="publ_editors">
-                                                {% for editor in editors %}
-                                                    <option>{{ editor.nickname_user }}</option>
-                                                {% endfor %}
-                                            </select>
-                                            <button type="button" class="btn btn-block btn-default" style="border-radius: 0px;" data-toggle="modal" data-target="#modal_add_editor">Назначить нового</button>
-                                            <button id="remove-select-editor" type="button" class="btn btn-block btn-default" style="border-radius: 0px;">Убрать выбранного</button>
-                                        </div>
-                                    </div>
+                                    {% endif %}
                                     <br><hr>
                                     <div class="row">
                                         <div class="col-xs-5">

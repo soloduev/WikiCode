@@ -24,40 +24,55 @@ from WikiCode.apps.wiki.models import Publication, Editor, User
 from WikiCode.apps.wiki.my_libs.views_manager.auth import check_auth, get_user_id
 from WikiCode.apps.wiki.my_libs.views_manager.error_view import get_error_page
 from WikiCode.apps.wiki.models import User as WikiUser
+from WikiCode.apps.wiki.my_libs.views_manager.publication_view import get_publ_manager
 
 
 def get_save_access(request, id):
-    try:
-        # Получаем пользователя
-        user_data = check_auth(request)
+    if request.method == "POST":
+        try:
+            # Получаем пользователя
+            user_data = check_auth(request)
 
-        # Получаем конспект, которым хотим управлять
-        publication = Publication.objects.get(id_publication=id)
+            # Получаем конспект, которым хотим управлять
+            publication = Publication.objects.get(id_publication=id)
 
-        # Проверяем, является ли автором этого конспекта тот пользователь
-        # Который захотел управлять этим конспектом
-        current_id = get_user_id(request)
-        if current_id == publication.id_author:
+            # Проверяем, является ли автором этого конспекта тот пользователь
+            # Который захотел управлять этим конспектом
+            current_id = get_user_id(request)
+            if current_id == publication.id_author:
 
-            # Теперь получаем изменения и применяем их
-            form = request.POST
-            print(form["level_access"])
-            print(form.get("publ_editors"))
+                # Теперь получаем изменения и применяем их
+                form = request.POST
+                level_access = form["level_access"]
+                if level_access == "Публичный":
+                    publication.is_public = True
+                    publication.is_private = False
+                    publication.save()
+                elif level_access == "Приватный":
+                    # Если до этого конспект был публичным
+                    # Очищаем всех редакторов этого конспекта
+                    if publication.is_public:
+                        try:
+                            editors = Editor.objects.filter(publication=publication)
+                            for editor in editors:
+                                editor.delete()
+                        except Editor.DoesNotExist:
+                            pass
 
-            context = {
-                "user_data": user_data,
-                "user_id": current_id,
-                "publication": publication,
-                "tree_path": publication.tree_path.split(":")[0],
-            }
-            return render(request, 'wiki/publ_manager.html', context)
-        else:
-            return get_error_page(request, ["У Вас нет доступа к этому конспекту, чтобы управлять им!",
-                                            "Вы не являетесь редактором конспекта page/" + str(id) + "/"])
+                    publication.is_public = False
+                    publication.is_private = True
+                    publication.save()
 
-    except Publication.DoesNotExist:
-        return get_error_page(request,
-                              ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
+
+
+                return get_publ_manager(request, id)
+            else:
+                return get_error_page(request, ["У Вас нет доступа к этому конспекту, чтобы управлять им!",
+                                                "Вы не являетесь редактором конспекта page/" + str(id) + "/"])
+
+        except Publication.DoesNotExist:
+            return get_error_page(request,
+                                  ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
 
 
 
@@ -67,13 +82,26 @@ def get_check_nickname_for_add_editor(request):
     if request.method == "GET":
         request.session['nickname'] = request.GET['nickname']
         nickname = request.GET['nickname']
+        id_publ_for_add_editor = request.GET["id_publ_for_add_editor"]
 
         try:
             user = WikiUser.objects.get(nickname=nickname)
+
+            # Проверяем, не является ли этот пользователь автором данного конспекта
+            try:
+                publication = Publication.objects.get(id_publication=id_publ_for_add_editor)
+
+                if publication.nickname_author == nickname:
+                    return HttpResponse('author', content_type='text/html')
+                else:
+                    return HttpResponse('ok', content_type='text/html')
+
+            except Publication.DoesNotExist:
+                return HttpResponse('no', content_type='text/html')
+            except User.DoesNotExist:
+                return HttpResponse('no', content_type='text/html')
         except WikiUser.DoesNotExist:
             return HttpResponse('no', content_type='text/html')
-
-        return HttpResponse('ok', content_type='text/html')
     else:
         return HttpResponse('no', content_type='text/html')
 
@@ -91,11 +119,11 @@ def get_add_editor(request):
             # Добавляем пользователя в редакторы
             try:
                 # Получаем конспект, к которому назначаем нового редактора
-                _publication = Publication.objects.get(id_publication=id_publ)
+                publication = Publication.objects.get(id_publication=id_publ)
                 # Получаем пользователя которого необходимо назначить редактором
                 user = User.objects.get(nickname=_nickname)
 
-                new_editor = Editor(publication=_publication,
+                new_editor = Editor(publication=publication,
                                     id_user=user.id_user,
                                     nickname_user=user.nickname,
                                     status="editor")
