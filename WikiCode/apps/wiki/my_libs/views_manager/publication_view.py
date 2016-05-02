@@ -71,7 +71,12 @@ def get_page(request, id):
         # Проверка доступа к конспекту
         if publication.is_private:
             if cur_user_id != publication.id_author:
-                return get_error_page(request, ["К сожалению, Вы не имеете доступ к этому конспекту!"])
+                # Теперь проверяем, является ли пользователь редактором конспекта
+                try:
+                    editor = Editor.objects.get(publication=publication, id_user=cur_user_id)
+                    # Все нормально. Этот пользователь имеет доступ к этому конпсекту. Выходим из блока.
+                except Editor.DoesNotExist:
+                    return get_error_page(request, ["К сожалению, Вы не имеете доступ к этому конспекту!"])
 
 
         try:
@@ -344,7 +349,7 @@ def get_publ_manager(request, id):
             }
             return render(request, 'wiki/publ_manager.html', context)
         else:
-            return get_error_page(request, ["У Вас нет доступа к этому конспекту, чтобы управлять им!", "Вы не являетесь редактором конспекта page/" + str(id) + "/"])
+            return get_error_page(request, ["Вы не являетесь автором данного конспекта, чтобы перейти в панель управления!"])
 
     except Publication.DoesNotExist:
         return get_error_page(request, ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
