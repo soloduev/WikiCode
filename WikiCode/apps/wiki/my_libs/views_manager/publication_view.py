@@ -187,12 +187,7 @@ def get_create_page(request):
     try:
         user = User.objects.get(email=user_data)
     except User.DoesNotExist:
-        context = {
-            "user_data": user_data,
-            "user_id": get_user_id(request),
-        }
-        print("ERROR!!!!--------------")
-        return render(request, 'wiki/index.html', context)
+        return get_error_page(request, ["Пользователя, создающего конспект не существует!"])
     # Проверяем, чего хотим сделать
     if request.POST.get('secret') == "off":
         with open("WikiCode/apps/wiki/generate_pages/gen_page.gen", "r", encoding='utf-8') as f:
@@ -205,7 +200,6 @@ def get_create_page(request):
         stat = Statistics.objects.get(id_statistics=1)
         num = stat.publications_create
         stat.publications_create += 1
-        stat.save()
 
         name_page = str(num + 1)
         f = open("media/publications/" + name_page + ".html", 'tw', encoding='utf-8')
@@ -236,43 +230,48 @@ def get_create_page(request):
             _is_comments = True
         if dynamic_comment == "true":
             _is_marks = True
-        new_publication = Publication(
-            id_publication=newid,
-            id_author=user.id_user,
-            nickname_author=user.nickname,
-            title=form["title"],
-            description=form["description"],
-            text=form["text"],
-            theme=form["theme"],
-            html_page="publications/" + name_page + ".html",
-            is_private=_is_private,
-            is_public=_is_public,
-            is_private_edit=_is_private_edit,
-            is_public_edit=_is_public_edit,
-            is_marks=_is_marks,
-            is_comments=_is_comments,
-            tags=form["tags"],
-            tree_path=form["folder"]+form["title"]+".publ:"+str(newid),
-            comments=0,
-            imports=0,
-            marks=0,
-            likes=0,
-            read=0,
-            edits=0,
-            downloads=0)
-        new_publication.save()
+        # Перед тем, как создать публикацию, проверяем, не существует ли она уже
+        try:
+            publ = Publication.objects.get(id_publication=newid)
+            return get_error_page(request,["Конспект с таким id уже существует!"])
+        except Publication.DoesNotExist:
+            new_publication = Publication(
+                id_publication=newid,
+                id_author=user.id_user,
+                nickname_author=user.nickname,
+                title=form["title"],
+                description=form["description"],
+                text=form["text"],
+                theme=form["theme"],
+                html_page="publications/" + name_page + ".html",
+                is_private=_is_private,
+                is_public=_is_public,
+                is_private_edit=_is_private_edit,
+                is_public_edit=_is_public_edit,
+                is_marks=_is_marks,
+                is_comments=_is_comments,
+                tags=form["tags"],
+                tree_path=form["folder"]+form["title"]+".publ:"+str(newid),
+                comments=0,
+                imports=0,
+                marks=0,
+                likes=0,
+                read=0,
+                edits=0,
+                downloads=0)
 
-        # Создаем пустой общий блок комментирования
-        new_comment_block = CommentBlock(
-            id_publication=newid,
-            last_id=0)
-        new_comment_block.save()
 
         # Получаем количество параграфов
         wm = WikiMarkdown()
         size_paragraphs = len(wm.split(form["text"]))
 
         # Создаем пустые динамичные параграфы комментирования
+        try:
+            check_paragraphs = Paragraphs.objects.get(id_publication=newid)
+            return get_error_page(request, ["Paragraphs уже были созданы для этого конспекта!"])
+        except Paragraphs.DoesNotExist:
+            pass
+
         new_paragraphs = Paragraphs(
             id_publication=newid,
             last_id=size_paragraphs)
@@ -297,10 +296,23 @@ def get_create_page(request):
         user.tree = wt.get_tree()
         # Увеличиваем количество публикаций в статистике у пользователя
         user.publications += 1
-        user.save()
+
 
         all_publications = Publication.objects.filter(is_public=True)
 
+        # Создаем пустой общий блок комментирования
+        # Проверяем, не существует ли уже такой блок
+        try:
+            com_block = CommentBlock.objects.get(id_publication=newid)
+        except CommentBlock.DoesNotExist:
+            new_comment_block = CommentBlock(
+                id_publication=newid,
+                last_id=0)
+            new_comment_block.save()
+
+        stat.save()
+        new_publication.save()
+        user.save()
         context = {
             "all_publications": all_publications,
             "user_data": user_data,
