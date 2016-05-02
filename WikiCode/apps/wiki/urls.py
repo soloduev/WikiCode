@@ -54,6 +54,7 @@ urlpatterns = [
     url(r'^publ_manager/(?P<id>[0-9]+)/save_access/$', views.save_access, name='save_access'),
     url(r'^publ_manager/check_nickname_for_add_editor/$', views.check_nickname_for_add_editor, name='check_nickname_for_add_editor'),
     url(r'^publ_manager/add_editor/$', views.add_editor, name='add_editor'),
+    url(r'^publ_manager/remove_editor/$', views.remove_editor, name='remove_editor'),
 
     # События на странице конспекта
     url(r'^page/(?P<id>[0-9]+)/add_comment_in_wiki_page/$', views.add_comment_in_wiki_page, name='add_comment_in_wiki_page'),

@@ -157,3 +157,8 @@ def check_nickname_for_add_editor(request):
 @login_required
 def add_editor(request):
     return publ_manager_view.get_add_editor(request)
+
+
+@login_required
+def remove_editor(request):
+    return publ_manager_view.get_remove_editor(request)

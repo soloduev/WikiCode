@@ -114,3 +114,31 @@ $("#wiki-style-btn-add-editor").on('click', function () {
         });
     }
 });
+
+//Кнопка убрать выбранного
+$("#remove-select-editor").on('click', function () {
+    //Добавление значение input
+    if($("select[id=select-list-editors] option").size() > 0)
+    {
+        //Отправляем ajax запрос на сервер
+        $.ajax({
+            type: "POST",
+            url: "remove_editor/",
+            data:{
+                'nickname':$("#select-list-editors :selected").val(),
+                'id_publ_for_add_editor':$("#id_publ_for_add_editor").val(),
+            },
+            dataType: "text",
+            cache: false,
+            success: function(data){
+                if (data == 'ok'){
+                    location.href = ""+$("#id_publ_for_add_editor").val();
+                }
+                else
+                {
+
+                }
+            }
+        });
+    }
+});

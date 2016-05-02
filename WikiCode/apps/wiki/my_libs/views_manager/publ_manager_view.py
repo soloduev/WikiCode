@@ -117,17 +117,17 @@ def get_add_editor(request):
     """Ajax запрос на добавления пользователя в редакторы"""
     if request.method == "POST":
         request.session['nickname'] = request.POST['nickname']
-        _nickname = request.POST['nickname']
+        nickname = request.POST['nickname']
         id_publ = request.POST['id_publ_for_add_editor']
 
         try:
-            user = WikiUser.objects.get(nickname=_nickname)
+            user = WikiUser.objects.get(nickname=nickname)
             # Добавляем пользователя в редакторы
             try:
                 # Получаем конспект, к которому назначаем нового редактора
                 publication = Publication.objects.get(id_publication=id_publ)
                 # Получаем пользователя которого необходимо назначить редактором
-                user = User.objects.get(nickname=_nickname)
+                user = User.objects.get(nickname=nickname)
 
                 new_editor = Editor(publication=publication,
                                     id_user=user.id_user,
@@ -143,5 +143,26 @@ def get_add_editor(request):
 
         except WikiUser.DoesNotExist:
             return HttpResponse('no', content_type='text/html')
+    else:
+        return HttpResponse('no', content_type='text/html')
+
+
+@csrf_protect
+def get_remove_editor(request):
+    """Ajax запрос на удаление пользователя из редакторов"""
+    if request.method == "POST":
+        request.session['nickname'] = request.POST['nickname']
+        nickname = request.POST['nickname']
+        id_publ = request.POST['id_publ_for_add_editor']
+        try:
+            publication = Publication.objects.get(id_publication=id_publ)
+            editor = Editor.objects.get(publication=publication, nickname_user=nickname)
+            editor.delete()
+            return HttpResponse('ok', content_type='text/html')
+        except Publication.DoesNotExist:
+            return HttpResponse('no', content_type='text/html')
+        except Editor.DoesNotExist:
+            return HttpResponse('no', content_type='text/html')
+
     else:
         return HttpResponse('no', content_type='text/html')
