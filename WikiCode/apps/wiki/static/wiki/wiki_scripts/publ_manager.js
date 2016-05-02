@@ -71,6 +71,12 @@ $("#input-for-add-editor").on("input",function () {
                 $("#info-message-for-add-editor").attr("style","color: red;");
                 correct_nickname = false;
             }
+            else if(data == "repeat")
+            {
+                $("#info-message-for-add-editor").text("Этот пользователь уже является редактором данного конспекта!");
+                $("#info-message-for-add-editor").attr("style","color: red;");
+                correct_nickname = false;
+            }
             else
             {
                 $("#info-message-for-add-editor").text("Такого пользователя не существует!");

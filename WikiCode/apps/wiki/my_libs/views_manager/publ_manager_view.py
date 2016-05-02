@@ -94,11 +94,17 @@ def get_check_nickname_for_add_editor(request):
                 if publication.nickname_author == nickname:
                     return HttpResponse('author', content_type='text/html')
                 else:
+                    editors = Editor.objects.filter(publication=publication)
+                    for editor in editors:
+                        if editor.nickname_user == nickname:
+                            return HttpResponse('repeat', content_type='text/html')
                     return HttpResponse('ok', content_type='text/html')
 
             except Publication.DoesNotExist:
                 return HttpResponse('no', content_type='text/html')
             except User.DoesNotExist:
+                return HttpResponse('no', content_type='text/html')
+            except Editor.DoesNotExist:
                 return HttpResponse('no', content_type='text/html')
         except WikiUser.DoesNotExist:
             return HttpResponse('no', content_type='text/html')
