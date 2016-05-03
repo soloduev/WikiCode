@@ -29,6 +29,7 @@ from .models import DynamicComment
 from .models import Like
 from .models import Viewing
 from .models import Editor
+from .models import Developer
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User as DjangoUser
 
@@ -57,3 +58,4 @@ admin.site.register(DynamicComment)
 admin.site.register(Like)
 admin.site.register(Viewing)
 admin.site.register(Editor)
+admin.site.register(Developer)

@@ -169,7 +169,11 @@ class Statistics(models.Model):
         return str(self.id_statistics)
 
 
-
+class Developer(models.Model):
+    id_developer = models.IntegerField()
+    name_developer = models.TextField(max_length=100)
+    def __str__(self):
+        return str(self.name_developer)
 
 
 
