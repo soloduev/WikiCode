@@ -62,7 +62,10 @@ urlpatterns = [
     url(r'^page/(?P<id>[0-9]+)/like_wiki_page/$', views.like_wiki_page, name='like_wiki_page'),
     url(r'^page/(?P<id>[0-9]+)/import_wiki_page/$', views.import_wiki_page, name='import_wiki_page'),
 
-    #События на странице пользователя
+    # События на странице пользователя
     url(r'^user/(?P<id>[0-9]+)/like_user/$', views.like_user, name='like_user'),
+
+    # Событие, если сайт находится на ремонте
+    url(r'^login_developer/$', views.login_developer, name='login_developer'),
 
 ]

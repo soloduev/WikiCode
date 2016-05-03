@@ -1,0 +1,137 @@
+<!--
+    Copyright (C) 2016 Igor Soloduev <diahorver@gmail.com>
+
+    This file is part of WikiCode.
+
+    WikiCode is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    WikiCode is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
+-->
+{% extends 'my_bootstrap3.html' %}
+{% load bootstrap3 %}
+{% block bootstrap3_content %}
+
+    <!-- Second navbar for sign in -->
+    <nav class="navbar navbar-default navbar-fixed-top" style="box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#navbar-collapse-2">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span>
+
+                    <a class="navbar-brand" id="wikicode-theme-brand"><i
+                            class="fa fa-university"></i> WikiCode</a>
+                </span>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="navbar-collapse-2">
+                <ul class="nav navbar-nav navbar-right">
+                    <li id="nav-bar-button5"><a href="{% url 'about' %}">О платформе</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container -->
+    </nav><!-- /.navbar -->
+
+
+    {% block page_name %}
+
+    {% endblock %}
+    {% block content %}
+
+        <div class="container">
+            <div class="row">
+                <br><br><br><br><br>
+                <div id="main-block" class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="row">
+                        <label class="text-center btn-primary btn-block">ПЛАТФОРМА НАХОДИТСЯ НА РЕМОНТЕ!</label>
+                    </div>
+                    <div class="row">
+                        <div class="container text-center">
+                            <div class="row">
+                                <br><br><br><br><br>
+                                <span>
+                                    <a class="text-center" style="color: #2b669a;"><i
+                                            class="fa fa-university fa-5x"><label
+                                            style="font-family: Courier;">WikiCode</label></i></a>
+                                </span>
+                                <br><br>
+                                <p>
+                                    <label class="text-center" style="color: #479a56;font-family: Courier;">Сейчас находится на ремонте! Скоро все будет работать! Приносим Вам свои извинения!</label>
+                                </p>
+
+                                <p>
+                                    <label class="text-center" style="color: #479a56;font-family: Courier;">Вход доступен только
+                                        <a id="secret-btn">разработчикам</a> и тестировщикам.</label>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="secret-form" style="display: none;">
+                        <div class="container text-center">
+                            <div class="row">
+                                <br><br>
+                                <div class="col-xs-4"></div>
+                                <div class="col-xs-4">
+                                    <form action="{% url 'login_developer' %}" method="post">
+                                        {% csrf_token %}
+                                        <label>Developer name:</label>
+                                        <input name="developer_name" type="text" class="form-control" style="border-radius: 0px; font-family: Courier;" placeholder="Input name...">
+                                        <br>
+                                        <label>Password:</label>
+                                        <input name="developer_password"  type="password" class="form-control" style="border-radius: 0px; font-family: Courier;" placeholder="Input password...">
+                                        <br>
+                                        <button class="btn" id="wiki-style-btn">Войти</button>
+                                        <br><br><br><br><br>
+                                    </form>
+                                </div>
+                                <div class="col-xs-4"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+    {% block add_script %}
+        {% load staticfiles %}
+        <script src={% static "wiki/wiki_scripts/developer_mode.js" %}></script>
+        <link href={% static "wiki/wiki_styles/develop_mode.css" %} type="text/css" rel="stylesheet">
+
+    {% endblock %}
+    {% block footer %}
+        {% load staticfiles %}
+        <div class="container">
+            <div class="row">
+                <hr/>
+                <div class="text-center center-block">
+                    <br/>
+                    <p>Copyright &copy; 2016 Igor Soloduev</p>
+                    <a href="https://vk.com/wikicode_ru"><i class="fa fa-vk fa-3x social"></i></a>
+                    <a href="https://github.com/LazyTroll/WikiCode"><i class="fa fa-github fa-3x social"></i></a>
+                    <a href="https://bitbucket.org/LazyTroll/wikicode"><i class="fa fa-bitbucket fa-3x social"></i></a>
+                    <a href=""><i class="fa fa-facebook-official fa-3x social"></i></a>
+                    <br/>
+                    <hr/>
+                    <img src="{% static 'wiki/images/agplv3.png' %}">
+                </div>
+                <hr/>
+            </div>
+        </div>
+    {% endblock %}
+{% endblock %}
