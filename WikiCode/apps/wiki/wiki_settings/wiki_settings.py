@@ -30,4 +30,4 @@
 DEVELOP_MODE = True
 
 # Путь к папке, где лежат публикации
-DELETE_PUBLICATION_PATH = "/home/lazytroll/Develop/PythonProjects/wikicode/media/publications/"
+DELETE_PUBLICATION_PATH = "/home/django/WikiCode/media/publications/"

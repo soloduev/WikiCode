@@ -1,4 +1,7 @@
 .idea/
-media/publications/
+deployment/
+static/
+media/
+uwsgi_nginx.sock
 **.pyc
 **__pycache__/**
