@@ -101,16 +101,25 @@ WSGI_APPLICATION = 'WikiCode.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-DATABASES = {
-  'default': {
-      'ENGINE': 'django.db.backends.postgresql_psycopg2',
-      'NAME': 'wikicode',
-      'USER': 'django',
-      'PASSWORD': '1234567890',
-      'HOST': 'localhost',
-      'PORT': '',
-            }
-}
+if not DEBUG:
+    DATABASES = {
+      'default': {
+          'ENGINE': 'django.db.backends.postgresql_psycopg2',
+          'NAME': 'wikicode',
+          'USER': 'django',
+          'PASSWORD': '1234567890',
+          'HOST': 'localhost',
+          'PORT': '',
+                }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+
 
 
 # Password validation
@@ -151,10 +160,16 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+if not DEBUG:
+    STATIC_ROOT = '/home/django/WikiCode/static'
+else:
+    STATIC_ROOT = '/home/lazytroll/Develop/PythonProjects/WikiCode/static'
 
-STATIC_ROOT = '/home/django/WikiCode/static'
+if not DEBUG:
+    MEDIA_ROOT = "/home/django/WikiCode/media"
+else:
+    MEDIA_ROOT = "/home/lazytroll/Develop/PythonProjects/WikiCode/media"
 
-MEDIA_ROOT = "/home/django/WikiCode/media"
 MEDIA_URL = '/media/'
 
 LOGIN_URL = '/registration/'
