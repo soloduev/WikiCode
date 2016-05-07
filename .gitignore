@@ -3,5 +3,7 @@ deployment/
 static/
 media/
 uwsgi_nginx.sock
-**.pyc
-**__pycache__/**
+*.pyc
+__pycache__/*
+db.sqlite3
+
