@@ -454,7 +454,8 @@ def get_add_dynamic_comment_in_wiki_page(request, id):
 
 
             # Получаем тот параграф, в который мы хотим добавить комментарий
-            dynamic_comment_paragraph =  DynamicCommentParagraph.objects.get(num_position=int(num_paragraph))
+            dynamic_comment_paragraph =  DynamicCommentParagraph.objects.get(paragraphs=paragraphs,
+                                                                             num_position=int(num_paragraph))
 
             # Создаем новый динамический комментарий
 
