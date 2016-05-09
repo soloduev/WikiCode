@@ -21,7 +21,7 @@
 from django.shortcuts import render
 
 from WikiCode.apps.wiki.models import User, Publication
-from WikiCode.apps.wiki.my_libs.views_manager.error_view import get_error_page
+from WikiCode.apps.wiki.src.views.error_view import get_error_page
 from .auth import check_auth, get_user_id
 
 

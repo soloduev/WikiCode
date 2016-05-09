@@ -20,7 +20,7 @@
 
 
 from django.shortcuts import render
-from WikiCode.apps.wiki.my_libs.views_manager.auth import get_user_id, check_auth
+from WikiCode.apps.wiki.src.views.auth import get_user_id, check_auth
 
 
 def get_error_page(request, errors_arr):

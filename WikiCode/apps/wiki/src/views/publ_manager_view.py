@@ -21,10 +21,10 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 
 from WikiCode.apps.wiki.models import Publication, Editor, User
-from WikiCode.apps.wiki.my_libs.views_manager.auth import check_auth, get_user_id
-from WikiCode.apps.wiki.my_libs.views_manager.error_view import get_error_page
+from WikiCode.apps.wiki.src.views.auth import check_auth, get_user_id
+from WikiCode.apps.wiki.src.views.error_view import get_error_page
 from WikiCode.apps.wiki.models import User as WikiUser
-from WikiCode.apps.wiki.my_libs.views_manager.publication_view import get_publ_manager
+from WikiCode.apps.wiki.src.views.publication_view import get_publ_manager
 
 
 def get_save_access(request, id):

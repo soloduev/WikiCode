@@ -24,12 +24,12 @@ from django.views.decorators.csrf import csrf_protect
 from WikiCode.apps.wiki.models import Publication, Statistics, CommentBlock, Comment, Paragraphs, DynamicCommentParagraph, DynamicComment, Like, \
     Viewing, Editor
 from .auth import check_auth, get_user_id
-from WikiCode.apps.wiki.my_libs.WikiMarkdown import WikiMarkdown
+from WikiCode.apps.wiki.src.WikiMarkdown import WikiMarkdown
 from django.template import RequestContext, loader
 from django.http import HttpResponse
 from WikiCode.apps.wiki.models import User
-from WikiCode.apps.wiki.my_libs.trees_management.manager import WikiTree
-from WikiCode.apps.wiki.my_libs.views_manager.error_view import get_error_page
+from WikiCode.apps.wiki.src.trees_management.manager import WikiTree
+from WikiCode.apps.wiki.src.views.error_view import get_error_page
 import datetime
 
 def get_create(request):

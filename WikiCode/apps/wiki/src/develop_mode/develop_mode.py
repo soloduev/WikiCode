@@ -23,8 +23,8 @@
 from django.shortcuts import render
 
 from WikiCode.apps.wiki.models import User, Developer
-from WikiCode.apps.wiki.my_libs.views_manager.auth import check_auth, get_user_id
-from WikiCode.apps.wiki.wiki_settings import wiki_settings
+from WikiCode.apps.wiki.src.views.auth import check_auth, get_user_id
+from WikiCode.apps.wiki.settings import wiki_settings
 
 
 def develop_mode(view):

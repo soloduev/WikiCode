@@ -20,7 +20,7 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render
 
 from WikiCode.apps.wiki.models import Publication, Developer
-from WikiCode.apps.wiki.my_libs.views_manager.auth import check_auth, get_user_id
+from WikiCode.apps.wiki.src.views.auth import check_auth, get_user_id
 
 
 def get_login_developer(request):

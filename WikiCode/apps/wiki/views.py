@@ -18,17 +18,17 @@
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from WikiCode.apps.wiki.my_libs.views_manager import index_view
-from WikiCode.apps.wiki.my_libs.views_manager import about_view
-from WikiCode.apps.wiki.my_libs.views_manager import publication_view
-from WikiCode.apps.wiki.my_libs.views_manager import settings_view
-from WikiCode.apps.wiki.my_libs.views_manager import user_view
-from WikiCode.apps.wiki.my_libs.views_manager import registration_view
-from WikiCode.apps.wiki.my_libs.views_manager import tree_view
-from WikiCode.apps.wiki.my_libs.views_manager import publ_manager_view
-from WikiCode.apps.wiki.my_libs.views_manager import develop_view
+from WikiCode.apps.wiki.src.views import index_view
+from WikiCode.apps.wiki.src.views import about_view
+from WikiCode.apps.wiki.src.views import publication_view
+from WikiCode.apps.wiki.src.views import settings_view
+from WikiCode.apps.wiki.src.views import user_view
+from WikiCode.apps.wiki.src.views import registration_view
+from WikiCode.apps.wiki.src.views import tree_view
+from WikiCode.apps.wiki.src.views import publ_manager_view
+from WikiCode.apps.wiki.src.views import develop_view
 from django.contrib.auth.decorators import login_required
-from WikiCode.apps.wiki.my_libs.develop_mode.develop_mode import develop_mode, develop_mode_id
+from WikiCode.apps.wiki.src.develop_mode.develop_mode import develop_mode, develop_mode_id
 
 
 @develop_mode
