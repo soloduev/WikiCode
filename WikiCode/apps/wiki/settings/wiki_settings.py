@@ -17,8 +17,6 @@
 #   You should have received a copy of the GNU Affero General Public License
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
 
-import WikiCode.settings as SETTINGS
-
 
 # Здесь хранятся константы и настройки сайта, которые необходимо настроить при запуске сайта
 
@@ -30,8 +28,3 @@ import WikiCode.settings as SETTINGS
 # Все, теперь вы зарегестрированы как разработчик и сможете зайти на сайт, кликнув на слово "разработчикам"
 DEVELOP_MODE = True
 
-# Путь к папке, где лежат публикации
-if not SETTINGS.DEBUG:
-    DELETE_PUBLICATION_PATH = "/home/django/WikiCode/media/publications/"
-else:
-    DELETE_PUBLICATION_PATH = "/home/lazytroll/Develop/PythonProjects/WikiCode/media/publications/"

@@ -25,7 +25,6 @@ from WikiCode.apps.wiki.models import Publication, Statistics, CommentBlock, Com
     Viewing, Editor
 from .auth import check_auth, get_user_id
 from WikiCode.apps.wiki.src.WikiMarkdown import WikiMarkdown
-from django.template import RequestContext, loader
 from django.http import HttpResponse
 from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.src.trees_management.manager import WikiTree
@@ -155,9 +154,9 @@ def get_page(request, id):
             date = date[:len(date) - 7]
 
             new_viewing = Viewing(id_user=cur_user_id,
-                            nickname=user.nickname,
-                            id_publ=id,
-                            date=date)
+                                  nickname=user.nickname,
+                                  id_publ=id,
+                                  date=date)
             new_viewing.save()
             publication.read += 1
             publication.save()

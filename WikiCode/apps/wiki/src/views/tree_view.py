@@ -18,12 +18,9 @@
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import os
-
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
-from WikiCode.apps.wiki.settings import wiki_settings
 from .auth import check_auth, get_user_id
 from WikiCode.apps.wiki.models import User, Publication, Statistics
 from WikiCode.apps.wiki.src.trees_management.manager import WikiTree
@@ -178,8 +175,6 @@ def get_delete_publ_in_tree(request):
             # Уменьшаем количество публикаций в глобальной статистике
             stat.publications_delete += 1
 
-            # Удаляем html файл этой публикации
-            os.remove(wiki_settings.DELETE_PUBLICATION_PATH + str(id_publ) + ".html")
 
             publication.delete()
             user.save()
