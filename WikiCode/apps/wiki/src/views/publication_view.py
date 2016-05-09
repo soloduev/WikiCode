@@ -201,12 +201,6 @@ def get_create_page(request):
         num = stat.publications_create
         stat.publications_create += 1
 
-        name_page = str(num + 1)
-        f = open("media/publications/" + name_page + ".html", 'tw', encoding='utf-8')
-        f.close()
-
-        with open("media/publications/" + name_page + ".html", "wb") as f:
-            f.write(ready_page.encode("utf-8"))
         newid = num + 1
         access = request.POST.get("access")
         access_edit = request.POST.get("access_edit")
@@ -243,7 +237,7 @@ def get_create_page(request):
                 description=form["description"],
                 text=form["text"],
                 theme=form["theme"],
-                html_page="publications/" + name_page + ".html",
+                html_page=ready_page,
                 is_private=_is_private,
                 is_public=_is_public,
                 is_private_edit=_is_private_edit,
@@ -325,13 +319,7 @@ def get_create_page(request):
         second_part = form["text"]
         third_part = '</xmp><script src="http://strapdownjs.com/v/0.2/strapdown.js"></script></html>'
         total = first_part + second_part + third_part
-        with open("WikiCode/apps/wiki/templates/preview.html", "wb") as f:
-            f.write(total.encode("utf-8"))
-        template = loader.get_template('preview.html')
-        context = RequestContext(request, {
-
-        })
-        return HttpResponse(template.render(context))
+        return HttpResponse(total)
 
 
 def get_publ_manager(request, id):

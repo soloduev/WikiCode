@@ -61,7 +61,7 @@ class Publication(models.Model):
     description = models.TextField(max_length=500)
     text = models.TextField()
     theme = models.CharField(max_length=50)
-    html_page = models.FileField(upload_to='publications')
+    html_page = models.TextField()
     is_private = models.BooleanField()
     is_public = models.BooleanField()
     is_private_edit = models.BooleanField()
