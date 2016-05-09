@@ -27,7 +27,7 @@ from WikiCode.apps.wiki.models import Statistics
 from WikiCode.apps.wiki.models import Publication
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login
-from WikiCode.apps.wiki.src.trees_management.manager import WikiTree
+from WikiCode.apps.wiki.src.tree.manager import WikiTree
 from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
 import datetime

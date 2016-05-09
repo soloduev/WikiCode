@@ -27,7 +27,7 @@ from .auth import check_auth, get_user_id
 from WikiCode.apps.wiki.src.WikiMarkdown import WikiMarkdown
 from django.http import HttpResponse
 from WikiCode.apps.wiki.models import User
-from WikiCode.apps.wiki.src.trees_management.manager import WikiTree
+from WikiCode.apps.wiki.src.tree.manager import WikiTree
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
 import datetime
 
