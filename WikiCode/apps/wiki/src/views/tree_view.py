@@ -23,7 +23,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 
 from WikiCode.apps.wiki.models import User, Publication, Statistics
-from WikiCode.apps.wiki.src.WikiTree import WikiTree
+from WikiCode.apps.wiki.src.wiki_tree import WikiTree
 from .auth import check_auth, get_user_id
 
 

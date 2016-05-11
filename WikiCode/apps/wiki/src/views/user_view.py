@@ -29,7 +29,7 @@ from WikiCode.apps.wiki.models import Publication
 from WikiCode.apps.wiki.models import Statistics
 from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.models import User as WikiUser, Like
-from WikiCode.apps.wiki.src.WikiTree import WikiTree
+from WikiCode.apps.wiki.src.wiki_tree import WikiTree
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
 from .auth import check_auth, get_user_id
 

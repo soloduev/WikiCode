@@ -27,8 +27,8 @@ from django.views.decorators.csrf import csrf_protect
 from WikiCode.apps.wiki.models import Publication, Statistics, CommentBlock, Comment, Paragraphs, DynamicCommentParagraph, DynamicComment, Like, \
     Viewing, Editor
 from WikiCode.apps.wiki.models import User
-from WikiCode.apps.wiki.src.WikiMarkdown import WikiMarkdown
-from WikiCode.apps.wiki.src.WikiTree import WikiTree
+from WikiCode.apps.wiki.src.wiki_markdown import WikiMarkdown
+from WikiCode.apps.wiki.src.wiki_tree import WikiTree
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
 from .auth import check_auth, get_user_id
 
