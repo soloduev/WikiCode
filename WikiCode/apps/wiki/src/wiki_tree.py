@@ -19,7 +19,7 @@
 
 
 
-# Менеджер по управлению деревьями в WikiCode. version 0.43:
+# Менеджер по управлению деревьями в WikiCode. version 0.44:
 
 
 class WikiTree(object):
@@ -54,6 +54,8 @@ class WikiTree(object):
         self.__set_last_symbol()
         # Сначала генерируем супер карту
         paths = self.tree.split("\n")
+        if len(paths) == 2:
+            return "NONE"
         elements = []
         max = 0
         for i in range(1, len(paths)):
@@ -101,6 +103,8 @@ class WikiTree(object):
         self.__set_last_symbol()
         # Сначала генерируем супер карту
         paths = self.tree.split("\n")
+        if len(paths) == 2:
+            return "NONE"
         elements = []
         max = 0
         for i in range(1, len(paths)):
@@ -148,6 +152,8 @@ class WikiTree(object):
         self.__set_last_symbol()
         # Сначала генерируем супер карту
         paths = self.tree.split("\n")
+        if len(paths) == 2:
+            return "NONE"
         elements = []
         max = 0
         for i in range(1, len(paths)):
