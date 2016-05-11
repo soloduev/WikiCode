@@ -43,7 +43,10 @@ class WikiTree(object):
 
     def get_tree(self):
         """Возвращает дерево пользователя в виде строки"""
-        self.__set_last_symbol()
+        try:
+            self.__set_last_symbol()
+        except AttributeError:
+            return None
         return self.tree
 
     def generate_html_dynamic(self):

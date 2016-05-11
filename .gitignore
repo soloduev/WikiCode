@@ -6,4 +6,5 @@ uwsgi_nginx.sock
 *.pyc
 __pycache__/*
 db.sqlite3
+.cache/*
 
