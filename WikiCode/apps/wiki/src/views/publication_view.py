@@ -143,6 +143,16 @@ def get_page(request, id):
         else:
             dynamic_tree = ""
 
+        # Загружаем превью дерево автора
+        try:
+            author_user = User.objects.get(id_user=publication.id_author)
+            wt = WikiTree(author_user.id_user)
+            wt.load_tree(author_user.tree)
+            html_preview_tree = wt.generate_html_preview()
+        except User.DoesNotExist:
+            print("Автора не существует")
+
+
         # И перед тем как перейти на страницу, добавим ей просмотр, если этот пользователь еще не смотрел
         # Этот конспект
         try:
@@ -169,7 +179,7 @@ def get_page(request, id):
             "numbers": numbers,
             "user_data": check_auth(request),
             "user_id": cur_user_id,
-            "preview_tree": wt.generate_html_preview(),
+            "preview_tree": html_preview_tree,
             "dynamic_tree": dynamic_tree,
             "all_comments": all_comments,
             "prgrphs": prgrphs,
