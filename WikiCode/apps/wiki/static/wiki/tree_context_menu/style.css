@@ -60,3 +60,55 @@
   color: #fff;
   background-color: #0066aa;
 }
+
+.wiki-style-add-new-folder
+{
+  opacity: 0.3;
+  margin-top: 10px;
+  background-color: #FFFFFF;
+  border: 1px dashed #2966a0;
+  transition: all 0.5s ease 0s;
+  height: 40px;
+}
+
+.wiki-style-add-new-folder:hover
+{
+  opacity: 1;
+  font-size: 16px;
+  background-color: #ffffff;
+  border: 1px dashed #2966a0;
+  transition: all 0.5s ease 0s;
+}
+
+#wiki-style-btn {
+  background-color: #024f81;
+  border-radius: 0px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  color: #fff;
+  transition: all 0.5s ease 0s;
+}
+
+
+#wiki-style-btn:hover {
+  background-color: #4da6d9;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
+  color: #fff;
+  transition: all 0.5s ease 0s;
+}
+
+.wiki-style-header-btns
+{
+  background-color: #026ba8;
+  border-radius: 0px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  color: #fff;
+  transition: all 0.5s ease 0s;
+}
+
+.wiki-style-header-btns:hover
+{
+  background-color: #4da6d9;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
+  color: #fff;
+  transition: all 0.5s ease 0s;
+}

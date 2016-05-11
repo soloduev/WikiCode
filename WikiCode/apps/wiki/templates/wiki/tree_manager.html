@@ -63,27 +63,15 @@
                                         <form action="{% url 'create' %}" method="post">
                                             {% csrf_token %}
                                             <div class="btn-group">
-                                                <button type="button" id="add_folder_in_wiki_tree" class="btn btn-default">Добавить <span
+                                                <button type="button" id="add_folder_in_wiki_tree" class="btn wiki-style-header-btns">Добавить папку <span
                                                         class="glyphicon glyphicon-folder-open"></span></button>
 
-                                                <button id="add_publ_in_wiki_tree" class="btn btn-default">Создать <span
-                                                        class="glyphicon glyphicon-list"></span></button>
+                                                <button id="add_publ_in_wiki_tree" class="btn wiki-style-header-btns">Создать конспект <span
+                                                        class="glyphicon glyphicon-list-alt"></span></button>
+
+                                                <button type="button" id="wiki-help-tree-manager" class="btn wiki-style-header-btns"><span
+                                                        class="glyphicon glyphicon-question-sign"></span></button>
                                                 <input id="choose-folder-secret" content="secret" name="folder_publ" type="text" hidden value="off"/>
-
-                                                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal_develop_func">Сгенерировать <span
-                                                        class="glyphicon glyphicon-bookmark"></span></button>
-
-                                                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal_develop_func">Тест <span
-                                                        class="glyphicon glyphicon-check"></span></button>
-
-                                                <button type="button" class="btn btn-default"><i class="fa fa-pencil"></i>
-                                                </button>
-
-                                                <button type="button" class="btn btn-default"><span
-                                                        class="glyphicon glyphicon-sort"></span></button>
-
-                                                <button id="del-element-in-tree"type="button" class="btn btn-default"><span
-                                                        class="glyphicon glyphicon-remove"></span></button>
                                             </div>
                                         </form>
                                     </div>
@@ -97,9 +85,9 @@
                                             </div>
                                             <div class="col-xs-4 text-left">
                                                 <div class="btn-group">
-                                                    <button id="accept_add_folder_in_wiki_tree" class="btn btn-default">Добавить <span
+                                                    <button id="accept_add_folder_in_wiki_tree" class="btn wiki-style-header-btns">Добавить <span
                                                             class="glyphicon glyphicon-folder-open"></span></button>
-                                                    <button id="cancel_add_folder_in_wiki_tree" class="btn btn-default">Отмена <span
+                                                    <button id="cancel_add_folder_in_wiki_tree" class="btn wiki-style-header-btns">Отмена <span
                                                             class="glyphicon glyphicon-remove"></span></button>
                                                 </div>
                                             </div>
@@ -116,9 +104,9 @@
                                         <div class="row">
                                             <div class="col-xs-12 text-left">
                                                 <div class="btn-group">
-                                                    <button id="yes_delete_elem_in_tree" class="btn btn-default">Да <span
+                                                    <button id="yes_delete_elem_in_tree" class="btn wiki-style-header-btns">Да <span
                                                             class="glyphicon glyphicon-check"></span></button>
-                                                    <button id="no_delete_elem_in_tree" class="btn btn-default">Нет <span
+                                                    <button id="no_delete_elem_in_tree" class="btn wiki-style-header-btns">Нет <span
                                                             class="glyphicon glyphicon-remove"></span></button>
                                                 </div>
                                             </div>
@@ -136,9 +124,9 @@
                                             </div>
                                             <div class="col-xs-8 text-left">
                                                 <div class="btn-group">
-                                                    <button id="accept_rename_publ_in_wiki_tree" class="btn btn-default">Переименовать <span
+                                                    <button id="accept_rename_publ_in_wiki_tree" class="btn wiki-style-header-btns">Переименовать <span
                                                             class="glyphicon glyphicon-list"></span></button>
-                                                    <button id="cancel_rename_publ_in_wiki_tree" class="btn btn-default">Отмена <span
+                                                    <button id="cancel_rename_publ_in_wiki_tree" class="btn wiki-style-header-btns">Отмена <span
                                                             class="glyphicon glyphicon-remove"></span></button>
                                                 </div>
                                             </div>
@@ -155,9 +143,9 @@
                                             </div>
                                             <div class="col-xs-8 text-left">
                                                 <div class="btn-group">
-                                                    <button id="accept_rename_folder_in_wiki_tree" class="btn btn-default">Переименовать <span
+                                                    <button id="accept_rename_folder_in_wiki_tree" class="btn wiki-style-header-btns">Переименовать <span
                                                             class="glyphicon glyphicon-list"></span></button>
-                                                    <button id="cancel_rename_folder_in_wiki_tree" class="btn btn-default">Отмена <span
+                                                    <button id="cancel_rename_folder_in_wiki_tree" class="btn wiki-style-header-btns">Отмена <span
                                                             class="glyphicon glyphicon-remove"></span></button>
                                                 </div>
                                             </div>
@@ -178,6 +166,7 @@
                                                 {{ dynamic_tree|safe }}
                                             </ul>
                                         </div>
+                                        <button class="btn btn-block wiki-style-add-new-folder">Добавить новую папку</button>
                                         <br>
                                     </div>
 
