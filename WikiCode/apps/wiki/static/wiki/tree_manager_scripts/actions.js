@@ -162,6 +162,13 @@ $("#cancel_add_folder_in_wiki_tree").click(function () {
     adding_folder_to = "NONE";
 });
 
+//Отмена добавления глобальной папки в дерево
+$("#cancel_add_global_folder_in_wiki_tree").click(function () {
+    $("#div_folder_name_input_for_global").attr("style", "display: none;");
+    $("#panel_inputs").attr("style", "");
+    adding_folder_to = "NONE";
+});
+
 
 //Подтверждение добавления папки в дерево
 $("#accept_add_folder_in_wiki_tree").click(function () {
