@@ -319,13 +319,13 @@ class WikiTree(object):
                 self.__print_error("аргумент path не является строкой")
             elif str(type(name_folder)) != "<class 'str'>":
                 self.__print_error("аргумент name_folder не является строкой")
+            elif path == "global":
+                if not self.__is_line(name_folder + "/"):
+                    self.tree += name_folder + "/:" + self.user_id + "\n"
             elif len(path) <= 1 or not path.endswith("/"):
                 self.__print_error("аргумент path передан в неверном формате, пример: 'my_lesson/' ")
             elif self.__is_forbidden_symbols(name_folder):
                 self.__print_error("аргумент name_folder содержит запреженные символы)")
-            elif path == "global":
-                if not self.__is_line(name_folder + "/"):
-                    self.tree += name_folder + "/:" + self.user_id + "\n"
             elif self.__is_line(path) and not self.__is_line(path + name_folder + "/"):
                 self.tree += path + name_folder + "/:" + self.user_id + "\n"
             else:

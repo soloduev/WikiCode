@@ -102,6 +102,13 @@ $("#add_folder_in_wiki_tree_context").click(function () {
     }
 });
 
+//Добавление глобальной папки
+$("#add_global_folder_in_wiki_tree").click(function () {
+
+    $("#div_folder_name_input_for_global").attr("style", "");
+    $("#panel_inputs").attr("style", "display: none;");
+});
+
 //Удаление папки из дерева из контекстного меню
 $("#delete_folder_in_wiki_tree_context").click(function () {
 
@@ -168,6 +175,30 @@ $("#accept_add_folder_in_wiki_tree").click(function () {
             url: "add_folder_in_tree/",
             data:{
                 'answer':new_folder_name+"^^^"+selected_file_in_tree,
+            },
+            dataType: "text",
+            cache: false,
+            success: function(data){
+                if (data == 'ok'){
+                    location.reload();
+                }
+            }
+        });
+    }
+});
+
+//Подтверждение добавления глобальной папки в дерево
+$("#accept_add_global_folder_in_wiki_tree").click(function () {
+
+    new_folder_name = $("#folder_name_input_for_global").val();
+
+    if(new_folder_name !== "")
+    {
+        $.ajax({
+            type: "POST",
+            url: "add_folder_in_tree/",
+            data:{
+                'answer':new_folder_name+"^^^global",
             },
             dataType: "text",
             cache: false,

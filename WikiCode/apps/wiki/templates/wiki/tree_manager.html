@@ -97,6 +97,28 @@
 
                                         </div>
                                     </div>
+                                    <!--Скрытый блок добавления глобальной папки-->
+                                    <div id="div_folder_name_input_for_global" class="col-xs-12" style="display: none;">
+                                        <span><h4>Добавить новую корневую папку</h4></span>
+                                        <div class="row">
+                                            <div class="col-xs-4">
+                                                <input  type="text" class="form-control" id="folder_name_input_for_global" placeholder="Имя новой папки..." autofocus
+                                                        style="border-radius: 0px;"/>
+                                            </div>
+                                            <div class="col-xs-4 text-left">
+                                                <div class="btn-group">
+                                                    <button id="accept_add_global_folder_in_wiki_tree" class="btn wiki-style-header-btns">Добавить <span
+                                                            class="glyphicon glyphicon-folder-open"></span></button>
+                                                    <button id="cancel_add_folder_in_wiki_tree" class="btn wiki-style-header-btns">Отмена <span
+                                                            class="glyphicon glyphicon-remove"></span></button>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4">
+
+                                            </div>
+
+                                        </div>
+                                    </div>
 
                                     <!--Скрытый блок подтверждения удаления элемента-->
                                     <div id="div_accept_delete_elem"class="col-xs-12" style="display: none;">
@@ -166,7 +188,7 @@
                                                 {{ dynamic_tree|safe }}
                                             </ul>
                                         </div>
-                                        <div class="btn btn-block wiki-style-add-new-folder">Добавить новую папку</div>
+                                        <div id="add_global_folder_in_wiki_tree" class="btn btn-block wiki-style-add-new-folder">Добавить корневую папку</div>
                                         <br>
                                     </div>
 
