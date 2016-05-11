@@ -38,12 +38,8 @@
     <link href={% static "wiki/style.css" %} type="text/css" rel="stylesheet">
     <link href={% static "wiki/fontawesome/css/font-awesome.css" %} type="text/css" rel="stylesheet">
     <link href={% static "wiki/bootstrapfiles/css/bootstrap.css" %} type="text/css" rel="stylesheet">
-    <!--Flippant-->
-    <link href={% static "wiki/flippant/flippant.css" %} type="text/css" rel="stylesheet">
     <!--Bootstrap-tags-->
     <link href={% static "wiki/bootstrap-tags/css/bootstrap-tags.css"%} rel="stylesheet" type="text/css">
-    <!--jsTree-->
-    <link href={% static "wiki/jsTree/themes/default/style.min.css"%} rel="stylesheet" >
 </head>
 
 <body>
@@ -53,18 +49,13 @@
 </body>
 <!--Подключаем мою библиотеку для формы создания markdown'a-->
 <script src={% static "wiki/markdown_form/js/markdown-form.js" %}></script>
-<!--Подключаем скрипты для отображение полных фреймов-->
-<script src={% static "wiki/frames/postmessage/postmessage.js"%}></script>
-<script src={% static "wiki/frames/FrameManager.js" %}></script>
+{#<!--Подключаем скрипты для отображение полных фреймов-->#}
+{#<script src={% static "wiki/frames/postmessage/postmessage.js"%}></script>#}
+{#<script src={% static "wiki/frames/FrameManager.js" %}></script>#}
 <script src={% static "wiki/scripts.js" %}></script>
-<!--Подключаем скрипт для парсинга markdown -->
-<script src={% static "wiki/marked/marked.js" %}></script>
-<!--Подключаем flippant для динамичного переворачивания контента-->
-<script src={% static "wiki/flippant/flip.js" %}></script>
-<script src={% static "wiki/flippant/flippant.js" %}></script>
 <!--Подключаем библиотеку для динамических тегов bootstrap-tags-->
 <script src={% static "wiki/bootstrap-tags/js/bootstrap-tags.js" %}></script>
-<!--Подключаем библиотеку для динамических файловых деревье jsTree-->
-<script src={% static "wiki/jsTree/jstree.min.js"%}></script>
+<!--Подключаем скрипт для парсинга markdown -->
+<script src={% static "wiki/marked/marked.js" %}></script>
 {% block add_script %}{% endblock %}
 </html>

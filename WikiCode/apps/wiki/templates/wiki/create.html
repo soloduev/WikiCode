@@ -341,6 +341,10 @@
 
 {% block add_script %}
     {% load staticfiles %}
+    <!--Подключаем библиотеку для динамических файловых деревье jsTree-->
+    <script src={% static "wiki/jsTree/jstree.min.js"%}></script>
+    <!--jsTree-->
+    <link href={% static "wiki/jsTree/themes/default/style.min.css"%} rel="stylesheet" >
     <script src={% static "wiki/create_publication_scripts/actions.js" %}></script>
     <link href={% static "wiki/wiki_styles/create.css" %} type="text/css" rel="stylesheet">
 {% endblock %}
