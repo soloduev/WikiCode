@@ -255,10 +255,16 @@
     <div id="wiki-left-page" class="sb-slidebar sb-left sb-width-custom">
         <br><br><br><br><br>
         <label class="btn-block btn-primary text-center">ДЕРЕВО ПОЛЬЗОВАТЕЛЯ</label>
-        <ul id="tree2">
-            <!--Здесь должно располгататься сгенерированное дерево пользователя -->
-            {{ preview_tree|safe }}
-        </ul>
+        {% if preview_tree == "NONE" %}
+            <div class="col-xs-12 text-center">
+                <label>Дерево отсутствует</label>
+            </div>
+        {% else %}
+            <ul id="tree2">
+                <!--Здесь должен располагаться сгенерированный html preview дерева-->
+                {{ preview_tree|safe }}
+            </ul>
+        {% endif %}
     </div>
 
     <!--Выпадающее меню при нажатии на абзац-->
