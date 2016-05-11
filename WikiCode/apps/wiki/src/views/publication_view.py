@@ -18,18 +18,20 @@
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
 
 
+import datetime
+
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 
 from WikiCode.apps.wiki.models import Publication, Statistics, CommentBlock, Comment, Paragraphs, DynamicCommentParagraph, DynamicComment, Like, \
     Viewing, Editor
-from .auth import check_auth, get_user_id
-from WikiCode.apps.wiki.src.WikiMarkdown import WikiMarkdown
-from django.http import HttpResponse
 from WikiCode.apps.wiki.models import User
-from WikiCode.apps.wiki.src.tree.manager import WikiTree
+from WikiCode.apps.wiki.src.WikiMarkdown import WikiMarkdown
+from WikiCode.apps.wiki.src.WikiTree import WikiTree
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
-import datetime
+from .auth import check_auth, get_user_id
+
 
 def get_create(request):
     user_data = check_auth(request)

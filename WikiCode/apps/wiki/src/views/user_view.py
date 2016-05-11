@@ -16,21 +16,23 @@
 #
 #   You should have received a copy of the GNU Affero General Public License
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_protect
+import datetime
 
-from .auth import check_auth, get_user_id
-from django.shortcuts import render
-from WikiCode.apps.wiki.models import User as WikiUser, Like
-from django.contrib.auth.models import User as DjangoUser
-from WikiCode.apps.wiki.models import Statistics
-from WikiCode.apps.wiki.models import Publication
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login
-from WikiCode.apps.wiki.src.tree.manager import WikiTree
+from django.contrib.auth.models import User as DjangoUser
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_protect
+
+from WikiCode.apps.wiki.models import Publication
+from WikiCode.apps.wiki.models import Statistics
 from WikiCode.apps.wiki.models import User
+from WikiCode.apps.wiki.models import User as WikiUser, Like
+from WikiCode.apps.wiki.src.WikiTree import WikiTree
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
-import datetime
+from .auth import check_auth, get_user_id
+
 
 def get_user(request, id):
 

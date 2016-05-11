@@ -21,9 +21,10 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
-from .auth import check_auth, get_user_id
+
 from WikiCode.apps.wiki.models import User, Publication, Statistics
-from WikiCode.apps.wiki.src.tree.manager import WikiTree
+from WikiCode.apps.wiki.src.WikiTree import WikiTree
+from .auth import check_auth, get_user_id
 
 
 def get_tree_manager(request):
