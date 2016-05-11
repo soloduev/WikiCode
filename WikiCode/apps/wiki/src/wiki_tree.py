@@ -28,7 +28,7 @@ class WikiTree(object):
             if not user_id < 0:
                 self.tree = "user_id=" + str(user_id) + "\n"
                 self.tree += "Personal/:" + str(user_id) + "\n"
-                self.tree += "Imports/:" + str(user_id) + "\n"
+                self.tree += "Docs/:" + str(user_id) + "\n"
                 self.user_id = str(user_id)
                 self.__set_last_symbol()
             else:
@@ -90,7 +90,11 @@ class WikiTree(object):
                 index += 1
 
         # Теперь компонуем обе папки вместе:
-        return elements[0][2] + elements[1][2]
+        result = ""
+        for elem in elements:
+            if self.__get_type(elem[0]) == "folder" and elem[0].count("/") == 1:
+                result += elem[2]
+        return result
 
     def generate_html_preview(self):
         """Генерирует html текст превью wiki дерева"""
@@ -132,8 +136,12 @@ class WikiTree(object):
                             break
                 index += 1
 
-        # Теперь компонуем обе папки вместе:
-        return elements[0][2] + elements[1][2]
+        # Теперь компонуем все папки вместе:
+        result = ""
+        for elem in elements:
+            if self.__get_type(elem[0]) == "folder" and elem[0].count("/") == 1:
+                result += elem[2]
+        return result
 
     def generate_html_dynamic_folders(self):
         """Генерирует html динамического wiki дерева без публикаций. Только папки."""
@@ -174,7 +182,11 @@ class WikiTree(object):
                 index += 1
 
         # Теперь компонуем обе папки вместе:
-        return elements[0][2] + elements[1][2]
+        result = ""
+        for elem in elements:
+            if self.__get_type(elem[0]) == "folder" and elem[0].count("/") == 1:
+                result += elem[2]
+        return result
 
     def __set_last_symbol(self):
         """Функция делает так, чтобы последний символ в дереве был переводом строки"""
@@ -454,20 +466,16 @@ class WikiTree(object):
             elif len(path_folder) <= 1 or not path_folder.endswith("/"):
                 self.__print_error("аргумент path_folder передан в неверном формате, пример: 'my_lesson/' ")
             else:
-                if path_folder == "Personal/" or path_folder == "Imports/":
-                    self.__print_error("Удалять корневые папки запрещено!")
-                    return
-                else:
-                    paths = self.tree.split("\n")
-                    for i in range(1, len(paths)):
-                        path = paths[i].split(":")[0]
-                        if path == path_folder:
-                            new_tree = ""
-                            for n in range(0, len(paths)):
-                                if n != i and paths[n].find(path_folder) != 0:
-                                    new_tree += paths[n] + "\n"
-                            self.tree = new_tree
-                            break
+                paths = self.tree.split("\n")
+                for i in range(1, len(paths)):
+                    path = paths[i].split(":")[0]
+                    if path == path_folder:
+                        new_tree = ""
+                        for n in range(0, len(paths)):
+                            if n != i and paths[n].find(path_folder) != 0:
+                                new_tree += paths[n] + "\n"
+                        self.tree = new_tree
+                        break
         except AttributeError:
             self.__print_error("дерево не создано")
 

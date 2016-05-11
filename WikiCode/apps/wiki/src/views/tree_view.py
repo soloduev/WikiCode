@@ -90,8 +90,6 @@ def get_del_elem_in_tree(request):
         path_publ = request.POST.get('answer')
         user_data = check_auth(request)
 
-        if path_publ.split(":")[0] == "Personal/" or path_publ.split(":")[0] == "Imports/":
-            return HttpResponse('no', content_type='text/html')
 
         try:
             user = User.objects.get(email=user_data)
@@ -121,8 +119,6 @@ def get_check_folder_for_delete(request):
         path_publ = request.POST.get('answer')
         user_data = check_auth(request)
 
-        if path_publ.split(":")[0] == "Personal/" or path_publ.split(":")[0] == "Imports/":
-            return HttpResponse('no', content_type='text/html')
 
         try:
             user = User.objects.get(email=user_data)
