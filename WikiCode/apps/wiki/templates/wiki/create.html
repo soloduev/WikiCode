@@ -31,311 +31,325 @@
 {% endblock %}
 {% block content %}
     <div class="container"  id="main-block">
-        <form action="{% url 'create_page' %}" method="post">
-            {% csrf_token %}
-            <div class="row">
+        {% if not empty_tree %}
+            <form action="{% url 'create_page' %}" method="post">
+                {% csrf_token %}
+                <div class="row">
 
-                <div class="col-xs-12 col-sm-10 col-md-10">
-                    <div class="row">
-                        <label class="text-center btn-primary btn-block">СОЗДАТЬ НОВЫЙ КОНСПЕКТ</label>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-1"></div>
-                        <div class="col-xs-10">
-                            <h3>Папка</h3>
+                    <div class="col-xs-12 col-sm-10 col-md-10">
+                        <div class="row">
+                            <label class="text-center btn-primary btn-block">СОЗДАТЬ НОВЫЙ КОНСПЕКТ</label>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-1"></div>
+                            <div class="col-xs-10">
+                                <h3>Папка</h3>
 
-                            <div class="row">
-                                <div class="col-xs-10">
-                                    <input value="{{ path }}"
-                                           required id="lt-markdown-folder" name="folder" type="text"
-                                           class="form-control btn-block"
-                                           placeholder="Укажите путь к папке..."
-                                           style="height: 30px; font-family: Courier; border-radius: 0px;"/>
-                                </div>
-                                <div class="col-xs-2">
-                                    <button id="lt-markdown-set-path" type="button" class="btn btn-default btn-block"
-                                            style="height: 30px; border-radius: 0px;"><i
-                                            class="fa fa-folder-open-o">...</i></button>
-                                </div>
-                            </div>
-                            <div id="div-lt-choose-folder" style="display: none;border: 1px solid #ececec;background-color: #ffffff;box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.70), 0 2px 10px 0 rgba(0, 0, 0, 0.12);">
                                 <div class="row">
-                                    <div class="col-xs-12  text-right">
-                                        <a id="lt-markdown-close-choose" type="button" class="btn btn-default"
-                                           style="height: 30px; border: 0px solid white;border-radius: 0px;"><i
-                                                class="fa fa-remove"></i></a>
+                                    <div class="col-xs-10">
+                                        <input value="{{ path }}"
+                                               required id="lt-markdown-folder" name="folder" type="text"
+                                               class="form-control btn-block"
+                                               placeholder="Укажите путь к папке..."
+                                               style="height: 30px; font-family: Courier; border-radius: 0px;"/>
                                     </div>
-                                    <div class="col-xs-12">
+                                    <div class="col-xs-2">
+                                        <button id="lt-markdown-set-path" type="button" class="btn btn-default btn-block"
+                                                style="height: 30px; border-radius: 0px;"><i
+                                                class="fa fa-folder-open-o">...</i></button>
+                                    </div>
+                                </div>
+                                <div id="div-lt-choose-folder" style="display: none;border: 1px solid #ececec;background-color: #ffffff;box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.70), 0 2px 10px 0 rgba(0, 0, 0, 0.12);">
+                                    <div class="row">
+                                        <div class="col-xs-12  text-right">
+                                            <a id="lt-markdown-close-choose" type="button" class="btn btn-default"
+                                               style="height: 30px; border: 0px solid white;border-radius: 0px;"><i
+                                                    class="fa fa-remove"></i></a>
+                                        </div>
+                                        <div class="col-xs-12">
+
+                                        </div>
 
                                     </div>
-
+                                    <div id="jstree">
+                                        <ul>
+                                            <!--Здесь должен располагаться сгенерированный html код, для динамического дерева с одними папками-->
+                                            {{ dynamic_tree|safe }}
+                                        </ul>
+                                    </div>
+                                    <hr>
                                 </div>
-                                <div id="jstree">
-                                    <ul>
-                                        <!--Здесь должен располагаться сгенерированный html код, для динамического дерева с одними папками-->
-                                        {{ dynamic_tree|safe }}
-                                    </ul>
-                                </div>
-                                <hr>
-                            </div>
-                            <p>
+                                <p>
 
-                            <h3>Заголовок</h3>
-                            <input required id="lt-markdown-title" name="title" type="text"
-                                   class="form-control btn-block"
-                                   placeholder="Введите заголовок к Вашему конспекту..."
-                                   style="height: 30px; font-family: Courier; border-radius: 0px;"/>
+                                <h3>Заголовок</h3>
+                                <input required id="lt-markdown-title" name="title" type="text"
+                                       class="form-control btn-block"
+                                       placeholder="Введите заголовок к Вашему конспекту..."
+                                       style="height: 30px; font-family: Courier; border-radius: 0px;"/>
 
-                            <p>
+                                <p>
 
-                            <h3>Описание</h3>
-                            <textarea required id="lt-markdown-description" name="description" type="text"
-                                      class="form-control btn-block"
-                                      placeholder="Введите описание..."
-                                      style="height: 100px; font-family: Courier; resize: none; border-radius: 0px;"></textarea>
+                                <h3>Описание</h3>
+                                <textarea required id="lt-markdown-description" name="description" type="text"
+                                          class="form-control btn-block"
+                                          placeholder="Введите описание..."
+                                          style="height: 100px; font-family: Courier; resize: none; border-radius: 0px;"></textarea>
 
-                            <p>
+                                <p>
 
-                            <h3>Markdown Текст</h3>
-                            </p>
+                                <h3>Markdown Текст</h3>
+                                </p>
 
-                            <div id="main-block" class="tabbable-panel">
-                                <div class="tabbable-line">
-                                    <ul class="nav nav-tabs ">
-                                        <li class="active">
-                                            <a href="#tab_default_1" data-toggle="tab">
-                                                Создать конспект </a>
-                                        </li>
-                                        <li>
-                                            <a href="#tab_default_2" data-toggle="tab">
-                                                Импортировать конспект</a>
-                                        </li>
-                                        <li>
-                                            <a href="#tab_default_3" data-toggle="tab">
-                                                Справка по созданию </a>
-                                        </li>
-                                    </ul>
-                                    <div class="tab-content">
-                                        <div class="tab-pane active" id="tab_default_1">
-                                            <div class="container-fluid">
-                                                <h4>Создавайте конспект красиво в редакторе StackEdit!</h4>
-                                                <button id="wiki-style-btn" class="btn" type="button" data-toggle="modal" data-target="#modal_develop_func">Создать конспект в редакторе</button>
-                                                <hr>
-                                                <div class="row">
-                                                    <div class="col-xs-9">
-                                                        <div class="btn-group">
-                                                            <button id="wiki-style-btn" type="button" class="btn" data-toggle="dropdown"
-                                                                    href="#dropdown-1" style="border-radius: 0px;">
-                                                                <i class="fa fa-header">
-                                                                    <span></span>
-                                                                </i>
-                                                            </button>
-                            <span class="text-right" id="dropdown-1">
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <button type="button" class="btn btn-default btn-block" id="lt-markdown-h1">Заголовок
-                                        1
-                                    </button>
-                                </li>
-                                <li>
-                                    <button type="button" class="btn btn-default btn-block" id="lt-markdown-h2">Заголовок
-                                        2
-                                    </button>
-                                </li>
-                                <li>
-                                    <button type="button" class="btn btn-default btn-block" id="lt-markdown-h3">Заголовок
-                                        3
-                                    </button>
-                                </li>
-                                <li>
-                                    <button type="button" class="btn btn-default btn-block" id="lt-markdown-h4">Заголовок
-                                        4
-                                    </button>
-                                </li>
-                                <li>
-                                    <button type="button" class="btn btn-default btn-block" id="lt-markdown-h5">Заголовок
-                                        5
-                                    </button>
-                                </li>
-                            </ul>
-                            </span>
-                                                            <button type="button" class="btn" id="lt-markdown-bold"><i
-                                                                    class="fa fa-bold"></i></button>
-                                                            <button type="button" class="btn" id="lt-markdown-italic"><i
-                                                                    class="fa fa-italic"></i>
-                                                            </button>
-                                                            <button type="button" class="btn" id="lt-markdown-ol"><i
-                                                                    class="fa fa-list-ol"></i></button>
-                                                            <button type="button" class="btn" id="lt-markdown-ul"><i
-                                                                    class="fa fa-list-ul"></i></button>
-                                                            <button type="button" class="btn" id="lt-markdown-code"><i
-                                                                    class="fa fa-code"></i></button>
-                                                            </button>
-                                                            <button type="button" class="btn" id="lt-markdown-line"><i
-                                                                    class="fa fa-minus"></i></button>
-                                                            </button>
-                                                            <button type="button" class="btn" id="lt-markdown-quote"><i
-                                                                    class="fa fa-quote-left"></i></button>
-                                                            </button>
-                                                            <button type="button" class="btn" id="lt-markdown-link"><i
-                                                                    class="fa fa-link"></i></button>
-                                                            <button type="button" class="btn" id="lt-markdown-img"><i
-                                                                    class="fa fa-image"></i></button>
-                                                            <button type="button" class="btn dropdown-toggle"
-                                                                    id="lt-markdown-choose-theme"
-                                                                    data-toggle="dropdown"
-                                                                    href="#dropdown-4"
-                                                                    style="border-radius: 0px;">
-                                                                <i class="fa fa-paint-brush">
-                                                                    <span class="caret"></span>
-                                                                </i>
-                                                            </button>
-                                <span class="text-right" id="dropdown-4">
-                                <ul class="dropdown-menu" style="width: 432px;">
-                                    <li class="text-center">
-                                        Текущая тема конспекта:
-                                    </li>
+                                <div id="main-block" class="tabbable-panel">
+                                    <div class="tabbable-line">
+                                        <ul class="nav nav-tabs ">
+                                            <li class="active">
+                                                <a href="#tab_default_1" data-toggle="tab">
+                                                    Создать конспект </a>
+                                            </li>
+                                            <li>
+                                                <a href="#tab_default_2" data-toggle="tab">
+                                                    Импортировать конспект</a>
+                                            </li>
+                                            <li>
+                                                <a href="#tab_default_3" data-toggle="tab">
+                                                    Справка по созданию </a>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div class="tab-pane active" id="tab_default_1">
+                                                <div class="container-fluid">
+                                                    <h4>Создавайте конспект красиво в редакторе StackEdit!</h4>
+                                                    <button id="wiki-style-btn" class="btn" type="button" data-toggle="modal" data-target="#modal_develop_func">Создать конспект в редакторе</button>
+                                                    <hr>
+                                                    <div class="row">
+                                                        <div class="col-xs-9">
+                                                            <div class="btn-group">
+                                                                <button id="wiki-style-btn" type="button" class="btn" data-toggle="dropdown"
+                                                                        href="#dropdown-1" style="border-radius: 0px;">
+                                                                    <i class="fa fa-header">
+                                                                        <span></span>
+                                                                    </i>
+                                                                </button>
+                                <span class="text-right" id="dropdown-1">
+                                <ul class="dropdown-menu">
                                     <li>
-                                        <input id="lt-markdown-cur-theme" type="text" readonly
-                                               class="form-control btn-block text-center" value="Cerulean"
-                                               name="theme" style="border-radius: 0px;">
-                                    </li>
-                                    <li>
-                                        <button type="button" class="btn btn-default" id="lt-markdown-theme1"
-                                                style="width: 141px; border-radius: 0px;">United
-                                        </button>
-                                        <button type="button" class="btn btn-default" id="lt-markdown-theme2"
-                                                style="width: 141px; border-radius: 0px;">Cerulean
-                                        </button>
-                                        <button type="button" class="btn btn-default" id="lt-markdown-theme3"
-                                                style="width: 141px; border-radius: 0px;">Cyborg
+                                        <button type="button" class="btn btn-default btn-block" id="lt-markdown-h1">Заголовок
+                                            1
                                         </button>
                                     </li>
                                     <li>
-                                        <button type="button" class="btn btn-default" id="lt-markdown-theme4"
-                                                style="width: 141px; border-radius: 0px;">Journal
-                                        </button>
-                                        <button type="button" class="btn btn-default" id="lt-markdown-theme5"
-                                                style="width: 141px; border-radius: 0px;">Readable
-                                        </button>
-                                        <button type="button" class="btn btn-default" id="lt-markdown-theme6"
-                                                style="width: 141px; border-radius: 0px;">Simplex
+                                        <button type="button" class="btn btn-default btn-block" id="lt-markdown-h2">Заголовок
+                                            2
                                         </button>
                                     </li>
                                     <li>
-                                        <button type="button" class="btn btn-default" id="lt-markdown-theme7"
-                                                style="width: 141px; border-radius: 0px;">Slate
-                                        </button>
-                                        <button type="button" class="btn btn-default" id="lt-markdown-theme8"
-                                                style="width: 141px; border-radius: 0px;">Spacelab
-                                        </button>
-                                        <button type="button" class="btn btn-default" id="lt-markdown-theme9"
-                                                style="width: 141px; border-radius: 0px;">Superhero
+                                        <button type="button" class="btn btn-default btn-block" id="lt-markdown-h3">Заголовок
+                                            3
                                         </button>
                                     </li>
-
+                                    <li>
+                                        <button type="button" class="btn btn-default btn-block" id="lt-markdown-h4">Заголовок
+                                            4
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button" class="btn btn-default btn-block" id="lt-markdown-h5">Заголовок
+                                            5
+                                        </button>
+                                    </li>
                                 </ul>
-                            </span>
+                                </span>
+                                                                <button type="button" class="btn" id="lt-markdown-bold"><i
+                                                                        class="fa fa-bold"></i></button>
+                                                                <button type="button" class="btn" id="lt-markdown-italic"><i
+                                                                        class="fa fa-italic"></i>
+                                                                </button>
+                                                                <button type="button" class="btn" id="lt-markdown-ol"><i
+                                                                        class="fa fa-list-ol"></i></button>
+                                                                <button type="button" class="btn" id="lt-markdown-ul"><i
+                                                                        class="fa fa-list-ul"></i></button>
+                                                                <button type="button" class="btn" id="lt-markdown-code"><i
+                                                                        class="fa fa-code"></i></button>
+                                                                </button>
+                                                                <button type="button" class="btn" id="lt-markdown-line"><i
+                                                                        class="fa fa-minus"></i></button>
+                                                                </button>
+                                                                <button type="button" class="btn" id="lt-markdown-quote"><i
+                                                                        class="fa fa-quote-left"></i></button>
+                                                                </button>
+                                                                <button type="button" class="btn" id="lt-markdown-link"><i
+                                                                        class="fa fa-link"></i></button>
+                                                                <button type="button" class="btn" id="lt-markdown-img"><i
+                                                                        class="fa fa-image"></i></button>
+                                                                <button type="button" class="btn dropdown-toggle"
+                                                                        id="lt-markdown-choose-theme"
+                                                                        data-toggle="dropdown"
+                                                                        href="#dropdown-4"
+                                                                        style="border-radius: 0px;">
+                                                                    <i class="fa fa-paint-brush">
+                                                                        <span class="caret"></span>
+                                                                    </i>
+                                                                </button>
+                                    <span class="text-right" id="dropdown-4">
+                                    <ul class="dropdown-menu" style="width: 432px;">
+                                        <li class="text-center">
+                                            Текущая тема конспекта:
+                                        </li>
+                                        <li>
+                                            <input id="lt-markdown-cur-theme" type="text" readonly
+                                                   class="form-control btn-block text-center" value="Cerulean"
+                                                   name="theme" style="border-radius: 0px;">
+                                        </li>
+                                        <li>
+                                            <button type="button" class="btn btn-default" id="lt-markdown-theme1"
+                                                    style="width: 141px; border-radius: 0px;">United
+                                            </button>
+                                            <button type="button" class="btn btn-default" id="lt-markdown-theme2"
+                                                    style="width: 141px; border-radius: 0px;">Cerulean
+                                            </button>
+                                            <button type="button" class="btn btn-default" id="lt-markdown-theme3"
+                                                    style="width: 141px; border-radius: 0px;">Cyborg
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button type="button" class="btn btn-default" id="lt-markdown-theme4"
+                                                    style="width: 141px; border-radius: 0px;">Journal
+                                            </button>
+                                            <button type="button" class="btn btn-default" id="lt-markdown-theme5"
+                                                    style="width: 141px; border-radius: 0px;">Readable
+                                            </button>
+                                            <button type="button" class="btn btn-default" id="lt-markdown-theme6"
+                                                    style="width: 141px; border-radius: 0px;">Simplex
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button type="button" class="btn btn-default" id="lt-markdown-theme7"
+                                                    style="width: 141px; border-radius: 0px;">Slate
+                                            </button>
+                                            <button type="button" class="btn btn-default" id="lt-markdown-theme8"
+                                                    style="width: 141px; border-radius: 0px;">Spacelab
+                                            </button>
+                                            <button type="button" class="btn btn-default" id="lt-markdown-theme9"
+                                                    style="width: 141px; border-radius: 0px;">Superhero
+                                            </button>
+                                        </li>
 
+                                    </ul>
+                                </span>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xs-3 text-right">
+                                                            <button id="form-input" type="submit" class="btn"
+                                                                    style="border-radius: 0px;"><i
+                                                                    class="fa fa-eye"></i> Превью
+                                                            </button>
                                                         </div>
                                                     </div>
-                                                    <div class="col-xs-3 text-right">
-                                                        <button id="form-input" type="submit" class="btn"
-                                                                style="border-radius: 0px;"><i
-                                                                class="fa fa-eye"></i> Превью
-                                                        </button>
-                                                    </div>
+                                                    <p></p>
+                            <textarea required id="lt-markdown-textarea" name="text" class="form-control btn-block"
+                                      rows="15"
+                                      style="resize: none; font-family: Courier; border-radius: 0px;"
+                                      placeholder="Введите Markdown текст..." wrap="soft"></textarea>
+                                                    <input id="lt-markdown-secret" content="secret" name="secret" type="text" hidden
+                                                           value="off"/>
+
+
                                                 </div>
-                                                <p></p>
-                        <textarea required id="lt-markdown-textarea" name="text" class="form-control btn-block"
-                                  rows="15"
-                                  style="resize: none; font-family: Courier; border-radius: 0px;"
-                                  placeholder="Введите Markdown текст..." wrap="soft"></textarea>
-                                                <input id="lt-markdown-secret" content="secret" name="secret" type="text" hidden
-                                                       value="off"/>
-
-
                                             </div>
-                                        </div>
-                                        <div class="tab-pane" id="tab_default_2">
-                                            <div class="container-fluid">
-                                                <h4>Вы можете импортировать конспект со своего компьютера, загрузив его в формате <b>*.wcode</b>
-                                                    или практически в любом другом из распрастраненных форматов, такие как
-                                                    <b>*.txt, *.odt, *.doc, *.md, *.pdf</b></h4>
-                                                <button id="wiki-style-btn" class="btn" type="button" data-toggle="modal" data-target="#modal_develop_func">Импортировать</button>
-                                                <hr>
-                                                <h4>Также, вы можете импортировать свой конспект с <b>GitHub</b> или <b>Bitbucket</b>:</h4>
-                                                <button id="wiki-style-btn" class="btn" type="button" data-toggle="modal" data-target="#modal_develop_func">Импортировать с GitHub</button>
-                                                <button id="wiki-style-btn" class="btn" type="button" data-toggle="modal" data-target="#modal_develop_func">Импортировать с Bitbucket</button>
-                                                <hr>
-                                                <h4>Вы можете сгенерировать целую <b>документацию</b>, загрузив набор из папок.
-                                                    Название корневой папки, будет названием документации.</h4>
-                                                <button id="wiki-style-btn" class="btn" type="button" data-toggle="modal" data-target="#modal_develop_func">Импортировать документацию</button>
+                                            <div class="tab-pane" id="tab_default_2">
+                                                <div class="container-fluid">
+                                                    <h4>Вы можете импортировать конспект со своего компьютера, загрузив его в формате <b>*.wcode</b>
+                                                        или практически в любом другом из распрастраненных форматов, такие как
+                                                        <b>*.txt, *.odt, *.doc, *.md, *.pdf</b></h4>
+                                                    <button id="wiki-style-btn" class="btn" type="button" data-toggle="modal" data-target="#modal_develop_func">Импортировать</button>
+                                                    <hr>
+                                                    <h4>Также, вы можете импортировать свой конспект с <b>GitHub</b> или <b>Bitbucket</b>:</h4>
+                                                    <button id="wiki-style-btn" class="btn" type="button" data-toggle="modal" data-target="#modal_develop_func">Импортировать с GitHub</button>
+                                                    <button id="wiki-style-btn" class="btn" type="button" data-toggle="modal" data-target="#modal_develop_func">Импортировать с Bitbucket</button>
+                                                    <hr>
+                                                    <h4>Вы можете сгенерировать целую <b>документацию</b>, загрузив набор из папок.
+                                                        Название корневой папки, будет названием документации.</h4>
+                                                    <button id="wiki-style-btn" class="btn" type="button" data-toggle="modal" data-target="#modal_develop_func">Импортировать документацию</button>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="tab-pane" id="tab_default_3">
-                                            <div class="container-fluid">
-                                                <h4>Здесь будет расположен конспект со справкой по созданию и синтаксису Markdown</h4>
+                                            <div class="tab-pane" id="tab_default_3">
+                                                <div class="container-fluid">
+                                                    <h4>Здесь будет расположен конспект со справкой по созданию и синтаксису Markdown</h4>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
+
+
+                                <hr>
+                                <p>
+
+
                             </div>
+                            <div class="col-xs-1"></div>
 
+                        </div>
 
+                    </div>
+                    <div class="col-xs-12 col-sm-2 col-md-2" style="border-left: 1px solid #c9c9c9;">
+                        <div class="row">
+                            <label class="text-center btn-primary btn-block">НАСТРОЙКИ</label>
+                        </div>
+                        <div class="row">
+                            <br>
+                            <div class="text-center">
 
+                                <p><input name="access" type="radio" value="public" checked> Публичный</p>
+                                <p><input name="access" type="radio" value="private"> Приватный</p>
+
+                            </div>
                             <hr>
-                            <p>
+                            <div class="text-center">
 
+                                <p><input name="access_edit" type="radio" value="private" checked> Защищенное редактирование</p>
+                                <p><input name="access_edit" type="radio" value="public"> Публичное редактирование</p>
 
-                        </div>
-                        <div class="col-xs-1"></div>
+                            </div>
+                            <hr>
+                            <div class="text-center">
 
-                    </div>
+                                <p><input name="public_comment" type="checkbox" value="true" checked> Общее комментирование</p>
+                                <p><input name="dynamic_comment" type="checkbox" value="true" checked> Динамичное комментирование</p>
 
-                </div>
-                <div class="col-xs-12 col-sm-2 col-md-2" style="border-left: 1px solid #c9c9c9;">
-                    <div class="row">
-                        <label class="text-center btn-primary btn-block">НАСТРОЙКИ</label>
-                    </div>
-                    <div class="row">
-                        <br>
-                        <div class="text-center">
-
-                            <p><input name="access" type="radio" value="public" checked> Публичный</p>
-                            <p><input name="access" type="radio" value="private"> Приватный</p>
-
-                        </div>
-                        <hr>
-                        <div class="text-center">
-
-                            <p><input name="access_edit" type="radio" value="private" checked> Защищенное редактирование</p>
-                            <p><input name="access_edit" type="radio" value="public"> Публичное редактирование</p>
-
-                        </div>
-                        <hr>
-                        <div class="text-center">
-
-                            <p><input name="public_comment" type="checkbox" value="true" checked> Общее комментирование</p>
-                            <p><input name="dynamic_comment" type="checkbox" value="true" checked> Динамичное комментирование</p>
-
-                        </div>
-                        <hr>
-                        <div class="text-center">
-                            <label class="">Теги:</label>
-                        </div>
-                        <div class="text-center">
-                            <textarea class="" name="tags" style="resize: none; height: 317px;"></textarea>
+                            </div>
+                            <hr>
+                            <div class="text-center">
+                                <label class="">Теги:</label>
+                            </div>
+                            <div class="text-center">
+                                <textarea class="" name="tags" style="resize: none; height: 317px;"></textarea>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+                <div class="row">
+                    <hr>
+                    <button id="send" type="submit" class="btn btn-block">Создать
+                    </button>
+                </div>
+            </form>
+        {% else %}
             <div class="row">
-                <hr>
-                <button id="send" type="submit" class="btn btn-block">Создать
-                </button>
+                <label class="text-center btn-primary btn-block">СОЗДАНИЕ КОНСПЕКТА</label>
             </div>
-        </form>
+            <br>
+            <div class="row text-center">
+                <br><br><br><br><br><br>
+                <h4>У Вас не создано ни одной папки в Вашем дереве!</h4>
+                <h4>Создайте хотя-бы одну папку, и вы сможете в ней разместить Ваш новый конспект.</h4>
+                <br>
+                <a href="{% url 'tree_manager' %}" style="text-decoration: none;"><h4>Перейти к созданию дерева</h4></a>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
 

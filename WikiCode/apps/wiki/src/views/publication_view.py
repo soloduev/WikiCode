@@ -48,11 +48,18 @@ def get_create(request):
         wt = WikiTree(user.id_user)
         wt.load_tree(user.tree)
 
+        # Проверяем, не пустует ли его дерево:
+        if wt.get_nums_root_folder() == 0:
+            empty_tree = True
+        else:
+            empty_tree = False
+
         context = {
             "user_data": user_data,
             "user_id": get_user_id(request),
             "dynamic_tree": wt.generate_html_dynamic_folders(),
             "path": path,
+            "empty_tree":empty_tree,
         }
 
         return render(request, 'wiki/create.html', context)
