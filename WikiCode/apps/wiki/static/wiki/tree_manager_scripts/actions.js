@@ -23,6 +23,11 @@
 
 $.jstree.defaults.core.themes.variant = "large";
 
+//С каким деревом в данный момент работает пользователь
+//$('#jstree').jstree(true).deselect_all();
+var is_user_tree = false;
+var is_saved_tree = false;
+
 var selected_file_in_tree = "NONE_SELECT";
 var adding_folder_to = "NONE";
 $("#choose-folder-secret").val("NONE");
@@ -30,6 +35,12 @@ $("#choose-folder-secret").val("NONE");
 $("#jstree")
 // listen for event
     .on('changed.jstree', function (e, data) {
+        if(is_saved_tree)
+        {
+            $('#jstree-saved').jstree(true).deselect_all();
+        }
+        is_user_tree = true;
+        is_saved_tree = false;
         selected_file_in_tree = data.selected;
         $("#choose-folder-secret").val(selected_file_in_tree);
         $("#div_folder_name_input_for_global").attr("style", "display: none;");
@@ -62,6 +73,48 @@ $("#jstree")
             },
             "test": {
                 "icon": "glyphicon glyphicon-check"
+            },
+        },
+
+
+        "plugins" : [ "wholerow", "types"],
+
+        "core" : {
+            "multiple" : false,
+        },
+    });
+
+//Теперь, для дерева сохраненных конспектов
+$("#jstree-saved")
+// listen for event
+    .on('changed.jstree', function (e, data) {
+        if(is_user_tree)
+        {
+            $('#jstree').jstree(true).deselect_all();
+        }
+        is_user_tree = false
+        is_saved_tree = true;
+        selected_file_in_tree = data.selected;
+        $("#choose-folder-secret").val(selected_file_in_tree);
+
+        if(adding_folder_to !== "NONE" && adding_folder_to != selected_file_in_tree)
+        {
+
+        }
+
+    })
+    // create the instance
+    .jstree({
+
+        "types" : {
+            "folder" : {
+                "icon" : "glyphicon glyphicon-folder-open"
+            },
+            "publ": {
+                "icon": "glyphicon glyphicon-list-alt"
+            },
+            "contents": {
+                "icon": "glyphicon glyphicon-bookmark"
             },
         },
 

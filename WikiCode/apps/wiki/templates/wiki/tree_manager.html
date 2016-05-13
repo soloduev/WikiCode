@@ -205,6 +205,14 @@
                                             </div>
                                         {% endif %}
                                         <div id="add_global_folder_in_wiki_tree" class="btn btn-block wiki-style-add-new-folder">Добавить корневую папку</div>
+                                        <hr>
+                                        <div id="jstree-saved">
+                                            <ul>
+                                                <!--Здесь должен располагаться сгенерированный html код, для динамического дерева сохраненных конспектов-->
+                                                {{ dynamic_tree_saved|safe }}
+
+                                            </ul>
+                                        </div>
                                         <br>
                                     </div>
 

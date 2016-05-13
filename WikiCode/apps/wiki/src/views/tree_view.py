@@ -34,11 +34,16 @@ def get_tree_manager(request):
         wt = WikiTree(user.id_user)
         wt.load_tree(user.tree)
 
+        # Загружаем дерево сохраненных конспектов
+        swt = WikiTree(user.id_user)
+        swt.load_tree(user.saved_publ)
+
         context = {
             "user_data": user_data,
             "user_id": get_user_id(request),
             "preview_tree": wt.generate_html_preview(),
             "dynamic_tree": wt.generate_html_dynamic(),
+            "dynamic_tree_saved":swt.generate_html_dynamic(),
         }
 
         return render(request, 'wiki/tree_manager.html', context)
