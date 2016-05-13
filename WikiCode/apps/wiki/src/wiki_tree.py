@@ -19,7 +19,7 @@
 
 
 
-# Менеджер по управлению деревьями в WikiCode. version 0.44:
+# Менеджер по управлению деревьями в WikiCode. version 0.45:
 
 
 class WikiTree(object):
@@ -54,7 +54,7 @@ class WikiTree(object):
         self.__set_last_symbol()
         # Сначала генерируем супер карту
         paths = self.tree.split("\n")
-        if len(paths) == 2:
+        if self.get_nums_root_folder() == 0:
             return "NONE"
         elements = []
         max = 0
@@ -103,7 +103,7 @@ class WikiTree(object):
         self.__set_last_symbol()
         # Сначала генерируем супер карту
         paths = self.tree.split("\n")
-        if len(paths) == 2:
+        if self.get_nums_root_folder() == 0:
             return "NONE"
         elements = []
         max = 0
@@ -152,7 +152,7 @@ class WikiTree(object):
         self.__set_last_symbol()
         # Сначала генерируем супер карту
         paths = self.tree.split("\n")
-        if len(paths) == 2:
+        if self.get_nums_root_folder() == 0:
             return "NONE"
         elements = []
         max = 0
@@ -620,3 +620,19 @@ class WikiTree(object):
     def move_publication(self, path_publication, new_path_folder):
         """Перемещение конспекта в дереве"""
         pass
+
+
+    def get_nums_root_folder(self):
+        """Возвращает количество корневых папок в дереве"""
+        try:
+            self.__set_last_symbol()
+            paths = self.tree.split("\n")
+            nums = 0
+            for elem in paths:
+                if self.__get_type(elem) == "folder":
+                    if elem.count("/") == 1:
+                        nums += 1
+            return nums
+        except AttributeError:
+            self.__print_error("дерево не создано")
+            return 0
