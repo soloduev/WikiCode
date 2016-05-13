@@ -68,6 +68,10 @@ def registration(request):
     return registration_view.get_registration(request)
 
 
+def login(request):
+    return user_view.get_login(request)
+
+
 @develop_mode
 def create_user(request):
     return user_view.get_create_user(request)

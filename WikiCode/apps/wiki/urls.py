@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^settings/$', views.settings, name='settings'),
     url(r'^user/(?P<id>[0-9]+)/$', views.user, name='user'),
     url(r'^registration/$', views.registration, name='registration'),
+    url(r'^login/$', views.login, name='login'),
     url(r'^tree_manager/$',views.tree_manager, name='tree_manager'),
     url(r'^publ_manager/(?P<id>[0-9]+)$',views.publ_manager, name='publ_manager'),
 

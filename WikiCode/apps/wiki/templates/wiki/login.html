@@ -1,0 +1,93 @@
+<!--
+    Copyright (C) 2016 Igor Soloduev <diahorver@gmail.com>
+
+    This file is part of WikiCode.
+
+    WikiCode is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    WikiCode is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
+-->
+{% extends 'main.html' %}
+{% load bootstrap3 %}
+{% block page_name %}
+    <div class="container" style="margin-top: 50px;">
+        <div class="row">
+            <br>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div id="main-block"class="col-xs-12 col-sm-12 col-md-12">
+                <div class="row">
+                    <label class="text-center btn-primary btn-block">ВХОД</label>
+                </div>
+                <div class="row">
+
+                    <div class="col-xs-1 col-sm-2 col-md-3 col-lg-4"></div>
+
+                    <div id="reg-panel"class="col-xs-10 col-sm-8 col-md-6 col-lg-4">
+                        <div class="container-fluid">
+                            <br>
+                            <form action="{% url 'login_user' %}" method="post">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <label id="wiki_nickname_message">Ваш Nickname</label>
+                                </div>
+                                <div class="row">
+                                    <input type="text" class="form-control" id="Email" name="user_name" placeholder="Email" autofocus required style="border-radius: 0px;"/>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <label>Ваш Пароль</label>
+                                </div>
+                                <div class="row">
+                                    <input type="password" class="form-control" id="Password" name="user_password"  placeholder="Password" required  style="border-radius: 0px;"/>
+                                </div>
+                                <br>
+
+                                <div class="row">
+                                    <button id="wiki_sign_up" type="submit" class="btn btn-block"><span
+                                            class="glyphicon glyphicon-ok"></span> Войти</button>
+                                </div>
+                                <div class="row">
+                                    <a href="{% url 'registration' %}" style="text-decoration: none;" id="wiki_code_sign_in" type="button" class="btn btn-block btn-link">
+                                        Регистрация</a>
+                                </div>
+                            </form>
+
+                            <br>
+                        </div>
+                    </div>
+                    <div class="col-xs-1 col-sm-2 col-md-3 col-lg-4"></div>
+
+                </div>
+
+                <div class="row">
+                    <br>
+                    <br>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block add_script %}
+    {% load staticfiles %}
+    <link href={% static "wiki/wiki_styles/login.css" %} type="text/css" rel="stylesheet">
+{% endblock %}

@@ -272,3 +272,14 @@ def get_like_user(request, id):
             return get_error_page(request, ["This is user is not found!"])
     else:
         return HttpResponse('no', content_type='text/html')
+
+
+@csrf_protect
+def get_login(request):
+
+    context = {
+        "user_data": check_auth(request),
+        "user_id": get_user_id(request),
+    }
+
+    return render(request, 'wiki/login.html', context)
