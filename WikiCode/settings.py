@@ -172,4 +172,4 @@ else:
 
 MEDIA_URL = '/media/'
 
-LOGIN_URL = '/registration/'
+LOGIN_URL = '/login/'
