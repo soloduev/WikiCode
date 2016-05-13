@@ -32,6 +32,8 @@ $("#jstree")
     .on('changed.jstree', function (e, data) {
         selected_file_in_tree = data.selected;
         $("#choose-folder-secret").val(selected_file_in_tree);
+        $("#div_folder_name_input_for_global").attr("style", "display: none;");
+        $("#panel_inputs").attr("style", "");
         if(adding_folder_to !== "NONE" && adding_folder_to != selected_file_in_tree)
         {
             $("#div_folder_name_input").attr("style", "display: none;");
