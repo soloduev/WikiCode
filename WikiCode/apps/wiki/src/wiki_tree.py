@@ -23,14 +23,20 @@
 
 
 class WikiTree(object):
-    def __init__(self, user_id):
+    def __init__(self, user_id, is_saved=False):
         if str(type(user_id)) == "<class 'int'>":
             if not user_id < 0:
-                self.tree = "user_id=" + str(user_id) + "\n"
-                self.tree += "Personal/:" + str(user_id) + "\n"
-                self.tree += "Docs/:" + str(user_id) + "\n"
-                self.user_id = str(user_id)
-                self.__set_last_symbol()
+                if not is_saved:
+                    self.tree = "user_id=" + str(user_id) + "\n"
+                    self.tree += "Personal/:" + str(user_id) + "\n"
+                    self.tree += "Docs/:" + str(user_id) + "\n"
+                    self.user_id = str(user_id)
+                    self.__set_last_symbol()
+                else:
+                    self.tree = "user_id=" + str(user_id) + "\n"
+                    self.tree += "Saved/:" + str(user_id) + "\n"
+                    self.user_id = str(user_id)
+                    self.__set_last_symbol()
             else:
                 self.__print_error("user_id < 0")
         else:

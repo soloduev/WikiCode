@@ -130,12 +130,16 @@ def get_create_user(request):
             # Создаем дерево по умолчанию для юзера
             new_tree = WikiTree(total_reg_users)
 
+            # Создаем дерево по умолчанию для сохраненных конспектов
+            new_saved_tree = WikiTree(total_reg_users, True)
+
             # Создаем нового юзера
             new_wiki_user = WikiUser(user=user,
                                      nickname=form["user_nickname"],
                                      email=form["user_email"],
                                      id_user=total_reg_users,
                                      tree=new_tree.get_tree(),
+                                     saved_publ=new_saved_tree.get_tree(),
                                      avatar="none.jpg",
                                      name="anonymous",
                                      likes=0,
