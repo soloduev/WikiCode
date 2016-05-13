@@ -55,13 +55,13 @@
                                     <div class="container-fluid text-right">
                                         <div class="row">
                                             <div class="btn-group">
-                                                <a id="wikicode-like-publ" href="#" class="btn"><span
+                                                <a class="btn" {% if guest %} id="wikicode-like-publ-not" data-toggle="modal" data-target="#modal_auth" {% else %} id="wikicode-like-publ" href="#" {% endif %}><span
                                                         class="glyphicon glyphicon-thumbs-up"></span> ({{ publication.likes }})</a>
 
-                                                <a id="wikicode-import-publ" data-toggle="modal" data-target="#modal_save_publ" class="btn"><span class="glyphicon glyphicon-import"></span> ({{ publication.imports }})</a>
+                                                <a {% if guest %} id="wikicode-import-publ-not" data-toggle="modal" data-target="#modal_auth" {% else %}id="wikicode-import-publ" data-toggle="modal" data-target="#modal_save_publ"{% endif %} class="btn"><span class="glyphicon glyphicon-import"></span> ({{ publication.imports }})</a>
 
 
-                                                <a id="wikicode-download-publ" href="#" class="btn"><span
+                                                <a {% if guest %} id="wikicode-download-publ-not" data-toggle="modal" data-target="#modal_auth" {% else %}id="wikicode-download-publ" href="#" {% endif %}class="btn"><span
                                                         class="glyphicon glyphicon-download"></span> ({{ publication.downloads }})</a>
                                             </div>
                                         </div>
@@ -116,19 +116,21 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-xs-12">
-                                                    <div class="row">
-                                                        <br>
-                                                        <label for="comment">Ваш Комментарий</label>
-                                                        <textarea id="add-comment-wiki-page" name="comment" class="form-control" rows="3" style="resize: none; border-radius: 0px;"></textarea>
+                                                {% if not guest %}
+                                                    <div class="col-xs-12">
+                                                        <div class="row">
+                                                            <br>
+                                                            <label for="comment">Ваш Комментарий</label>
+                                                            <textarea id="add-comment-wiki-page" name="comment" class="form-control" rows="3" style="resize: none; border-radius: 0px;"></textarea>
+                                                        </div>
+                                                        <div class="row">
+                                                            <br>
+                                                            <button id="wiki-style-btn-add-comment"  type="submit" class="btn">Отправить</button>
+                                                            <br>
+                                                            <br>
+                                                        </div>
                                                     </div>
-                                                    <div class="row">
-                                                        <br>
-                                                        <button id="wiki-style-btn-add-comment"  type="submit" class="btn">Отправить</button>
-                                                        <br>
-                                                        <br>
-                                                    </div>
-                                                </div>
+                                                {% endif %}
 
                                                 <!--Блок отображения комментариев -->
                                                 <div class="col-xs-12">
@@ -270,8 +272,13 @@
     <!--Выпадающее меню при нажатии на абзац-->
     <div id="context-dinamic-menu" style="display: none;">
         <ul id="wiki-style-btns-options">
-            <li id="wiki-style-btn-option-1" class="btn" style="width: 35px;border-radius: 25px; padding-left: 10px;"><i class="fa fa-pencil"></i></li>
-            <li id="wiki-style-btn-option-2" class="btn" data-toggle="modal" data-target="#modal_add_error" style="width: 35px;border-radius: 25px; padding-left: 10px;"><i class="fa fa-exclamation-triangle"></i></li>
+            {% if not guest %}
+                <li id="wiki-style-btn-option-1" class="btn" style="width: 35px;border-radius: 25px; padding-left: 10px;"><i class="fa fa-pencil"></i></li>
+                <li id="wiki-style-btn-option-2" class="btn" data-toggle="modal" data-target="#modal_add_error" style="width: 35px;border-radius: 25px; padding-left: 10px;"><i class="fa fa-exclamation-triangle"></i></li>
+            {% else %}
+                <li id="wiki-style-btn-option-1-not" class="btn" data-toggle="modal" data-target="#modal_auth" style="width: 35px;border-radius: 25px; padding-left: 10px;"><i class="fa fa-pencil"></i></li>
+                <li id="wiki-style-btn-option-2-not" class="btn" data-toggle="modal" data-target="#modal_auth" style="width: 35px;border-radius: 25px; padding-left: 10px;"><i class="fa fa-exclamation-triangle"></i></li>
+            {% endif %}
             <li id="wiki-style-btn-option-3" class="btn" data-toggle="modal" data-target="#modal_chat" style="width: 35px;border-radius: 25px; padding-left: 10px;"><i class="fa fa-comment-o"></i></li>
         </ul>
     </div>
@@ -338,13 +345,17 @@
                     <div id="paragraph_input_comment">
                         <!--Сюда необходимо пихать сгенерированные div блоки комментария-->
                     </div>
-                    <hr>
-                    <label><h4>Ваш комментарий:</h4></label>
-                    <textarea id="wiki-input-dynamic-comment" class="form-control" style="resize: none; border-radius: 0px; font-family: Courier;" rows="3" placeholder="Ваш комментарий..."></textarea>
+                    {% if not guest %}
+                        <hr>
+                        <label><h4>Ваш комментарий:</h4></label>
+                        <textarea id="wiki-input-dynamic-comment" class="form-control" style="resize: none; border-radius: 0px; font-family: Courier;" rows="3" placeholder="Ваш комментарий..."></textarea>
+                    {% endif %}
                 </div>
                 <div class="modal-footer">
                     <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
-                    <button id="wiki-style-btn-add-dynamic-comment" type="button" class="btn">Добавить</button>
+                    {% if not guest %}
+                        <button id="wiki-style-btn-add-dynamic-comment" type="button" class="btn">Добавить</button>
+                    {% endif %}
                 </div>
             </div>
         </div>

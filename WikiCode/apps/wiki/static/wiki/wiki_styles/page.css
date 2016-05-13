@@ -36,7 +36,10 @@
 }
 #wiki-style-btn-option-1,
 #wiki-style-btn-option-2,
-#wiki-style-btn-option-3
+#wiki-style-btn-option-3,
+#wiki-style-btn-option-1-not,
+#wiki-style-btn-option-2-not,
+#wiki-style-btn-option-3-not
 {
     background-color: rgba(196, 196, 196, 0.5);
     border-radius: 0px;
@@ -47,6 +50,9 @@
 #wiki-style-btn-option-1:hover,
 #wiki-style-btn-option-2:hover,
 #wiki-style-btn-option-3:hover,
+#wiki-style-btn-option-1-not:hover,
+#wiki-style-btn-option-2-not:hover,
+#wiki-style-btn-option-3-not:hover,
 #wiki-style-btn-option-commenting
 {
     background-color: #225a84;
@@ -75,8 +81,11 @@
 }
 
 #wikicode-like-publ,
+#wikicode-like-publ-not,
+#wikicode-import-publ-not,
 #wikicode-import-publ,
-#wikicode-download-publ
+#wikicode-download-publ,
+#wikicode-download-publ-not
 {
     background-color: #ffffff;
     border-radius: 0px;
@@ -86,8 +95,11 @@
 }
 
 #wikicode-like-publ:hover,
+#wikicode-like-publ-not:hover,
 #wikicode-import-publ:hover,
+#wikicode-import-publ-not:hover,
 #wikicode-download-publ:hover,
+#wikicode-download-publ-not:hover,
 #wikicode-name-author:hover {
     background-color: #ffffff;
     border-radius: 0px;

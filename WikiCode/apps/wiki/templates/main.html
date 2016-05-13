@@ -107,6 +107,26 @@
         </div>
     </div>
 
+    <!-- Модальное окно предлагающее авторизоваться или зарегестрироваться пользователю -->
+    <div class="modal fade" id="modal_auth" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Чтобы выполнить данное действие, Вам необходимо авторизоваться или зарегистрироваться.</h4>
+                </div>
+                <div class="modal-body text-center">
+                    <a class="btn btn-link" style="text-decoration: none;"><h4>Войти</h4></a>
+                    <br>
+                    <a href="{% url 'registration' %}"  class="btn btn-link" style="text-decoration: none;"><h4>Зарегистрироваться</h4></a>
+                </div>
+                <div class="modal-footer">
+                    <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {% block page_name %}
 
     {% endblock %}

@@ -132,6 +132,8 @@ def get_page(request, id):
 
         # Загружаем дерево пользователя, который зашел на эту страницу
         if cur_user_id != -1:
+            # Устанавливаем то, что зашедший пользователь не гость
+            guest = False
             dynamic_tree = ""
             try:
                 cur_user = User.objects.get(id_user=cur_user_id)
@@ -142,6 +144,9 @@ def get_page(request, id):
                 pass
         else:
             dynamic_tree = ""
+            # Пользователь не зарегестрирован
+            # Передаем тег, что пользователь не зарегестрирован
+            guest = True
 
         # Загружаем превью дерево автора
         try:
@@ -183,6 +188,7 @@ def get_page(request, id):
             "dynamic_tree": dynamic_tree,
             "all_comments": all_comments,
             "prgrphs": prgrphs,
+            "guest": guest,
         }
 
         return render(request, 'wiki/page.html', context)
