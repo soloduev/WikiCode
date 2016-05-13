@@ -44,6 +44,7 @@ urlpatterns = [
 
     # События в менеджере дерева
     url(r'^tree_manager/add_folder_in_tree/$', views.add_folder_in_tree, name='add_folder_in_tree'),
+    url(r'^tree_manager/add_folder_in_saved_tree/$', views.add_folder_in_saved_tree, name='add_folder_in_saved_tree'),
     url(r'^tree_manager/del_elem_in_tree/$', views.del_elem_in_tree, name='del_elem_in_tree'),
     url(r'^tree_manager/check_folder_for_delete/$', views.check_folder_for_delete, name='check_folder_for_delete'),
     url(r'^tree_manager/rename_publ_in_tree/$', views.rename_publ_in_tree, name='rename_publ_in_tree'),

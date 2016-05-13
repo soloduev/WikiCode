@@ -122,6 +122,11 @@ def add_folder_in_tree(request):
 
 
 @develop_mode
+def add_folder_in_saved_tree(request):
+    return tree_view.get_add_folder_in_saved_tree(request)
+
+
+@develop_mode
 def del_elem_in_tree(request):
     return tree_view.get_del_elem_in_tree(request)
 

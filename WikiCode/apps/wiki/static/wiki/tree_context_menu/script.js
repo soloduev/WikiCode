@@ -1,21 +1,21 @@
 /*
-    Copyright (C) 2016 Igor Soloduev <diahorver@gmail.com>
+ Copyright (C) 2016 Igor Soloduev <diahorver@gmail.com>
 
-    This file is part of WikiCode.
+ This file is part of WikiCode.
 
-    WikiCode is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+ WikiCode is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-    WikiCode is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
+ WikiCode is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
 
-    You should have received a copy of the GNU Affero General Public License
-    along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ You should have received a copy of the GNU Affero General Public License
+ along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 (function() {
 
@@ -141,8 +141,57 @@
         $('#jstree').jstree(true).deselect_all();
         $('#jstree').jstree(true).select_node(str_line);
 
+        var name_folder = (""+(""+(str_line.split(":")[0])).split("/")[0]);
 
-        if(str_line.indexOf(".publ")!=-1)
+        //Это папка с сохраненными конспектами
+        if(name_folder == "Saved")
+        {
+          if(str_line.indexOf(".publ")!=-1)
+          {
+
+          }
+          else
+          {
+            var path = ''+str_line.split(":")[0];
+            if(path[path.length-1] === "/")
+            {
+              //Это папка
+              //Показываем нужные
+              if((""+(str_line.split(":")[0])) == "Saved/")
+              {
+                $("#lt-context-menu-saved-folder-1").attr("style","");
+                $("#lt-context-menu-saved-folder-4").attr("style","");
+                //Скрываем не нужные опции контекстного меню
+                $("#lt-context-menu-saved-folder-2").attr("style","display: none;");
+                $("#lt-context-menu-saved-folder-3").attr("style","display: none;");
+                $("#lt-context-menu-saved-folder-5").attr("style","display: none;");
+              }
+              else {
+                $("#lt-context-menu-saved-folder-1").attr("style","");
+                $("#lt-context-menu-saved-folder-2").attr("style","");
+                $("#lt-context-menu-saved-folder-3").attr("style","");
+                $("#lt-context-menu-saved-folder-4").attr("style","");
+                $("#lt-context-menu-saved-folder-5").attr("style","");
+              }
+
+              //Скрываем не нужные опции контекстного меню
+              $("#lt-context-menu-4").attr("style", "display: none;");
+              $("#lt-context-menu-5").attr("style", "display: none;");
+              $("#lt-context-menu-6").attr("style", "display: none;");
+              $("#lt-context-menu-7").attr("style", "display: none;");
+              $("#lt-context-menu-8").attr("style", "display: none;");
+              $("#lt-context-menu-9").attr("style", "display: none;");
+              $("#lt-context-menu-3").attr("style", "display: none;");
+              $("#lt-context-menu-3-0").attr("style", "display: none;");
+              $("#lt-context-menu-3-1").attr("style", "display: none;");
+              $("#lt-context-menu-1").attr("style", "display: none;");
+              $("#lt-context-menu-6-1").attr("style", "display: none;");
+            }else {
+              //Это другой файл
+            }
+          }
+        }
+        else if(str_line.indexOf(".publ")!=-1)
         {
           //Это конспект
           //Показываем нужные
@@ -159,6 +208,11 @@
           $("#lt-context-menu-7").attr("style", "display: none;");
           $("#lt-context-menu-8").attr("style", "display: none;");
           $("#lt-context-menu-9").attr("style", "display: none;");
+          $("#lt-context-menu-saved-folder-1").attr("style","display: none;");
+          $("#lt-context-menu-saved-folder-2").attr("style","display: none;");
+          $("#lt-context-menu-saved-folder-3").attr("style","display: none;");
+          $("#lt-context-menu-saved-folder-4").attr("style","display: none;");
+          $("#lt-context-menu-saved-folder-5").attr("style","display: none;");
         }
         else{
           var path = ''+str_line.split(":")[0];
@@ -171,6 +225,11 @@
             $("#lt-context-menu-3-1").attr("style", "display: none;");
             $("#lt-context-menu-1").attr("style", "display: none;");
             $("#lt-context-menu-6-1").attr("style", "display: none;");
+            $("#lt-context-menu-saved-folder-1").attr("style","display: none;");
+            $("#lt-context-menu-saved-folder-2").attr("style","display: none;");
+            $("#lt-context-menu-saved-folder-3").attr("style","display: none;");
+            $("#lt-context-menu-saved-folder-4").attr("style","display: none;");
+            $("#lt-context-menu-saved-folder-5").attr("style","display: none;");
             //Показываем нужные
             $("#lt-context-menu-4").attr("style", "");
             $("#lt-context-menu-5").attr("style", "");

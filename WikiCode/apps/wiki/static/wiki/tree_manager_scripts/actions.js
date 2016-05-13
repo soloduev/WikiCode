@@ -45,6 +45,8 @@ $("#jstree")
         $("#choose-folder-secret").val(selected_file_in_tree);
         $("#div_folder_name_input_for_global").attr("style", "display: none;");
         $("#panel_inputs").attr("style", "");
+        $("#div_folder_name_input_for_saved").attr("style", "display: none;");
+        $("#panel_inputs_for_saved").attr("style", "");
         if(adding_folder_to !== "NONE" && adding_folder_to != selected_file_in_tree)
         {
             $("#div_folder_name_input").attr("style", "display: none;");
@@ -137,9 +139,12 @@ $("#add_folder_in_wiki_tree").click(function () {
         }
         else
         {
-            $("#div_folder_name_input").attr("style", "");
-            $("#panel_inputs").attr("style", "display: none;");
-            adding_folder_to = selected_file_in_tree
+            if(''+((''+((''+selected_file_in_tree).split(":")[0])).split("/")[0])!=="Saved")
+            {
+                $("#div_folder_name_input").attr("style", "");
+                $("#panel_inputs").attr("style", "display: none;");
+                adding_folder_to = selected_file_in_tree;
+            }
         }
     }
 });
@@ -510,5 +515,54 @@ $("#set_preview_publ_in_wiki_tree_context").click(function () {
 
 
         }
+    }
+});
+
+//Добавление папки в дерево для сохраненных конспектов
+$("#add_folder_in_saved_tree").click(function () {
+
+    if(selected_file_in_tree !== "NONE_SELECT")
+    {
+        if((''+selected_file_in_tree).indexOf(".publ") != -1)
+        {
+
+        }
+        else
+        {
+            $("#div_folder_name_input_for_saved").attr("style", "");
+            $("#panel_inputs_for_saved").attr("style", "display: none;");
+            adding_folder_to = selected_file_in_tree
+        }
+    }
+});
+
+//Отмена добавления папки в дерево для сохраненных конспектов
+$("#cancel_add_folder_in_saved_tree").click(function () {
+    $("#div_folder_name_input_for_saved").attr("style", "display: none;");
+    $("#panel_inputs_for_saved").attr("style", "");
+    adding_folder_to = "NONE";
+});
+
+//Подтверждение добавления папки в дерево
+$("#accept_add_folder_in_saved_tree").click(function () {
+
+    new_folder_name = $("#folder_name_input_for_saved_tree").val();
+
+    if(new_folder_name !== "")
+    {
+        $.ajax({
+            type: "POST",
+            url: "add_folder_in_saved_tree/",
+            data:{
+                'answer':new_folder_name+"^^^"+selected_file_in_tree,
+            },
+            dataType: "text",
+            cache: false,
+            success: function(data){
+                if (data == 'ok'){
+                    location.reload();
+                }
+            }
+        });
     }
 });

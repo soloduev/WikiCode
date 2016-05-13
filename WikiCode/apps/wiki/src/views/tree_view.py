@@ -88,6 +88,38 @@ def get_add_folder_in_tree(request):
         return HttpResponse('no', content_type='text/html')
 
 
+def get_add_folder_in_saved_tree(request):
+    """Ajax представление. Добавление папки в дерево сохраненных конспектов"""
+
+    if request.method == "POST":
+        answer = request.POST.get('answer')
+        user_data = check_auth(request)
+        split_answer = answer.split("^^^")
+        folder_name = split_answer[0]
+        path = split_answer[1].split(":")[0]
+
+        try:
+            user = User.objects.get(email=user_data)
+            swt = WikiTree(user.id_user)
+            swt.load_tree(user.saved_publ)
+            swt.add_folder(path, folder_name)
+            user.saved_publ = swt.get_tree()
+            user.save()
+
+            return HttpResponse('ok', content_type='text/html')
+
+        except User.DoesNotExist:
+            context = {
+                "user_data": user_data,
+                "user_id": get_user_id(request),
+            }
+            return render(request, 'wiki/tree_manager.html', context)
+
+    else:
+        return HttpResponse('no', content_type='text/html')
+
+
+
 @csrf_protect
 def get_del_elem_in_tree(request):
     """Ajax представление. Удаление элемента в дереве пользователя"""
