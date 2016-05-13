@@ -44,6 +44,7 @@ def get_tree_manager(request):
             "preview_tree": wt.generate_html_preview(),
             "dynamic_tree": wt.generate_html_dynamic(),
             "dynamic_tree_saved":swt.generate_html_dynamic(),
+            "saved_publ": swt.generate_html_preview(),
         }
 
         return render(request, 'wiki/tree_manager.html', context)

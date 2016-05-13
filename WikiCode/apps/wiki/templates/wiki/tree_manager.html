@@ -54,6 +54,10 @@
                                             <!--Здесь должен располагаться сгенерированный html preview дерева-->
                                             {{ preview_tree|safe }}
                                         </ul>
+                                        <ul id="tree2saved" class="wiki-tree-saved">
+                                            <!--Здесь должен располагаться сгенерированный html дерева с сохраненными конспектами-->
+                                            {{ saved_publ|safe }}
+                                        </ul>
                                     {% endif %}
                                 </div>
                             </div>
@@ -203,9 +207,30 @@
 
                                                 </ul>
                                             </div>
+
                                         {% endif %}
                                         <div id="add_global_folder_in_wiki_tree" class="btn btn-block wiki-style-add-new-folder">Добавить корневую папку</div>
-                                        <hr>
+                                        <br>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label class="text-center btn-primary btn-block">СОХРАНЕННЫЕ КОНСПЕКТЫ</label>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="btn-group">
+                                            <button type="button" id="add_folder_in_saved_tree" class="btn wiki-style-header-btns">Добавить папку <span
+                                                    class="glyphicon glyphicon-folder-open"></span></button>
+                                            <button type="button" id="wiki-help-tree-manager" class="btn wiki-style-header-btns"><span
+                                                    class="glyphicon glyphicon-question-sign"></span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <!--Дерево сохраненных конспектов-->
+                                    <div class="col-md-12">
+                                        <br>
                                         <div id="jstree-saved">
                                             <ul>
                                                 <!--Здесь должен располагаться сгенерированный html код, для динамического дерева сохраненных конспектов-->
@@ -213,9 +238,7 @@
 
                                             </ul>
                                         </div>
-                                        <br>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
