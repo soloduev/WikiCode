@@ -42,6 +42,10 @@ def get_user(request, id):
         if str(get_user_id(request)) == id:
             wt = WikiTree(user.id_user)
             wt.load_tree(user.tree)
+            # Получаем дерево сохраненных публикаций
+            swt = WikiTree(user.id_user)
+            swt.load_tree(user.saved_publ)
+
             user_id = get_user_id(request)
             # Получаем текст превью публикации
             try:
@@ -59,6 +63,7 @@ def get_user(request, id):
                     "user_data": user_data,
                     "user_id": user_id,
                     "preview_tree": wt.generate_html_preview(),
+                    "saved_publ":swt.generate_html_preview(),
                     "user":user,
                     "prewiew_publ_text":preview_publ_text,
                     "prewiew_publ_title":prewiew_publ_title,
