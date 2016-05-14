@@ -19,7 +19,7 @@
 
 
 
-# Менеджер по управлению деревьями в WikiCode. version 0.45:
+# Менеджер по управлению деревьями в WikiCode. version 0.46:
 
 
 class WikiTree(object):
@@ -642,3 +642,18 @@ class WikiTree(object):
         except AttributeError:
             self.__print_error("дерево не создано")
             return 0
+
+    def check_publication(self, publ_id):
+        """Проверяет, на наличие конкретной публикации в дереве.
+        Если она присутствует, возвращает True, иначе False."""
+
+        # Получаем все пути в дереве
+        paths = self.tree.split("\n")
+        # Проходим по путям, и ищем совпадение
+        for path in paths:
+            if self.__get_type(path) == "publ":
+                id = int(path.split(":")[1])
+                if id == publ_id:
+                    return True
+
+        return False
