@@ -556,8 +556,34 @@ def get_import_wiki_page(request, id):
         # Получаем путь к папке, в которой хотим сохранить конспект
         path_folder = request.POST.get('path_folder')
 
-        print(path_folder)
+        # Получаем конспект, который хотим сохранить
+        try:
+            publication = Publication.objects.get(id_publication=id)
 
-        return HttpResponse('ok', content_type='text/html')
+            cur_user_id = get_user_id(request)
+
+            # Проверяем, не является ли автор конспекта тем, кто хочет его сохранить
+            if publication.id_author == cur_user_id:
+                print("Самого себя сохранить невозможно")
+                return HttpResponse('no', content_type='text/html')
+
+            # Получаем пользователя сохранившего конспект
+            cur_user = User.objects.get(id_user=cur_user_id)
+
+            # Проверяем, но сохранял ли он его уже
+            swt = WikiTree(cur_user_id)
+            swt.load_tree(cur_user.saved_publ)
+            if swt.check_publication(publication.id_publication):
+                print("Пользователь уже сохранял данную публикацию")
+                return HttpResponse('no', content_type='text/html')
+
+            # Сохраняем конспект
+            swt.add_publication(path_folder,publication.title,publication.id_publication)
+            cur_user.saved_publ = swt.get_tree()
+            cur_user.save()
+
+            return HttpResponse('ok', content_type='text/html')
+        except Publication.DoesNotExist:
+            return HttpResponse('no', content_type='text/html')
     else:
         return HttpResponse('no', content_type='text/html')
