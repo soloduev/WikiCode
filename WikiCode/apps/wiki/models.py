@@ -177,5 +177,15 @@ class Developer(models.Model):
         return str(self.name_developer)
 
 
+class BugReport(models.Model):
+    id_author = models.BigIntegerField()
+    nickname_author = models.CharField(max_length=100)
+    name_author = models.CharField(max_length=100)
+    date = models.CharField(max_length=100)
+    text = models.TextField()
+    def __str__(self):
+        return str(self.date)
+
+
 
 
