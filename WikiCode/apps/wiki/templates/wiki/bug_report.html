@@ -1,0 +1,79 @@
+<!--
+    Copyright (C) 2016 Igor Soloduev <diahorver@gmail.com>
+
+    This file is part of WikiCode.
+
+    WikiCode is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    WikiCode is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
+-->
+{% extends 'main.html' %}
+{% load bootstrap3 %}
+{% block page_name %}
+    <div class="container" style="margin-top: 50px;" >
+        <div class="row">
+            <br>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <div id="main-block" class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12"
+                 style="border-left: 1px solid #d5d5d5;border-right: 1px solid #d5d5d5;min-height:500px;border-bottom: 1px solid #d5d5d5;">
+                <div class="row">
+                    <label class="text-center btn-primary btn-block">СООБЩИТЬ ОБ ОШИБКЕ</label>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2"></div>
+                    <div class="col-xs-8 text-center">
+                        <br>
+                        <h4>Спасибо что оповещаете нас о проблемах на сайте!</h4>
+                        <h4>Каждый ваш запрос будет рассмотрен в ближайшее время, и если ошибка действительно была обнаружена,
+                            вы получите дополнительные очки в ваш персноальный рейтинг на сайте, а ошибка будет незамедлительно ликвидирована.</h4>
+                    </div>
+                    <div class="col-xs-2"></div>
+                    <br>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-xs-2"></div>
+                    <div class="col-xs-8 text-center">
+                        <h4>Подробно опишите найденную вами проблему на сайте:</h4>
+                        <textarea class="form-control" name="message_error" id="message_input_error" rows="10"
+                                  style="resize: none; border-radius: 0px;"
+                                  placeholder="Опишите найденную проблему..."></textarea>
+                    </div>
+                    <div class="col-xs-2"></div>
+                    <br>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-xs-2"></div>
+                    <div class="col-xs-8 text-center"><button id="wiki-style-btn" class="btn">Сообщить об ошибке</button></div>
+                    <div class="col-xs-2"></div>
+                    <br>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block add_script %}
+    {% load staticfiles %}
+    <link href={% static "wiki/wiki_styles/bug_report.css" %} type="text/css" rel="stylesheet">
+{% endblock %}

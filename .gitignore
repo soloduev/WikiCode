@@ -1,6 +1,6 @@
 .idea/
 deployment/
-static/
+/static/*
 media/
 uwsgi_nginx.sock
 *.pyc

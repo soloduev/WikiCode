@@ -33,6 +33,7 @@ urlpatterns = [
     url(r'^login/$', views.login, name='login'),
     url(r'^tree_manager/$',views.tree_manager, name='tree_manager'),
     url(r'^publ_manager/(?P<id>[0-9]+)$',views.publ_manager, name='publ_manager'),
+    url(r'^bug_report/$',views.bug_report, name='bug_report'),
 
     url(r'^create_page/$', views.create_page, name='create_page'),
     url(r'^create_user/$', views.create_user, name='create_user'),

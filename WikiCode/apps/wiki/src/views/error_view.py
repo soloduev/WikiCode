@@ -30,3 +30,11 @@ def get_error_page(request, errors_arr):
             "error": errors_arr
         }
     return render(request, 'wiki/error.html', context)
+
+
+def get_bug_report(request):
+    context = {
+        "user_data": check_auth(request),
+        "user_id": get_user_id(request),
+    }
+    return render(request, 'wiki/bug_report.html', context)
