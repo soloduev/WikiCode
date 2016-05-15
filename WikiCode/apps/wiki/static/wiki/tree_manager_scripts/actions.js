@@ -436,13 +436,9 @@ $("#rename_folder_in_wiki_tree_context").click(function () {
         }
         else {
             var name_folder = ('' + selected_file_in_tree).split(":")[0];
-            if (name_folder !== "Personal/" && name_folder !== "Imports/")
-            {
-                $("#div_rename_folder_input").attr("style", "");
-                $("#panel_inputs").attr("style", "display: none;");
-                adding_folder_to = selected_file_in_tree;
-            }
-
+            $("#div_rename_folder_input").attr("style", "");
+            $("#panel_inputs").attr("style", "display: none;");
+            adding_folder_to = selected_file_in_tree;
         }
 
 
@@ -570,4 +566,12 @@ $("#accept_add_folder_in_saved_tree").click(function () {
             }
         });
     }
+});
+
+//Открыть конспект. Действие их контекстного меню для сохраненного дерева
+$("#open-publ-for-saved-tree").click(function () {
+    var tree_path_str = ''+selected_file_in_tree;
+    var arr = tree_path_str.split(':');
+    var id = ''+arr[1];
+    location.href = '/page/'+id;
 });
