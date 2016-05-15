@@ -47,3 +47,66 @@
     color: #fff;
     transition: all 0.5s ease 0s;
 }
+
+.wiki-style-header-btns
+{
+    background-color: #024f81;
+    border-radius: 0px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    color: #fff;
+    transition: all 0.5s ease 0s;
+}
+
+.wiki-style-header-btns:hover
+{
+    background-color: #4da6d9;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
+    color: #fff;
+    transition: all 0.5s ease 0s;
+}
+
+.wiki-style-colleagues
+{
+    padding-right: 50px;
+    background-color: #ffffff;
+    border-radius: 0px;
+    color: #000000;
+    transition: all 0.5s ease 0s;
+}
+
+.wiki-style-colleagues-btn
+{
+    background-color: #ffffff;
+    border-radius: 0px;
+    color: #000000;
+    transition: all 0.5s ease 0s;
+}
+
+.wiki-style-colleagues-btn:hover
+{
+    background-color: #ffffff;
+    border-radius: 0px;
+    color: #026ba8;
+    transition: all 0.5s ease 0s;
+}
+
+.colleagues-li
+{
+    opacity: 0.7;
+    margin-top: 5px;
+    border: 1px solid #b5b5b5;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
+    background-color: #ffffff;
+    border-radius: 0px;
+    transition: all 0.5s ease 0s;
+}
+
+.colleagues-li:hover
+{
+    opacity: 1;
+    border: 1px solid #b5b5b5;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
+    background-color: #ffffff;
+    border-radius: 0px;
+    transition: all 0.5s ease 0s;
+}

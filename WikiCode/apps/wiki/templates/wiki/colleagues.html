@@ -59,7 +59,66 @@
                 <div class="row">
                     <label class="text-center btn-primary btn-block">МОИ КОЛЛЕГИ</label>
                 </div>
-                
+                <div class="row">
+                    <div id="panel_inputs" class="col-md-12">
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="btn-group">
+                                <br>
+                                <button type="button" id="add_colleagues" class="btn wiki-style-header-btns">Добавить коллегу <span
+                                        class="glyphicon glyphicon-plus"></span></button>
+
+                                <button type="button" id="find_colleagues" class="btn wiki-style-header-btns">Найти коллегу <span
+                                        class="glyphicon glyphicon-search"></span></button>
+
+                                <button type="button" id="wiki-help-colleagues" class="btn wiki-style-header-btns"><span
+                                        class="glyphicon glyphicon-question-sign"></span></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <br>
+                <div class="container-fluid">
+                    <!--Экземпляр коллеги-->
+                    <div class="row colleagues-li">
+                        <div class="col-xs-7 col-md-4"><div type="button" id="add_colleagues" class="btn btn-block wiki-style-colleagues">
+                            <a href="" style="text-decoration: none;"><b>dev_admin</b></a></div></div>
+                        <div class="col-md-5 col-md-4 hidden-sm hidden-xs"><div type="button" id="add_colleagues" class="btn btn-block wiki-style-colleagues">diahorver@gmail.com</div></div>
+                        <div class="col-xs-5  col-md-4">
+                            <div class="btn-group">
+                                <div type="button" id="star_colleagues" class="btn wiki-style-colleagues-btn"><span
+                                        class="glyphicon glyphicon-star-empty"></span></div>
+                                <div type="button" id="add_colleagues" class="btn wiki-style-colleagues-btn"><span
+                                        class="glyphicon glyphicon-envelope"></span></div>
+                                <div type="button" id="info_colleagues" class="btn wiki-style-colleagues-btn"><span
+                                        class="glyphicon glyphicon-info-sign"></span></div>
+                                <div type="button" id="remove_colleagues" class="btn wiki-style-colleagues-btn"><span
+                                        class="glyphicon glyphicon-remove"></span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Экземпляр коллеги-->
+                    <div class="row colleagues-li">
+                        <div class="col-xs-7 col-md-4"><div type="button" id="add_colleagues" class="btn btn-block wiki-style-colleagues">
+                            <a href="" style="text-decoration: none;"><b>dev_admin</b></a></div></div>
+                        <div class="col-md-5 col-md-4 hidden-sm hidden-xs"><div type="button" id="add_colleagues" class="btn btn-block wiki-style-colleagues">diahorver@gmail.com</div></div>
+                        <div class="col-xs-5  col-md-4">
+                            <div class="btn-group">
+                                <div type="button" id="star_colleagues" class="btn wiki-style-colleagues-btn"><span
+                                        class="glyphicon glyphicon-star-empty"></span></div>
+                                <div type="button" id="add_colleagues" class="btn wiki-style-colleagues-btn"><span
+                                        class="glyphicon glyphicon-envelope"></span></div>
+                                <div type="button" id="info_colleagues" class="btn wiki-style-colleagues-btn"><span
+                                        class="glyphicon glyphicon-info-sign"></span></div>
+                                <div type="button" id="remove_colleagues" class="btn wiki-style-colleagues-btn"><span
+                                        class="glyphicon glyphicon-remove"></span></div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
             </div>
         </div>
     </div>
