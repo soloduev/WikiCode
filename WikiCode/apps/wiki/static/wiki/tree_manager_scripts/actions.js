@@ -97,7 +97,6 @@ $("#jstree-saved")
         is_user_tree = false
         is_saved_tree = true;
         selected_file_in_tree = data.selected;
-        $("#choose-folder-secret").val(selected_file_in_tree);
 
         if(adding_folder_to !== "NONE" && adding_folder_to != selected_file_in_tree)
         {
