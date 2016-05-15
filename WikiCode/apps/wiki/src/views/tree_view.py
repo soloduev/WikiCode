@@ -151,7 +151,7 @@ def get_del_elem_in_tree(request):
 
 @csrf_protect
 def get_del_elem_in_tree_saved(request):
-    """Ajax представление. Удаление элемента в дереве сохраненных конспектов пользователя"""
+    """Ajax представление. Удаление папки в дереве сохраненных конспектов пользователя"""
 
     if request.method == "POST":
         path_publ = request.POST.get('answer')
@@ -171,6 +171,33 @@ def get_del_elem_in_tree_saved(request):
             else:
                 return HttpResponse('no', content_type='text/html')
 
+        except User.DoesNotExist:
+            return HttpResponse('no', content_type='text/html')
+
+    else:
+        return HttpResponse('no', content_type='text/html')
+
+
+@csrf_protect
+def get_del_publ_in_tree_saved(request):
+    """Ajax представление. Удаление конспекта в дереве сохраненных конспектов пользователя"""
+
+    if request.method == "POST":
+        path_publ = request.POST.get('answer')
+        user_data = check_auth(request)
+
+
+        try:
+            user = User.objects.get(email=user_data)
+            wt = WikiTree(user.id_user)
+            wt.load_tree(user.saved_publ)
+
+            path = path_publ.split(":")[0]
+            wt.delete_publication(path)
+            user.saved_publ = wt.get_tree()
+            user.save()
+
+            return HttpResponse('ok', content_type='text/html')
         except User.DoesNotExist:
             return HttpResponse('no', content_type='text/html')
 

@@ -54,6 +54,7 @@ $("#jstree")
             $("#div_accept_delete_elem_saved").attr("style", "display: none;");
             $("#div_rename_publ_input").attr("style", "display: none;");
             $("#div_rename_folder_input").attr("style", "display: none;");
+            $("#div_accept_delete_publ_saved").attr("style", "display: none;");
             $("#panel_inputs").attr("style", "");
         }
 
@@ -103,6 +104,7 @@ $("#jstree-saved")
         {
             $("#div_accept_delete_elem_saved").attr("style", "display: none;");
             $("#div_folder_name_input_for_saved").attr("style", "display: none;");
+            $("#div_accept_delete_publ_saved").attr("style", "display: none;");
             $("#panel_inputs_for_saved").attr("style", "");
         }
 
@@ -652,6 +654,65 @@ $("#yes_delete_elem_in_tree_saved").click(function () {
                     }
                 }
             });
+        }
+    }
+
+});
+
+//Удаление конспекта из дерева сохраненных конспектов
+$("#remove-publ-for-saved-tree").click(function () {
+
+    if(selected_file_in_tree !== "NONE_SELECT")
+    {
+        if((''+selected_file_in_tree).indexOf(".publ") != -1)
+        {
+            $("#div_accept_delete_publ_saved").attr("style", "");
+            $("#panel_inputs_for_saved").attr("style", "display: none;");
+            var str = ''+selected_file_in_tree;
+            var arr = str.split(":");
+            $("#deleter-text-tree-manager_saved_publ").text("Delete "+arr[0]+" ?");
+            adding_folder_to = selected_file_in_tree;
+        }
+        else
+        {
+
+        }
+    }
+
+});
+
+//Отмена удаления конспекта из папки сохраненных конспектов
+$("#no_delete_publ_in_tree_saved").click(function () {
+    $("#div_accept_delete_publ_saved").attr("style", "display: none;");
+    $("#panel_inputs_for_saved").attr("style", "");
+    adding_folder_to = "NONE";
+});
+
+//Подтверждение удаления конспекта в дереве сохраненых конспектов
+$("#yes_delete_elem_in_tree_saved_publ").click(function () {
+
+    if(selected_file_in_tree !== "NONE_SELECT")
+    {
+        if((''+selected_file_in_tree).indexOf(".publ") != -1)
+        {
+            $.ajax({
+                type: "POST",
+                url: "del_publ_in_tree_saved/",
+                data:{
+                    'answer':''+selected_file_in_tree,
+                },
+                dataType: "text",
+                cache: false,
+                success: function(data){
+                    if (data == 'ok'){
+                        location.reload();
+                    }
+                }
+            });
+        }
+        else
+        {
+
         }
     }
 

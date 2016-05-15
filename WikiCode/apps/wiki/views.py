@@ -133,7 +133,12 @@ def del_elem_in_tree(request):
 
 @develop_mode
 def del_elem_in_tree_saved(request):
-    return tree_view.get_del_elem_in_tree_saved(request)
+    return tree_view.get_del_elem_in_tree_saved(request)\
+
+
+@develop_mode
+def del_publ_in_tree_saved(request):
+    return tree_view.get_del_publ_in_tree_saved(request)
 
 
 @develop_mode
