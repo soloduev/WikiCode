@@ -146,6 +146,8 @@
         //Это папка с сохраненными конспектами
         if(name_folder == "Saved")
         {
+          $('#jstree-saved').jstree(true).deselect_all();
+          $('#jstree-saved').jstree(true).select_node(str_line);
           if(str_line.indexOf(".publ")!=-1)
           {
             //Показываем нужные

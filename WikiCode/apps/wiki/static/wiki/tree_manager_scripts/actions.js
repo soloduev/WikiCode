@@ -535,6 +535,12 @@ $("#add_folder_in_saved_tree").click(function () {
     }
 });
 
+//Добавление папки в дерево для сохраненных конспектов из контекстного меню
+$("#create-folder-for-saved-tree").click(function () {
+    $("#add_folder_in_saved_tree").click();
+});
+
+
 //Отмена добавления папки в дерево для сохраненных конспектов
 $("#cancel_add_folder_in_saved_tree").click(function () {
     $("#div_folder_name_input_for_saved").attr("style", "display: none;");
