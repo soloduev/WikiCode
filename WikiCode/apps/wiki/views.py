@@ -232,3 +232,8 @@ def remove_editor(request):
 @develop_mode
 def login_developer(request):
     return develop_view.get_login_developer(request)
+
+@develop_mode
+@login_required
+def send_bug(request):
+    return error_view.get_send_bug(request)

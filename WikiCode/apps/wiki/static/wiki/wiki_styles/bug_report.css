@@ -25,7 +25,8 @@
     transition: all 0.5s ease 0s;
 }
 
-#wiki-style-btn {
+#wiki-style-btn,
+#wiki-style-btn-add-bug{
     background-color: #024f81;
     border-radius: 0px;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
@@ -35,7 +36,8 @@
 }
 
 
-#wiki-style-btn:hover {
+#wiki-style-btn:hover,
+#wiki-style-btn-add-bug:hover {
     background-color: #4da6d9;
     box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
     color: #fff;

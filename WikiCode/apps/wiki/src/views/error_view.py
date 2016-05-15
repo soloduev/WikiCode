@@ -16,11 +16,12 @@
 #
 #   You should have received a copy of the GNU Affero General Public License
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
-
-
-
+from django.http import HttpResponse
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_protect
+from WikiCode.apps.wiki.models import BugReport, User
 from WikiCode.apps.wiki.src.views.auth import get_user_id, check_auth
+import datetime
 
 
 def get_error_page(request, errors_arr):
@@ -38,3 +39,29 @@ def get_bug_report(request):
         "user_id": get_user_id(request),
     }
     return render(request, 'wiki/bug_report.html', context)
+
+@csrf_protect
+def get_send_bug(request):
+    """Ajax представление. Отправляет баг репорт."""
+
+    try:
+        # Получаем пользователя оставившего текст
+        user = User.objects.get(id_user=get_user_id(request))
+
+        # Получаем текст сообщения о найденной ошибки
+        text = request.POST.get('text')
+
+        # Получаем текущую дату
+        date = str(datetime.datetime.now())
+        date = date[:len(date) - 7]
+
+        new_bug_report = BugReport(id_author=user.id_user,
+                                   nickname_author=user.nickname,
+                                   name_author=user.name,
+                                   date=date,
+                                   text=text)
+        new_bug_report.save()
+
+        return HttpResponse('ok', content_type='text/html')
+    except User.DoesNotExist:
+        return HttpResponse('no', content_type='text/html')

@@ -49,23 +49,43 @@
                     <br>
                 </div>
                 <hr>
-                <div class="row">
-                    <div class="col-xs-2"></div>
-                    <div class="col-xs-8 text-center">
-                        <h4>Подробно опишите найденную вами проблему на сайте:</h4>
+                <div id="wiki_send_bug_report">
+                    <div class="row">
+                        <div class="col-xs-2"></div>
+                        <div class="col-xs-8 text-center">
+                            <h4>Подробно опишите найденную вами проблему на сайте:</h4>
                         <textarea class="form-control" name="message_error" id="message_input_error" rows="10"
                                   style="resize: none; border-radius: 0px;"
                                   placeholder="Опишите найденную проблему..."></textarea>
+                        </div>
+                        <div class="col-xs-2"></div>
+                        <br>
                     </div>
-                    <div class="col-xs-2"></div>
-                    <br>
+                    <hr>
+                    <div class="row">
+                        <div class="col-xs-2"></div>
+                        <div class="col-xs-8 text-center"><button id="wiki-style-btn-add-bug" class="btn">Сообщить об ошибке</button></div>
+                        <div class="col-xs-2"></div>
+                        <br>
+                    </div>
                 </div>
-                <hr>
-                <div class="row">
-                    <div class="col-xs-2"></div>
-                    <div class="col-xs-8 text-center"><button id="wiki-style-btn" class="btn">Сообщить об ошибке</button></div>
-                    <div class="col-xs-2"></div>
-                    <br>
+                <div id="wiki_sended_bug_report" style="display: none;">
+                    <div class="row">
+                        <div class="col-xs-2"></div>
+                        <div class="col-xs-8 text-center">
+                            <h4>Ваше сообщение успешно отправлено.</h4>
+                            <h4>Спасибо за Ваше внимание!</h4>
+                        </div>
+                        <div class="col-xs-2"></div>
+                        <br>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-xs-2"></div>
+                        <div class="col-xs-8 text-center"><a href="{% url 'index' %}" id="wiki-style-btn" class="btn">Вернуться на главную</a></div>
+                        <div class="col-xs-2"></div>
+                        <br>
+                    </div>
                 </div>
                 <hr>
             </div>
@@ -76,4 +96,5 @@
 {% block add_script %}
     {% load staticfiles %}
     <link href={% static "wiki/wiki_styles/bug_report.css" %} type="text/css" rel="stylesheet">
+    <script src={% static "wiki/wiki_scripts/bug_report.js" %}></script>
 {% endblock %}
