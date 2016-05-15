@@ -34,7 +34,7 @@
         <div class="row">
             <div class="col-xs-12 col-sm-4 col-md-4">
                 <div class="row">
-                    <a id="a-tree-manager" href="{% url 'tree_manager' %}"><label class="text-center btn-primary btn-block">ДЕРЕВО КОНСПЕКТОВ</label></a>
+                    <a id="a-tree-manager" href="{% url 'tree_manager' %}"><label class="text-center btn-primary btn-block">{% if other_user %}ДЕРЕВО ПОЛЬЗОВАТЕЛЯ{% else %}МОЕ ДЕРЕВО{% endif %}</label></a>
                 </div>
                 <div class="row">
                     {% if preview_tree == "NONE" %}
@@ -57,7 +57,7 @@
                  style="border-left: 1px solid #d5d5d5;
                  min-height: 250px;">
                 <div class="row">
-                    <label class="text-center btn-primary btn-block">ИНФОРМАЦИЯ О ПОЛЬЗОВАТЕЛЕ</label>
+                    <label class="text-center btn-primary btn-block">{% if other_user %}ИНФОРМАЦИЯ О ПОЛЬЗОВАТЕЛЯ{% else %}МОЯ СТРАНИЦА{% endif %}</label>
                 </div>
                 <div class="row">
                     <div class="col-md-4 hidden-sm hidden-xs">
