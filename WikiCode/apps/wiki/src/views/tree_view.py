@@ -150,6 +150,35 @@ def get_del_elem_in_tree(request):
 
 
 @csrf_protect
+def get_del_elem_in_tree_saved(request):
+    """Ajax представление. Удаление элемента в дереве сохраненных конспектов пользователя"""
+
+    if request.method == "POST":
+        path_publ = request.POST.get('answer')
+        user_data = check_auth(request)
+
+
+        try:
+            user = User.objects.get(email=user_data)
+            wt = WikiTree(user.id_user)
+            wt.load_tree(user.saved_publ)
+
+            if wt.check_folder_for_delete(path_publ.split(":")[0]):
+                wt.delete_folder(path_publ.split(":")[0])
+                user.saved_publ = wt.get_tree()
+                user.save()
+                return HttpResponse('ok', content_type='text/html')
+            else:
+                return HttpResponse('no', content_type='text/html')
+
+        except User.DoesNotExist:
+            return HttpResponse('no', content_type='text/html')
+
+    else:
+        return HttpResponse('no', content_type='text/html')
+
+
+@csrf_protect
 def get_check_folder_for_delete(request):
     """Ajax представление. Проверка папку на пустоту, для ее удаления"""
 
@@ -162,6 +191,32 @@ def get_check_folder_for_delete(request):
             user = User.objects.get(email=user_data)
             wt = WikiTree(user.id_user)
             wt.load_tree(user.tree)
+
+            if wt.check_folder_for_delete(path_publ.split(":")[0]):
+                return HttpResponse('ok', content_type='text/html')
+            else:
+                return HttpResponse('no', content_type='text/html')
+
+        except User.DoesNotExist:
+            return HttpResponse('no', content_type='text/html')
+
+    else:
+        return HttpResponse('no', content_type='text/html')\
+
+
+@csrf_protect
+def get_check_folder_for_delete_saved(request):
+    """Ajax представление. Проверка папку на пустоту, для ее удаления в дереве сохраненных конспектов"""
+
+    if request.method == "POST":
+        path_publ = request.POST.get('answer')
+        user_data = check_auth(request)
+
+
+        try:
+            user = User.objects.get(email=user_data)
+            wt = WikiTree(user.id_user)
+            wt.load_tree(user.saved_publ)
 
             if wt.check_folder_for_delete(path_publ.split(":")[0]):
                 return HttpResponse('ok', content_type='text/html')

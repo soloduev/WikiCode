@@ -51,6 +51,7 @@ $("#jstree")
         {
             $("#div_folder_name_input").attr("style", "display: none;");
             $("#div_accept_delete_elem").attr("style", "display: none;");
+            $("#div_accept_delete_elem_saved").attr("style", "display: none;");
             $("#div_rename_publ_input").attr("style", "display: none;");
             $("#div_rename_folder_input").attr("style", "display: none;");
             $("#panel_inputs").attr("style", "");
@@ -100,7 +101,9 @@ $("#jstree-saved")
 
         if(adding_folder_to !== "NONE" && adding_folder_to != selected_file_in_tree)
         {
-
+            $("#div_accept_delete_elem_saved").attr("style", "display: none;");
+            $("#div_folder_name_input_for_saved").attr("style", "display: none;");
+            $("#panel_inputs_for_saved").attr("style", "");
         }
 
     })
@@ -574,4 +577,82 @@ $("#open-publ-for-saved-tree").click(function () {
     var arr = tree_path_str.split(':');
     var id = ''+arr[1];
     location.href = '/page/'+id;
+});
+
+//Удаление папки из дерева сохраненных конспектов
+$("#delete-folder-for-saved-tree").click(function () {
+
+    if(selected_file_in_tree !== "NONE_SELECT")
+    {
+        if((''+selected_file_in_tree).indexOf(".publ") != -1)
+        {
+
+        }
+        else
+        {
+            //Далее проверка, есть ли конспекты в папке:
+
+            $.ajax({
+                type: "POST",
+                url: "check_folder_for_delete_saved/",
+                data:{
+                    'answer':''+selected_file_in_tree,
+                },
+                dataType: "text",
+                cache: false,
+                success: function(data){
+                    if (data == 'ok'){
+                        $("#div_accept_delete_elem_saved").attr("style", "");
+                        $("#panel_inputs_for_saved").attr("style", "display: none;");
+                        var str = ''+selected_file_in_tree;
+                        var arr = str.split(":");
+                        $("#deleter-text-tree-manager_saved").text("Delete "+arr[0]+" ?");
+                        adding_folder_to = selected_file_in_tree;
+                    }
+                    else
+                    {
+                        //Говорим, что удалять можно только пустые папки
+                    }
+                }
+            });
+        }
+    }
+
+});
+
+//Отмена удаления
+$("#no_delete_elem_in_tree_saved").click(function () {
+    $("#div_accept_delete_elem_saved").attr("style", "display: none;");
+    $("#panel_inputs_for_saved").attr("style", "");
+    adding_folder_to = "NONE";
+});
+
+//Подтверждение удаления папки в дереве сохраненых конспектов
+$("#yes_delete_elem_in_tree_saved").click(function () {
+
+    if(selected_file_in_tree !== "NONE_SELECT")
+    {
+        if((''+selected_file_in_tree).indexOf(".publ") != -1)
+        {
+
+        }
+        else
+        {
+            $.ajax({
+                type: "POST",
+                url: "del_elem_in_tree_saved/",
+                data:{
+                    'answer':''+selected_file_in_tree,
+                },
+                dataType: "text",
+                cache: false,
+                success: function(data){
+                    if (data == 'ok'){
+                        location.reload();
+                    }
+                }
+            });
+        }
+    }
+
 });
