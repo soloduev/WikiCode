@@ -29,6 +29,7 @@ from WikiCode.apps.wiki.src.views import publ_manager_view
 from WikiCode.apps.wiki.src.views import develop_view
 from WikiCode.apps.wiki.src.views import error_view
 from WikiCode.apps.wiki.src.views import colleagues_view
+from WikiCode.apps.wiki.src.views import notifications_view
 from django.contrib.auth.decorators import login_required
 from WikiCode.apps.wiki.src.develop_mode.develop_mode import develop_mode, develop_mode_id
 
@@ -36,6 +37,7 @@ from WikiCode.apps.wiki.src.develop_mode.develop_mode import develop_mode, devel
 @develop_mode
 def index(request):
     return index_view.get_index(request)
+
 
 @develop_mode
 def about(request):
@@ -116,6 +118,12 @@ def colleagues(request):
 
 @develop_mode
 @login_required
+def notifications(request):
+    return notifications_view.get_notifications(request)
+
+
+@develop_mode
+@login_required
 def bug_report(request):
     return error_view.get_bug_report(request)
 
@@ -147,7 +155,7 @@ def del_elem_in_tree(request):
 
 @develop_mode
 def del_elem_in_tree_saved(request):
-    return tree_view.get_del_elem_in_tree_saved(request)\
+    return tree_view.get_del_elem_in_tree_saved(request)
 
 
 @develop_mode
@@ -157,7 +165,7 @@ def del_publ_in_tree_saved(request):
 
 @develop_mode
 def check_folder_for_delete(request):
-    return tree_view.get_check_folder_for_delete(request)\
+    return tree_view.get_check_folder_for_delete(request)
 
 
 @develop_mode
@@ -199,17 +207,17 @@ def add_comment_in_wiki_page(request, id):
 @develop_mode_id
 @login_required
 def add_dynamic_comment_in_wiki_page(request, id):
-    return  publication_view.get_add_dynamic_comment_in_wiki_page(request, id)
+    return publication_view.get_add_dynamic_comment_in_wiki_page(request, id)
 
 
 @develop_mode_id
 def like_wiki_page(request, id):
-    return publication_view.get_like_wiki_page(request,id)
+    return publication_view.get_like_wiki_page(request, id)
 
 
 @develop_mode_id
 def import_wiki_page(request, id):
-    return publication_view.get_import_wiki_page(request,id)
+    return publication_view.get_import_wiki_page(request, id)
 
 
 @develop_mode_id
@@ -239,6 +247,7 @@ def remove_editor(request):
 @develop_mode
 def login_developer(request):
     return develop_view.get_login_developer(request)
+
 
 @develop_mode
 @login_required
