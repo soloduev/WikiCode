@@ -28,6 +28,7 @@ from WikiCode.apps.wiki.src.views import tree_view
 from WikiCode.apps.wiki.src.views import publ_manager_view
 from WikiCode.apps.wiki.src.views import develop_view
 from WikiCode.apps.wiki.src.views import error_view
+from WikiCode.apps.wiki.src.views import colleagues_view
 from django.contrib.auth.decorators import login_required
 from WikiCode.apps.wiki.src.develop_mode.develop_mode import develop_mode, develop_mode_id
 
@@ -105,6 +106,12 @@ def tree_manager(request):
 @login_required
 def publ_manager(request, id):
     return publication_view.get_publ_manager(request, id)
+
+
+@develop_mode
+@login_required
+def colleagues(request):
+    return colleagues_view.get_colleagues(request)
 
 
 @develop_mode
