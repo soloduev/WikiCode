@@ -113,25 +113,27 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" style="border-top: 1px solid #d5d5d5;">
-                    <br>
-                    <div class="col-xs-12 col-sm-6 col-md-3">
-                        <a href="" class="btn btn-block" id="wiki-style-btn">Мои коллеги</a>
+                {% if not other_user %}
+                    <div class="row" style="border-top: 1px solid #d5d5d5;">
                         <br>
+                        <div class="col-xs-12 col-sm-6 col-md-3">
+                            <a href="" class="btn btn-block" id="wiki-style-btn">Мои коллеги</a>
+                            <br>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-3">
+                            <a href="" class="btn btn-block" id="wiki-style-btn">Мои уведомления</a>
+                            <br>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-3">
+                            <a href="{% url 'tree_manager' %}" class="btn btn-block" id="wiki-style-btn">Мое дерево</a>
+                            <br>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-3">
+                            <a href="{% url 'settings' %}" class="btn btn-block" id="wiki-style-btn">Мои настройки</a>
+                            <br>
+                        </div>
                     </div>
-                    <div class="col-xs-12 col-sm-6 col-md-3">
-                        <a href="" class="btn btn-block" id="wiki-style-btn">Мои уведомления</a>
-                        <br>
-                    </div>
-                    <div class="col-xs-12 col-sm-6 col-md-3">
-                        <a href="{% url 'tree_manager' %}" class="btn btn-block" id="wiki-style-btn">Мое дерево</a>
-                        <br>
-                    </div>
-                    <div class="col-xs-12 col-sm-6 col-md-3">
-                        <a href="{% url 'settings' %}" class="btn btn-block" id="wiki-style-btn">Мои настройки</a>
-                        <br>
-                    </div>
-                </div>
+                {% endif %}
                 <div class="row">
                     <div class="tabbable-panel">
                         <div class="tabbable-line">

@@ -68,6 +68,7 @@ def get_user(request, id):
                     "prewiew_publ_text":preview_publ_text,
                     "prewiew_publ_title":prewiew_publ_title,
                     "prewiew_publ_id":prewiew_publ_id,
+                    "other_user": False,
                 }
 
                 return render(request, 'wiki/user.html', context)
@@ -77,6 +78,9 @@ def get_user(request, id):
             other_user = User.objects.get(id_user=id)
             wt = WikiTree(other_user.id_user)
             wt.load_tree(other_user.tree)
+            # Получаем дерево сохраненных публикаций
+            swt = WikiTree(other_user.id_user)
+            swt.load_tree(other_user.saved_publ)
 
             # Получаем текст превью публикации
             try:
@@ -93,10 +97,12 @@ def get_user(request, id):
                 "user_data": user_data,
                 "user_id": get_user_id(request),
                 "preview_tree": wt.generate_html_preview(),
+                "saved_publ": swt.generate_html_preview(),
                 "user":other_user,
                 "prewiew_publ_text": preview_publ_text,
                 "prewiew_publ_title": prewiew_publ_title,
                 "prewiew_publ_id": prewiew_publ_id,
+                "other_user": True,
             }
 
             return render(request, 'wiki/user.html', context)
