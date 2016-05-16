@@ -45,7 +45,7 @@ class User(models.Model):
 class Colleague(models.Model):
     id_user = models.ForeignKey(User, on_delete=models.CASCADE)
     id_colleague = models.BigIntegerField()
-    is_favorit = models.BooleanField()
+    is_favorite = models.BooleanField()
     def __str__(self):
         return str("user:" + str(self.id_user) +
                " colleague:" + str(self.id_colleague))
