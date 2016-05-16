@@ -32,6 +32,7 @@ from .models import Editor
 from .models import Developer
 from .models import BugReport
 from .models import Colleague
+from .models import Notification
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User as DjangoUser
 
@@ -63,3 +64,4 @@ admin.site.register(Editor)
 admin.site.register(Developer)
 admin.site.register(BugReport)
 admin.site.register(Colleague)
+admin.site.register(Notification)
