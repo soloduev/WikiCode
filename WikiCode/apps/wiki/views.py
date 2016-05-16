@@ -124,6 +124,12 @@ def add_colleague(request):
 
 @develop_mode
 @login_required
+def remove_colleague(request):
+    return colleagues_view.get_remove_colleague(request)
+
+
+@develop_mode
+@login_required
 def notifications(request):
     return notifications_view.get_notifications(request)
 

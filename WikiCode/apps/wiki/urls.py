@@ -78,6 +78,7 @@ urlpatterns = [
 
     # События на странице коллег
     url(r'^colleagues/add_colleague/$', views.add_colleague, name='add_colleague'),
+    url(r'^colleagues/remove_colleague/$', views.remove_colleague, name='remove_colleague'),
 
 
 ]

@@ -99,7 +99,7 @@
                                             class="glyphicon glyphicon-envelope"></span></div>
                                     <div type="button" id="info_colleagues" class="btn wiki-style-colleagues-btn"><span
                                             class="glyphicon glyphicon-info-sign"></span></div>
-                                    <div type="button" id="remove_colleagues" class="btn wiki-style-colleagues-btn"><span
+                                    <div type="button" id="remove_colleague_{{ colleague.id }}" class="btn wiki-style-colleagues-btn"><span
                                             class="glyphicon glyphicon-remove"></span></div>
                                 </div>
                             </div>
@@ -140,4 +140,29 @@
     {% load staticfiles %}
     <link href={% static "wiki/wiki_styles/colleagues.css" %} type="text/css" rel="stylesheet">
     <script src={% static "wiki/wiki_scripts/colleagues.js" %}></script>
+    <script>
+        {% for colleague in colleagues %}
+            //Удаление из коллег
+            $("#remove_colleague_{{ colleague.id|escapejs }}").click(function () {
+                console.log("Yes!");
+                 $.ajax({
+                     type: "POST",
+                     url: "remove_colleague/",
+                     data:{
+                        'id':''+{{ colleague.id|escapejs }},
+                     },
+                     dataType: "text",
+                     cache: false,
+                     success: function(data){
+                         if (data == 'ok'){
+                             location.reload();
+                         }
+                     }
+                });
+            });
+        {% endfor %}
+
+
+
+    </script>
 {% endblock %}

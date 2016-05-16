@@ -94,5 +94,38 @@ def get_add_colleague(request):
             return HttpResponse('no', content_type='text/html')
 
     else:
+        return HttpResponse('no', content_type='text/html')\
+
+
+@csrf_protect
+def get_remove_colleague(request):
+    """Ajax представление. Убирает коллегу."""
+    if request.method == "POST":
+        id = int(request.POST['id'])
+
+        # Получаем пользователя
+        try:
+            cur_user = User.objects.get(id_user=get_user_id(request))
+
+            # Получаем по id пользователя, которого хотим убрать
+            del_user = User.objects.get(id_user=id)
+
+            if del_user.id_user != cur_user.id_user:
+
+                # Проверяем, есть ли уже этот коллега в списке пользователей
+                try:
+                    colleague = Colleague.objects.get(user=cur_user, id_colleague=del_user.id_user)
+                    # Коллега есть, удаляем
+                    colleague.delete()
+                    return HttpResponse('ok', content_type='text/html')
+                except Colleague.DoesNotExist:
+                    # Коллеги нет, не удаляем
+                    return HttpResponse('no', content_type='text/html')
+            else:
+                return HttpResponse('no', content_type='text/html')
+        except User.DoesNotExist:
+            return HttpResponse('no', content_type='text/html')
+
+    else:
         return HttpResponse('no', content_type='text/html')
 
