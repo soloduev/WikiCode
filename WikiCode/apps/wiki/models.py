@@ -43,7 +43,7 @@ class User(models.Model):
 
 # Коллега
 class Colleague(models.Model):
-    id_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     id_colleague = models.BigIntegerField()
     is_favorite = models.BooleanField()
     def __str__(self):
