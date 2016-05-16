@@ -17,6 +17,7 @@
 #   You should have received a copy of the GNU Affero General Public License
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
 from django.contrib.auth import authenticate, login
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 from WikiCode.apps.wiki.models import Publication, Developer
@@ -58,7 +59,7 @@ def get_login_developer(request):
             }
             return render(request, 'wiki/develop_mode.html', context)
 
-        return get_index(request)
+        return HttpResponseRedirect("/")
     except Developer.DoesNotExist:
         user_id = get_user_id(request)
         user_data = check_auth(request)

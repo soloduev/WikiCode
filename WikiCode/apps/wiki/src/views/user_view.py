@@ -21,7 +21,7 @@ import datetime
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login
 from django.contrib.auth.models import User as DjangoUser
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 
@@ -29,7 +29,6 @@ from WikiCode.apps.wiki.models import Publication
 from WikiCode.apps.wiki.models import Statistics
 from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.models import User as WikiUser, Like
-from WikiCode.apps.wiki.src.views.index_view import get_index
 from WikiCode.apps.wiki.src.wiki_tree import WikiTree
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
 from .auth import check_auth, get_user_id
@@ -182,7 +181,7 @@ def get_create_user(request):
             new_wiki_user.save()
             stat.save()
 
-            return get_index(request)
+            return HttpResponseRedirect("/")
         context = {
             "error": "Пользователь с таким Email уже существует",
             "user_data": check_auth(request),
@@ -213,13 +212,13 @@ def get_login_user(request):
     else:
         print(">>>>>>>>>>>>>> WIKI ERROR: invalid login")
 
-    return get_index(request)
+    return HttpResponseRedirect("/")
 
 
 def get_logout_user(request):
 
     logout(request)
-    return get_index(request)
+    return HttpResponseRedirect("/")
 
 
 @csrf_protect
