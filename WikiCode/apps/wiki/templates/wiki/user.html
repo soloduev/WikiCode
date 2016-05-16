@@ -116,20 +116,20 @@
                 {% if not other_user %}
                     <div class="row" style="border-top: 1px solid #d5d5d5;">
                         <br>
-                        <div class="col-xs-12 col-sm-6 col-md-3">
-                            <a href="{% url 'colleagues' %}" class="btn btn-block" id="wiki-style-btn">Мои коллеги</a>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+                            <a href="{% url 'colleagues' %}" class="btn btn-block" id="wiki-style-btn">Мои коллеги <i class="fa fa-users"></i></a>
                             <br>
                         </div>
-                        <div class="col-xs-12 col-sm-6 col-md-3">
-                            <a href="{% url 'notifications' %}" class="btn btn-block" id="wiki-style-btn">Мои уведомления</a>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+                            <a href="{% url 'notifications' %}" class="btn btn-block" id="wiki-style-btn">Мои уведомления <i class="fa fa-comments-o"></i></a>
                             <br>
                         </div>
-                        <div class="col-xs-12 col-sm-6 col-md-3">
-                            <a href="{% url 'tree_manager' %}" class="btn btn-block" id="wiki-style-btn">Мое дерево</a>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+                            <a href="{% url 'tree_manager' %}" class="btn btn-block" id="wiki-style-btn">Мое дерево <i class="glyphicon glyphicon-tree-deciduous"></i></a>
                             <br>
                         </div>
-                        <div class="col-xs-12 col-sm-6 col-md-3">
-                            <a href="{% url 'settings' %}" class="btn btn-block" id="wiki-style-btn">Мои настройки</a>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+                            <a href="{% url 'settings' %}" class="btn btn-block" id="wiki-style-btn">Мои настройки <i class="glyphicon glyphicon-cog"></i></a>
                             <br>
                         </div>
                     </div>
