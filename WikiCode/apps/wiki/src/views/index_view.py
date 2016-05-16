@@ -21,6 +21,7 @@
 from django.shortcuts import render
 
 from WikiCode.apps.wiki.models import Publication
+from WikiCode.apps.wiki.settings import wiki_settings
 from .auth import check_auth
 from .auth import get_user_id
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -29,6 +30,20 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 def get_index(request):
 
     all_publications = Publication.objects.filter(is_public=True)
+
+    # Срезаем публикации, если их больше того количества, которое хотим вывести
+    if len(all_publications) > wiki_settings.COUNT_LAST_PUBL_SHOW:
+        position = len(all_publications)-wiki_settings.COUNT_LAST_PUBL_SHOW
+        all_publications = all_publications[position:]
+
+    # Делаем реверс публикаций
+    reverse_publications = []
+
+    for publ in reversed(all_publications):
+        reverse_publications.append(publ)
+
+    all_publications = reverse_publications
+
     paginator = Paginator(all_publications, 10)
 
     page = request.GET.get('page')
