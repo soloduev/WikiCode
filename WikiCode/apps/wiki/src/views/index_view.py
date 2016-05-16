@@ -23,15 +23,27 @@ from django.shortcuts import render
 from WikiCode.apps.wiki.models import Publication
 from .auth import check_auth
 from .auth import get_user_id
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def get_index(request):
 
     all_publications = Publication.objects.filter(is_public=True)
+    paginator = Paginator(all_publications, 10)
+
+    page = request.GET.get('page')
+
+    try:
+        publications = paginator.page(page)
+    except PageNotAnInteger:
+        publications = paginator.page(1)
+    except EmptyPage:
+        publications = paginator.page(paginator.num_pages)
+
 
     context = {
             "all_publications": all_publications,
+            "publications":publications,
             "user_data": check_auth(request),
             "user_id": get_user_id(request),
     }
