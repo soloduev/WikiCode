@@ -72,7 +72,7 @@
                 </div>
                 <div class="container-fluid">
                     <!--Экземпляр уведомления-->
-                    <div class="row notification-li">
+                    <div id="wiki-notification-1" data-toggle="modal" data-target="#modal_notification" class="row notification-li">
                         <div class="col-xs-8"><label class="wiki-notification"><i class="fa fa-envelope"></i> | СООБЩЕНИЕ | DEV_ADMIN | 13.09.2016</label></div>
                         <div class="col-xs-4 text-right"><label><i class="glyphicon glyphicon-alert problem"></i> <i class="glyphicon glyphicon-remove delete"></i></label></div>
                     </div>
@@ -158,9 +158,74 @@
             </div>
         </div>
     </div>
+
+    <!-- Модальное окно открывающее уведомление -->
+    <div class="modal fade" id="modal_notification" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="notification-header">Уведомление</h4>
+                </div>
+                <div class="modal-body text-left">
+                    <div id="wiki-message-notification" style="display: none;">
+                        <label>Дата отправки: </label> <span id="notification-date"></span>
+                        <br>
+                        <label>Тема: </label> <span id="notification-theme"></span>
+                        <br>
+                        <label>Сообщение:</label>
+                        <h5 id="notification-text"></h5>
+                        <hr>
+                        <a href="" id="" class="btn btn-link">Ответить</a>
+                        <a href="" id="" class="btn btn-link">Удалить собщение</a>
+                        <a href="" id="" class="btn btn-link">Пожаловаться</a>
+                    </div>
+
+                    <div id="wiki-comment-notification" style="display: none;">
+                        <label>Дата отправки: </label> <span id="notification-date"></span>
+                        <br>
+                        <label>Конспект: </label> <span id="notification-theme"></span>
+                        <br>
+                        <label>Сообщение:</label>
+                        <h5 id="notification-text"></h5>
+                        <hr>
+                        <a href="" id="" class="btn btn-link">Ответить</a>
+                        <a href="" id="" class="btn btn-link">Удалить собщение</a>
+                        <a href="" id="" class="btn btn-link">Пожаловаться</a>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Назад</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block add_script %}
     {% load staticfiles %}
     <link href={% static "wiki/wiki_styles/notifications.css" %} type="text/css" rel="stylesheet">
+    <script>
+        $("#wiki-notification-1").click(function () {
+
+            //ЕСЛИ ЭТО СООБЩЕНИЕ
+            $("#wiki-message-notification").attr("style","");
+            //Установка заголовка
+            $("#notification-header").text("Сообщение от dev_admin");
+            //Установка даты
+            $("#notification-date").text("07.07.07");
+            //Установка темы
+            $("#notification-theme").text("Мое первое письмо");
+            //Установка текста
+            $("#notification-text").text("Здравствуйте! Я бы хотел Вам сообщить, что это мое первое письмо на этом сервисе!");
+
+            //ЕСЛИ ЭТО ОТВЕТ
+
+
+
+        });
+    </script>
 {% endblock %}
