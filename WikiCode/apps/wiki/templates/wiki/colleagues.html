@@ -61,63 +61,75 @@
                 </div>
                 <div class="row">
                     <div id="panel_inputs" class="col-md-12">
-                        <form method="post">
-                            {% csrf_token %}
-                            <div class="btn-group">
-                                <br>
-                                <button type="button" id="add_colleagues" class="btn wiki-style-header-btns">Добавить коллегу <span
-                                        class="glyphicon glyphicon-plus"></span></button>
+                        <div class="btn-group">
+                            <br>
+                            <button type="button" id="add_colleagues" class="btn wiki-style-header-btns" data-toggle="modal" data-target="#modal_add_colleague">Добавить коллегу <span
+                                    class="glyphicon glyphicon-plus"></span></button>
 
-                                <button type="button" id="find_colleagues" class="btn wiki-style-header-btns">Найти коллегу <span
-                                        class="glyphicon glyphicon-search"></span></button>
+                            <button type="button" id="find_colleagues" class="btn wiki-style-header-btns">Найти коллегу <span
+                                    class="glyphicon glyphicon-search"></span></button>
 
-                                <button type="button" id="wiki-help-colleagues" class="btn wiki-style-header-btns"><span
-                                        class="glyphicon glyphicon-question-sign"></span></button>
-                            </div>
-                        </form>
+                            <button type="button" id="wiki-help-colleagues" class="btn wiki-style-header-btns"><span
+                                    class="glyphicon glyphicon-question-sign"></span></button>
+                        </div>
                     </div>
                 </div>
                 <br>
                 <div class="container-fluid">
-                    <!--Экземпляр коллеги-->
-                    <div class="row colleagues-li">
-                        <div class="col-xs-7 col-md-4"><div type="button" id="add_colleagues" class="btn btn-block wiki-style-colleagues">
-                            <a href="" style="text-decoration: none;"><b>dev_admin</b></a></div></div>
-                        <div class="col-md-5 col-md-4 hidden-sm hidden-xs"><div type="button" id="add_colleagues" class="btn btn-block wiki-style-colleagues">diahorver@gmail.com</div></div>
-                        <div class="col-xs-5  col-md-4">
-                            <div class="btn-group">
-                                <div type="button" id="star_colleagues" class="btn wiki-style-colleagues-btn"><span
-                                        class="glyphicon glyphicon-star-empty"></span></div>
-                                <div type="button" id="add_colleagues" class="btn wiki-style-colleagues-btn"><span
-                                        class="glyphicon glyphicon-envelope"></span></div>
-                                <div type="button" id="info_colleagues" class="btn wiki-style-colleagues-btn"><span
-                                        class="glyphicon glyphicon-info-sign"></span></div>
-                                <div type="button" id="remove_colleagues" class="btn wiki-style-colleagues-btn"><span
-                                        class="glyphicon glyphicon-remove"></span></div>
+                    {% if not colleagues %}
+                        <div class="text-center">
+                            <hr>
+                            <br>
+                            <h4>На данный момент, у вас нет Коллег</h4>
+                            <br>
+                            <hr>
+                        </div>
+                    {% endif %}
+                    {% for colleague in colleagues %}
+                        <!--Экземпляр коллеги-->
+                        <div class="row colleagues-li">
+                            <div class="col-xs-7 col-md-4"><div type="button" id="add_colleagues" class="btn btn-block wiki-style-colleagues">
+                                <a href="/user/{{ colleague.id }}" style="text-decoration: none;"><b>{{ colleague.nickname }}</b></a></div></div>
+                            <div class="col-md-5 col-md-4 hidden-sm hidden-xs"><div type="button" id="add_colleagues" class="btn btn-block wiki-style-colleagues">{{ colleague.email }}</div></div>
+                            <div class="col-xs-5  col-md-4">
+                                <div class="btn-group">
+                                    <div type="button" id="star_colleagues" class="btn wiki-style-colleagues-btn"><span
+                                            class="glyphicon glyphicon-star-empty"></span></div>
+                                    <div type="button" id="add_colleagues" class="btn wiki-style-colleagues-btn"><span
+                                            class="glyphicon glyphicon-envelope"></span></div>
+                                    <div type="button" id="info_colleagues" class="btn wiki-style-colleagues-btn"><span
+                                            class="glyphicon glyphicon-info-sign"></span></div>
+                                    <div type="button" id="remove_colleagues" class="btn wiki-style-colleagues-btn"><span
+                                            class="glyphicon glyphicon-remove"></span></div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
 
-                    <!--Экземпляр коллеги-->
-                    <div class="row colleagues-li">
-                        <div class="col-xs-7 col-md-4"><div type="button" id="add_colleagues" class="btn btn-block wiki-style-colleagues">
-                            <a href="" style="text-decoration: none;"><b>dev_admin</b></a></div></div>
-                        <div class="col-md-5 col-md-4 hidden-sm hidden-xs"><div type="button" id="add_colleagues" class="btn btn-block wiki-style-colleagues">diahorver@gmail.com</div></div>
-                        <div class="col-xs-5  col-md-4">
-                            <div class="btn-group">
-                                <div type="button" id="star_colleagues" class="btn wiki-style-colleagues-btn"><span
-                                        class="glyphicon glyphicon-star-empty"></span></div>
-                                <div type="button" id="add_colleagues" class="btn wiki-style-colleagues-btn"><span
-                                        class="glyphicon glyphicon-envelope"></span></div>
-                                <div type="button" id="info_colleagues" class="btn wiki-style-colleagues-btn"><span
-                                        class="glyphicon glyphicon-info-sign"></span></div>
-                                <div type="button" id="remove_colleagues" class="btn wiki-style-colleagues-btn"><span
-                                        class="glyphicon glyphicon-remove"></span></div>
-                            </div>
-                        </div>
-                    </div>
-
-
+    <!-- Модальное окно добавляющее коллегу в список коллег -->
+    <div class="modal fade" id="modal_add_colleague" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Добавление в коллеги</h4>
+                </div>
+                <div class="modal-body">
+                    <label><h4>Введите nickname пользователя, которого хотите добавить в коллеги:</h4></label>
+                    <hr>
+                    <label><h4><b>Nickname:</b></h4></label>
+                    <input id="input_nickname_colleague" type="text" placeholder="Nickname" class="form-control" style="border-radius: 0px;">
+                    <br>
+                    <br>
+                    <br>
+                </div>
+                <div class="modal-footer">
+                    <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
+                    <button id="wiki-style-btn-add-colleague" type="button" class="btn" >Добавить в коллеги</button>
                 </div>
             </div>
         </div>
@@ -127,4 +139,5 @@
 {% block add_script %}
     {% load staticfiles %}
     <link href={% static "wiki/wiki_styles/colleagues.css" %} type="text/css" rel="stylesheet">
+    <script src={% static "wiki/wiki_scripts/colleagues.js" %}></script>
 {% endblock %}

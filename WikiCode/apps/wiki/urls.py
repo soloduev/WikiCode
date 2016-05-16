@@ -18,7 +18,6 @@
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
 
 from django.conf.urls import url, include
-from django.contrib import admin
 
 from . import views
 
@@ -76,5 +75,9 @@ urlpatterns = [
 
     # Событие, если сайт находится на ремонте
     url(r'^login_developer/$', views.login_developer, name='login_developer'),
+
+    # События на странице коллег
+    url(r'^colleagues/add_colleague/$', views.add_colleague, name='add_colleague'),
+
 
 ]

@@ -118,6 +118,12 @@ def colleagues(request):
 
 @develop_mode
 @login_required
+def add_colleague(request):
+    return colleagues_view.get_add_colleague(request)
+
+
+@develop_mode
+@login_required
 def notifications(request):
     return notifications_view.get_notifications(request)
 
