@@ -47,3 +47,48 @@
     color: #fff;
     transition: all 0.5s ease 0s;
 }
+
+.notification-li
+{
+    padding-top: 5px;
+    margin-top: 5px;
+    border: 1px solid #b5b5b5;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
+    background-color: #ffffff;
+    border-radius: 0px;
+    transition: all 0.5s ease 0s;
+}
+
+.notification-li:hover
+{
+    border: 1px solid #b5b5b5;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
+    background-color: #e7e7e7;
+    border-radius: 0px;
+    transition: all 0.5s ease 0s;
+}
+
+.read-li
+{
+    opacity: 0.6;
+    background-color: #ffffff;
+    font-size: 12px;
+}
+
+.read-li:hover
+{
+    opacity: 1;
+    background-color: #ffffff;
+}
+
+.problem:hover,
+.delete:hover
+{
+    color: rgba(2, 107, 168, 1);
+    transition: all 0.5s ease 0s;
+}
+
+.wiki-filter:hover
+{
+    text-decoration: none;
+}
