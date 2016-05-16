@@ -256,7 +256,7 @@ def remove_editor(request):
     return publ_manager_view.get_remove_editor(request)
 
 
-@develop_mode
+# Здесь не должно быть никаких декораторов!!!
 def login_developer(request):
     return develop_view.get_login_developer(request)
 

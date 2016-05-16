@@ -21,6 +21,7 @@ from django.shortcuts import render
 
 from WikiCode.apps.wiki.models import Publication, Developer
 from WikiCode.apps.wiki.src.views.auth import check_auth, get_user_id
+from WikiCode.apps.wiki.src.views.index_view import get_index
 
 
 def get_login_developer(request):
@@ -57,15 +58,7 @@ def get_login_developer(request):
             }
             return render(request, 'wiki/develop_mode.html', context)
 
-        all_publications = Publication.objects.filter(is_public=True)
-
-        context = {
-            "all_publications": all_publications,
-            "user_data": check_auth(request),
-            "user_id": get_user_id(request),
-        }
-
-        return render(request, 'wiki/index.html', context)
+        return get_index(request)
     except Developer.DoesNotExist:
         user_id = get_user_id(request)
         user_data = check_auth(request)

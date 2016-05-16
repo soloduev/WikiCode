@@ -27,6 +27,7 @@ from django.views.decorators.csrf import csrf_protect
 from WikiCode.apps.wiki.models import Publication, Statistics, CommentBlock, Comment, Paragraphs, DynamicCommentParagraph, DynamicComment, Like, \
     Viewing, Editor
 from WikiCode.apps.wiki.models import User
+from WikiCode.apps.wiki.src.views.index_view import get_index
 from WikiCode.apps.wiki.src.wiki_markdown import WikiMarkdown
 from WikiCode.apps.wiki.src.wiki_tree import WikiTree
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
@@ -331,12 +332,7 @@ def get_create_page(request):
         stat.save()
         new_publication.save()
         user.save()
-        context = {
-            "all_publications": all_publications,
-            "user_data": user_data,
-            "user_id": get_user_id(request),
-        }
-        return render(request, 'wiki/index.html', context)
+        return get_index(request)
     else:
         first_part = '<!DOCTYPE html><html><title>' + form["title"] + '</title><xmp theme="' + form[
             "theme"].lower() + '" style="display:none;">'
