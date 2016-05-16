@@ -40,6 +40,17 @@ class User(models.Model):
     def __str__(self):
         return str(self.id_user)
 
+
+# Коллега
+class Colleague(models.Model):
+    id_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    id_colleague = models.BigIntegerField()
+    is_favorit = models.BooleanField()
+    def __str__(self):
+        return str("user:" + str(self.id_user) +
+               " colleague:" + str(self.id_colleague))
+
+
 class Like(models.Model):
     id_user = models.BigIntegerField()
     nickname = models.CharField(max_length=100)
