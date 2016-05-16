@@ -47,8 +47,24 @@ class Colleague(models.Model):
     id_colleague = models.BigIntegerField()
     is_favorite = models.BooleanField()
     def __str__(self):
-        return str("user:" + str(self.id_user) +
+        return str("user:" + str(self.user) +
                " colleague:" + str(self.id_colleague))
+
+
+# Уведомление
+class Notification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    id_author = models.IntegerField()
+    type = models.CharField(max_length=100)
+    message = models.TextField()
+    date = models.CharField(max_length=100)
+    is_read = models.BooleanField()
+    is_delete = models.BooleanField()
+    def __str__(self):
+        return str("user:" + str(self.user) +
+                   " type:" + str(self.type) +
+                   " date:" + str(self.date))
+
 
 
 class Like(models.Model):
