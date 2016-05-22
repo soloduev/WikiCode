@@ -55,6 +55,8 @@ class Colleague(models.Model):
 class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     id_author = models.IntegerField()
+    # Тип уведомления
+    # invite_colleagues (Заявка в коллеги) message (письмо)
     type = models.CharField(max_length=100)
     message = models.TextField()
     date = models.CharField(max_length=100)

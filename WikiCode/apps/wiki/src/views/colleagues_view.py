@@ -87,6 +87,11 @@ def get_add_colleague(request):
                                               id_colleague=add_user.id_user,
                                               is_favorite=False)
                     new_colleague.save()
+                    # Добавляем коллеги с другой стороны
+                    new_colleague_2 = Colleague(user=add_user,
+                                                id_colleague=cur_user.id_user,
+                                                is_favorite=False)
+                    new_colleague_2.save()
                     return HttpResponse('ok', content_type='text/html')
             else:
                 return HttpResponse('no', content_type='text/html')
@@ -94,7 +99,7 @@ def get_add_colleague(request):
             return HttpResponse('no', content_type='text/html')
 
     else:
-        return HttpResponse('no', content_type='text/html')\
+        return HttpResponse('no', content_type='text/html')
 
 
 @csrf_protect
@@ -114,9 +119,12 @@ def get_remove_colleague(request):
 
                 # Проверяем, есть ли уже этот коллега в списке пользователей
                 try:
+                    # Коллега с одной и с другой стороны
                     colleague = Colleague.objects.get(user=cur_user, id_colleague=del_user.id_user)
+                    colleague_2 = Colleague.objects.get(user=del_user, id_colleague=cur_user.id_user)
                     # Коллега есть, удаляем
                     colleague.delete()
+                    colleague_2.delete()
                     return HttpResponse('ok', content_type='text/html')
                 except Colleague.DoesNotExist:
                     # Коллеги нет, не удаляем

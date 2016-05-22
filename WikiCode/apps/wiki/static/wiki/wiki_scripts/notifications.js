@@ -20,16 +20,38 @@
 
 
 /**
- * Created by lazytroll on 16.05.16.
+ * Created by lazytroll on 22.05.16.
  */
 
-//Добавление пользователя в коллеги, отправление заявки
-$("#wiki-style-btn-add-colleague").click(function () {
+
+//Добавление пользователя в коллеги
+$("#add_colleague_invite").click(function () {
     $.ajax({
         type: "POST",
-        url: "send_request_for_colleagues/",
+        url: "add_colleague/",
         data:{
-            'nickname':''+$("#input_nickname_colleague").val(),
+            'nickname':''+$("#notification-user-invite").text(),
+        },
+        dataType: "text",
+        cache: false,
+        success: function(data){
+            if (data == 'ok'){
+                location.href = "/colleagues";
+            }
+        }
+    });
+});
+
+//Удаление уведомления
+$("#wiki-style-btn-remove-notification").click(function () {
+    console.log();
+    console.log();
+    $.ajax({
+        type: "POST",
+        url: "remove_notification/",
+        data:{
+            'nickname':''+$("#notification-global-nickname").val(),
+            'date':''+$("#notification-global-date").val(),
         },
         dataType: "text",
         cache: false,

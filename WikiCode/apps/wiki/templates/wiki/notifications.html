@@ -71,90 +71,96 @@
                     </div>
                 </div>
                 <div class="container-fluid">
-                    <!--Экземпляр уведомления-->
-                    <div id="wiki-notification-1" data-toggle="modal" data-target="#modal_notification" class="row notification-li">
-                        <div class="col-xs-8"><label class="wiki-notification"><i class="fa fa-envelope"></i> | СООБЩЕНИЕ | DEV_ADMIN | 13.09.2016</label></div>
-                        <div class="col-xs-4 text-right"><label><i class="glyphicon glyphicon-alert problem"></i> <i class="glyphicon glyphicon-remove delete"></i></label></div>
-                    </div>
-
-                    <!--Экземпляр уведомления-->
-                    <div class="row notification-li">
-                        <div class="col-xs-8"><label class="wiki-notification"><i class="fa fa-envelope"></i> | СООБЩЕНИЕ | DEV_ADMIN | 13.09.2016</label></div>
-                        <div class="col-xs-4 text-right"><label><i class="glyphicon glyphicon-alert problem"></i> <i class="glyphicon glyphicon-remove delete"></i></label></div>
-                    </div>
-
-                    <!--Экземпляр уведомления-->
-                    <div class="row notification-li read-li">
-                        <div class="col-xs-8"><label class="wiki-notification"><i class="glyphicon glyphicon-globe"></i> | НОВОСТИ | DEV_ADMIN | 13.09.2016</label> (Прочитано)</div>
-                        <div class="col-xs-4 text-right"><label><i class="glyphicon glyphicon-alert problem"></i> <i class="glyphicon glyphicon-remove delete"></i></label></div>
-                    </div>
-
-                    <!--Экземпляр уведомления-->
-                    <div class="row notification-li read-li">
-                        <div class="col-xs-8"><label class="wiki-notification"><i class="glyphicon glyphicon-user"></i> | ЗАЯВКА | DEV_ADMIN | 13.09.2016</label> (Прочитано)</div>
-                        <div class="col-xs-4 text-right"><label><i class="glyphicon glyphicon-alert problem"></i> <i class="glyphicon glyphicon-remove delete"></i></label></div>
-                    </div>
-
-                    <!--Экземпляр уведомления-->
-                    <div class="row notification-li read-li">
-                        <div class="col-xs-8"><label class="wiki-notification"><i class="glyphicon glyphicon-warning-sign"></i> | ОШИБКА | DEV_ADMIN | 13.09.2016</label> (Прочитано)</div>
-                        <div class="col-xs-4 text-right"><label><i class="glyphicon glyphicon-alert problem"></i> <i class="glyphicon glyphicon-remove delete"></i></label></div>
-                    </div>
-
-                    <!--Экземпляр уведомления-->
-                    <div class="row notification-li read-li">
-                        <div class="col-xs-8"><label class="wiki-notification"><i class="fa fa-envelope"></i> | СООБЩЕНИЕ | DEV_ADMIN | 13.09.2016</label> (Прочитано)</div>
-                        <div class="col-xs-4 text-right"><label><i class="glyphicon glyphicon-alert problem"></i> <i class="glyphicon glyphicon-remove delete"></i></label></div>
-                    </div>
-
-                    <!--Экземпляр уведомления-->
-                    <div class="row notification-li read-li">
-                        <div class="col-xs-8"><label class="wiki-notification"><i class="fa fa-commenting"></i> | ОТВЕТ | DEV_ADMIN | 13.09.2016</label> (Прочитано)</div>
-                        <div class="col-xs-4 text-right"><label><i class="glyphicon glyphicon-alert problem"></i> <i class="glyphicon glyphicon-remove delete"></i></label></div>
-                    </div>
-
-                    <!--Экземпляр уведомления-->
-                    <div class="row notification-li read-li">
-                        <div class="col-xs-8"><label class="wiki-notification"><i class="fa fa-envelope"></i> | СООБЩЕНИЕ | DEV_ADMIN | 13.09.2016</label> (Прочитано)</div>
-                        <div class="col-xs-4 text-right"><label><i class="glyphicon glyphicon-alert problem"></i> <i class="glyphicon glyphicon-remove delete"></i></label></div>
-                    </div>
-
-                    <!--Экземпляр уведомления-->
-                    <div class="row notification-li read-li">
-                        <div class="col-xs-8"><label class="wiki-notification"><i class="glyphicon glyphicon-exclamation-sign"></i> | ПРЕДУПРЕЖДЕНИЕ | DEV_ADMIN | 13.09.2016</label> (Прочитано)</div>
-                        <div class="col-xs-4 text-right"><label><i class="glyphicon glyphicon-alert problem"></i> <i class="glyphicon glyphicon-remove delete"></i></label></div>
-                    </div>
-
-                    <!--Экземпляр уведомления-->
-                    <div class="row notification-li read-li">
-                        <div class="col-xs-8"><label class="wiki-notification"><i class="glyphicon glyphicon-exclamation-sign"></i> | ВНИМАНИЕ | DEV_ADMIN | 13.09.2016</label> (Прочитано)</div>
-                        <div class="col-xs-4 text-right"><label><i class="glyphicon glyphicon-alert problem"></i> <i class="glyphicon glyphicon-remove delete"></i></label></div>
-                    </div>
-
-                    <!--Экземпляр уведомления-->
-                    <div class="row notification-li read-li">
-                        <div class="col-xs-8"><label class="wiki-notification"><i class="glyphicon glyphicon-bell"></i> | СОБЫТИЕ | DEV_ADMIN | 13.09.2016</label> (Прочитано)</div>
-                        <div class="col-xs-4 text-right"><label><i class="glyphicon glyphicon-alert problem"></i> <i class="glyphicon glyphicon-remove delete"></i></label></div>
-                    </div>
+                    {% if not notifications %}
+                        <div class="text-center">
+                            <br>
+                            <h4>У вас нет ни одного уведомления.</h4>
+                            <br>
+                        </div>
+                    {% endif %}
+                    {% for notification in notifications %}
+                        <!--Экземпляр уведомления-->
+                        {% if notification.type == "message" %}
+                            <div id="wiki-notification-{{ notification.number }}" data-toggle="modal" data-target="#modal_notification" class="row notification-li {% if notification.is_read %}read-li{% endif %}">
+                                <div class="col-xs-8"><label class="wiki-notification"><i class="fa fa-envelope"></i> | СООБЩЕНИЕ | DEV_ADMIN | 13.09.2016</label></div>
+                                <div class="col-xs-4 text-right"><label><i class="glyphicon glyphicon-alert problem"></i> <i class="glyphicon glyphicon-remove delete"></i></label></div>
+                            </div>
+                        {% elif notification.type == "invite_colleagues" %}
+                            <div id="wiki-notification-{{ notification.number }}" data-toggle="modal" data-target="#modal_notification" class="row notification-li {% if notification.is_read %}read-li{% endif %}">
+                                <div class="col-xs-8"><label class="wiki-notification"><i class="glyphicon glyphicon-user"></i> | ЗАЯВКА | {{ notification.nickname|upper }} | {{ notification.date }}</label></div>
+                                <div class="col-xs-4 text-right"><label>{% if notification.is_read %}(Прочитано){% endif %}</label></div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    {##}
+                    {#                    <!--Экземпляр уведомления-->#}
+                    {#                    <div class="row notification-li">#}
+                    {#                        <div class="col-xs-8"><label class="wiki-notification"><i class="fa fa-envelope"></i> | СООБЩЕНИЕ | DEV_ADMIN | 13.09.2016</label></div>#}
+                    {#                        <div class="col-xs-4 text-right"><label><i class="glyphicon glyphicon-alert problem"></i> <i class="glyphicon glyphicon-remove delete"></i></label></div>#}
+                    {#                    </div>#}
+                    {##}
+                    {#                    <!--Экземпляр уведомления-->#}
+                    {#                    <div class="row notification-li read-li">#}
+                    {#                        <div class="col-xs-8"><label class="wiki-notification"><i class="glyphicon glyphicon-globe"></i> | НОВОСТИ | DEV_ADMIN | 13.09.2016</label> (Прочитано)</div>#}
+                    {#                        <div class="col-xs-4 text-right"><label><i class="glyphicon glyphicon-alert problem"></i> <i class="glyphicon glyphicon-remove delete"></i></label></div>#}
+                    {#                    </div>#}
+                    {##}
+                    {#                    <!--Экземпляр уведомления-->#}
+                    {#                    <div class="row notification-li read-li">#}
+                    {#                        <div class="col-xs-8"><label class="wiki-notification"><i class="glyphicon glyphicon-user"></i> | ЗАЯВКА | DEV_ADMIN | 13.09.2016</label> (Прочитано)</div>#}
+                    {#                        <div class="col-xs-4 text-right"><label><i class="glyphicon glyphicon-alert problem"></i> <i class="glyphicon glyphicon-remove delete"></i></label></div>#}
+                    {#                    </div>#}
+                    {##}
+                    {#                    <!--Экземпляр уведомления-->#}
+                    {#                    <div class="row notification-li read-li">#}
+                    {#                        <div class="col-xs-8"><label class="wiki-notification"><i class="glyphicon glyphicon-warning-sign"></i> | ОШИБКА | DEV_ADMIN | 13.09.2016</label> (Прочитано)</div>#}
+                    {#                        <div class="col-xs-4 text-right"><label><i class="glyphicon glyphicon-alert problem"></i> <i class="glyphicon glyphicon-remove delete"></i></label></div>#}
+                    {#                    </div>#}
+                    {##}
+                    {##}
+                    {#                    <!--Экземпляр уведомления-->#}
+                    {#                    <div class="row notification-li read-li">#}
+                    {#                        <div class="col-xs-8"><label class="wiki-notification"><i class="fa fa-commenting"></i> | ОТВЕТ | DEV_ADMIN | 13.09.2016</label> (Прочитано)</div>#}
+                    {#                        <div class="col-xs-4 text-right"><label><i class="glyphicon glyphicon-alert problem"></i> <i class="glyphicon glyphicon-remove delete"></i></label></div>#}
+                    {#                    </div>#}
+                    {##}
+                    {##}
+                    {#                    <!--Экземпляр уведомления-->#}
+                    {#                    <div class="row notification-li read-li">#}
+                    {#                        <div class="col-xs-8"><label class="wiki-notification"><i class="glyphicon glyphicon-exclamation-sign"></i> | ПРЕДУПРЕЖДЕНИЕ | DEV_ADMIN | 13.09.2016</label> (Прочитано)</div>#}
+                    {#                        <div class="col-xs-4 text-right"><label><i class="glyphicon glyphicon-alert problem"></i> <i class="glyphicon glyphicon-remove delete"></i></label></div>#}
+                    {#                    </div>#}
+                    {##}
+                    {#                    <!--Экземпляр уведомления-->#}
+                    {#                    <div class="row notification-li read-li">#}
+                    {#                        <div class="col-xs-8"><label class="wiki-notification"><i class="glyphicon glyphicon-exclamation-sign"></i> | ВНИМАНИЕ | DEV_ADMIN | 13.09.2016</label> (Прочитано)</div>#}
+                    {#                        <div class="col-xs-4 text-right"><label><i class="glyphicon glyphicon-alert problem"></i> <i class="glyphicon glyphicon-remove delete"></i></label></div>#}
+                    {#                    </div>#}
+                    {##}
+                    {#                    <!--Экземпляр уведомления-->#}
+                    {#                    <div class="row notification-li read-li">#}
+                    {#                        <div class="col-xs-8"><label class="wiki-notification"><i class="glyphicon glyphicon-bell"></i> | СОБЫТИЕ | DEV_ADMIN | 13.09.2016</label> (Прочитано)</div>#}
+                    {#                        <div class="col-xs-4 text-right"><label><i class="glyphicon glyphicon-alert problem"></i> <i class="glyphicon glyphicon-remove delete"></i></label></div>#}
+                    {#                    </div>#}
                 </div>
-                <div class="container-fluid">
-                    <div class="row">
-                        <br>
-                    </div>
-                    <div class="row">
-                        <br>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-6"><a href="" id="wiki-style-btn" class="btn"><i class="glyphicon glyphicon-menu-left"></i> Предыдущие</a></div>
-                        <div class="col-xs-6 text-right"><a href="" id="wiki-style-btn" class="btn">Следующие <i class="glyphicon glyphicon-menu-right"></i></a></div>
-                    </div>
-                    <div class="row">
-                        <br>
-                    </div>
-                    <div class="row">
-                        <br>
-                    </div>
-                </div>
+                {#                <div class="container-fluid">#}
+                {#                    <div class="row">#}
+                {#                        <br>#}
+                {#                    </div>#}
+                {#                    <div class="row">#}
+                {#                        <br>#}
+                {#                    </div>#}
+                {#                    <div class="row">#}
+                {#                        <div class="col-xs-6"><a href="" id="wiki-style-btn" class="btn"><i class="glyphicon glyphicon-menu-left"></i> Предыдущие</a></div>#}
+                {#                        <div class="col-xs-6 text-right"><a href="" id="wiki-style-btn" class="btn">Следующие <i class="glyphicon glyphicon-menu-right"></i></a></div>#}
+                {#                    </div>#}
+                {#                    <div class="row">#}
+                {#                        <br>#}
+                {#                    </div>#}
+                {#                    <div class="row">#}
+                {#                        <br>#}
+                {#                    </div>#}
+                {#                </div>#}
             </div>
         </div>
     </div>
@@ -167,6 +173,8 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="notification-header">Уведомление</h4>
                 </div>
+                <input hidden id="notification-global-nickname">
+                <input hidden id="notification-global-date">
                 <div class="modal-body text-left">
                     <div id="wiki-message-notification" style="display: none;">
                         <label>Дата отправки: </label> <span id="notification-date"></span>
@@ -194,9 +202,21 @@
                         <a href="" id="" class="btn btn-link">Пожаловаться</a>
                     </div>
 
+                    <div id="wiki-invite-notification" style="display: none;">
+                        <label>Пользователь</label> <a id="notification-user-invite"></a>
+                        <br>
+                        <label>Хочет добавить Вас в коллеги</label>
+                        <br>
+                        <label>Дата отправки: </label> <span id="notification-date-invite"></span>
+                        <hr>
+                        <a id="add_colleague_invite" class="btn btn-link">Добавить в коллеги</a>
+                        <a id="" class="btn btn-link">Пожаловаться</a>
+                    </div>
+
 
                 </div>
                 <div class="modal-footer">
+                    <button id="wiki-style-btn-remove-notification" type="button" class="btn" data-dismiss="modal">Удалить это уведомление</button>
                     <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Назад</button>
                 </div>
             </div>
@@ -208,24 +228,54 @@
 {% block add_script %}
     {% load staticfiles %}
     <link href={% static "wiki/wiki_styles/notifications.css" %} type="text/css" rel="stylesheet">
+    <script src={% static "wiki/wiki_scripts/notifications.js" %}></script>
     <script>
-        $("#wiki-notification-1").click(function () {
+        {% for notification in notifications %}
+            $("#wiki-notification-{{ notification.number|escapejs }}").click(function () {
+                {% if notification.type == "message" %}
+                    //ЕСЛИ ЭТО СООБЩЕНИЕ
+                    $("#wiki-message-notification").attr("style","");
+                    //Установка заголовка
+                    $("#notification-header").text("Сообщение от dev_admin");
+                    //Установка даты
+                    $("#notification-date").text("07.07.07");
+                    //Установка темы
+                    $("#notification-theme").text("Мое первое письмо");
+                    //Установка текста
+                    $("#notification-text").text("Здравствуйте! Я бы хотел Вам сообщить, что это мое первое письмо на этом сервисе!");
+                {% elif notification.type == "invite_colleagues" %}
+                    //ЕСЛИ ЭТО ЗЯВКА
+                    $("#notification-global-nickname").val("{{ notification.nickname|escapejs }}");
+                    $("#notification-global-date").val("{{ notification.date|escapejs }}");
+                    $("#wiki-invite-notification").attr("style","");
+                    $("#wiki-message-notification").attr("style","display:none;");
+                    $("#wiki-comment-notification").attr("style","display:none;");
+                    //Установка даты
+                    $("#notification-date-invite").text("{{ notification.date|escapejs }}");
+                    //Установка пользователя
+                    $("#notification-user-invite").text("{{ notification.nickname|escapejs }}");
+                    $("#notification-user-invite").attr("href","/user/"+{{ notification.id|escapejs }});
+                {% endif %}
+                {% if not notification.is_read %}
+                    //Выполняем POST запрос, который делает уведомление прочитанным
+                    $.ajax({
+                        type: "POST",
+                        url: "read_notification/",
+                        data:{
+                            'nickname':''+"{{ notification.nickname|escapejs }}",
+                            'date':''+"{{ notification.date|escapejs }}",
+                        },
+                        dataType: "text",
+                        cache: false,
+                        success: function(data){
+                            if (data == 'ok'){
+                                $("#wiki-notification-{{ notification.number|escapejs }}").attr("style","padding-top: 5px;margin-top: 5px;border: 1px solid #b5b5b5;box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);background-color: #ffffff;border-radius: 0px;transition: all 0.5s ease 0s;opacity: 0.6;background-color: #ffffff;font-size: 12px;");
+                            }
+                        }
+                    });
+                {% endif %}
+            });
 
-            //ЕСЛИ ЭТО СООБЩЕНИЕ
-            $("#wiki-message-notification").attr("style","");
-            //Установка заголовка
-            $("#notification-header").text("Сообщение от dev_admin");
-            //Установка даты
-            $("#notification-date").text("07.07.07");
-            //Установка темы
-            $("#notification-theme").text("Мое первое письмо");
-            //Установка текста
-            $("#notification-text").text("Здравствуйте! Я бы хотел Вам сообщить, что это мое первое письмо на этом сервисе!");
-
-            //ЕСЛИ ЭТО ОТВЕТ
-
-
-
-        });
+        {% endfor %}
     </script>
 {% endblock %}

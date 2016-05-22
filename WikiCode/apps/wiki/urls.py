@@ -77,8 +77,13 @@ urlpatterns = [
     url(r'^login_developer/$', views.login_developer, name='login_developer'),
 
     # События на странице коллег
-    url(r'^colleagues/add_colleague/$', views.add_colleague, name='add_colleague'),
+    url(r'^colleagues/send_request_for_colleagues/$', views.send_request_for_colleagues, name='send_request_for_colleagues'),
     url(r'^colleagues/remove_colleague/$', views.remove_colleague, name='remove_colleague'),
+
+    # Событие на странице уведомлений
+    url(r'^notifications/read_notification/$', views.read_notification, name='read_notification'),
+    url(r'^notifications/add_colleague/$', views.add_colleague, name='add_colleague'),
+    url(r'^notifications/remove_notification/$', views.remove_notification, name='remove_notification'),
 
 
 ]

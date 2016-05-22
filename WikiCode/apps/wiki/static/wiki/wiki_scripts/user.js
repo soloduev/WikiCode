@@ -69,3 +69,24 @@ $("#wiki-code-like-user-link").click(function () {
         }
     });
 });
+
+//Добавление пользователя в коллеги
+$("#wiki-style-btn-user-add-colleague").click(function () {
+
+    $.ajax({
+        type: "POST",
+        url: "add_colleague/",
+        data:{
+            'nickname':''+$("#nickname_for_add_colleagues").val(),
+        },
+        dataType: "text",
+        cache: false,
+        success: function(data){
+            if (data == 'ok'){
+                location.reload();
+            }
+        }
+
+    });
+
+});
