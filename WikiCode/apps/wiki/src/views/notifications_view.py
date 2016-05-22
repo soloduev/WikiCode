@@ -115,6 +115,7 @@ def get_send_request_for_colleagues(request):
 
         # Получаем пользователя
         try:
+
             cur_user = User.objects.get(id_user=get_user_id(request))
 
             # Получаем по nickname пользователя, которого хотим добавить

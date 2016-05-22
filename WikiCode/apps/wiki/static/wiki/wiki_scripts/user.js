@@ -70,12 +70,11 @@ $("#wiki-code-like-user-link").click(function () {
     });
 });
 
-//Добавление пользователя в коллеги
+//Отправка заявки в коллеги
 $("#wiki-style-btn-user-add-colleague").click(function () {
-
     $.ajax({
         type: "POST",
-        url: "add_colleague/",
+        url: "user_send_request_for_colleagues/",
         data:{
             'nickname':''+$("#nickname_for_add_colleagues").val(),
         },
@@ -86,7 +85,5 @@ $("#wiki-style-btn-user-add-colleague").click(function () {
                 location.reload();
             }
         }
-
     });
-
 });

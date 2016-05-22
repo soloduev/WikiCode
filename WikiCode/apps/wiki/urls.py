@@ -72,6 +72,7 @@ urlpatterns = [
 
     # События на странице пользователя
     url(r'^user/(?P<id>[0-9]+)/like_user/$', views.like_user, name='like_user'),
+    url(r'^user/(?P<id>[0-9]+)/user_send_request_for_colleagues/$', views.user_send_request_for_colleagues, name='user_send_request_for_colleagues'),
 
     # Событие, если сайт находится на ремонте
     url(r'^login_developer/$', views.login_developer, name='login_developer'),

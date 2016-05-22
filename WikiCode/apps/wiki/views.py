@@ -256,6 +256,12 @@ def like_user(request, id):
     return user_view.get_like_user(request, id)
 
 
+@develop_mode_id
+@login_required
+def user_send_request_for_colleagues(request, id):
+    return notifications_view.get_send_request_for_colleagues(request)
+
+
 @develop_mode
 @login_required
 def check_nickname_for_add_editor(request):
