@@ -25,7 +25,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 
-from WikiCode.apps.wiki.models import Publication
+from WikiCode.apps.wiki.models import Publication, Colleague, Notification
 from WikiCode.apps.wiki.models import Statistics
 from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.models import User as WikiUser, Like
@@ -40,6 +40,8 @@ def get_user(request, id):
     try:
         user = User.objects.get(email=user_data)
         if str(get_user_id(request)) == id:
+            # Отрисовываем страницу текущего пользователя
+
             wt = WikiTree(user.id_user)
             wt.load_tree(user.tree)
             # Получаем дерево сохраненных публикаций
@@ -58,6 +60,10 @@ def get_user(request, id):
                 prewiew_publ_title = None
                 prewiew_publ_id = None
 
+            # Узнаем количество коллег и уведомлений
+            total_colleagues = Colleague.objects.filter(user=user).count()
+            total_notifications = Notification.objects.filter(user=user,is_read=False).count()
+
             if user_id != -1:
                 context = {
                     "user_data": user_data,
@@ -69,12 +75,15 @@ def get_user(request, id):
                     "prewiew_publ_title":prewiew_publ_title,
                     "prewiew_publ_id":prewiew_publ_id,
                     "other_user": False,
+                    "total_colleagues":total_colleagues,
+                    "total_notifications":total_notifications,
                 }
 
                 return render(request, 'wiki/user.html', context)
             else:
                 return get_error_page(request, ["Sorry, id user problem!", "Page not found: 'user/" + str(id) + "/'"])
         else:
+            # Отрисовываем страницу другого пользователя
             other_user = User.objects.get(id_user=id)
             wt = WikiTree(other_user.id_user)
             wt.load_tree(other_user.tree)

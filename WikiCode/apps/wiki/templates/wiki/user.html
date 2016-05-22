@@ -119,11 +119,11 @@
                     <div class="row" style="border-top: 1px solid #d5d5d5;">
                         <br>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                            <a href="{% url 'colleagues' %}" class="btn btn-block" id="wiki-style-btn">Мои коллеги <i class="fa fa-users"></i></a>
+                            <a href="{% url 'colleagues' %}" class="btn btn-block" id="wiki-style-btn">Коллеги <i class="fa fa-users"></i> ({{ total_colleagues }})</a>
                             <br>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                            <a href="{% url 'notifications' %}" class="btn btn-block" id="wiki-style-btn">Мои уведомления <i class="fa fa-comments-o"></i></a>
+                            <a href="{% url 'notifications' %}" class="btn btn-block" id="wiki-style-btn">Уведомления <i class="fa fa-comments-o"></i> ({{ total_notifications }})</a>
                             <br>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
