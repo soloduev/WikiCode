@@ -46,10 +46,12 @@
                             <!--Здесь должен располагаться сгенерированный html preview дерева-->
                             {{ preview_tree|safe }}
                         </ul>
-                        <ul id="tree2saved" class="wiki-tree-saved">
-                            <!--Здесь должен располагаться сгенерированный html дерева с сохраненными конспектами-->
-                            {{ saved_publ|safe }}
-                        </ul>
+                        {% if saved_publ != "NONE" %}
+                            <ul id="tree2saved" class="wiki-tree-saved">
+                                <!--Здесь должен располагаться сгенерированный html дерева с сохраненными конспектами-->
+                                {{ saved_publ|safe }}
+                            </ul>
+                        {% endif %}
                     {% endif %}
                 </div>
             </div>
