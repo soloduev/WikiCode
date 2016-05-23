@@ -172,3 +172,136 @@ $("#wiki-send-comment-answer").click(function () {
     }
 });
 
+//Все что касается динамики далее
+
+
+function selectChange() {
+    selectText = $("#dynamic-paragraph").val();
+};
+
+//Динамическое редактирование
+$("#wiki-style-btn-option-1").on("click", function () {
+
+    isEdit = true;
+    //Получаем все необходимые данные с абазаца
+    var height = $('#li-md-wikicode-'+num_paragraph+'').css('height');
+    selectText = md_text[parseInt(num_paragraph)];
+
+    //Заменяем элемент списка на input
+    $("#markdown-row-"+num_paragraph+"")
+        .replaceWith(
+            '<textarea class="form-control dyn-par" id="dynamic-paragraph"' +
+            'onKeyUp="selectChange()"' +
+            'style="height:'+height+';' +
+            '">' +
+            selectText +
+            '</textarea>');
+    $(".dyn-par").focus();
+
+    //Как только теряем фокус:
+    $("#dynamic-paragraph").blur(function (e) {
+
+        //Применяем все и возвращаем все обратно
+        $("#dynamic-paragraph").replaceWith(
+            '<div class="md-hover" id="markdown-row-'+num_paragraph+'"></div>'
+        );
+        document.getElementById('markdown-row-'+num_paragraph).innerHTML = marked(selectText);
+        md_text[parseInt(num_paragraph)] = selectText;
+        isEdit = false;
+        update_comment_marks();
+    });
+});
+
+$(document).mouseup(function()
+{
+    $("#context-dinamic-menu").hide();
+});
+
+$(document).mouseleave(function () {
+    $("#context-dinamic-menu").hide();
+});
+
+$(document).scroll(function () {
+    $("#context-dinamic-menu").hide();
+});
+
+$(window).resize(function () {
+    $("#context-dinamic-menu").hide();
+    update_comment_marks();
+});
+
+
+
+$("#wiki-style-btn-option-2").on('click', function () {
+    document.getElementById('paragraph_input_error').innerHTML = marked(md_text[num_paragraph]);
+});
+
+$("#wiki-style-btn-option-3").on('click', function () {
+    document.getElementById('paragraph_input_md_paragraph').innerHTML = marked(md_text[num_paragraph]);
+    var insert_data =  $("#dynamic-comment-paragraph-"+num_paragraph).html();
+    if(insert_data !== undefined)
+        $("#paragraph_input_comment").html(insert_data);
+    else{
+        $("#paragraph_input_comment").html("<h4>Комментариев к этому блоку пока нет. Станьте первым!</h4>");
+    }
+});
+
+//То что касается тегов
+$(function() {
+    $('#publ-tags').tags({
+        readOnly: true,
+        tagData:["c++", "beginning"],
+    });
+});
+
+/*Ajax запрос на добавления комментария*/
+//Добавление комментария к конспекту
+$("#wiki-style-btn-add-dynamic-comment").click(function () {
+    comment_message = $("#wiki-input-dynamic-comment").val();
+    $.ajax({
+        type: "POST",
+        url: "add_dynamic_comment_in_wiki_page/",
+        data:{
+            'comment_message':''+comment_message,
+            'num_paragraph':''+num_paragraph,
+        },
+        dataType: "text",
+        cache: false,
+        success: function(data){
+            if (data == 'ok'){
+                location.reload();
+            }
+            else
+            {
+                //Говорим, что комментарий добавить не удалось(
+            }
+        }
+    });
+});
+
+
+//Переключение вкладок
+$("#wiki-publ-tab-1").on("click", function () {
+    $(".wikicode-commenting-mark").show();
+});
+$("#wiki-publ-tab-2").on("click", function () {
+    $(".wikicode-commenting-mark").hide();
+});
+$("#wiki-publ-tab-3").on("click", function () {
+    $(".wikicode-commenting-mark").hide();
+});
+$("#wiki-publ-tab-4").on("click", function () {
+    $(".wikicode-commenting-mark").hide();
+});
+$("#wiki-publ-tab-5").on("click", function () {
+    $(".wikicode-commenting-mark").hide();
+});
+$("#wiki-publ-tab-6").on("click", function () {
+    $(".wikicode-commenting-mark").hide();
+});
+$("#wiki-publ-tab-7").on("click", function () {
+    $(".wikicode-commenting-mark").hide();
+});
+
+
+

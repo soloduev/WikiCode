@@ -67,37 +67,16 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <hr>
-
-
                                 <div class="tabbable-panel" style="border-bottom: 0px solid #000000; border-top: 0px solid black;">
                                     <div class="tabbable-pills">
                                         <ul class="nav nav-tabs" style="border-bottom: none;">
-                                            <li class="active">
-                                                <a href="#tab_default_1" data-toggle="tab" id="wiki-publ-tab-1">
-                                                    Конспект </a>
-                                            </li>
-                                            <li>
-                                                <a href="#tab_default_3" data-toggle="tab" id="wiki-publ-tab-2">
-                                                    Оглавление </a>
-                                            </li>
-                                            <li>
-                                                <a href="#tab_default_4" data-toggle="tab" id="wiki-publ-tab-3">
-                                                    Файлы </a>
-                                            </li>
-                                            <li>
-                                                <a href="#tab_default_5" data-toggle="tab" id="wiki-publ-tab-4">
-                                                    Ссылки </a>
-                                            </li>
-                                            <li>
-                                                <a href="#tab_default_6" data-toggle="tab" id="wiki-publ-tab-5">
-                                                    Версии </a>
-                                            </li>
-                                            <li>
-                                                <a href="#tab_default_7" data-toggle="tab" id="wiki-publ-tab-6">
-                                                    Настройки </a>
-                                            </li>
+                                            <li class="active"><a href="#tab_default_1" data-toggle="tab" id="wiki-publ-tab-1">Конспект </a></li>
+                                            <li><a href="#tab_default_3" data-toggle="tab" id="wiki-publ-tab-2">Оглавление </a></li>
+                                            <li><a href="#tab_default_4" data-toggle="tab" id="wiki-publ-tab-3">Файлы </a></li>
+                                            <li><a href="#tab_default_5" data-toggle="tab" id="wiki-publ-tab-4">Ссылки </a></li>
+                                            <li><a href="#tab_default_6" data-toggle="tab" id="wiki-publ-tab-5">Версии </a></li>
+                                            <li><a href="#tab_default_7" data-toggle="tab" id="wiki-publ-tab-6">Настройки </a></li>
                                         </ul>
                                         <div class="tab-content">
                                             <div class="tab-pane active" id="tab_default_1">
@@ -108,14 +87,11 @@
                                                             {% for elem in numbers %}
                                                                 <li id="li-md-wikicode-{{ elem }}">
                                                                     <div class="md-hover" id="markdown-row-{{ elem }}"></div>
-
                                                                 </li>
                                                             {% endfor %}
                                                         </ul>
-
                                                     </div>
                                                 </div>
-
                                                 {% if not guest %}
                                                     <div class="col-xs-12">
                                                         <div class="row">
@@ -135,7 +111,6 @@
                                                 <!--Блок отображения комментариев -->
                                                 <div class="col-xs-12">
                                                     <div class="row">
-
                                                         {% for comment in all_comments %}
                                                             <!--Экземпляр сообщения-->
                                                             <div class="comment-block-wiki">
@@ -147,78 +122,44 @@
                                                                 <p></p>
                                                             </div>
                                                         {% endfor %}
-
-
-                                                        <br>
-                                                        <br>
+                                                        <br><br>
                                                         <h4>Просмотров(78) Комментариев(54) Понравилось(35) Сохранили к себе (9) Скачали (2) </h4>
-
                                                     </div>
                                                 </div>
-
                                             </div>
                                             <div class="tab-pane" id="tab_default_3">
                                                 <div class="col-xs-12 col-sm-12 col-md-12"
                                                      style="border: 1px solid #d5d5d5;">
-                                                    <div class="row">
-                                                        <h4>---</h4>
-                                                        <h4>Здесь будет сгенерировано оглавление</h4>
-                                                        <h4>---</h4>
-                                                        <h4>---</h4>
-                                                        <h4>---</h4>
-                                                        <h4>---</h4>
-                                                        <h4>---</h4>
-                                                        <h4>---</h4>
+                                                    <div class="row text-center">
+                                                        <h4>Здесь будет сгенерировано оглавление</h4><br><br><br><br>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="tab-pane" id="tab_default_4">
                                                 <div class="col-xs-12 col-sm-12 col-md-12"
                                                      style="border: 1px solid #d5d5d5;">
-                                                    <div class="row">
-                                                        <h4>---</h4>
-                                                        <h4>Здесь будут располагаться прикрепленные файлы</h4>
-                                                        <h4>---</h4>
-                                                        <h4>---</h4>
-                                                        <h4>---</h4>
-                                                        <h4>---</h4>
-                                                        <h4>---</h4>
-                                                        <h4>---</h4>
+                                                    <div class="row text-center">
+                                                        <h4>Здесь будут располагаться прикрепленные файлы</h4><br><br><br><br>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="tab-pane" id="tab_default_5">
                                                 <div class="col-xs-12 col-sm-12 col-md-12"
                                                      style="border: 1px solid #d5d5d5;">
-                                                    <div class="row">
-                                                        <h4>---</h4>
-                                                        <h4>Здесь будут перечислены найденные ссылки в конспекте</h4>
-                                                        <h4>---</h4>
-                                                        <h4>---</h4>
-                                                        <h4>---</h4>
-                                                        <h4>---</h4>
-                                                        <h4>---</h4>
-                                                        <h4>---</h4>
+                                                    <div class="row text-center">
+                                                        <h4>Здесь будут перечислены найденные ссылки в конспекте</h4><br><br><br><br>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="tab-pane" id="tab_default_6">
                                                 <div class="col-xs-12 col-sm-12 col-md-12"
                                                      style="border: 1px solid #d5d5d5;">
-                                                    <div class="row">
-                                                        <h4>---</h4>
-                                                        <h4>Здесь можно будет переключать версии конспекта</h4>
-                                                        <h4>---</h4>
-                                                        <h4>---</h4>
-                                                        <h4>---</h4>
-                                                        <h4>---</h4>
-                                                        <h4>---</h4>
-                                                        <h4>---</h4>
+                                                    <div class="row text-center">
+                                                        <h4>Здесь можно будет переключать версии конспекта</h4><br><br><br><br>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="tab-pane" id="tab_default_7">
-
                                                 <div class="col-md-5 col-sm-5 col-xs-12">
                                                     <br>
                                                     <div class="row">
@@ -228,15 +169,11 @@
                                                     </div>
                                                     <br>
                                                 </div>
-                                                <div class="col-md-2 col-sm-2 col-xs-0">
-
-                                                </div>
+                                                <div class="col-md-2 col-sm-2 col-xs-0"></div>
                                                 <div class="col-md-5 col-sm-5 col-xs-12">
                                                     <br>
                                                     <div class="row">
-                                                        <button class="btn btn-block" id="wiki-style-btn">
-                                                            Тема оформления конспекта
-                                                        </button>
+                                                        <button class="btn btn-block" id="wiki-style-btn">Тема оформления конспекта</button>
                                                     </div>
                                                     <br>
                                                 </div>
@@ -417,9 +354,7 @@
 
 {% block add_script %}
     {% load staticfiles %}
-    <!--Подключаем библиотеку для динамических файловых деревье jsTree-->
     <script src={% static "wiki/jsTree/jstree.min.js"%}></script>
-    <!--jsTree-->
     <link href={% static "wiki/jsTree/themes/default/style.min.css"%} rel="stylesheet" >
     <link href={% static "wiki/wiki_styles/page_themes/default.css" %} type="text/css" rel="stylesheet">
     <link href={% static "wiki/wiki_styles/page.css" %} type="text/css" rel="stylesheet">
@@ -432,16 +367,13 @@
         //Текущая тема оформления
         var current_theme = "Default";
         var theme_border_style;
-        if(current_theme == "United")
-        {
+        if(current_theme == "United") {
             theme_border_style = "padding: 3px 20px;border-right: 3px solid #f76e2f;background-color: #F1F1F1;transition: all 0.5s ease 0s;";
         }
-        else if(current_theme == "Monokai")
-        {
+        else if(current_theme == "Monokai") {
             theme_border_style = "padding: 3px 20px;border-right: 3px solid #ea397e;background-color: #54554E;transition: all 0.5s ease 0s;";
         }
-        else if(current_theme == "Default")
-        {
+        else if(current_theme == "Default") {
             theme_border_style = "padding: 3px 20px;border-right: 3px solid #225a84;background-color: #F1F1F1;transition: all 0.5s ease 0s;";
         }
 
@@ -452,11 +384,8 @@
         var selectText = "";
         var isEdit = false;
         {% for p in paragraphs %}
-
             md_text[{{ p.index|escapejs }}] = '{{ p.text|escapejs }}';
             document.getElementById('markdown-row-{{ p.index|escapejs }}').innerHTML = marked(md_text[{{ p.index|escapejs }}]);
-
-
             document.getElementById('li-md-wikicode-{{ p.index|escapejs }}').onmousemove = function(e) {
                 var div = document.getElementById('li-md-wikicode-{{ p.index|escapejs }}');
                 var rect = div.getBoundingClientRect();
@@ -482,113 +411,6 @@
             };
         {% endfor %}
 
-
-        function selectChange() {
-            selectText = $("#dynamic-paragraph").val();
-        };
-
-        //Динамическое редактирование
-        $("#wiki-style-btn-option-1").on("click", function () {
-
-            isEdit = true;
-            //Получаем все необходимые данные с абазаца
-            var height = $('#li-md-wikicode-'+num_paragraph+'').css('height');
-            selectText = md_text[parseInt(num_paragraph)];
-
-            //Заменяем элемент списка на input
-            $("#markdown-row-"+num_paragraph+"")
-                    .replaceWith(
-                            '<textarea class="form-control dyn-par" id="dynamic-paragraph"' +
-                            'onKeyUp="selectChange()"' +
-                            'style="height:'+height+';' +
-                            '">' +
-                            selectText +
-                            '</textarea>');
-            $(".dyn-par").focus();
-
-            //Как только теряем фокус:
-            $("#dynamic-paragraph").blur(function (e) {
-
-                //Применяем все и возвращаем все обратно
-                $("#dynamic-paragraph").replaceWith(
-                        '<div class="md-hover" id="markdown-row-'+num_paragraph+'"></div>'
-                );
-                document.getElementById('markdown-row-'+num_paragraph).innerHTML = marked(selectText);
-                md_text[parseInt(num_paragraph)] = selectText;
-                isEdit = false;
-                update_comment_marks();
-            });
-        });
-
-        $(document).mouseup(function()
-        {
-            $("#context-dinamic-menu").hide();
-        });
-
-        $(document).mouseleave(function () {
-            $("#context-dinamic-menu").hide();
-        });
-
-        $(document).scroll(function () {
-            $("#context-dinamic-menu").hide();
-        });
-
-        $(window).resize(function () {
-            $("#context-dinamic-menu").hide();
-            update_comment_marks();
-        });
-
-
-
-        $("#wiki-style-btn-option-2").on('click', function () {
-            document.getElementById('paragraph_input_error').innerHTML = marked(md_text[num_paragraph]);
-        });
-
-        $("#wiki-style-btn-option-3").on('click', function () {
-            document.getElementById('paragraph_input_md_paragraph').innerHTML = marked(md_text[num_paragraph]);
-            var insert_data =  $("#dynamic-comment-paragraph-"+num_paragraph).html();
-            if(insert_data !== undefined)
-                $("#paragraph_input_comment").html(insert_data);
-            else{
-                $("#paragraph_input_comment").html("<h4>Комментариев к этому блоку пока нет. Станьте первым!</h4>");
-            }
-        });
-
-        //То что касается тегов
-        $(function() {
-            $('#publ-tags').tags({
-                readOnly: true,
-                tagData:["c++", "beginning"],
-            });
-        });
-
-        /*Ajax запрос на добавления комментария*/
-        //Добавление комментария к конспекту
-        $("#wiki-style-btn-add-dynamic-comment").click(function () {
-            comment_message = $("#wiki-input-dynamic-comment").val();
-            $.ajax({
-                type: "POST",
-                url: "add_dynamic_comment_in_wiki_page/",
-                data:{
-                    'comment_message':''+comment_message,
-                    'num_paragraph':''+num_paragraph,
-                },
-                dataType: "text",
-                cache: false,
-                success: function(data){
-                    if (data == 'ok'){
-                        location.reload();
-                    }
-                    else
-                    {
-                        //Говорим, что комментарий добавить не удалось(
-                    }
-                }
-            });
-        });
-
-
-
         update_comment_marks();
         //Очень важная функция обновления положения динамических кнопок, показывающих, что у данного абзаца, оставлен комментарий
         function update_comment_marks() {
@@ -603,30 +425,6 @@
             window.scrollTo(0, cur_scroll_y);
         }
 
-        //Переключение вкладок
-        $("#wiki-publ-tab-1").on("click", function () {
-            $(".wikicode-commenting-mark").show();
-        });
-        $("#wiki-publ-tab-2").on("click", function () {
-            $(".wikicode-commenting-mark").hide();
-        });
-        $("#wiki-publ-tab-3").on("click", function () {
-            $(".wikicode-commenting-mark").hide();
-        });
-        $("#wiki-publ-tab-4").on("click", function () {
-            $(".wikicode-commenting-mark").hide();
-        });
-        $("#wiki-publ-tab-5").on("click", function () {
-            $(".wikicode-commenting-mark").hide();
-        });
-        $("#wiki-publ-tab-6").on("click", function () {
-            $(".wikicode-commenting-mark").hide();
-        });
-        $("#wiki-publ-tab-7").on("click", function () {
-            $(".wikicode-commenting-mark").hide();
-        });
-
-
         //То, что касается общих комментариев
         {% for comment in all_comments %}
             $("#answer-comment-{{ comment.num_position }}").click(function () {
@@ -635,7 +433,5 @@
                 $("#input_wiki_comment_answer").val("");
             });
         {% endfor %}
-
-
     </script>
 {% endblock %}
