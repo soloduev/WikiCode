@@ -24,10 +24,13 @@ from .auth import check_auth, get_user_id
 
 
 def get_about(request):
+    with open("WikiCode/apps/wiki/mdtexts/docs/1.1.Description.md", "r", encoding='utf-8') as f:
+        about_wikicode = f.read()
 
     context = {
         "user_data" : check_auth(request),
         "user_id": get_user_id(request),
+        "about_wikicode":about_wikicode,
     }
 
     return render(request, 'wiki/about.html', context)
