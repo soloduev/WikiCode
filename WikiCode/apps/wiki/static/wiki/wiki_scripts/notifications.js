@@ -65,22 +65,7 @@ $("#answer-message-notification").click(function () {
     $("#label-nickname-message-for-answer").text($("#notification-message-author").text());
     $("#message-for-answer").text($("#notification-message-text").text());
     $("#input_wiki_message_answer").val("");
-
-    // $.ajax({
-    //     type: "POST",
-    //     url: "remove_notification/",
-    //     data:{
-    //         'nickname':''+$("#notification-global-nickname").val(),
-    //         'date':''+$("#notification-global-date").val(),
-    //     },
-    //     dataType: "text",
-    //     cache: false,
-    //     success: function(data){
-    //         if (data == 'ok'){
-    //             location.reload();
-    //         }
-    //     }
-    // });
+    
 });
 
 $("#wiki-send-message-answer").click(function () {

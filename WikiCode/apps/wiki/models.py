@@ -59,6 +59,8 @@ class Notification(models.Model):
     # invite_colleagues (Заявка в коллеги) message (письмо)
     type = models.CharField(max_length=100)
     message = models.TextField()
+    # Сообщение на которое ответили. Может быть пустым
+    message_answer = models.TextField()
     date = models.CharField(max_length=100)
     is_read = models.BooleanField()
     is_delete = models.BooleanField()

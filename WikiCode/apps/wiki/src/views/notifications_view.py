@@ -56,6 +56,7 @@ def get_notifications(request):
                     "user":notification.user,
                     "type":notification.type,
                     "message":notification.message,
+                    "message_answer":notification.message_answer,
                     "is_read":notification.is_read,
                     "is_delete":notification.is_delete})
                 number = number+1
@@ -149,6 +150,7 @@ def get_send_request_for_colleagues(request):
                                                         id_author=cur_user.id_user,
                                                         type="invite_colleagues",
                                                         message="User "+str(cur_user.nickname)+" invite "+str(add_user.nickname),
+                                                        message_answer="",
                                                         date=date,
                                                         is_read=False,
                                                         is_delete=False)
@@ -220,6 +222,7 @@ def get_user_send_message(request, id):
                                             id_author=cur_user.id_user,
                                             type="message",
                                             message=message,
+                                            message_answer="",
                                             date=date,
                                             is_read=False,
                                             is_delete=False)
@@ -228,6 +231,7 @@ def get_user_send_message(request, id):
                                              id_author=get_user.id_user,
                                              type="sended message",
                                              message=message,
+                                             message_answer="",
                                              date=date,
                                              is_read=True,
                                              is_delete=False)
@@ -266,6 +270,7 @@ def get_colleague_send_message(request):
                                              id_author=cur_user.id_user,
                                              type="message",
                                              message=message,
+                                             message_answer="",
                                              date=date,
                                              is_read=False,
                                              is_delete=False)
@@ -274,6 +279,7 @@ def get_colleague_send_message(request):
                                                id_author=get_user.id_user,
                                                type="sended message",
                                                message=message,
+                                               message_answer="",
                                                date=date,
                                                is_read=True,
                                                is_delete=False)
