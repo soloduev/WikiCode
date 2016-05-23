@@ -89,6 +89,25 @@ $("#wiki-style-btn-user-add-colleague").click(function () {
 });
 
 //Отправка письма
-$("#").click(function () {
-
+$("#wiki-send-message").click(function () {
+    if ($("#input_wiki_message").val().length > 10) {
+        $.ajax({
+            type: "POST",
+            url: "user_send_message/",
+            data: {
+                'message': '' + $("#input_wiki_message").val(),
+            },
+            dataType: "text",
+            cache: false,
+            success: function (data) {
+                if (data == 'ok') {
+                    location.reload();
+                }
+            }
+        });
+    }
+    else
+    {
+        console.log("Письмо должно содержать более 10 символов");
+    }
 });

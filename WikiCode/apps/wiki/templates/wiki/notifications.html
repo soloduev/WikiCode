@@ -82,8 +82,13 @@
                         <!--Экземпляр уведомления-->
                         {% if notification.type == "message" %}
                             <div id="wiki-notification-{{ notification.number }}" data-toggle="modal" data-target="#modal_notification" class="row notification-li {% if notification.is_read %}read-li{% endif %}">
-                                <div class="col-xs-8"><label class="wiki-notification"><i class="fa fa-envelope"></i> | СООБЩЕНИЕ | DEV_ADMIN | 13.09.2016</label></div>
-                                <div class="col-xs-4 text-right"><label><i class="glyphicon glyphicon-alert problem"></i> <i class="glyphicon glyphicon-remove delete"></i></label></div>
+                                <div class="col-xs-8"><label class="wiki-notification"><i class="fa fa-envelope"></i> | ПИСЬМО ОТ | {{ notification.nickname|upper }} | {{ notification.date }}</label></div>
+                                <div class="col-xs-4 text-right"><label>{% if notification.is_read %}(Прочитано){% endif %}</label></div>
+                            </div>
+                        {% elif notification.type == "sended message" %}
+                            <div id="wiki-notification-{{ notification.number }}" data-toggle="modal" data-target="#modal_notification" class="row notification-li {% if notification.is_read %}read-li{% endif %}">
+                                <div class="col-xs-8"><label class="wiki-notification"><i class="fa fa-envelope"></i> | ОТПРАВЛЕННОЕ | {{ notification.nickname|upper }} | {{ notification.date }}</label></div>
+                                <div class="col-xs-4 text-right"><label></label></div>
                             </div>
                         {% elif notification.type == "invite_colleagues" %}
                             <div id="wiki-notification-{{ notification.number }}" data-toggle="modal" data-target="#modal_notification" class="row notification-li {% if notification.is_read %}read-li{% endif %}">
@@ -177,16 +182,15 @@
                 <input hidden id="notification-global-date">
                 <div class="modal-body text-left">
                     <div id="wiki-message-notification" style="display: none;">
-                        <label>Дата отправки: </label> <span id="notification-date"></span>
+                        <label>Получено от </label> <a id="notification-message-author"></a>
                         <br>
-                        <label>Тема: </label> <span id="notification-theme"></span>
+                        <label>Дата отправки: </label> <span id="notification-message-date"></span>
                         <br>
                         <label>Сообщение:</label>
-                        <h5 id="notification-text"></h5>
+                        <h5 id="notification-message-text"></h5>
                         <hr>
-                        <a href="" id="" class="btn btn-link">Ответить</a>
-                        <a href="" id="" class="btn btn-link">Удалить собщение</a>
-                        <a href="" id="" class="btn btn-link">Пожаловаться</a>
+                        <a id="" class="btn btn-link">Ответить</a>
+                        <a id="" class="btn btn-link">Пожаловаться</a>
                     </div>
 
                     <div id="wiki-comment-notification" style="display: none;">
@@ -213,6 +217,17 @@
                         <a id="" class="btn btn-link">Пожаловаться</a>
                     </div>
 
+                    <div id="wiki-send-message-notification" style="display: none;">
+                        <label>Отправлено пользователю </label> <a id="notification-send-author"></a>
+                        <br>
+                        <label>Дата отправки: </label> <span id="notification-send-date"></span>
+                        <br>
+                        <label>Текст письма: </label>
+                        <br>
+                        <span id="notification-send-text"></span>
+                        <hr>
+                    </div>
+
 
                 </div>
                 <div class="modal-footer">
@@ -232,24 +247,46 @@
     <script>
         {% for notification in notifications %}
             $("#wiki-notification-{{ notification.number|escapejs }}").click(function () {
+                $("#notification-global-nickname").val("{{ notification.nickname|escapejs }}");
+                $("#notification-global-date").val("{{ notification.date|escapejs }}");
                 {% if notification.type == "message" %}
                     //ЕСЛИ ЭТО СООБЩЕНИЕ
-                    $("#wiki-message-notification").attr("style","");
                     //Установка заголовка
-                    $("#notification-header").text("Сообщение от dev_admin");
+                    $("#notification-header").text("Входящее письмо");
+                    $("#wiki-message-notification").attr("style","");
+                    $("#wiki-send-message-notification").attr("style","display:none;");
+                    $("#wiki-comment-notification").attr("style","display:none;");
+                    $("#wiki-invite-notification").attr("style","display:none;");
+                    //Установка отправителя
+                    $("#notification-message-author").text("{{ notification.nickname|escapejs }}");
+                    $("#notification-message-author").attr("href","/user/"+{{ notification.id|escapejs }});
                     //Установка даты
-                    $("#notification-date").text("07.07.07");
-                    //Установка темы
-                    $("#notification-theme").text("Мое первое письмо");
+                    $("#notification-message-date").text("{{ notification.date|escapejs }}");
                     //Установка текста
-                    $("#notification-text").text("Здравствуйте! Я бы хотел Вам сообщить, что это мое первое письмо на этом сервисе!");
+                    $("#notification-message-text").text("{{ notification.message|escapejs }}");
+                {% elif notification.type == "sended message" %}
+                    //ЕСЛИ ЭТО ОТПРАВЛЕННОЕ СООБЩЕНИЕ
+                    //Установка заголовка
+                    $("#notification-header").text("Отправленное письмо");
+                    $("#wiki-send-message-notification").attr("style","");
+                    $("#wiki-message-notification").attr("style","display:none;");
+                    $("#wiki-comment-notification").attr("style","display:none;");
+                    $("#wiki-invite-notification").attr("style","display:none;");
+                    //Установка получателя
+                    $("#notification-send-author").text("{{ notification.nickname|escapejs }}");
+                    $("#notification-send-author").attr("href","/user/"+{{ notification.id|escapejs }});
+                    //Установка даты
+                    $("#notification-send-date").text("{{ notification.date|escapejs }}");
+                    //Установка текста
+                    $("#notification-send-text").text("{{ notification.message|escapejs }}");
                 {% elif notification.type == "invite_colleagues" %}
                     //ЕСЛИ ЭТО ЗЯВКА
-                    $("#notification-global-nickname").val("{{ notification.nickname|escapejs }}");
-                    $("#notification-global-date").val("{{ notification.date|escapejs }}");
+                    //Установка заголовка
+                    $("#notification-header").text("Заявка в коллеги");
                     $("#wiki-invite-notification").attr("style","");
                     $("#wiki-message-notification").attr("style","display:none;");
                     $("#wiki-comment-notification").attr("style","display:none;");
+                    $("#wiki-send-message-notification").attr("style","display:none;");
                     //Установка даты
                     $("#notification-date-invite").text("{{ notification.date|escapejs }}");
                     //Установка пользователя
