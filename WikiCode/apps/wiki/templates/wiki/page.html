@@ -140,7 +140,7 @@
                                                             <!--Экземпляр сообщения-->
                                                             <div class="comment-block-wiki">
                                                                 <!--Имя автора комментария-->
-                                                                <span class="text-left"><b><a href="/user/{{ comment.id_author }}" style="text-decoration: none;"> {{ comment.nickname_author }}</a></b> ({{ comment.data }}) <i class="fa fa-long-arrow-up">{{ comment.rating }}</i></span>
+                                                                <span class="text-left"><b><a href="/user/{{ comment.id_author }}" style="text-decoration: none;"> {{ comment.nickname_author }}</a></b>{% if comment.nickname_author_answer != "" %} ответил <b><a href="/user/{{ comment.id_author_answer }}" style="text-decoration: none;"> {{ comment.nickname_author_answer }}</a></b>{% endif %} ({{ comment.data }}) <i class="fa fa-long-arrow-up">{{ comment.rating }}</i></span>
                                                                 <!--Сообщение-->
                                                                 <p>{{ comment.text }}</p>
                                                                 <div class="btn-group"><div class="btn comment-btn-wiki" href="#" style="text-decoration: none;">Согласен <i class="fa fa-long-arrow-up"></i></div> <div class="btn comment-btn-wiki" style="text-decoration: none;">Не согласен <i class="fa fa-long-arrow-down"></i></div> <div data-toggle="modal" data-target="#modal_answer_comment" id="answer-comment-{{ comment.num_position }}" class="btn comment-btn-wiki" style="text-decoration: none;"> Ответить <i class="fa fa-commenting-o"></i></div></div>

@@ -58,7 +58,8 @@ def get_notifications(request):
                     "message":notification.message,
                     "message_answer":notification.message_answer,
                     "is_read":notification.is_read,
-                    "is_delete":notification.is_delete})
+                    "is_delete":notification.is_delete,
+                    "id_publication":notification.id_publication})
                 number = number+1
 
             except User.DoesNotExist:
@@ -153,7 +154,8 @@ def get_send_request_for_colleagues(request):
                                                         message_answer="",
                                                         date=date,
                                                         is_read=False,
-                                                        is_delete=False)
+                                                        is_delete=False,
+                                                        id_publication=-1)
 
                         new_notification.save()
                         print("Заявка в коллеги отправлена")
@@ -225,7 +227,8 @@ def get_user_send_message(request, id):
                                             message_answer="",
                                             date=date,
                                             is_read=False,
-                                            is_delete=False)
+                                            is_delete=False,
+                                            id_publication=-1)
 
             sended_notification = Notification(user=cur_user,
                                              id_author=get_user.id_user,
@@ -234,7 +237,8 @@ def get_user_send_message(request, id):
                                              message_answer="",
                                              date=date,
                                              is_read=True,
-                                             is_delete=False)
+                                             is_delete=False,
+                                             id_publication=-1)
             sended_notification.save()
             send_notification.save()
             print("Письмо отправлено")
@@ -273,7 +277,8 @@ def get_colleague_send_message(request):
                                              message_answer="",
                                              date=date,
                                              is_read=False,
-                                             is_delete=False)
+                                             is_delete=False,
+                                             id_publication=-1)
 
             sended_notification = Notification(user=cur_user,
                                                id_author=get_user.id_user,
@@ -282,7 +287,8 @@ def get_colleague_send_message(request):
                                                message_answer="",
                                                date=date,
                                                is_read=True,
-                                               is_delete=False)
+                                               is_delete=False,
+                                               id_publication=-1)
             sended_notification.save()
             send_notification.save()
             print("Письмо отправлено")
@@ -322,7 +328,8 @@ def get_send_answer_message(request):
                                              message_answer=message,
                                              date=date,
                                              is_read=False,
-                                             is_delete=False)
+                                             is_delete=False,
+                                             id_publication=-1)
 
             sended_notification = Notification(user=cur_user,
                                                id_author=get_user.id_user,
@@ -331,7 +338,8 @@ def get_send_answer_message(request):
                                                message_answer=message,
                                                date=date,
                                                is_read=True,
-                                               is_delete=False)
+                                               is_delete=False,
+                                               id_publication=-1)
             sended_notification.save()
             send_notification.save()
             print("Ответ отправлен")
@@ -364,6 +372,9 @@ def get_send_answer_comment(request, id):
             date = str(datetime.datetime.now())
             date = date[:len(date) - 7]
 
+            # Получаем конспект на котором оставлен комментарий
+            publication = Publication.objects.get(id_publication=id)
+
             # Создаем уведомление
             send_notification = Notification(user=get_user,
                                              id_author=cur_user.id_user,
@@ -372,11 +383,11 @@ def get_send_answer_comment(request, id):
                                              message_answer=text,
                                              date=date,
                                              is_read=False,
-                                             is_delete=False)
+                                             is_delete=False,
+                                             id_publication=id)
 
-            # Далее, создаем новый комментарий в публикации
+            # Далее, создаем новый комментарий в конспекте
             comment_block = CommentBlock.objects.get(id_publication=id)
-            publication = Publication.objects.get(id_publication=id)
 
             # Обновляем статистику пользователей
             cur_user.comments += 1
@@ -391,7 +402,7 @@ def get_send_answer_comment(request, id):
                                   id_author=cur_user.id_user,
                                   nickname_author=cur_user.nickname,
                                   rating=0,
-                                  text=get_user.nickname+", "+answer,
+                                  text=answer,
                                   data=date,
                                   id_author_answer=get_user.id_user,
                                   nickname_author_answer=get_user.nickname)

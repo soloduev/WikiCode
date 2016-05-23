@@ -233,7 +233,7 @@
                         <br>
                         <h5 id="notification-answer-comment-text"></h5>
                         <hr>
-                        <a id="answer-comment-notification-answer" data-dismiss="modal" class="btn btn-link">Перейти к конспекту</a>
+                        <a href="" id="answer-comment-notification-answer" class="btn btn-link">Перейти к конспекту</a>
                         <a id="" class="btn btn-link">Пожаловаться</a>
                     </div>
 
@@ -381,6 +381,8 @@
                     $("#notification-answer-comment-text").text("{{ notification.message|escapejs }}");
                     //Установка текста, на который произошел ответ
                     $("#comment-answer-notification-get").text("{{ notification.message_answer|escapejs }}");
+                    //Установка ссылки на конспект
+                    $("#answer-comment-notification-answer").attr("href","/page/"+{{ notification.id_publication }});
                 {% elif notification.type == "sended message" %}
                     //ЕСЛИ ЭТО ОТПРАВЛЕННОЕ СООБЩЕНИЕ
                     //Установка заголовка

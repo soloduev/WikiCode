@@ -64,6 +64,8 @@ class Notification(models.Model):
     date = models.CharField(max_length=100)
     is_read = models.BooleanField()
     is_delete = models.BooleanField()
+    # Номер конспекта, на котором оставлен комментарий. Может быть пустым
+    id_publication = models.BigIntegerField()
     def __str__(self):
         return str("user:" + str(self.user) +
                    " type:" + str(self.type) +
