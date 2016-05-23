@@ -24,20 +24,16 @@
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                        data-target="#navbar-collapse-2">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-2">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
                 <span>
-
-                    <a class="navbar-brand" id="wikicode-theme-brand" href="{% url 'index' %}"><i
-                            class="fa fa-university"></i> WikiCode</a>
+                    <a class="navbar-brand" id="wikicode-theme-brand" href="{% url 'index' %}"><i class="fa fa-university"></i> WikiCode</a>
                 </span>
             </div>
-
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar-collapse-2">
                 <ul class="nav navbar-nav navbar-right">
@@ -46,36 +42,26 @@
                     <li id="nav-bar-button3"><a href="{% url 'settings' %}">Настройки</a></li>
                     <li id="nav-bar-button5"><a href="{% url 'about' %}">О платформе</a></li>
                     {% if user_data == "None" %}
-                        <li>
-                            <a class="btn btn-default btn-outline btn-circle" data-toggle="collapse" href="#nav-collapse2"
-                               aria-expanded="false" aria-controls="nav-collapse2" style="border-radius: 0px;">Войти</a>
-                        </li>
+                        <li><a class="btn btn-default btn-outline btn-circle" data-toggle="collapse" href="#nav-collapse2" aria-expanded="false" aria-controls="nav-collapse2" style="border-radius: 0px;">Войти</a></li>
                     {% else %}
                         <li><a href="/user/{{ user_id }}/"><b>{{ user_data }}</b></a></li>
-                        <li>
-                            <a href="{% url 'logout_user' %}" class="btn btn-default btn-outline btn-circle" style="border-radius: 0px;"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
-                        </li>
+                        <li><a href="{% url 'logout_user' %}" class="btn btn-default btn-outline btn-circle" style="border-radius: 0px;"><i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
                     {% endif %}
-
-
                 </ul>
                 <div class="collapse nav navbar-nav nav-collapse" id="nav-collapse2">
                     <form action="{% url 'login_user' %}" method="post" class="navbar-form navbar-right form-inline" role="form">
                         {% csrf_token %}
                         <div class="form-group">
                             <label class="sr-only" for="Email">Email</label>
-                            <input type="text" class="form-control" id="Email" name="user_name" placeholder="Email" autofocus required
-                                   style="border-radius: 0px;"/>
+                            <input type="text" class="form-control" id="Email" name="user_name" placeholder="Email" autofocus required style="border-radius: 0px;"/>
                         </div>
                         <div class="form-group">
                             <label class="sr-only" for="Password">Пароль</label>
-                            <input type="password" class="form-control" id="Password" name="user_password"  placeholder="Password" required
-                                   style="border-radius: 0px;"/>
+                            <input type="password" class="form-control" id="Password" name="user_password"  placeholder="Password" required style="border-radius: 0px;"/>
                         </div>
                         <button type="submit" class="btn btn-primary" style="border-radius: 0px;" href="{% url 'login_user' %}">Войти</button>
                         <div class="form-group">
-                            <a class="btn btn-primary" style="border-radius: 0px;"
-                               href="{% url 'registration' %}">Регистрация</a>
+                            <a class="btn btn-primary" style="border-radius: 0px;" href="{% url 'registration' %}">Регистрация</a>
                         </div>
                     </form>
                 </div>
@@ -151,15 +137,6 @@
             </div>
         </div>
     {% endblock %}
-
-
-
-
-
-
-
-
-
 {% endblock %}
 
 

@@ -37,13 +37,10 @@
                     <label class="text-center btn-primary btn-block">РЕГИСТРАЦИЯ</label>
                 </div>
                 <div class="row">
-
                     <div class="col-xs-1 col-sm-2 col-md-3 col-lg-4"></div>
-
                     <div id="reg-panel"class="col-xs-10 col-sm-8 col-md-6 col-lg-4">
                         <div class="container-fluid">
                             <br>
-
                             <div class="row">
                                 <label>Перед регистрацией, прочитайте наши правила:</label>
                             </div>
@@ -84,7 +81,6 @@
                                 {% if error %}
                                     <div class="row">
                                         <label style="color:red;">{{ error }}</label>
-
                                     </div>
                                     <br>
                                 {% endif %}
@@ -92,8 +88,7 @@
                                     <label id="wiki_nickname_message">Ваш Nickname</label>
                                 </div>
                                 <div class="row">
-                                    <input id="wiki_nickname" type="text" name="user_nickname" placeholder="Nickname" class="form-control btn-block"  autofocus required style="border-radius: 0px;height: 30px;"
-                                           pattern="[a-zA-Z0-9_-]{3,12}" title="Логин может содержать буквы только латинского алфавитa, знаки '_' и '-' , а также цифры. Его длина должна находиться в диапазоне от 3 до 12 символов">
+                                    <input id="wiki_nickname" type="text" name="user_nickname" placeholder="Nickname" class="form-control btn-block"  autofocus required style="border-radius: 0px;height: 30px;" pattern="[a-zA-Z0-9_-]{3,12}" title="Логин может содержать буквы только латинского алфавитa, знаки '_' и '-' , а также цифры. Его длина должна находиться в диапазоне от 3 до 12 символов">
                                 </div>
                                 <br>
 
@@ -101,10 +96,7 @@
                                     <label id="wiki_email_message">Ваш Email</label>
                                 </div>
                                 <div class="row">
-                                    <input id="wiki_email" type="email" name="user_email" placeholder="example@example.com" class="form-control btn-block"  required
-                                           style="border-radius: 0px;height: 30px;"
-                                           pattern="^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$"
-                                           title="Вы неверно ввели адрес электронной почты, необходимый формат: user@mail.com">
+                                    <input id="wiki_email" type="email" name="user_email" placeholder="example@example.com" class="form-control btn-block"  required style="border-radius: 0px;height: 30px;" pattern="^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$" title="Вы неверно ввели адрес электронной почты, необходимый формат: user@mail.com">
                                 </div>
                                 <br>
 
@@ -112,35 +104,25 @@
                                     <label>Ваш Пароль</label>
                                 </div>
                                 <div class="row">
-                                    <input type="password" name="user_password" placeholder="Пароль" class="form-control btn-block"  required style="border-radius: 0px;height: 30px;"
-                                           pattern="[a-zA-Z0-9]{6,16}" title="Пароль должен состоять только из букв латинского алфавита и цифр. Его длина должна находиться в диапазоне от 6 до 16 символов.">
+                                    <input type="password" name="user_password" placeholder="Пароль" class="form-control btn-block"  required style="border-radius: 0px;height: 30px;" pattern="[a-zA-Z0-9]{6,16}" title="Пароль должен состоять только из букв латинского алфавита и цифр. Его длина должна находиться в диапазоне от 6 до 16 символов.">
                                 </div>
                                 <br>
 
                                 <div class="row">
-                                    <button id="wiki_sign_up" type="submit" class="btn btn-block"><span
-                                            class="glyphicon glyphicon-ok"></span> Зарегистрироваться</button>
+                                    <button id="wiki_sign_up" type="submit" class="btn btn-block"><span class="glyphicon glyphicon-ok"></span> Зарегистрироваться</button>
                                 </div>
                                 <div class="row">
-                                    <a href="{% url 'login' %}" style="text-decoration: none;" id="wiki_code_sign_in" type="button" class="btn btn-block btn-link">
-                                        У меня уже есть аккаунт</a>
+                                    <a href="{% url 'login' %}" style="text-decoration: none;" id="wiki_code_sign_in" type="button" class="btn btn-block btn-link">У меня уже есть аккаунт</a>
                                 </div>
-
-
                             </form>
-
                             <br>
                         </div>
                     </div>
                     <div class="col-xs-1 col-sm-2 col-md-3 col-lg-4"></div>
-
                 </div>
-
                 <div class="row">
-                    <br>
-                    <br>
+                    <br><br>
                 </div>
-
             </div>
         </div>
     </div>

@@ -65,20 +65,16 @@
                     <div class="col-md-4 hidden-sm hidden-xs">
                         <div class="[ info-card ]">
                             <img style="width: 100%" src="http://placehold.it/240x240">
-
                             <div class="[ info-card-details ] animate">
                                 <div class="[ info-card-header ]">
                                     <h1> {{ user.nickname }} </h1>
-
                                     <h3> {{ user.name }} </h3>
                                 </div>
                                 <div class="[ info-card-detail ]">
                                     <!-- Description -->
                                     <p><h4>Like!</h4></p>
-
                                     <div class="social">
-                                        <a  id="wiki-code-like-user" class="[ social-icon facebook ] animate"><span
-                                                class="fa fa-thumbs-o-up"></span></a>
+                                        <a  id="wiki-code-like-user" class="[ social-icon facebook ] animate"><span class="fa fa-thumbs-o-up"></span></a>
                                     </div>
                                 </div>
                             </div>
@@ -153,18 +149,9 @@
                     <div class="tabbable-panel">
                         <div class="tabbable-line">
                             <ul class="nav nav-tabs ">
-                                <li class="active">
-                                    <a href="#tab_default_1" data-toggle="tab">
-                                        Превью конспект </a>
-                                </li>
-                                <li>
-                                    <a href="#tab_default_2" data-toggle="tab">
-                                        Лучший конспект</a>
-                                </li>
-                                <li>
-                                    <a href="#tab_default_3" data-toggle="tab">
-                                        Последний конспект </a>
-                                </li>
+                                <li class="active"><a href="#tab_default_1" data-toggle="tab">Превью конспект </a></li>
+                                <li><a href="#tab_default_2" data-toggle="tab">Лучший конспект</a></li>
+                                <li><a href="#tab_default_3" data-toggle="tab">Последний конспект </a></li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tab_default_1">
@@ -179,7 +166,6 @@
                                                     Читать
                                                 </a>
                                             </div>
-
                                         </div>
                                     </div>
                                     <div id="wiki-code-prewiew-publ">
@@ -193,10 +179,7 @@
                                                 <h4 class="text-left" style="display: none;">Title this publication</h4>
                                             </div>
                                             <div class="col-md-4 col-xs-4 text-right">
-
-                                                <button id="wiki-style-btn" class="btn text-center btn-block" style="display: none;">
-                                                    Читать
-                                                </button>
+                                                <button id="wiki-style-btn" class="btn text-center btn-block" style="display: none;">Читать</button>
                                             </div>
 
                                         </div>
@@ -213,12 +196,8 @@
                                                 <h4 class="text-left" style="display: none;">Title this publication</h4>
                                             </div>
                                             <div class="col-md-4 col-xs-4 text-right">
-
-                                                <button id="wiki-style-btn" class="btn text-center btn-block" style="display: none;">
-                                                    Читать
-                                                </button>
+                                                <button id="wiki-style-btn" class="btn text-center btn-block" style="display: none;">Читать</button>
                                             </div>
-
                                         </div>
                                     </div>
                                     <p></p>
@@ -230,7 +209,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -246,10 +224,8 @@
                 <div class="modal-body">
                     <label><h4>Введите текст письма</h4></label>
                     <br>
-                    <textarea id="input_wiki_message" type="text" placeholder="Ваш текст..."
-                              class="form-control" style="border-radius: 0px; resize: none;" rows="10"></textarea>
-                    <br>
-                    <br>
+                    <textarea id="input_wiki_message" type="text" placeholder="Ваш текст..." class="form-control" style="border-radius: 0px; resize: none;" rows="10"></textarea>
+                    <br><br>
                 </div>
                 <div class="modal-footer">
                     <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
@@ -268,7 +244,6 @@
     {% load staticfiles %}
     <link href={% static "wiki/wiki_styles/user.css" %} type="text/css" rel="stylesheet">
     <script type="text/javascript" src="{% static 'wiki/wiki_scripts/user.js'%}"></script>
-
     <script>
         $(init);
         {% if prewiew_publ_text %}

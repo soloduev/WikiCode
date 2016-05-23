@@ -45,9 +45,7 @@
                                 <div class="col-md-6 col-xs-12">
                                     <div class="container-fluid text-left">
                                         <div class="row">
-                                            <a id="wikicode-name-author" href="/user/{{ publication.id_author }}" class="btn"><span
-                                                    class="glyphicon glyphicon-user"></span>
-                                                {{ publication.nickname_author }}</a>
+                                            <a id="wikicode-name-author" href="/user/{{ publication.id_author }}" class="btn"><span class="glyphicon glyphicon-user"></span>{{ publication.nickname_author }}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -55,14 +53,9 @@
                                     <div class="container-fluid text-right">
                                         <div class="row">
                                             <div class="btn-group">
-                                                <a class="btn" {% if guest %} id="wikicode-like-publ-not" data-toggle="modal" data-target="#modal_auth" {% else %} id="wikicode-like-publ" href="#" {% endif %}><span
-                                                        class="glyphicon glyphicon-thumbs-up"></span> ({{ publication.likes }})</a>
-
+                                                <a class="btn" {% if guest %} id="wikicode-like-publ-not" data-toggle="modal" data-target="#modal_auth" {% else %} id="wikicode-like-publ" href="#" {% endif %}><span class="glyphicon glyphicon-thumbs-up"></span> ({{ publication.likes }})</a>
                                                 <a {% if guest %} id="wikicode-import-publ-not" data-toggle="modal" data-target="#modal_auth" {% else %}id="wikicode-import-publ" data-toggle="modal" data-target="#modal_save_publ"{% endif %} class="btn"><span class="glyphicon glyphicon-import"></span> ({{ publication.imports }})</a>
-
-
-                                                <a {% if guest %} id="wikicode-download-publ-not" data-toggle="modal" data-target="#modal_auth" {% else %}id="wikicode-download-publ" href="#" {% endif %}class="btn"><span
-                                                        class="glyphicon glyphicon-download"></span> ({{ publication.downloads }})</a>
+                                                <a {% if guest %} id="wikicode-download-publ-not" data-toggle="modal" data-target="#modal_auth" {% else %}id="wikicode-download-publ" href="#" {% endif %}class="btn"><span class="glyphicon glyphicon-download"></span> ({{ publication.downloads }})</a>
                                             </div>
                                         </div>
                                     </div>
@@ -163,9 +156,7 @@
                                                 <div class="col-md-5 col-sm-5 col-xs-12">
                                                     <br>
                                                     <div class="row">
-                                                        <a href="/publ_manager/{{ publication.id_publication }}"  class="btn btn-block" id="wiki-style-btn">
-                                                            Панель управления конспектом
-                                                        </a>
+                                                        <a href="/publ_manager/{{ publication.id_publication }}"  class="btn btn-block" id="wiki-style-btn">Панель управления конспектом</a>
                                                     </div>
                                                     <br>
                                                 </div>
@@ -334,10 +325,8 @@
                 <div class="modal-body">
                     <label><h4>Введите текст ответа на комментарий</h4></label>
                     <br>
-                    <textarea id="input_wiki_comment_answer" type="text" placeholder="Ваш текст ответа..."
-                              class="form-control" style="border-radius: 0px; resize: none;" rows="10"></textarea>
-                    <br>
-                    <br>
+                    <textarea id="input_wiki_comment_answer" type="text" placeholder="Ваш текст ответа..." class="form-control" style="border-radius: 0px; resize: none;" rows="10"></textarea>
+                    <br><br>
                 </div>
                 <div class="modal-footer">
                     <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
