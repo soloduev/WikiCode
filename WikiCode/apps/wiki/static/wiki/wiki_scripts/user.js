@@ -87,3 +87,8 @@ $("#wiki-style-btn-user-add-colleague").click(function () {
         }
     });
 });
+
+//Отправка письма
+$("#").click(function () {
+
+});
