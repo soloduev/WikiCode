@@ -95,7 +95,7 @@
                                 <div class="btn-group">
                                     <div type="button" id="star_colleagues" class="btn wiki-style-colleagues-btn"><span
                                             class="glyphicon glyphicon-star-empty"></span></div>
-                                    <div type="button" id="add_colleagues" class="btn wiki-style-colleagues-btn"><span
+                                    <div data-toggle="modal" data-target="#modal_write_message" type="button" id="send_message_colleagues_{{ colleague.id }}" class="btn wiki-style-colleagues-btn"><span
                                             class="glyphicon glyphicon-envelope"></span></div>
                                     <div type="button" id="info_colleagues" class="btn wiki-style-colleagues-btn"><span
                                             class="glyphicon glyphicon-info-sign"></span></div>
@@ -134,6 +134,32 @@
             </div>
         </div>
     </div>
+
+    <!-- Модальное окно отправляющее письмо -->
+    <div class="modal fade" id="modal_write_message" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <input hidden type="text" id="id-colleague-for-send-message">
+                    <h4 class="modal-title" id="myModalLabel">Отправка письма</h4>
+                </div>
+                <div class="modal-body">
+                    <label><h4>Введите текст письма для <span id="label-nickname-colleague"></span></h4></label>
+                    <br>
+                    <textarea id="input_wiki_message" type="text" placeholder="Ваш текст..."
+                              class="form-control" style="border-radius: 0px; resize: none;" rows="10"></textarea>
+                    <br>
+                    <br>
+                </div>
+                <div class="modal-footer">
+                    <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
+                    <button id="wiki-send-message" type="button" class="btn" >Отправить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block add_script %}
@@ -145,24 +171,28 @@
             //Удаление из коллег
             $("#remove_colleague_{{ colleague.id|escapejs }}").click(function () {
                 console.log("Yes!");
-                 $.ajax({
-                     type: "POST",
-                     url: "remove_colleague/",
-                     data:{
+                $.ajax({
+                    type: "POST",
+                    url: "remove_colleague/",
+                    data:{
                         'id':''+{{ colleague.id|escapejs }},
-                     },
-                     dataType: "text",
-                     cache: false,
-                     success: function(data){
-                         if (data == 'ok'){
-                             location.reload();
-                         }
-                     }
+                    },
+                    dataType: "text",
+                    cache: false,
+                    success: function(data){
+                        if (data == 'ok'){
+                            location.reload();
+                        }
+                    }
                 });
             });
+            //При клике, указываем id коллеги, которому хоти отправить сообщение
+            //
+            $("#send_message_colleagues_{{ colleague.id|escapejs }}").click(function () {
+                $("#id-colleague-for-send-message").val("{{ colleague.id|escapejs }}");
+                $("#label-nickname-colleague").text("{{ colleague.nickname|escapejs }}");
+                $("#input_wiki_message").val("");
+            });
         {% endfor %}
-
-
-
     </script>
 {% endblock %}

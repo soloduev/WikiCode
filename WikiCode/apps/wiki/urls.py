@@ -81,6 +81,7 @@ urlpatterns = [
     # События на странице коллег
     url(r'^colleagues/send_request_for_colleagues/$', views.send_request_for_colleagues, name='send_request_for_colleagues'),
     url(r'^colleagues/remove_colleague/$', views.remove_colleague, name='remove_colleague'),
+    url(r'^colleagues/colleague_send_message/$', views.colleague_send_message, name='colleague_send_message'),
 
     # Событие на странице уведомлений
     url(r'^notifications/read_notification/$', views.read_notification, name='read_notification'),

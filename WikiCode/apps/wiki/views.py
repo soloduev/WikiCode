@@ -148,6 +148,12 @@ def remove_colleague(request):
 
 @develop_mode
 @login_required
+def colleague_send_message(request):
+    return notifications_view.get_colleague_send_message(request)
+
+
+@develop_mode
+@login_required
 def notifications(request):
     return notifications_view.get_notifications(request)
 
