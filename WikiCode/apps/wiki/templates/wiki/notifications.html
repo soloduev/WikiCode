@@ -189,7 +189,7 @@
                         <label>Сообщение:</label>
                         <h5 id="notification-message-text"></h5>
                         <hr>
-                        <a id="" class="btn btn-link">Ответить</a>
+                        <a id="answer-message-notification" data-dismiss="modal" data-toggle="modal" data-target="#modal_answer_message" class="btn btn-link">Ответить</a>
                         <a id="" class="btn btn-link">Пожаловаться</a>
                     </div>
 
@@ -233,6 +233,37 @@
                 <div class="modal-footer">
                     <button id="wiki-style-btn-remove-notification" type="button" class="btn" data-dismiss="modal">Удалить это уведомление</button>
                     <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Назад</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Модальное окно ответа на письмо -->
+    <div class="modal fade" id="modal_answer_message" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <input hidden type="text" id="id-colleague-for-send-message">
+                    <h4 class="modal-title" id="myModalLabel">Ответить на письмо</h4>
+                </div>
+                <div class="modal-body">
+                    <label><h4>Письмо пользователя  <span id="label-nickname-message-for-answer"></span>:</h4></label>
+                    <br>
+                    <span id="message-for-answer"></span>
+                    <br>
+                    <hr>
+                    <label><h4>Введите текст ответа на письмо</h4></label>
+                    <br>
+                    <textarea id="input_wiki_message_answer" type="text" placeholder="Ваш текст ответа..."
+                              class="form-control" style="border-radius: 0px; resize: none;" rows="10"></textarea>
+                    <br>
+                    <br>
+                </div>
+                <div class="modal-footer">
+                    <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
+                    <button id="wiki-send-message-answer" type="button" class="btn" data-dismiss="modal">Ответить</button>
                 </div>
             </div>
         </div>

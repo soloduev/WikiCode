@@ -44,8 +44,6 @@ $("#add_colleague_invite").click(function () {
 
 //Удаление уведомления
 $("#wiki-style-btn-remove-notification").click(function () {
-    console.log();
-    console.log();
     $.ajax({
         type: "POST",
         url: "remove_notification/",
@@ -61,4 +59,53 @@ $("#wiki-style-btn-remove-notification").click(function () {
             }
         }
     });
+});
+
+$("#answer-message-notification").click(function () {
+    $("#label-nickname-message-for-answer").text($("#notification-message-author").text());
+    $("#message-for-answer").text($("#notification-message-text").text());
+    $("#input_wiki_message_answer").val("");
+
+    // $.ajax({
+    //     type: "POST",
+    //     url: "remove_notification/",
+    //     data:{
+    //         'nickname':''+$("#notification-global-nickname").val(),
+    //         'date':''+$("#notification-global-date").val(),
+    //     },
+    //     dataType: "text",
+    //     cache: false,
+    //     success: function(data){
+    //         if (data == 'ok'){
+    //             location.reload();
+    //         }
+    //     }
+    // });
+});
+
+$("#wiki-send-message-answer").click(function () {
+    if($("#input_wiki_message_answer").val().length > 10)
+    {
+        $.ajax({
+            type: "POST",
+            url: "send_answer_message/",
+            data:{
+                'nickname':''+$("#label-nickname-message-for-answer").text(),
+                'message':''+$("#message-for-answer").text(),
+                'answer':''+$("#input_wiki_message_answer").val(),
+            },
+            dataType: "text",
+            cache: false,
+            success: function(data){
+                if (data == 'ok'){
+                    location.reload();
+                }
+            }
+        });
+    }
+    else
+    {
+        console.log("Текст ответа должен быть больше 10 символов");
+    }
+
 });

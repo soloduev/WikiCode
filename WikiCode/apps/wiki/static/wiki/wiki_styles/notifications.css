@@ -33,6 +33,7 @@
 }
 
 #wiki-style-btn,
+#wiki-send-message-answer,
 #wiki-style-btn-remove-notification{
     background-color: #024f81;
     border-radius: 0px;
@@ -43,6 +44,7 @@
 
 
 #wiki-style-btn:hover,
+#wiki-send-message-answer:hover,
 #wiki-style-btn-remove-notification:hover{
     background-color: #4da6d9;
     box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
