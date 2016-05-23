@@ -293,3 +293,52 @@ def get_colleague_send_message(request):
 
     else:
         return HttpResponse('no', content_type='text/html')
+
+
+@csrf_protect
+def get_send_answer_message(request):
+    """Ajax представление. Отвечает на письмо."""
+
+    if request.method == "POST":
+        message = request.POST.get('message')
+        nickname = request.POST.get('nickname')
+        answer = request.POST.get('answer')
+
+        try:
+            # Получаем текущего пользователя
+            cur_user = User.objects.get(id_user=get_user_id(request))
+
+            # Получаем пользователя который должен получить уведомление
+            get_user = User.objects.get(nickname=nickname)
+
+            # Получаем текущую дату
+            date = str(datetime.datetime.now())
+            date = date[:len(date) - 7]
+
+            send_notification = Notification(user=get_user,
+                                             id_author=cur_user.id_user,
+                                             type="answer message",
+                                             message=answer,
+                                             message_answer=message,
+                                             date=date,
+                                             is_read=False,
+                                             is_delete=False)
+
+            sended_notification = Notification(user=cur_user,
+                                               id_author=get_user.id_user,
+                                               type="sended message",
+                                               message=answer,
+                                               message_answer=message,
+                                               date=date,
+                                               is_read=True,
+                                               is_delete=False)
+            sended_notification.save()
+            send_notification.save()
+            print("Ответ отправлен")
+            return HttpResponse('ok', content_type='text/html')
+
+        except User.DoesNotExist:
+            return HttpResponse('no', content_type='text/html')
+
+    else:
+        return HttpResponse('no', content_type='text/html')

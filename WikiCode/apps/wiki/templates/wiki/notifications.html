@@ -90,6 +90,11 @@
                                 <div class="col-xs-8"><label class="wiki-notification"><i class="fa fa-envelope"></i> | ОТПРАВЛЕННОЕ | {{ notification.nickname|upper }} | {{ notification.date }}</label></div>
                                 <div class="col-xs-4 text-right"><label></label></div>
                             </div>
+                        {% elif notification.type == "answer message" %}
+                            <div id="wiki-notification-{{ notification.number }}" data-toggle="modal" data-target="#modal_notification" class="row notification-li {% if notification.is_read %}read-li{% endif %}">
+                                <div class="col-xs-8"><label class="wiki-notification"><i class="fa fa-envelope"></i> | ОТВЕТ НА ПИСЬМО | {{ notification.nickname|upper }} | {{ notification.date }}</label></div>
+                                <div class="col-xs-4 text-right"><label>{% if notification.is_read %}(Прочитано){% endif %}</label></div>
+                            </div>
                         {% elif notification.type == "invite_colleagues" %}
                             <div id="wiki-notification-{{ notification.number }}" data-toggle="modal" data-target="#modal_notification" class="row notification-li {% if notification.is_read %}read-li{% endif %}">
                                 <div class="col-xs-8"><label class="wiki-notification"><i class="glyphicon glyphicon-user"></i> | ЗАЯВКА | {{ notification.nickname|upper }} | {{ notification.date }}</label></div>
@@ -193,6 +198,23 @@
                         <a id="" class="btn btn-link">Пожаловаться</a>
                     </div>
 
+                    <div id="wiki-answer-message-notification" style="display: none;">
+                        <label>Получено от </label> <a id="notification-answer-message-author"></a>
+                        <br>
+                        <label>Дата отправки: </label> <span id="notification-answer-message-date"></span>
+                        <hr>
+                        <label>Ваше письмо: </label>
+                        <br>
+                        <span id="message-answer-notification-get"></span>
+                        <hr>
+                        <label>Ответ:</label>
+                        <br>
+                        <h5 id="notification-answer-message-text"></h5>
+                        <hr>
+                        <a id="answer-message-notification-answer" data-dismiss="modal" data-toggle="modal" data-target="#modal_answer" class="btn btn-link">Ответить</a>
+                        <a id="" class="btn btn-link">Пожаловаться</a>
+                    </div>
+
                     <div id="wiki-comment-notification" style="display: none;">
                         <label>Дата отправки: </label> <span id="notification-date"></span>
                         <br>
@@ -269,6 +291,36 @@
         </div>
     </div>
 
+    <!-- Модальное окно ответа на ответ -->
+    <div class="modal fade" id="modal_answer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <input hidden type="text" id="id-colleague-for-send-message">
+                    <h4 class="modal-title" id="myModalLabel">Ответить на письмо</h4>
+                </div>
+                <div class="modal-body">
+                    <label><h4>Письмо пользователя  <span id="label-nickname-answer"></span>:</h4></label>
+                    <br>
+                    <span id="answer-for-answer"></span>
+                    <br>
+                    <hr>
+                    <label><h4>Введите текст ответа на письмо</h4></label>
+                    <br>
+                    <textarea id="input_wiki_answer" type="text" placeholder="Ваш текст ответа..."
+                              class="form-control" style="border-radius: 0px; resize: none;" rows="10"></textarea>
+                    <br>
+                    <br>
+                </div>
+                <div class="modal-footer">
+                    <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
+                    <button id="wiki-send-answer" type="button" class="btn" data-dismiss="modal">Ответить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block add_script %}
@@ -288,6 +340,8 @@
                     $("#wiki-send-message-notification").attr("style","display:none;");
                     $("#wiki-comment-notification").attr("style","display:none;");
                     $("#wiki-invite-notification").attr("style","display:none;");
+                    $("#wiki-answer-message-notification").attr("style","display:none;");
+
                     //Установка отправителя
                     $("#notification-message-author").text("{{ notification.nickname|escapejs }}");
                     $("#notification-message-author").attr("href","/user/"+{{ notification.id|escapejs }});
@@ -295,6 +349,24 @@
                     $("#notification-message-date").text("{{ notification.date|escapejs }}");
                     //Установка текста
                     $("#notification-message-text").text("{{ notification.message|escapejs }}");
+                {% elif notification.type == "answer message" %}
+                    //ЕСЛИ ЭТО ОТВЕТ НА СООБЩЕНИЕ
+                    //Установка заголовка
+                    $("#notification-header").text("Ответ на письмо");
+                    $("#wiki-answer-message-notification").attr("style","");
+                    $("#wiki-message-notification").attr("style","display:none;");
+                    $("#wiki-send-message-notification").attr("style","display:none;");
+                    $("#wiki-comment-notification").attr("style","display:none;");
+                    $("#wiki-invite-notification").attr("style","display:none;");
+                    //Установка отправителя
+                    $("#notification-answer-message-author").text("{{ notification.nickname|escapejs }}");
+                    $("#notification-answer-message-author").attr("href","/user/"+{{ notification.id|escapejs }});
+                    //Установка даты
+                    $("#notification-answer-message-date").text("{{ notification.date|escapejs }}");
+                    //Установка ответа
+                    $("#notification-answer-message-text").text("{{ notification.message|escapejs }}");
+                    //Установка текста, на который произошел ответ
+                    $("#message-answer-notification-get").text("{{ notification.message_answer|escapejs }}");
                 {% elif notification.type == "sended message" %}
                     //ЕСЛИ ЭТО ОТПРАВЛЕННОЕ СООБЩЕНИЕ
                     //Установка заголовка
@@ -303,6 +375,8 @@
                     $("#wiki-message-notification").attr("style","display:none;");
                     $("#wiki-comment-notification").attr("style","display:none;");
                     $("#wiki-invite-notification").attr("style","display:none;");
+                    $("#wiki-answer-message-notification").attr("style","display:none;");
+
                     //Установка получателя
                     $("#notification-send-author").text("{{ notification.nickname|escapejs }}");
                     $("#notification-send-author").attr("href","/user/"+{{ notification.id|escapejs }});
@@ -318,6 +392,8 @@
                     $("#wiki-message-notification").attr("style","display:none;");
                     $("#wiki-comment-notification").attr("style","display:none;");
                     $("#wiki-send-message-notification").attr("style","display:none;");
+                    $("#wiki-answer-message-notification").attr("style","display:none;");
+
                     //Установка даты
                     $("#notification-date-invite").text("{{ notification.date|escapejs }}");
                     //Установка пользователя

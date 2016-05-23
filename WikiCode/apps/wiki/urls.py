@@ -87,6 +87,7 @@ urlpatterns = [
     url(r'^notifications/read_notification/$', views.read_notification, name='read_notification'),
     url(r'^notifications/add_colleague/$', views.add_colleague, name='add_colleague'),
     url(r'^notifications/remove_notification/$', views.remove_notification, name='remove_notification'),
+    url(r'^notifications/send_answer_message/$', views.send_answer_message, name='send_answer_message'),
 
 
 ]

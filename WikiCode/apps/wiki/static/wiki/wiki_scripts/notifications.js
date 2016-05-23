@@ -61,13 +61,15 @@ $("#wiki-style-btn-remove-notification").click(function () {
     });
 });
 
+//Нажатие на кнопку ответить на письмо
 $("#answer-message-notification").click(function () {
     $("#label-nickname-message-for-answer").text($("#notification-message-author").text());
     $("#message-for-answer").text($("#notification-message-text").text());
     $("#input_wiki_message_answer").val("");
-    
+
 });
 
+//Отправка ответа на письмо
 $("#wiki-send-message-answer").click(function () {
     if($("#input_wiki_message_answer").val().length > 10)
     {
@@ -78,6 +80,41 @@ $("#wiki-send-message-answer").click(function () {
                 'nickname':''+$("#label-nickname-message-for-answer").text(),
                 'message':''+$("#message-for-answer").text(),
                 'answer':''+$("#input_wiki_message_answer").val(),
+            },
+            dataType: "text",
+            cache: false,
+            success: function(data){
+                if (data == 'ok'){
+                    location.reload();
+                }
+            }
+        });
+    }
+    else
+    {
+        console.log("Текст ответа должен быть больше 10 символов");
+    }
+
+});
+
+//Нажатие на кнопку ответить на на ответ
+$("#answer-message-notification-answer").click(function () {
+    $("#label-nickname-answer").text($("#notification-answer-message-author").text());
+    $("#answer-for-answer").text($("#notification-answer-message-text").text());
+    $("#input_wiki_answer").val("");
+});
+
+//Отправка ответа на ответ
+$("#wiki-send-answer").click(function () {
+    if($("#input_wiki_answer").val().length > 10)
+    {
+        $.ajax({
+            type: "POST",
+            url: "send_answer_message/",
+            data:{
+                'nickname':''+$("#label-nickname-answer").text(),
+                'message':''+$("#answer-for-answer").text(),
+                'answer':''+$("#input_wiki_answer").val(),
             },
             dataType: "text",
             cache: false,
