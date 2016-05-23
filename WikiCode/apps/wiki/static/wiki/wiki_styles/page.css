@@ -26,6 +26,7 @@
 }
 
 #wiki-style-btn,
+#wiki-send-comment-answer,
 #cancelinput,
 #editinput,
 #wiki-style-btn-add-comment{
@@ -53,6 +54,7 @@
 #wiki-style-btn-option-1-not:hover,
 #wiki-style-btn-option-2-not:hover,
 #wiki-style-btn-option-3-not:hover,
+#wiki-send-comment-answer:hover,
 #wiki-style-btn-option-commenting
 {
     background-color: #225a84;

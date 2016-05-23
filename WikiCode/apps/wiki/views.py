@@ -253,13 +253,21 @@ def add_dynamic_comment_in_wiki_page(request, id):
 
 
 @develop_mode_id
+@login_required
 def like_wiki_page(request, id):
     return publication_view.get_like_wiki_page(request, id)
 
 
 @develop_mode_id
+@login_required
 def import_wiki_page(request, id):
     return publication_view.get_import_wiki_page(request, id)
+
+
+@develop_mode_id
+@login_required
+def send_answer_comment(request, id):
+    return notifications_view.get_send_answer_comment(request, id)
 
 
 @develop_mode_id

@@ -120,24 +120,55 @@ $("#wiki-style-btn-save-publ").click(function () {
     if(path_folder !== "")
     {
         $.ajax({
-        type: "POST",
-        url: "import_wiki_page/",
-        data:{
-            'path_folder':''+path_folder,
-        },
-        dataType: "text",
-        cache: false,
-        success: function(data){
-            if (data == 'ok'){
-                location.href = '/tree_manager';
-            }
-            else
-            {
+            type: "POST",
+            url: "import_wiki_page/",
+            data:{
+                'path_folder':''+path_folder,
+            },
+            dataType: "text",
+            cache: false,
+            success: function(data){
+                if (data == 'ok'){
+                    location.href = '/tree_manager';
+                }
+                else
+                {
 
+                }
             }
-        }
-    });
+        });
     }
 
+});
+
+//Ответ на общий комментарий
+$("#wiki-send-comment-answer").click(function () {
+    if($("#input_wiki_comment_answer").val().length > 10)
+    {
+        $.ajax({
+            type: "POST",
+            url: "send_answer_comment/",
+            data:{
+                'nickname':''+$("#nickname-comment-message-for-answer").val(),
+                'text':''+$("#text-comment-message-for-answer").val(),
+                'answer':''+$("#input_wiki_comment_answer").val(),
+            },
+            dataType: "text",
+            cache: false,
+            success: function(data){
+                if (data == 'ok'){
+                    location.reload();
+                }
+                else
+                {
+
+                }
+            }
+        });
+    }
+    else
+    {
+        console.log("Текст ответа на общий комментарий должен быть длиннее 10 символов");
+    }
 });
 

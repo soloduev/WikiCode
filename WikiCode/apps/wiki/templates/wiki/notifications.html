@@ -95,6 +95,11 @@
                                 <div class="col-xs-8"><label class="wiki-notification"><i class="fa fa-envelope"></i> | ОТВЕТ НА ПИСЬМО | {{ notification.nickname|upper }} | {{ notification.date }}</label></div>
                                 <div class="col-xs-4 text-right"><label>{% if notification.is_read %}(Прочитано){% endif %}</label></div>
                             </div>
+                        {% elif notification.type == "answer comment" %}
+                            <div id="wiki-notification-{{ notification.number }}" data-toggle="modal" data-target="#modal_notification" class="row notification-li {% if notification.is_read %}read-li{% endif %}">
+                                <div class="col-xs-8"><label class="wiki-notification"><i class="fa fa-commenting"></i> | ОТВЕТ | {{ notification.nickname|upper }} | {{ notification.date }}</label></div>
+                                <div class="col-xs-4 text-right"><label>{% if notification.is_read %}(Прочитано){% endif %}</label></div>
+                            </div>
                         {% elif notification.type == "invite_colleagues" %}
                             <div id="wiki-notification-{{ notification.number }}" data-toggle="modal" data-target="#modal_notification" class="row notification-li {% if notification.is_read %}read-li{% endif %}">
                                 <div class="col-xs-8"><label class="wiki-notification"><i class="glyphicon glyphicon-user"></i> | ЗАЯВКА | {{ notification.nickname|upper }} | {{ notification.date }}</label></div>
@@ -215,6 +220,23 @@
                         <a id="" class="btn btn-link">Пожаловаться</a>
                     </div>
 
+                    <div id="wiki-answer-comment-notification" style="display: none;">
+                        <label>Получено от </label> <a id="notification-answer-comment-author"></a>
+                        <br>
+                        <label>Дата отправки: </label> <span id="notification-answer-comment-date"></span>
+                        <hr>
+                        <label>Ваш комментарий: </label>
+                        <br>
+                        <span id="comment-answer-notification-get"></span>
+                        <hr>
+                        <label>Ответ:</label>
+                        <br>
+                        <h5 id="notification-answer-comment-text"></h5>
+                        <hr>
+                        <a id="answer-comment-notification-answer" data-dismiss="modal" class="btn btn-link">Перейти к конспекту</a>
+                        <a id="" class="btn btn-link">Пожаловаться</a>
+                    </div>
+
                     <div id="wiki-comment-notification" style="display: none;">
                         <label>Дата отправки: </label> <span id="notification-date"></span>
                         <br>
@@ -291,35 +313,6 @@
         </div>
     </div>
 
-    <!-- Модальное окно ответа на ответ -->
-    <div class="modal fade" id="modal_answer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <input hidden type="text" id="id-colleague-for-send-message">
-                    <h4 class="modal-title" id="myModalLabel">Ответить на письмо</h4>
-                </div>
-                <div class="modal-body">
-                    <label><h4>Письмо пользователя  <span id="label-nickname-answer"></span>:</h4></label>
-                    <br>
-                    <span id="answer-for-answer"></span>
-                    <br>
-                    <hr>
-                    <label><h4>Введите текст ответа на письмо</h4></label>
-                    <br>
-                    <textarea id="input_wiki_answer" type="text" placeholder="Ваш текст ответа..."
-                              class="form-control" style="border-radius: 0px; resize: none;" rows="10"></textarea>
-                    <br>
-                    <br>
-                </div>
-                <div class="modal-footer">
-                    <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
-                    <button id="wiki-send-answer" type="button" class="btn" data-dismiss="modal">Ответить</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
 {% endblock %}
 
@@ -341,6 +334,7 @@
                     $("#wiki-comment-notification").attr("style","display:none;");
                     $("#wiki-invite-notification").attr("style","display:none;");
                     $("#wiki-answer-message-notification").attr("style","display:none;");
+                    $("#wiki-answer-comment-notification").attr("style","display:none;");
 
                     //Установка отправителя
                     $("#notification-message-author").text("{{ notification.nickname|escapejs }}");
@@ -358,6 +352,7 @@
                     $("#wiki-send-message-notification").attr("style","display:none;");
                     $("#wiki-comment-notification").attr("style","display:none;");
                     $("#wiki-invite-notification").attr("style","display:none;");
+                    $("#wiki-answer-comment-notification").attr("style","display:none;");
                     //Установка отправителя
                     $("#notification-answer-message-author").text("{{ notification.nickname|escapejs }}");
                     $("#notification-answer-message-author").attr("href","/user/"+{{ notification.id|escapejs }});
@@ -367,6 +362,25 @@
                     $("#notification-answer-message-text").text("{{ notification.message|escapejs }}");
                     //Установка текста, на который произошел ответ
                     $("#message-answer-notification-get").text("{{ notification.message_answer|escapejs }}");
+                {% elif notification.type == "answer comment" %}
+                    //ЕСЛИ ЭТО ОТВЕТ НА КОММЕНТАРИЙ
+                    //Установка заголовка
+                    $("#notification-header").text("Ответ на Ваш комментарий");
+                    $("#wiki-answer-comment-notification").attr("style","");
+                    $("#wiki-answer-message-notification").attr("style","display:none;");
+                    $("#wiki-message-notification").attr("style","display:none;");
+                    $("#wiki-send-message-notification").attr("style","display:none;");
+                    $("#wiki-comment-notification").attr("style","display:none;");
+                    $("#wiki-invite-notification").attr("style","display:none;");
+                    //Установка отправителя
+                    $("#notification-answer-comment-author").text("{{ notification.nickname|escapejs }}");
+                    $("#notification-answer-comment-author").attr("href","/user/"+{{ notification.id|escapejs }});
+                    //Установка даты
+                    $("#notification-answer-comment-date").text("{{ notification.date|escapejs }}");
+                    //Установка ответа
+                    $("#notification-answer-comment-text").text("{{ notification.message|escapejs }}");
+                    //Установка текста, на который произошел ответ
+                    $("#comment-answer-notification-get").text("{{ notification.message_answer|escapejs }}");
                 {% elif notification.type == "sended message" %}
                     //ЕСЛИ ЭТО ОТПРАВЛЕННОЕ СООБЩЕНИЕ
                     //Установка заголовка
@@ -376,6 +390,7 @@
                     $("#wiki-comment-notification").attr("style","display:none;");
                     $("#wiki-invite-notification").attr("style","display:none;");
                     $("#wiki-answer-message-notification").attr("style","display:none;");
+                    $("#wiki-answer-comment-notification").attr("style","display:none;");
 
                     //Установка получателя
                     $("#notification-send-author").text("{{ notification.nickname|escapejs }}");
@@ -393,6 +408,7 @@
                     $("#wiki-comment-notification").attr("style","display:none;");
                     $("#wiki-send-message-notification").attr("style","display:none;");
                     $("#wiki-answer-message-notification").attr("style","display:none;");
+                    $("#wiki-answer-comment-notification").attr("style","display:none;");
 
                     //Установка даты
                     $("#notification-date-invite").text("{{ notification.date|escapejs }}");

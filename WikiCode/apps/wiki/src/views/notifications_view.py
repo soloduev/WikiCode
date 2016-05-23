@@ -22,7 +22,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 
-from WikiCode.apps.wiki.models import User, Colleague, Notification
+from WikiCode.apps.wiki.models import User, Colleague, Notification, CommentBlock, Publication, Comment
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
 from WikiCode.apps.wiki.src.wiki_tree import WikiTree
 from .auth import check_auth, get_user_id
@@ -339,6 +339,80 @@ def get_send_answer_message(request):
 
         except User.DoesNotExist:
             return HttpResponse('no', content_type='text/html')
+
+    else:
+        return HttpResponse('no', content_type='text/html')
+
+
+@csrf_protect
+def get_send_answer_comment(request, id):
+    """Ajax представление. Отвечает на общий комментарий в конспекте."""
+
+    if request.method == "POST":
+        text = request.POST.get('text')
+        nickname = request.POST.get('nickname')
+        answer = request.POST.get('answer')
+
+        try:
+            # Получаем текущего пользователя
+            cur_user = User.objects.get(id_user=get_user_id(request))
+
+            # Получаем пользователя который должен получить уведомление
+            get_user = User.objects.get(nickname=nickname)
+
+            # Получаем текущую дату
+            date = str(datetime.datetime.now())
+            date = date[:len(date) - 7]
+
+            # Создаем уведомление
+            send_notification = Notification(user=get_user,
+                                             id_author=cur_user.id_user,
+                                             type="answer comment",
+                                             message=answer,
+                                             message_answer=text,
+                                             date=date,
+                                             is_read=False,
+                                             is_delete=False)
+
+            # Далее, создаем новый комментарий в публикации
+            comment_block = CommentBlock.objects.get(id_publication=id)
+            publication = Publication.objects.get(id_publication=id)
+
+            # Обновляем статистику пользователей
+            cur_user.comments += 1
+            get_user.commented_it += 1
+            # Получаем пользователя конспекта
+            user_publ = User.objects.get(id_user=publication.id_author)
+            user_publ.commented_it += 1
+
+            # Создаем новый комментарий
+            new_comment = Comment(comment_block=comment_block,
+                                  num_position=comment_block.last_id + 1,
+                                  id_author=cur_user.id_user,
+                                  nickname_author=cur_user.nickname,
+                                  rating=0,
+                                  text=get_user.nickname+", "+answer,
+                                  data=date,
+                                  id_author_answer=get_user.id_user,
+                                  nickname_author_answer=get_user.nickname)
+
+            # Сохраняем все изменения в БД
+            new_comment.save()
+            comment_block.last_id += 1
+            comment_block.save()
+            cur_user.save()
+            get_user.save()
+            user_publ.save()
+            send_notification.save()
+            print("Ответ на общий комментарий отправлен")
+            return HttpResponse('ok', content_type='text/html')
+
+        except User.DoesNotExist:
+            return HttpResponse('no', content_type='text/html')
+        except CommentBlock.DoesNotExist:
+            return get_error_page(request, ["This is comment block not found!"])
+        except Publication.DoesNotExist:
+            return get_error_page(request, ["This is publication not found!"])
 
     else:
         return HttpResponse('no', content_type='text/html')
