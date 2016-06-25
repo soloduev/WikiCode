@@ -24,8 +24,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 
-from WikiCode.apps.wiki.models import Publication, Statistics, CommentBlock, Comment, Paragraphs, DynamicCommentParagraph, DynamicComment, Like, \
-    Viewing, Editor
+from WikiCode.apps.wiki.models import Publication, Statistics, Viewing
 from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.src.wiki_markdown import WikiMarkdown
 from WikiCode.apps.wiki.src.wiki_tree import WikiTree
@@ -76,17 +75,6 @@ def get_page(request, id):
         cur_user_id = get_user_id(request)
         publication = Publication.objects.get(id_publication=id)
 
-        # Проверка доступа к конспекту
-        if publication.is_private:
-            if cur_user_id != publication.id_author:
-                # Теперь проверяем, является ли пользователь редактором конспекта
-                try:
-                    editor = Editor.objects.get(publication=publication, id_user=cur_user_id)
-                    # Все нормально. Этот пользователь имеет доступ к этому конпсекту. Выходим из блока.
-                except Editor.DoesNotExist:
-                    return get_error_page(request, ["К сожалению, Вы не имеете доступ к этому конспекту!"])
-
-
         try:
             user = User.objects.get(id_user=publication.id_author)
             wt = WikiTree(user.id_user)
@@ -107,53 +95,6 @@ def get_page(request, id):
                 "text": arr[i]
             })
 
-        # Теперь загружаем комментарии
-
-        try:
-            comment_block = CommentBlock.objects.get(id_publication=id)
-            all_comments = Comment.objects.filter(comment_block=comment_block)
-        except CommentBlock.DoesNotExist:
-            print("WIKI ERROR: Блок комментариев не обнаружен")
-        except Comment.DoesNotExist:
-            print("WIKI ERROR: Список комментариев не обнаружен")
-
-        prgrphs = []
-
-        # Теперь загружаем динамические комментарии
-        try:
-            db_paragraphs = Paragraphs.objects.get(id_publication=id)
-            dynamic_comments_paragraphs = DynamicCommentParagraph.objects.filter(paragraphs=db_paragraphs)
-            for elem in dynamic_comments_paragraphs:
-                if elem.is_comment == True:
-                    # Получаем все комментарии к этому блоку
-                    dynamic_comments = DynamicComment.objects.filter(dynamic_comment_paragraph=elem)
-                    block = {'num_pos': elem.num_position, 'comments': dynamic_comments}
-                    prgrphs.append(block)
-
-        except Paragraphs.DoesNotExist:
-            print("WIKI ERROR: Paragraphs не обнаружен")
-        except DynamicCommentParagraph.DoesNotExist:
-            print("WIKI ERROR: DynamicCommentParagraph не обнаружен")
-        except DynamicComment.DoesNotExist:
-            print("WIKI ERROR: DynamicComment не обнаружен")
-
-        # Загружаем дерево сохраненных конспектов пользователя, который зашел на эту страницу
-        if cur_user_id != -1:
-            # Устанавливаем то, что зашедший пользователь не гость
-            guest = False
-            dynamic_tree = ""
-            try:
-                cur_user = User.objects.get(id_user=cur_user_id)
-                wt = WikiTree(cur_user.id_user)
-                wt.load_tree(cur_user.saved_publ)
-                dynamic_tree = wt.generate_html_dynamic_folders()
-            except User.DoesNotExist:
-                pass
-        else:
-            dynamic_tree = ""
-            # Пользователь не зарегестрирован
-            # Передаем тег, что пользователь не зарегестрирован
-            guest = True
 
         # Загружаем превью дерево автора
         try:
@@ -163,7 +104,6 @@ def get_page(request, id):
             html_preview_tree = wt.generate_html_preview()
         except User.DoesNotExist:
             print("Автора не существует")
-
 
         # И перед тем как перейти на страницу, добавим ей просмотр, если этот пользователь еще не смотрел
         # Этот конспект
@@ -191,11 +131,7 @@ def get_page(request, id):
             "numbers": numbers,
             "user_data": check_auth(request),
             "user_id": cur_user_id,
-            "preview_tree": html_preview_tree,
-            "dynamic_saved_tree": dynamic_tree,
-            "all_comments": all_comments,
-            "prgrphs": prgrphs,
-            "guest": guest,
+            "preview_tree": html_preview_tree
         }
 
         return render(request, 'wiki/page.html', context)
@@ -279,33 +215,6 @@ def get_create_page(request):
                 downloads=0)
 
 
-        # Получаем количество параграфов
-        wm = WikiMarkdown()
-        size_paragraphs = len(wm.split(form["text"]))
-
-        # Создаем пустые динамичные параграфы комментирования
-        try:
-            check_paragraphs = Paragraphs.objects.get(id_publication=newid)
-            return get_error_page(request, ["Paragraphs уже были созданы для этого конспекта!"])
-        except Paragraphs.DoesNotExist:
-            pass
-
-        new_paragraphs = Paragraphs(
-            id_publication=newid,
-            last_id=size_paragraphs)
-        new_paragraphs.save()
-
-        # Соответственно создаем для каждого из них параграф
-        # Данная операция, ну совсем уж не быстрая, если конспект достаточно большой
-        for i in range(1, size_paragraphs):
-            dynamic_comment_paragraph = DynamicCommentParagraph(
-                paragraphs=new_paragraphs,
-                num_position=i,
-                is_comment=False,
-                last_id=0)
-            dynamic_comment_paragraph.save()
-
-
         # Загружаем дерево пользователя
         wt = WikiTree(user.id_user)
         wt.load_tree(user.tree)
@@ -315,18 +224,7 @@ def get_create_page(request):
         # Увеличиваем количество публикаций в статистике у пользователя
         user.publications += 1
 
-
         all_publications = Publication.objects.filter(is_public=True)
-
-        # Создаем пустой общий блок комментирования
-        # Проверяем, не существует ли уже такой блок
-        try:
-            com_block = CommentBlock.objects.get(id_publication=newid)
-        except CommentBlock.DoesNotExist:
-            new_comment_block = CommentBlock(
-                id_publication=newid,
-                last_id=0)
-            new_comment_block.save()
 
         stat.save()
         new_publication.save()
@@ -356,15 +254,12 @@ def get_publ_manager(request, id):
         current_id = get_user_id(request)
         if current_id == _publication.id_author:
 
-            # Получаем всех редакторов данного конспекта
-            editors = Editor.objects.filter(publication=_publication)
 
             context = {
                 "user_data": user_data,
                 "user_id": current_id,
                 "publication":_publication,
-                "tree_path":_publication.tree_path.split(":")[0],
-                "editors":editors,
+                "tree_path":_publication.tree_path.split(":")[0]
             }
             return render(request, 'wiki/publ_manager.html', context)
         else:
@@ -372,213 +267,3 @@ def get_publ_manager(request, id):
 
     except Publication.DoesNotExist:
         return get_error_page(request, ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
-
-
-@csrf_protect
-def get_add_comment_in_wiki_page(request, id):
-    """Ajax представление. Добавляет коммент к публикации."""
-
-    if request.method == "POST":
-        try:
-            comment_block = CommentBlock.objects.get(id_publication=id)
-            publication = Publication.objects.get(id_publication=id)
-
-            # Получаем пользователя
-            user_data = check_auth(request)
-
-            # Получаем сообщение
-            comment_message = request.POST.get('comment_message')
-
-            #Получаем текущую дату
-            date = str(datetime.datetime.now())
-            date = date[:len(date)-7]
-
-            #Получаем пользователя оставившего комментарий
-            id = int(get_user_id(request))
-            user = User.objects.get(id_user=id)
-            user.comments += 1
-
-            #Получаем пользователя получившего комментарий
-            user2 = User.objects.get(id_user=publication.id_author)
-            user2.commented_it += 1
-
-
-            # Создаем новый комментарий
-            new_comment = Comment(comment_block=comment_block,
-                                  num_position=comment_block.last_id+1,
-                                  id_author=user.id_user,
-                                  nickname_author=user.nickname,
-                                  rating=0,
-                                  text=comment_message,
-                                  data=date,
-                                  id_author_answer=0,
-                                  nickname_author_answer="")
-
-            new_comment.save()
-            comment_block.last_id += 1
-            comment_block.save()
-            user2.save()
-            user.save()
-
-            return HttpResponse('ok', content_type='text/html')
-
-        except CommentBlock.DoesNotExist:
-            return get_error_page(request, ["This is comment block not found!"])
-        except Publication.DoesNotExist:
-            return get_error_page(request, ["This is publication not found!"])
-        except User.DoesNotExist:
-            return get_error_page(request, ["This is user is not found!"])
-    else:
-        return HttpResponse('no', content_type='text/html')
-
-
-@csrf_protect
-def get_add_dynamic_comment_in_wiki_page(request, id):
-    """Ajax представление. Добавляет динамический комментарий к азбзацу публикации."""
-
-    if request.method == "POST":
-        try:
-            paragraphs = Paragraphs.objects.get(id_publication=id)
-            publication = Publication.objects.get(id_publication=id)
-
-            # Получаем пользователя
-            user_data = check_auth(request)
-
-            # Получаем сообщение
-            comment_message = request.POST.get('comment_message')
-            # Получаем номер параграфа в данной публикации
-            num_paragraph = request.POST.get('num_paragraph')
-            print(comment_message)
-            print(num_paragraph)
-            # Получаем текущую дату
-            date = str(datetime.datetime.now())
-            date = date[:len(date) - 7]
-
-            # Получаем пользователя оставившего комментарий
-            id = int(get_user_id(request))
-            user = User.objects.get(id_user=id)
-            user.comments += 1
-
-
-            # Получаем тот параграф, в который мы хотим добавить комментарий
-            dynamic_comment_paragraph =  DynamicCommentParagraph.objects.get(paragraphs=paragraphs,
-                                                                             num_position=int(num_paragraph))
-
-            # Создаем новый динамический комментарий
-
-            new_dynamic_comment = DynamicComment(
-                dynamic_comment_paragraph=dynamic_comment_paragraph,
-                num_position=dynamic_comment_paragraph.last_id + 1,
-                id_author=user.id_user,
-                nickname_author=user.nickname,
-                text=comment_message,
-                data=date)
-
-            new_dynamic_comment.save()
-            dynamic_comment_paragraph.last_id += 1
-            dynamic_comment_paragraph.is_comment = True
-            dynamic_comment_paragraph.save()
-            user.save()
-
-            return HttpResponse('ok', content_type='text/html')
-
-        except Paragraphs.DoesNotExist:
-            return get_error_page(request, ["This is paragraphs not found!"])
-        except Publication.DoesNotExist:
-            return get_error_page(request, ["This is publication not found!"])
-        except User.DoesNotExist:
-            return get_error_page(request, ["This is user is not found!"])
-        except DynamicCommentParagraph.DoesNotExist:
-            return get_error_page(request, ["This is DynamicCommentParagraph is not found!"])
-    else:
-        return HttpResponse('no', content_type='text/html')
-
-
-@csrf_protect
-def get_like_wiki_page(request, id):
-    """Ajax представление. Добавляет или убирает like с публикации"""
-    if request.method == "POST":
-        try:
-            # Получаем пользователя захотевшего поставить лайк
-            id_user = int(get_user_id(request))
-
-            if id_user==-1:
-                return HttpResponse('no', content_type='text/html')
-            else:
-                # Получаем текущую дату
-                date = str(datetime.datetime.now())
-                date = date[:len(date) - 7]
-
-                # Получаем User
-                user = User.objects.get(id_user=id_user)
-                # Получаем публикацию на которой произошел лайк
-                publication = Publication.objects.get(id_publication=id)
-
-                # Проверяем, не стоит ли like уже у этого пользователя на этот конспект
-                is_set = False
-                try:
-                    like = Like.objects.get(id_user=id_user, id_publ_like=id)
-                    # Лайк стоит, убираем
-                    like.delete()
-                    publication.likes-=1
-                    publication.save()
-                except Like.DoesNotExist:
-                    # Лайк не стоит. Ставим
-                    new_like = Like(id_user=id_user,
-                                    nickname=user.nickname,
-                                    type="publ",
-                                    id_publ_like=id,
-                                    id_user_like=-1,
-                                    date=date)
-                    new_like.save()
-                    publication.likes+=1
-                    publication.save()
-
-
-                return HttpResponse('ok', content_type='text/html')
-        except User.DoesNotExist:
-            return get_error_page(request, ["This is user is not found!"])
-        except Publication.DoesNotExist:
-            return get_error_page(request, ["This is Publication is not found!"])
-    else:
-        return HttpResponse('no', content_type='text/html')
-
-@csrf_protect
-def get_import_wiki_page(request, id):
-    """Ajax представление. Сохраняет публиацию к себе в дерево публикации"""
-
-    if request.method == "POST":
-        # Получаем путь к папке, в которой хотим сохранить конспект
-        path_folder = request.POST.get('path_folder')
-
-        # Получаем конспект, который хотим сохранить
-        try:
-            publication = Publication.objects.get(id_publication=id)
-
-            cur_user_id = get_user_id(request)
-
-            # Проверяем, не является ли автор конспекта тем, кто хочет его сохранить
-            if publication.id_author == cur_user_id:
-                print("Самого себя сохранить невозможно")
-                return HttpResponse('no', content_type='text/html')
-
-            # Получаем пользователя сохранившего конспект
-            cur_user = User.objects.get(id_user=cur_user_id)
-
-            # Проверяем, но сохранял ли он его уже
-            swt = WikiTree(cur_user_id)
-            swt.load_tree(cur_user.saved_publ)
-            if swt.check_publication(publication.id_publication):
-                print("Пользователь уже сохранял данную публикацию")
-                return HttpResponse('no', content_type='text/html')
-
-            # Сохраняем конспект
-            swt.add_publication(path_folder,publication.title,publication.id_publication)
-            cur_user.saved_publ = swt.get_tree()
-            cur_user.save()
-
-            return HttpResponse('ok', content_type='text/html')
-        except Publication.DoesNotExist:
-            return HttpResponse('no', content_type='text/html')
-    else:
-        return HttpResponse('no', content_type='text/html')

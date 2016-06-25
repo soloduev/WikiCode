@@ -46,10 +46,6 @@
                             <!--Здесь должен располагаться сгенерированный html preview дерева-->
                             {{ preview_tree|safe }}
                         </ul>
-                        <ul id="tree2saved" class="wiki-tree-saved">
-                            <!--Здесь должен располагаться сгенерированный html дерева с сохраненными конспектами-->
-                            {{ saved_publ|safe }}
-                        </ul>
                     {% endif %}
                 </div>
             </div>
@@ -63,10 +59,10 @@
                     <div id="panel_inputs" class="col-md-12">
                         <div class="btn-group">
                             <br>
-                            <button type="button" id="add_colleagues" class="btn wiki-style-header-btns" data-toggle="modal" data-target="#modal_add_colleague">Добавить коллегу <span
+                            <button type="button" id="add_colleagues" class="btn wiki-style-header-btns">Добавить коллегу <span
                                     class="glyphicon glyphicon-plus"></span></button>
 
-                            <button type="button" id="find_colleagues" class="btn wiki-style-header-btns" data-toggle="modal" data-target="#modal_develop_func">Найти коллегу <span
+                            <button type="button" id="find_colleagues" class="btn wiki-style-header-btns">Найти коллегу <span
                                     class="glyphicon glyphicon-search"></span></button>
 
                             <button type="button" id="wiki-help-colleagues" class="btn wiki-style-header-btns"><span
@@ -76,85 +72,7 @@
                 </div>
                 <br>
                 <div class="container-fluid">
-                    {% if not colleagues %}
-                        <div class="text-center">
-                            <hr>
-                            <br>
-                            <h4>На данный момент, у вас нет Коллег</h4>
-                            <br>
-                            <hr>
-                        </div>
-                    {% endif %}
-                    {% for colleague in colleagues %}
-                        <!--Экземпляр коллеги-->
-                        <div class="row colleagues-li">
-                            <div class="col-xs-7 col-md-4"><div type="button" id="add_colleagues" class="btn btn-block wiki-style-colleagues">
-                                <a href="/user/{{ colleague.id }}" style="text-decoration: none;"><b>{{ colleague.nickname }}</b></a></div></div>
-                            <div class="col-md-5 col-md-4 hidden-sm hidden-xs"><div type="button" id="add_colleagues" class="btn btn-block wiki-style-colleagues">{{ colleague.email }}</div></div>
-                            <div class="col-xs-5  col-md-4">
-                                <div class="btn-group">
-                                    <div type="button" id="star_colleagues" class="btn wiki-style-colleagues-btn"><span
-                                            class="glyphicon glyphicon-star-empty"></span></div>
-                                    <div data-toggle="modal" data-target="#modal_write_message" type="button" id="send_message_colleagues_{{ colleague.id }}" class="btn wiki-style-colleagues-btn"><span
-                                            class="glyphicon glyphicon-envelope"></span></div>
-                                    <div type="button" id="info_colleagues" class="btn wiki-style-colleagues-btn"><span
-                                            class="glyphicon glyphicon-info-sign"></span></div>
-                                    <div type="button" id="remove_colleague_{{ colleague.id }}" class="btn wiki-style-colleagues-btn"><span
-                                            class="glyphicon glyphicon-remove"></span></div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Модальное окно добавляющее коллегу в список коллег -->
-    <div class="modal fade" id="modal_add_colleague" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Добавление в коллеги</h4>
-                </div>
-                <div class="modal-body">
-                    <label><h4>Введите nickname пользователя, которого хотите добавить в коллеги:</h4></label>
-                    <hr>
-                    <label><h4><b>Nickname:</b></h4></label>
-                    <input id="input_nickname_colleague" type="text" placeholder="Nickname" class="form-control" style="border-radius: 0px;">
-                    <br>
-                    <br>
-                    <br>
-                </div>
-                <div class="modal-footer">
-                    <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
-                    <button id="wiki-style-btn-add-colleague" type="button" class="btn" >Добавить в коллеги</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Модальное окно отправляющее письмо -->
-    <div class="modal fade" id="modal_write_message" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <input hidden type="text" id="id-colleague-for-send-message">
-                    <h4 class="modal-title" id="myModalLabel">Отправка письма</h4>
-                </div>
-                <div class="modal-body">
-                    <label><h4>Введите текст письма для <span id="label-nickname-colleague"></span></h4></label>
-                    <br>
-                    <textarea id="input_wiki_message" type="text" placeholder="Ваш текст..."
-                              class="form-control" style="border-radius: 0px; resize: none;" rows="10"></textarea>
-                    <br>
-                    <br>
-                </div>
-                <div class="modal-footer">
-                    <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
-                    <button id="wiki-send-message" type="button" class="btn" >Отправить</button>
                 </div>
             </div>
         </div>
@@ -167,32 +85,6 @@
     <link href={% static "wiki/wiki_styles/colleagues.css" %} type="text/css" rel="stylesheet">
     <script src={% static "wiki/wiki_scripts/colleagues.js" %}></script>
     <script>
-        {% for colleague in colleagues %}
-            //Удаление из коллег
-            $("#remove_colleague_{{ colleague.id|escapejs }}").click(function () {
-                console.log("Yes!");
-                $.ajax({
-                    type: "POST",
-                    url: "remove_colleague/",
-                    data:{
-                        'id':''+{{ colleague.id|escapejs }},
-                    },
-                    dataType: "text",
-                    cache: false,
-                    success: function(data){
-                        if (data == 'ok'){
-                            location.reload();
-                        }
-                    }
-                });
-            });
-            //При клике, указываем id коллеги, которому хоти отправить сообщение
-            //
-            $("#send_message_colleagues_{{ colleague.id|escapejs }}").click(function () {
-                $("#id-colleague-for-send-message").val("{{ colleague.id|escapejs }}");
-                $("#label-nickname-colleague").text("{{ colleague.nickname|escapejs }}");
-                $("#input_wiki_message").val("");
-            });
-        {% endfor %}
+
     </script>
 {% endblock %}

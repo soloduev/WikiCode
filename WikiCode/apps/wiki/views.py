@@ -118,48 +118,6 @@ def colleagues(request):
 
 @develop_mode
 @login_required
-def add_colleague(request):
-    return colleagues_view.get_add_colleague(request)
-
-
-@develop_mode
-@login_required
-def send_request_for_colleagues(request):
-    return notifications_view.get_send_request_for_colleagues(request)
-
-
-@develop_mode
-@login_required
-def read_notification(request):
-    return notifications_view.get_read_notification(request)
-
-
-@develop_mode
-@login_required
-def remove_notification(request):
-    return notifications_view.get_remove_notification(request)
-
-
-@develop_mode
-@login_required
-def send_answer_message(request):
-    return notifications_view.get_send_answer_message(request)
-
-
-@develop_mode
-@login_required
-def remove_colleague(request):
-    return colleagues_view.get_remove_colleague(request)
-
-
-@develop_mode
-@login_required
-def colleague_send_message(request):
-    return notifications_view.get_colleague_send_message(request)
-
-
-@develop_mode
-@login_required
 def notifications(request):
     return notifications_view.get_notifications(request)
 
@@ -186,18 +144,8 @@ def add_folder_in_tree(request):
 
 
 @develop_mode
-def add_folder_in_saved_tree(request):
-    return tree_view.get_add_folder_in_saved_tree(request)
-
-
-@develop_mode
 def del_elem_in_tree(request):
     return tree_view.get_del_elem_in_tree(request)
-
-
-@develop_mode
-def del_elem_in_tree_saved(request):
-    return tree_view.get_del_elem_in_tree_saved(request)
 
 
 @develop_mode
@@ -211,18 +159,9 @@ def check_folder_for_delete(request):
 
 
 @develop_mode
-def check_folder_for_delete_saved(request):
-    return tree_view.get_check_folder_for_delete_saved(request)
-
-
-@develop_mode
 def delete_publ_in_tree(request):
     return tree_view.get_delete_publ_in_tree(request)
 
-
-@develop_mode_id
-def save_access(request, id):
-    return publ_manager_view.get_save_access(request, id)
 
 
 @develop_mode
@@ -238,72 +177,6 @@ def rename_folder_in_tree(request):
 @develop_mode
 def set_preview_publ_in_tree(request):
     return tree_view.get_set_preview_publ_in_tree(request)
-
-
-@develop_mode_id
-@login_required
-def add_comment_in_wiki_page(request, id):
-    return publication_view.get_add_comment_in_wiki_page(request, id)
-
-
-@develop_mode_id
-@login_required
-def add_dynamic_comment_in_wiki_page(request, id):
-    return publication_view.get_add_dynamic_comment_in_wiki_page(request, id)
-
-
-@develop_mode_id
-@login_required
-def like_wiki_page(request, id):
-    return publication_view.get_like_wiki_page(request, id)
-
-
-@develop_mode_id
-@login_required
-def import_wiki_page(request, id):
-    return publication_view.get_import_wiki_page(request, id)
-
-
-@develop_mode_id
-@login_required
-def send_answer_comment(request, id):
-    return notifications_view.get_send_answer_comment(request, id)
-
-
-@develop_mode_id
-@login_required
-def like_user(request, id):
-    return user_view.get_like_user(request, id)
-
-
-@develop_mode_id
-@login_required
-def user_send_message(request, id):
-    return notifications_view.get_user_send_message(request, id)
-
-
-@develop_mode_id
-@login_required
-def user_send_request_for_colleagues(request, id):
-    return notifications_view.get_send_request_for_colleagues(request)
-
-
-@develop_mode
-@login_required
-def check_nickname_for_add_editor(request):
-    return publ_manager_view.get_check_nickname_for_add_editor(request)
-
-
-@develop_mode
-@login_required
-def add_editor(request):
-    return publ_manager_view.get_add_editor(request)
-
-
-@develop_mode
-@login_required
-def remove_editor(request):
-    return publ_manager_view.get_remove_editor(request)
 
 
 # Здесь не должно быть никаких декораторов!!!

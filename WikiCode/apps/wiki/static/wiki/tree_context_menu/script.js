@@ -141,82 +141,7 @@
         $('#jstree').jstree(true).deselect_all();
         $('#jstree').jstree(true).select_node(str_line);
 
-        var name_folder = (""+(""+(str_line.split(":")[0])).split("/")[0]);
-
-        //Это папка с сохраненными конспектами
-        if(name_folder == "Saved")
-        {
-          $('#jstree-saved').jstree(true).deselect_all();
-          $('#jstree-saved').jstree(true).select_node(str_line);
-          if(str_line.indexOf(".publ")!=-1)
-          {
-            //Показываем нужные
-            $("#lt-context-menu-saved-publ-1").attr("style","");
-            $("#lt-context-menu-saved-publ-2").attr("style","");
-            $("#lt-context-menu-saved-publ-3").attr("style","");
-            //Скрываем не нужные
-            $("#lt-context-menu-saved-folder-1").attr("style","display: none;");
-            $("#lt-context-menu-saved-folder-2").attr("style","display: none;");
-            $("#lt-context-menu-saved-folder-3").attr("style","display: none;");
-            $("#lt-context-menu-saved-folder-4").attr("style","display: none;");
-            $("#lt-context-menu-saved-folder-5").attr("style","display: none;");
-            $("#lt-context-menu-4").attr("style", "display: none;");
-            $("#lt-context-menu-5").attr("style", "display: none;");
-            $("#lt-context-menu-6").attr("style", "display: none;");
-            $("#lt-context-menu-7").attr("style", "display: none;");
-            $("#lt-context-menu-8").attr("style", "display: none;");
-            $("#lt-context-menu-9").attr("style", "display: none;");
-            $("#lt-context-menu-3").attr("style", "display: none;");
-            $("#lt-context-menu-3-0").attr("style", "display: none;");
-            $("#lt-context-menu-3-1").attr("style", "display: none;");
-            $("#lt-context-menu-1").attr("style", "display: none;");
-            $("#lt-context-menu-6-1").attr("style", "display: none;");
-          }
-          else
-          {
-            var path = ''+str_line.split(":")[0];
-            if(path[path.length-1] === "/")
-            {
-              //Это папка
-              //Показываем нужные
-              if((""+(str_line.split(":")[0])) == "Saved/")
-              {
-                $("#lt-context-menu-saved-folder-1").attr("style","");
-                $("#lt-context-menu-saved-folder-4").attr("style","");
-                //Скрываем не нужные опции контекстного меню
-                $("#lt-context-menu-saved-folder-2").attr("style","display: none;");
-                $("#lt-context-menu-saved-folder-3").attr("style","display: none;");
-                $("#lt-context-menu-saved-folder-5").attr("style","display: none;");
-              }
-              else {
-                $("#lt-context-menu-saved-folder-1").attr("style","");
-                $("#lt-context-menu-saved-folder-2").attr("style","");
-                $("#lt-context-menu-saved-folder-3").attr("style","");
-                $("#lt-context-menu-saved-folder-4").attr("style","");
-                $("#lt-context-menu-saved-folder-5").attr("style","");
-              }
-
-              //Скрываем не нужные опции контекстного меню
-              $("#lt-context-menu-saved-publ-1").attr("style","display: none;");
-              $("#lt-context-menu-saved-publ-2").attr("style","display: none;");
-              $("#lt-context-menu-saved-publ-3").attr("style","display: none;");
-              $("#lt-context-menu-4").attr("style", "display: none;");
-              $("#lt-context-menu-5").attr("style", "display: none;");
-              $("#lt-context-menu-6").attr("style", "display: none;");
-              $("#lt-context-menu-7").attr("style", "display: none;");
-              $("#lt-context-menu-8").attr("style", "display: none;");
-              $("#lt-context-menu-9").attr("style", "display: none;");
-              $("#lt-context-menu-3").attr("style", "display: none;");
-              $("#lt-context-menu-3-0").attr("style", "display: none;");
-              $("#lt-context-menu-3-1").attr("style", "display: none;");
-              $("#lt-context-menu-1").attr("style", "display: none;");
-              $("#lt-context-menu-6-1").attr("style", "display: none;");
-            }else {
-              //Это другой файл
-            }
-          }
-        }
-        else if(str_line.indexOf(".publ")!=-1)
+        if(str_line.indexOf(".publ")!=-1)
         {
           //Это конспект
           //Показываем нужные
@@ -233,14 +158,6 @@
           $("#lt-context-menu-7").attr("style", "display: none;");
           $("#lt-context-menu-8").attr("style", "display: none;");
           $("#lt-context-menu-9").attr("style", "display: none;");
-          $("#lt-context-menu-saved-folder-1").attr("style","display: none;");
-          $("#lt-context-menu-saved-folder-2").attr("style","display: none;");
-          $("#lt-context-menu-saved-folder-3").attr("style","display: none;");
-          $("#lt-context-menu-saved-folder-4").attr("style","display: none;");
-          $("#lt-context-menu-saved-folder-5").attr("style","display: none;");
-          $("#lt-context-menu-saved-publ-1").attr("style","display: none;");
-          $("#lt-context-menu-saved-publ-2").attr("style","display: none;");
-          $("#lt-context-menu-saved-publ-3").attr("style","display: none;");
         }
         else{
           var path = ''+str_line.split(":")[0];
@@ -253,14 +170,6 @@
             $("#lt-context-menu-3-1").attr("style", "display: none;");
             $("#lt-context-menu-1").attr("style", "display: none;");
             $("#lt-context-menu-6-1").attr("style", "display: none;");
-            $("#lt-context-menu-saved-folder-1").attr("style","display: none;");
-            $("#lt-context-menu-saved-folder-2").attr("style","display: none;");
-            $("#lt-context-menu-saved-folder-3").attr("style","display: none;");
-            $("#lt-context-menu-saved-folder-4").attr("style","display: none;");
-            $("#lt-context-menu-saved-folder-5").attr("style","display: none;");
-            $("#lt-context-menu-saved-publ-1").attr("style","display: none;");
-            $("#lt-context-menu-saved-publ-2").attr("style","display: none;");
-            $("#lt-context-menu-saved-publ-3").attr("style","display: none;");
             //Показываем нужные
             $("#lt-context-menu-4").attr("style", "");
             $("#lt-context-menu-5").attr("style", "");

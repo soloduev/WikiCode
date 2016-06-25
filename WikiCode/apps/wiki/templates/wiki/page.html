@@ -53,9 +53,9 @@
                                     <div class="container-fluid text-right">
                                         <div class="row">
                                             <div class="btn-group">
-                                                <a class="btn" {% if guest %} id="wikicode-like-publ-not" data-toggle="modal" data-target="#modal_auth" {% else %} id="wikicode-like-publ" href="#" {% endif %}><span class="glyphicon glyphicon-thumbs-up"></span> ({{ publication.likes }})</a>
-                                                <a {% if guest %} id="wikicode-import-publ-not" data-toggle="modal" data-target="#modal_auth" {% else %}id="wikicode-import-publ" data-toggle="modal" data-target="#modal_save_publ"{% endif %} class="btn"><span class="glyphicon glyphicon-import"></span> ({{ publication.imports }})</a>
-                                                <a {% if guest %} id="wikicode-download-publ-not" data-toggle="modal" data-target="#modal_auth" {% else %}id="wikicode-download-publ" href="#" {% endif %}class="btn"><span class="glyphicon glyphicon-download"></span> ({{ publication.downloads }})</a>
+                                                <a id="wikicode-up-right-button" class="btn"><span class="glyphicon glyphicon-thumbs-up"></span> (0)</a>
+                                                <a id="wikicode-up-right-button" class="btn"><span class="glyphicon glyphicon-import"></span> (0)</a>
+                                                <a id="wikicode-up-right-button" class="btn"><span class="glyphicon glyphicon-download"></span> (0)</a>
                                             </div>
                                         </div>
                                     </div>
@@ -85,38 +85,9 @@
                                                         </ul>
                                                     </div>
                                                 </div>
-                                                {% if not guest %}
-                                                    <div class="col-xs-12">
-                                                        <div class="row">
-                                                            <br>
-                                                            <label for="comment">Ваш Комментарий</label>
-                                                            <textarea id="add-comment-wiki-page" name="comment" class="form-control" rows="3" style="resize: none; border-radius: 0px;"></textarea>
-                                                        </div>
-                                                        <div class="row">
-                                                            <br>
-                                                            <button id="wiki-style-btn-add-comment"  type="submit" class="btn">Отправить</button>
-                                                            <br>
-                                                            <br>
-                                                        </div>
-                                                    </div>
-                                                {% endif %}
-
-                                                <!--Блок отображения комментариев -->
                                                 <div class="col-xs-12">
                                                     <div class="row">
-                                                        {% for comment in all_comments %}
-                                                            <!--Экземпляр сообщения-->
-                                                            <div class="comment-block-wiki">
-                                                                <!--Имя автора комментария-->
-                                                                <span class="text-left"><b><a href="/user/{{ comment.id_author }}" style="text-decoration: none;"> {{ comment.nickname_author }}</a></b>{% if comment.nickname_author_answer != "" %} ответил <b><a href="/user/{{ comment.id_author_answer }}" style="text-decoration: none;"> {{ comment.nickname_author_answer }}</a></b>{% endif %} ({{ comment.data }}) <i class="fa fa-long-arrow-up">{{ comment.rating }}</i></span>
-                                                                <!--Сообщение-->
-                                                                <p>{{ comment.text }}</p>
-                                                                <div class="btn-group"><div class="btn comment-btn-wiki" href="#" style="text-decoration: none;">Согласен <i class="fa fa-long-arrow-up"></i></div> <div class="btn comment-btn-wiki" style="text-decoration: none;">Не согласен <i class="fa fa-long-arrow-down"></i></div> <div data-toggle="modal" data-target="#modal_answer_comment" id="answer-comment-{{ comment.num_position }}" class="btn comment-btn-wiki" style="text-decoration: none;"> Ответить <i class="fa fa-commenting-o"></i></div></div>
-                                                                <p></p>
-                                                            </div>
-                                                        {% endfor %}
-                                                        <br><br>
-                                                        <h4>Просмотров(78) Комментариев(54) Понравилось(35) Сохранили к себе (9) Скачали (2) </h4>
+                                                        <br>
                                                     </div>
                                                 </div>
                                             </div>
@@ -197,144 +168,6 @@
         {% endif %}
     </div>
 
-    <!--Выпадающее меню при нажатии на абзац-->
-    <div id="context-dinamic-menu" style="display: none;">
-        <ul id="wiki-style-btns-options">
-            {% if not guest %}
-                <li id="wiki-style-btn-option-1" class="btn" style="width: 35px;border-radius: 25px; padding-left: 10px;"><i class="fa fa-pencil"></i></li>
-                <li id="wiki-style-btn-option-2" class="btn" data-toggle="modal" data-target="#modal_add_error" style="width: 35px;border-radius: 25px; padding-left: 10px;"><i class="fa fa-exclamation-triangle"></i></li>
-            {% else %}
-                <li id="wiki-style-btn-option-1-not" class="btn" data-toggle="modal" data-target="#modal_auth" style="width: 35px;border-radius: 25px; padding-left: 10px;"><i class="fa fa-pencil"></i></li>
-                <li id="wiki-style-btn-option-2-not" class="btn" data-toggle="modal" data-target="#modal_auth" style="width: 35px;border-radius: 25px; padding-left: 10px;"><i class="fa fa-exclamation-triangle"></i></li>
-            {% endif %}
-            <li id="wiki-style-btn-option-3" class="btn" data-toggle="modal" data-target="#modal_chat" style="width: 35px;border-radius: 25px; padding-left: 10px;"><i class="fa fa-comment-o"></i></li>
-        </ul>
-    </div>
-
-    <!-- Модальное окно для сохранения конспекта -->
-    <div class="modal fade" id="modal_save_publ" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Выберите папку, в которую хотите сохранить этот конспект</h4>
-                </div>
-                <div class="modal-body">
-                    <h4>Путь для сохранения:</h4>
-                    <input id="save-publ-path-folder" class="form-control" style="border-radius: 0px; font-family: Courier;" placeholder="Путь к папке...">
-                    <div id="jstree">
-                        <ul>
-                            <!--Здесь должен располагаться сгенерированный html код, для динамического дерева с одними папками-->
-                            {{ dynamic_saved_tree|safe }}
-                        </ul>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
-                    <button id="wiki-style-btn-save-publ"type="button" class="btn">Сохранить</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Модальное окно для указания на ошибку -->
-    <div class="modal fade" id="modal_add_error" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Нашли ошибку в параграфе? Сообщите автору!</h4>
-                </div>
-                <div class="modal-body">
-                    <div id="paragraph_input_error"></div>
-                    <hr>
-                    <label><h4>Опишите ошибку:</h4></label>
-                    <textarea class="form-control" style="resize: none; border-radius: 0px; font-family: Courier;" rows="6" placeholder="Опишите найденную Вами ошибку/неточность и прочее..."></textarea>
-                </div>
-                <div class="modal-footer">
-                    <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
-                    <button id="wiki-style-btn"type="button" class="btn">Добавить</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Модальное окно для сообщений к конкретному абзацу -->
-    <div class="modal fade" id="modal_chat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Комментирование параграфа</h4>
-                </div>
-                <div class="modal-body">
-                    <div id="paragraph_input_md_paragraph" style="background-color: #e9e9e9"></div>
-                    <hr>
-                    <div id="paragraph_input_comment">
-                        <!--Сюда необходимо пихать сгенерированные div блоки комментария-->
-                    </div>
-                    {% if not guest %}
-                        <hr>
-                        <label><h4>Ваш комментарий:</h4></label>
-                        <textarea id="wiki-input-dynamic-comment" class="form-control" style="resize: none; border-radius: 0px; font-family: Courier;" rows="3" placeholder="Ваш комментарий..."></textarea>
-                    {% endif %}
-                </div>
-                <div class="modal-footer">
-                    <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
-                    {% if not guest %}
-                        <button id="wiki-style-btn-add-dynamic-comment" type="button" class="btn">Добавить</button>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!--Сгенерированные динамические комментарии-->
-    {% for p in prgrphs %}
-        <div id="context-dinamic-commenting-{{ p.num_pos|safe }}" class="wikicode-commenting-mark" style="display: none;">
-            <ul id="wiki-style-btns-options">
-                <li id="wiki-style-btn-option-commenting" class="btn" style="width: 35px;border-radius: 25px; padding-left: 10px;"><i class="fa fa-comment-o"></i></li>
-            </ul>
-        </div>
-        <div hidden>
-            <div id="dynamic-comment-paragraph-{{ p.num_pos|safe }}" >
-                {% for elem in p.comments %}
-                    <!--Экземпляр сообщения-->
-                    <div class="micro-comment-block-wiki">
-                        <!--Имя автора комментария-->
-                        <span class="text-left"><b><a href="/user/{{ elem.id_author }}" style="text-decoration: none;"> {{ elem.nickname_author }}</a></b> ({{ elem.data }})</span>
-                        <!--Сообщение-->
-                        <p>{{ elem.text }}</p>
-                        <p></p>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    {% endfor %}
-
-    <!-- Модальное окно ответа на комментарий -->
-    <div class="modal fade" id="modal_answer_comment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <input hidden type="text" id="nickname-comment-message-for-answer">
-                    <input hidden type="text" id="text-comment-message-for-answer">
-                    <h4 class="modal-title" id="myModalLabel">Ответить на комментарий</h4>
-                </div>
-                <div class="modal-body">
-                    <label><h4>Введите текст ответа на комментарий</h4></label>
-                    <br>
-                    <textarea id="input_wiki_comment_answer" type="text" placeholder="Ваш текст ответа..." class="form-control" style="border-radius: 0px; resize: none;" rows="10"></textarea>
-                    <br><br>
-                </div>
-                <div class="modal-footer">
-                    <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
-                    <button id="wiki-send-comment-answer" type="button" class="btn" data-dismiss="modal">Ответить</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     {% load staticfiles %}
     <script type="text/javascript" src="{% static 'wiki/highlight/highlight.pack.js'%}"></script>
@@ -367,60 +200,20 @@
         }
 
         //Номер выбранного параграфа
-        var num_paragraph =  "";
         var md_text = [];
-        li_is_moved = false;
         var selectText = "";
         var isEdit = false;
         {% for p in paragraphs %}
             md_text[{{ p.index|escapejs }}] = '{{ p.text|escapejs }}';
             document.getElementById('markdown-row-{{ p.index|escapejs }}').innerHTML = marked(md_text[{{ p.index|escapejs }}]);
+
             document.getElementById('li-md-wikicode-{{ p.index|escapejs }}').onmousemove = function(e) {
-                var div = document.getElementById('li-md-wikicode-{{ p.index|escapejs }}');
-                var rect = div.getBoundingClientRect();
-                var x = e.offsetX==undefined?e.layerX:e.offsetX;
-                var y = e.offsetY==undefined?e.layerY:e.offsetY;
-                if(!isEdit)
-                {
-                    num_paragraph = ""+{{ p.index|escapejs }};
-                    $("#markdown-row-{{ p.index|escapejs }}").attr("style", theme_border_style);
-                    li_is_moved = true;
-                    $("#context-dinamic-menu").attr("style", "position: fixed;opacity: 1; right:"+(rect.right-rect.width-18)+"px; top:"+(rect.top+rect.height/2-20)+"px; z-index: 9999;transition: all 0.5s ease 0s;");
-                }
-                else
-                {
-                    $(".border li .md-hover").attr("style", "padding: 3px 20px;border-right: 3px solid #c9c9c9;");
-                    li_is_moved = false;
-                }
+                $("#markdown-row-{{ p.index|escapejs }}").attr("style", theme_border_style);
             };
 
             document.getElementById('li-md-wikicode-{{ p.index|escapejs }}').onmouseout = function(e) {
                 $(".border li .md-hover").attr("style", "padding: 3px 20px;border-right: 3px solid #c9c9c9;");
-                li_is_moved = false;
             };
-        {% endfor %}
-
-        update_comment_marks();
-        //Очень важная функция обновления положения динамических кнопок, показывающих, что у данного абзаца, оставлен комментарий
-        function update_comment_marks() {
-            //Обязательно на время переносимся вверх, чтобы расставить в правильных местах значки комментариев
-            var cur_scroll_y = window.scrollY;
-            window.scrollTo(0, 0);
-            {% for p in  prgrphs%}
-                var div = document.getElementById('li-md-wikicode-{{ p.num_pos|escapejs }}');
-                var rect = div.getBoundingClientRect();
-                $("#context-dinamic-commenting-{{ p.num_pos|escapejs }}").attr("style", "position: absolute;opacity: 1; right:"+(rect.right-rect.width-18)+"px; top:"+(rect.top+rect.height/2-20)+"px; z-index: 100;transition: all 0.5s ease 0s;");
-            {% endfor %}
-            window.scrollTo(0, cur_scroll_y);
-        }
-
-        //То, что касается общих комментариев
-        {% for comment in all_comments %}
-            $("#answer-comment-{{ comment.num_position }}").click(function () {
-                $("#nickname-comment-message-for-answer").val("{{ comment.nickname_author }}");
-                $("#text-comment-message-for-answer").val("{{ comment.text }}");
-                $("#input_wiki_comment_answer").val("");
-            });
         {% endfor %}
     </script>
 {% endblock %}

@@ -163,12 +163,6 @@ Follow me on Twitter @maridlcrmn
     color:#369;
 }
 
-.wiki-tree-saved li a {
-    text-decoration: none;
-    color: #991c4f;
-}
-
-
 .tree li button, .tree li button:active, .tree li button:focus {
     text-decoration: none;
     color:#369;
@@ -178,15 +172,7 @@ Follow me on Twitter @maridlcrmn
     padding:0px 0px 0px 0px;
     outline: 0;
 }
-.wiki-tree-saved li button, .tree li button:active, .tree li button:focus {
-    text-decoration: none;
-    color: #991c4f;
-    border:none;
-    background:transparent;
-    margin:0px 0px 0px 0px;
-    padding:0px 0px 0px 0px;
-    outline: 0;
-}
+
 
 .animate {
 		-webkit-transition: all 0.3s ease-in-out;

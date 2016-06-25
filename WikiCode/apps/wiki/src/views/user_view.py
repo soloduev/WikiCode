@@ -25,10 +25,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 
-from WikiCode.apps.wiki.models import Publication, Colleague, Notification
+from WikiCode.apps.wiki.models import Publication
 from WikiCode.apps.wiki.models import Statistics
 from WikiCode.apps.wiki.models import User
-from WikiCode.apps.wiki.models import User as WikiUser, Like
+from WikiCode.apps.wiki.models import User as WikiUser
 from WikiCode.apps.wiki.src.wiki_tree import WikiTree
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
 from .auth import check_auth, get_user_id
@@ -44,9 +44,6 @@ def get_user(request, id):
 
             wt = WikiTree(user.id_user)
             wt.load_tree(user.tree)
-            # Получаем дерево сохраненных публикаций
-            swt = WikiTree(user.id_user)
-            swt.load_tree(user.saved_publ)
 
             user_id = get_user_id(request)
             # Получаем текст превью публикации
@@ -60,23 +57,16 @@ def get_user(request, id):
                 prewiew_publ_title = None
                 prewiew_publ_id = None
 
-            # Узнаем количество коллег и уведомлений
-            total_colleagues = Colleague.objects.filter(user=user).count()
-            total_notifications = Notification.objects.filter(user=user,is_read=False).count()
-
             if user_id != -1:
                 context = {
                     "user_data": user_data,
                     "user_id": user_id,
                     "preview_tree": wt.generate_html_preview(),
-                    "saved_publ":swt.generate_html_preview(),
                     "user":user,
                     "prewiew_publ_text":preview_publ_text,
                     "prewiew_publ_title":prewiew_publ_title,
                     "prewiew_publ_id":prewiew_publ_id,
-                    "other_user": False,
-                    "total_colleagues":total_colleagues,
-                    "total_notifications":total_notifications,
+                    "other_user": False
                 }
 
                 return render(request, 'wiki/user.html', context)
@@ -87,9 +77,6 @@ def get_user(request, id):
             other_user = User.objects.get(id_user=id)
             wt = WikiTree(other_user.id_user)
             wt.load_tree(other_user.tree)
-            # Получаем дерево сохраненных публикаций
-            swt = WikiTree(other_user.id_user)
-            swt.load_tree(other_user.saved_publ)
 
             # Получаем текст превью публикации
             try:
@@ -106,7 +93,6 @@ def get_user(request, id):
                 "user_data": user_data,
                 "user_id": get_user_id(request),
                 "preview_tree": wt.generate_html_preview(),
-                "saved_publ": swt.generate_html_preview(),
                 "user":other_user,
                 "prewiew_publ_text": preview_publ_text,
                 "prewiew_publ_title": prewiew_publ_title,
@@ -150,19 +136,14 @@ def get_create_user(request):
             # Создаем дерево по умолчанию для юзера
             new_tree = WikiTree(total_reg_users)
 
-            # Создаем дерево по умолчанию для сохраненных конспектов
-            new_saved_tree = WikiTree(total_reg_users, True)
-
             # Создаем нового юзера
             new_wiki_user = WikiUser(user=user,
                                      nickname=form["user_nickname"],
                                      email=form["user_email"],
                                      id_user=total_reg_users,
                                      tree=new_tree.get_tree(),
-                                     saved_publ=new_saved_tree.get_tree(),
                                      avatar="none.jpg",
                                      name="anonymous",
-                                     likes=0,
                                      publications=0,
                                      imports=0,
                                      comments=0,
@@ -228,52 +209,6 @@ def get_logout_user(request):
 
     logout(request)
     return HttpResponseRedirect("/")
-
-
-@csrf_protect
-def get_like_user(request, id):
-    """Ajax представление. Like определенному пользователю."""
-    if request.method == "POST":
-        try:
-            # Получаем пользователя захотевшего поставить лайк
-            id_user = int(get_user_id(request))
-
-            if id_user == -1:
-                return HttpResponse('no', content_type='text/html')
-            else:
-                # Получаем текущую дату
-                date = str(datetime.datetime.now())
-                date = date[:len(date) - 7]
-
-                # Получаем User
-                user_set = User.objects.get(id_user=id_user)
-                # Получаем пользователя на которого поставлен лайк
-                user_get = User.objects.get(id_user=id)
-
-                # Проверяем, не стоит ли like уже у этого пользователя на этого пользователя
-                try:
-                    like = Like.objects.get(id_user=id_user, id_user_like=id)
-                    # Лайк стоит, убираем
-                    like.delete()
-                    user_get.likes -= 1
-                    user_get.save()
-                except Like.DoesNotExist:
-                    # Лайк не стоит. Ставим
-                    new_like = Like(id_user=id_user,
-                                    nickname=user_set.nickname,
-                                    type="user",
-                                    id_publ_like=-1,
-                                    id_user_like=id,
-                                    date=date)
-                    new_like.save()
-                    user_get.likes += 1
-                    user_get.save()
-
-                return HttpResponse('ok', content_type='text/html')
-        except User.DoesNotExist:
-            return get_error_page(request, ["This is user is not found!"])
-    else:
-        return HttpResponse('no', content_type='text/html')
 
 
 @csrf_protect

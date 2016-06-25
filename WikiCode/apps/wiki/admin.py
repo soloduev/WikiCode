@@ -21,18 +21,9 @@ from django.contrib import admin
 from .models import User
 from .models import Publication
 from .models import Statistics
-from .models import CommentBlock
-from .models import Comment
-from .models import Paragraphs
-from .models import DynamicCommentParagraph
-from .models import DynamicComment
-from .models import Like
 from .models import Viewing
-from .models import Editor
 from .models import Developer
 from .models import BugReport
-from .models import Colleague
-from .models import Notification
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User as DjangoUser
 
@@ -53,15 +44,6 @@ admin.site.register(DjangoUser, UserAdmin)
 
 admin.site.register(Publication)
 admin.site.register(Statistics)
-admin.site.register(CommentBlock)
-admin.site.register(Comment)
-admin.site.register(Paragraphs)
-admin.site.register(DynamicCommentParagraph)
-admin.site.register(DynamicComment)
-admin.site.register(Like)
 admin.site.register(Viewing)
-admin.site.register(Editor)
 admin.site.register(Developer)
 admin.site.register(BugReport)
-admin.site.register(Colleague)
-admin.site.register(Notification)

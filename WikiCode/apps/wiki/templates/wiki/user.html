@@ -46,12 +46,6 @@
                             <!--Здесь должен располагаться сгенерированный html preview дерева-->
                             {{ preview_tree|safe }}
                         </ul>
-                        {% if saved_publ != "NONE" %}
-                            <ul id="tree2saved" class="wiki-tree-saved">
-                                <!--Здесь должен располагаться сгенерированный html дерева с сохраненными конспектами-->
-                                {{ saved_publ|safe }}
-                            </ul>
-                        {% endif %}
                     {% endif %}
                 </div>
             </div>
@@ -91,7 +85,7 @@
                                 <label class="text-left btn-block" id="title-elem-page">Сохраненных</label>
                                 <label class="text-left btn-block" id="title-elem-page">Комментировал</label>
                                 <hr>
-                                <label class="text-left btn-block" id="title-elem-page">Понравился раз</label>
+                                <label class="text-left btn-block" id="title-elem-page">Рейтинг</label>
                                 <label class="text-left btn-block" id="title-elem-page">Его сохранили</label>
                                 <label class="text-left btn-block" id="title-elem-page">Его комментировали</label>
                             </div>
@@ -101,12 +95,12 @@
                                 <label class="text-left btn-block">{{ user.email }}</label>
                                 <hr>
                                 <label class="text-left btn-block">{{ user.publications }}</label>
-                                <label class="text-left btn-block">{{ user.imports }}</label>
-                                <label class="text-left btn-block">{{ user.comments }}</label>
+                                <label class="text-left btn-block">0</label>
+                                <label class="text-left btn-block">0</label>
                                 <hr>
-                                <label class="text-left btn-block">{{ user.likes }} <a id="wiki-code-like-user-link" class="btn-link text-center" style="width: 60px;">Like!</a></label>
-                                <label class="text-left btn-block">{{ user.imports_it }}</label>
-                                <label class="text-left btn-block">{{ user.commented_it }}</label>
+                                <label class="text-left btn-block">0</label>
+                                <label class="text-left btn-block">0</label>
+                                <label class="text-left btn-block">0</label>
                             </div>
                         </div>
                     </div>
@@ -115,11 +109,11 @@
                     <div class="row" style="border-top: 1px solid #d5d5d5;">
                         <br>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                            <a href="{% url 'colleagues' %}" class="btn btn-block" id="wiki-style-btn">Коллеги <i class="fa fa-users"></i> ({{ total_colleagues }})</a>
+                            <a href="{% url 'colleagues' %}" class="btn btn-block" id="wiki-style-btn">Коллеги <i class="fa fa-users"></i> (0)</a>
                             <br>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                            <a href="{% url 'notifications' %}" class="btn btn-block" id="wiki-style-btn">Уведомления <i class="fa fa-comments-o"></i> ({{ total_notifications }})</a>
+                            <a href="{% url 'notifications' %}" class="btn btn-block" id="wiki-style-btn">Уведомления <i class="fa fa-comments-o"></i> (0)</a>
                             <br>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
@@ -140,7 +134,7 @@
                             <br>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                            <a class="btn btn-block" id="wiki-style-btn-write-message" data-toggle="modal" data-target="#modal_write_message">Написать письмо <i class="fa fa-envelope"></i></a>
+                            <a class="btn btn-block" id="wiki-style-btn-write-message" >Написать письмо <i class="fa fa-envelope"></i></a>
                             <br>
                         </div>
                     </div>
@@ -213,27 +207,6 @@
         </div>
     </div>
 
-    <!-- Модальное окно отправляющее письмо -->
-    <div class="modal fade" id="modal_write_message" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Отправка письма</h4>
-                </div>
-                <div class="modal-body">
-                    <label><h4>Введите текст письма</h4></label>
-                    <br>
-                    <textarea id="input_wiki_message" type="text" placeholder="Ваш текст..." class="form-control" style="border-radius: 0px; resize: none;" rows="10"></textarea>
-                    <br><br>
-                </div>
-                <div class="modal-footer">
-                    <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
-                    <button id="wiki-send-message" type="button" class="btn" >Отправить</button>
-                </div>
-            </div>
-        </div>
-    </div>
     {% load staticfiles %}
     <link rel="stylesheet" href="{% static 'wiki/highlight/styles/github.css'%}">
     <script type="text/javascript" src="{% static 'wiki/highlight/highlight.pack.js'%}"></script>

@@ -29,7 +29,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def get_index(request):
 
-    all_publications = Publication.objects.filter(is_public=True)
+    all_publications = Publication.objects.filter()
 
     # Срезаем публикации, если их больше того количества, которое хотим вывести
     if len(all_publications) > wiki_settings.COUNT_LAST_PUBL_SHOW:
