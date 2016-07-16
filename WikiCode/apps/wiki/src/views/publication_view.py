@@ -29,6 +29,7 @@ from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.src.wiki_markdown import WikiMarkdown
 from WikiCode.apps.wiki.src.wiki_tree import WikiTree
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
+from WikiCode.apps.wiki.settings import wiki_settings
 from .auth import check_auth, get_user_id
 
 
@@ -95,7 +96,6 @@ def get_page(request, id):
                 "text": arr[i]
             })
 
-
         # Загружаем превью дерево автора
         try:
             author_user = User.objects.get(id_user=publication.id_author)
@@ -131,7 +131,8 @@ def get_page(request, id):
             "numbers": numbers,
             "user_data": check_auth(request),
             "user_id": cur_user_id,
-            "preview_tree": html_preview_tree
+            "preview_tree": html_preview_tree,
+            "module_dynamic_paragraphs": wiki_settings.MODULE_DYNAMIC_PARAGRAPHS
         }
 
         return render(request, 'wiki/page.html', context)

@@ -77,11 +77,19 @@
                                                      style="border: 1px solid #d5d5d5;">
                                                     <div class="row">
                                                         <ul class="border" id="row-paragraphs">
+                                                        {% if module_dynamic_paragraphs %}
+                                                            {% for elem in numbers %}
+                                                                <li id="li-md-wikicode-{{ elem }}" class="task" data-id="{{ elem }}">
+                                                                    <div class="md-hover" id="markdown-row-{{ elem }}"></div>
+                                                                </li>
+                                                            {% endfor %}
+                                                        {% else %}
                                                             {% for elem in numbers %}
                                                                 <li id="li-md-wikicode-{{ elem }}">
                                                                     <div class="md-hover" id="markdown-row-{{ elem }}"></div>
                                                                 </li>
                                                             {% endfor %}
+                                                        {% endif %}
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -168,6 +176,16 @@
         {% endif %}
     </div>
 
+    {% if module_dynamic_paragraphs %}
+        <!--Контекстное меню для абзацев-->
+        <nav id="context-menu" class="context-menu">
+            <ul class="context-menu__items">
+                <li id="lt-context-menu-1" class="context-menu__item"><a id="comment_paragraph_wiki_tree_context" href="#" class="context-menu__link" data-action="Comment" style="text-decoration: none;"><i class="fa fa-comment"></i> Комментировать</a></li>
+                <li id="lt-context-menu-2" class="context-menu__item"><a id="edit_paragraph_wiki_tree_context" href="#" class="context-menu__link" data-action="Edit" style="text-decoration: none;"><i class="fa  fa-pencil-square-o"></i> Редактировать</a></li>
+                <li id="lt-context-menu-3" class="context-menu__item"><a id="error_paragraph_wiki_tree_context" href="#" class="context-menu__link" data-action="Error" style="text-decoration: none;"><i class="fa fa-exclamation-triangle"></i> Указать на ошибку</a></li>
+            </ul>
+        </nav>
+    {% endif %}
 
     {% load staticfiles %}
     <script type="text/javascript" src="{% static 'wiki/highlight/highlight.pack.js'%}"></script>
@@ -182,6 +200,9 @@
     <link href={% static "wiki/wiki_styles/page.css" %} type="text/css" rel="stylesheet">
     <link href={% static "wiki/slidebars/styles/slidebars.min.css" %} type="text/css" rel="stylesheet">
     <script src={% static "wiki/wiki_scripts/page.js" %}></script>
+    {% if module_dynamic_paragraphs %}
+        <script src={% static "wiki/wiki_scripts/page_context.js" %}></script>
+    {% endif %}
     <script src={% static "wiki/slidebars/scripts/slidebars.min.js" %}></script>
     <script>
         $(init);

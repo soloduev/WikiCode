@@ -31,9 +31,9 @@ class User(models.Model):
     publications = models.BigIntegerField()
     avatar = models.ImageField(upload_to='avatars')
     preview_publ_id = models.BigIntegerField()
+
     def __str__(self):
         return str(self.id_user)
-
 
 
 class Publication(models.Model):
@@ -47,6 +47,7 @@ class Publication(models.Model):
     html_page = models.TextField()
     tree_path = models.TextField()
     read = models.BigIntegerField()
+
     def __str__(self):
         return str(self.id_publication)
 
@@ -57,10 +58,10 @@ class Viewing(models.Model):
     nickname = models.CharField(max_length=100)
     id_publ = models.BigIntegerField()
     date = models.CharField(max_length=100)
+
     def __str__(self):
         return str("user:" + str(self.id_user) +
                    " publ:" + str(self.id_publ))
-
 
 
 class Statistics(models.Model):
@@ -71,6 +72,7 @@ class Statistics(models.Model):
     users_total_reg = models.BigIntegerField(default=0)
     user_online = models.BigIntegerField()
     publications_create = models.BigIntegerField()
+
     def __str__(self):
         return str(self.id_statistics)
 
@@ -78,6 +80,7 @@ class Statistics(models.Model):
 class Developer(models.Model):
     id_developer = models.IntegerField()
     name_developer = models.TextField(max_length=100)
+
     def __str__(self):
         return str(self.name_developer)
 
@@ -88,6 +91,7 @@ class BugReport(models.Model):
     name_author = models.CharField(max_length=100)
     date = models.CharField(max_length=100)
     text = models.TextField()
+
     def __str__(self):
         return str(self.date)
 
