@@ -24,6 +24,7 @@ from .models import Statistics
 from .models import Viewing
 from .models import Developer
 from .models import BugReport
+from .models import DynamicComment
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User as DjangoUser
 
@@ -33,6 +34,7 @@ from django.contrib.auth.models import User as DjangoUser
 class UserInline(admin.StackedInline):
     model = User
     can_delete = False
+
 
 # Определяем новый класс настроек для модели User
 class UserAdmin(UserAdmin):
@@ -47,3 +49,4 @@ admin.site.register(Statistics)
 admin.site.register(Viewing)
 admin.site.register(Developer)
 admin.site.register(BugReport)
+admin.site.register(DynamicComment)

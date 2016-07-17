@@ -313,9 +313,8 @@
         }
 
         //Номер выбранного параграфа
+        //В этом массиве будет хранится разбитый на параграфы маркдаун текст.
         var md_text = [];
-        var selectText = "";
-        var isEdit = false;
         {% for p in paragraphs %}
             md_text[{{ p.index|escapejs }}] = '{{ p.text|escapejs }}';
             document.getElementById('markdown-row-{{ p.index|escapejs }}').innerHTML = marked(md_text[{{ p.index|escapejs }}]);

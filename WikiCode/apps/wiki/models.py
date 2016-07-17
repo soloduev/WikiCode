@@ -52,6 +52,19 @@ class Publication(models.Model):
         return str(self.id_publication)
 
 
+# Модель отдельного динамического комментария
+class DynamicComment(models.Model):
+    publication = models.ForeignKey(Publication, on_delete=models.CASCADE)
+    num_position = models.BigIntegerField()
+    id_author = models.BigIntegerField()
+    text = models.TextField()
+    rating = models.BigIntegerField()
+    date = models.CharField(max_length=100)
+
+    def __str__(self):
+            return str(str(self.publication) + "_" + str(self.num_position))
+
+
 # Модель просмотра страницы. Указывает кто просмотрел и когда
 class Viewing(models.Model):
     id_user = models.BigIntegerField()
