@@ -196,3 +196,20 @@
   background-color: #0066aa;
 }
 
+
+/* dynamic comments */
+
+.dynamic-comment-block{
+    border-left: 1px solid #d5d5d5;
+    border-right: 1px solid #d5d5d5;
+    border-bottom: 1px solid #d5d5d5;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    padding: 5px;
+    transition: all 0.5s ease 0s;
+    margin-top: 5px;
+}
+
+.dynamic-comment-block:hover{
+    background-color: rgba(193, 193, 193, 0.44);
+    transition: all 0.5s ease 0s;
+}

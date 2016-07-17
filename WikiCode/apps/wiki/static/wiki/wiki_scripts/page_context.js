@@ -17,6 +17,8 @@
  along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+//Скрипт отвечает за работу контекстного меню
+
 (function() {
 
     "use strict";
@@ -95,6 +97,7 @@
     var contextMenuLinkClassName = "context-menu__link";
     var contextMenuActive = "context-menu--active";
 
+    //Этим классом должен быть размечен тег для вызова контекстного меню
     var taskItemClassName = "task";
     var taskItemInContext;
 
@@ -136,11 +139,12 @@
                 toggleMenuOn();
                 // Здесь необходимо выбрать какое контекстное меню отображать
 
-                //var str_line = ''+taskItemInContext.getAttribute("data-id");
-                
+                //var selected_number_paragraph = ''+taskItemInContext.getAttribute("data-id");
+                $("#selected_number_paragraph").val(''+taskItemInContext.getAttribute("data-id"));
                 $("#lt-context-menu-1").attr("style", "");
                 $("#lt-context-menu-2").attr("style", "");
                 $("#lt-context-menu-3").attr("style", "");
+
 
                 positionMenu(e);
             } else {

@@ -77,19 +77,19 @@
                                                      style="border: 1px solid #d5d5d5;">
                                                     <div class="row">
                                                         <ul class="border" id="row-paragraphs">
-                                                        {% if module_dynamic_paragraphs %}
-                                                            {% for elem in numbers %}
-                                                                <li id="li-md-wikicode-{{ elem }}" class="task" data-id="{{ elem }}">
-                                                                    <div class="md-hover" id="markdown-row-{{ elem }}"></div>
-                                                                </li>
-                                                            {% endfor %}
-                                                        {% else %}
-                                                            {% for elem in numbers %}
-                                                                <li id="li-md-wikicode-{{ elem }}">
-                                                                    <div class="md-hover" id="markdown-row-{{ elem }}"></div>
-                                                                </li>
-                                                            {% endfor %}
-                                                        {% endif %}
+                                                            {% if module_dynamic_paragraphs %}
+                                                                {% for elem in numbers %}
+                                                                    <li id="li-md-wikicode-{{ elem }}" class="task" data-id="{{ elem }}">
+                                                                        <div class="md-hover" id="markdown-row-{{ elem }}"></div>
+                                                                    </li>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                {% for elem in numbers %}
+                                                                    <li id="li-md-wikicode-{{ elem }}">
+                                                                        <div class="md-hover" id="markdown-row-{{ elem }}"></div>
+                                                                    </li>
+                                                                {% endfor %}
+                                                            {% endif %}
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -180,11 +180,103 @@
         <!--Контекстное меню для абзацев-->
         <nav id="context-menu" class="context-menu">
             <ul class="context-menu__items">
-                <li id="lt-context-menu-1" class="context-menu__item"><a id="comment_paragraph_wiki_tree_context" href="#" class="context-menu__link" data-action="Comment" style="text-decoration: none;"><i class="fa fa-comment"></i> Комментировать</a></li>
+                <li id="lt-context-menu-1" class="context-menu__item"><a id="comment_paragraph_wiki_tree_context" data-toggle="modal" data-target="#modal_dynamic_comment" class="context-menu__link" data-action="Comment" style="text-decoration: none;"><i class="fa fa-comment"></i> Комментировать</a></li>
                 <li id="lt-context-menu-2" class="context-menu__item"><a id="edit_paragraph_wiki_tree_context" href="#" class="context-menu__link" data-action="Edit" style="text-decoration: none;"><i class="fa  fa-pencil-square-o"></i> Редактировать</a></li>
                 <li id="lt-context-menu-3" class="context-menu__item"><a id="error_paragraph_wiki_tree_context" href="#" class="context-menu__link" data-action="Error" style="text-decoration: none;"><i class="fa fa-exclamation-triangle"></i> Указать на ошибку</a></li>
             </ul>
         </nav>
+        <!--Выбранный номер параграфа. Заполняется в скрипте отвечающим за контекстное меню-->
+        <input hidden value="" id="selected_number_paragraph">
+        <!--Модальное окно для динамического комментирования абзаца-->
+        <div class="modal fade" id="modal_dynamic_comment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Комментирование параграфа</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="" id="md-dynamic-paragraph-show"></div>
+                        <hr>
+                        <h4>Комментарии:</h4>
+                        <!-- -Экземпляр комментария -->
+                        <div class="dynamic-comment-block">
+                            <div class="row">
+                                <div class="col-xs-8 text-left"><a href="#" style="text-decoration: none;"><b>Вася Пупкин</b></a></div>
+                                <div class="col-xs-4 text-right">
+                                    <!-- Кнопка пожаловаться -->
+                                    <b><i><span style="font-size: 12px; color: rgba(82, 82, 82, 0.44);"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span></i></b>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 text-left">Мне показалось, что данный абзац не достаточно информативен, и я бы даже сказал, что он полностью бесполезен. Уберите его нафиг.</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-4 text-left"><b><i><span style="font-size: 12px; color: rgba(82, 82, 82, 0.44);">15.08.2016 13:23</span></i></b></div>
+                                <div class="col-xs-8 text-right">
+                                    <!-- Кнопка полезно -->
+                                    <a href="#" style="text-decoration: none;"><b><i>Полезно <span style="font-size: 12px;"><i class="fa fa-thumbs-up" aria-hidden="true"></i></span> (13)</i></b></a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- -Экземпляр комментария -->
+                        <div class="dynamic-comment-block">
+                            <div class="row">
+                                <div class="col-xs-8 text-left"><a href="#" style="text-decoration: none;"><b>Александр Иванов</b></a></div>
+                                <div class="col-xs-4 text-right">
+                                    <!-- Кнопка пожаловаться -->
+                                    <b><i><span style="font-size: 12px; color: rgba(82, 82, 82, 0.44);"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span></i></b>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 text-left">Да ладно тебе. Ты хочешь сказать, что этот абзац является лишним? Для тебя эксперта, этот блок да, скорее всего не информативен. Но тому кто впервые сталкивается с данной технологией, будет тяжело понять данный абзац. Так что все нормально у автора.</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-4 text-left"><b><i><span style="font-size: 12px; color: rgba(82, 82, 82, 0.44);">15.08.2016 18:02</span></i></b></div>
+                                <div class="col-xs-8 text-right">
+                                    <!-- Кнопка полезно -->
+                                    <a href="#" style="text-decoration: none;"><b><i>Полезно <span style="font-size: 12px;"><i class="fa fa-thumbs-up" aria-hidden="true"></i></span> (76)</i></b></a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- -Экземпляр комментария -->
+                        <div class="dynamic-comment-block">
+                            <div class="row">
+                                <div class="col-xs-8 text-left"><a href="#" style="text-decoration: none;"><b>Анастасия</b></a></div>
+                                <div class="col-xs-4 text-right">
+                                    <!-- Кнопка изменить, для того пользователя, который оставил комментарий -->
+                                    <b><i><span style="font-size: 12px; color: rgba(82, 82, 82, 0.44);"><i class="fa fa-pencil" aria-hidden="true"></i></span></i></b>
+                                    <!-- Кнопка удалить, для того пользователя, который оставил комментарий -->
+                                    <b><i><span style="font-size: 12px; color: rgba(82, 82, 82, 0.44);"><i class="fa fa-times" aria-hidden="true"></i></span></i></b>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 text-left">Спасибо большое, за информацию!! Наконец-то все стало понятно!!!</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-4 text-left"><b><i><span style="font-size: 12px; color: rgba(82, 82, 82, 0.44);">16.08.2016 22:40</span></i></b></div>
+                                <div class="col-xs-8 text-right">
+                                    <!-- Кнопка полезно -->
+                                    <a href="#" style="text-decoration: none;"><b><i>Полезно <span style="font-size: 12px;"><i class="fa fa-thumbs-up" aria-hidden="true"></i></span> (11)</i></b></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <textarea type="text" rows="2" class="form-control btn-block" id="" name="" placeholder="Ваш комментарий..." autofocus style="border-radius: 0px; resize: none;"></textarea>
+                                <br>
+                            </div>
+                            <div class="col-xs-8"></div>
+                            <div class="col-xs-4">
+                                <button type="button" id="wiki-style-btn" class="btn btn-block" name="">Отправить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endif %}
 
     {% load staticfiles %}
@@ -236,5 +328,12 @@
                 $(".border li .md-hover").attr("style", "padding: 3px 20px;border-right: 3px solid #c9c9c9;");
             };
         {% endfor %}
+
+        {% if module_dynamic_paragraphs %}
+            $("#comment_paragraph_wiki_tree_context").on("click", function () {
+                document.getElementById('md-dynamic-paragraph-show').innerHTML = marked(md_text[parseInt($("#selected_number_paragraph").val())]);
+            });
+        {% endif %}
+
     </script>
 {% endblock %}
