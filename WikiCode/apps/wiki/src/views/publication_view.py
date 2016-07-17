@@ -163,28 +163,7 @@ def get_create_page(request):
         stat.publications_create += 1
 
         newid = num + 1
-        access = request.POST.get("access")
-        access_edit = request.POST.get("access_edit")
-        public_comment = request.POST.get("public_comment")
-        dynamic_comment = request.POST.get("dynamic_comment")
-        _is_public = False
-        _is_private = False
-        _is_private_edit = False
-        _is_public_edit = False
-        _is_marks = False
-        _is_comments = False
-        if access == "public":
-            _is_public = True
-        else:
-            _is_private = True
-        if access_edit == "public":
-            _is_public_edit = True
-        else:
-            _is_private_edit = True
-        if public_comment == "true":
-            _is_comments = True
-        if dynamic_comment == "true":
-            _is_marks = True
+
         # Перед тем, как создать публикацию, проверяем, не существует ли она уже
         try:
             publ = Publication.objects.get(id_publication=newid)
@@ -199,21 +178,8 @@ def get_create_page(request):
                 text=form["text"],
                 theme=form["theme"],
                 html_page=ready_page,
-                is_private=_is_private,
-                is_public=_is_public,
-                is_private_edit=_is_private_edit,
-                is_public_edit=_is_public_edit,
-                is_marks=_is_marks,
-                is_comments=_is_comments,
-                tags=form["tags"],
                 tree_path=form["folder"]+form["title"]+".publ:"+str(newid),
-                comments=0,
-                imports=0,
-                marks=0,
-                likes=0,
-                read=0,
-                edits=0,
-                downloads=0)
+                read=0)
 
 
         # Загружаем дерево пользователя
@@ -224,8 +190,6 @@ def get_create_page(request):
         user.tree = wt.get_tree()
         # Увеличиваем количество публикаций в статистике у пользователя
         user.publications += 1
-
-        all_publications = Publication.objects.filter(is_public=True)
 
         stat.save()
         new_publication.save()
@@ -254,7 +218,6 @@ def get_publ_manager(request, id):
         # Который захотел управлять этим конспектом
         current_id = get_user_id(request)
         if current_id == _publication.id_author:
-
 
             context = {
                 "user_data": user_data,
