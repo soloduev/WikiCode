@@ -1,0 +1,33 @@
+/*
+    Copyright (C) 2016 Igor Soloduev <diahorver@gmail.com>
+
+    This file is part of WikiCode.
+
+    WikiCode is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    WikiCode is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+p#vtip {
+    display: none;
+    position: absolute;
+    padding: 5px;
+    left: 5px;
+    border-radius: 15px;
+    font-size: 12px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    background-color: rgba(255, 255, 255, 1);
+    font-weight: bold;
+    font-style: italic;
+    color: #919191;
+    z-index: 9999;
+}

@@ -38,15 +38,17 @@
             <div class="collapse navbar-collapse" id="navbar-collapse-2">
                 <ul class="nav navbar-nav navbar-right">
                     {% if user_data != "None" %}
-                        <li id="nav-bar-button1"><a href="{% url 'tree_manager' %}">Мое Дерево</a></li>
-                        <li id="nav-bar-button2"><a href="{% url 'create' %}">Создать</a></li>
-                        <li id="nav-bar-button3"><a href="{% url 'settings' %}">Настройки</a></li>
+                        <li id="nav-bar-button1" title="Мои конспекты" class="vtip"><a href="{% url 'tree_manager' %}"><i class="fa fa-th-large" aria-hidden="true"></i></a></li>
+                        <li id="nav-bar-button2" title="Создать конспект" class="vtip"><a href="{% url 'create' %}"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></li>
+                        <li id="nav-bar-button3" title="Мои настройки" class="vtip"><a href="{% url 'settings' %}"><i class="fa fa-cog" aria-hidden="true"></i></a></li>
+                        <li id="nav-bar-button5" title="О платформе" class="vtip"><a href="{% url 'about' %}"><i class="fa fa-question-circle" aria-hidden="true"></i></a></li>
+                    {% else %}
+                        <li id="nav-bar-button5"><a href="{% url 'about' %}">О платформе</a></li>
                     {% endif %}
-                    <li id="nav-bar-button5"><a href="{% url 'about' %}">О платформе</a></li>
                     {% if user_data == "None" %}
                         <li><a class="btn btn-default btn-outline btn-circle" data-toggle="collapse" href="#nav-collapse2" aria-expanded="false" aria-controls="nav-collapse2" style="border-radius: 0px;">Войти</a></li>
                     {% else %}
-                        <li><a href="/user/{{ user_id }}/"><b>{{ user_data }}</b></a></li>
+                        <li title="Моя страница" class="vtip"><a href="/user/{{ user_id }}/"><b>{{ user_data }}</b></a></li>
                         <li><a href="{% url 'logout_user' %}" class="btn btn-default btn-outline btn-circle" style="border-radius: 0px;"><i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
                     {% endif %}
                 </ul>
