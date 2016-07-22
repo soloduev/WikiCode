@@ -55,14 +55,15 @@ class Publication(models.Model):
 # Модель отдельного динамического комментария
 class DynamicComment(models.Model):
     publication = models.ForeignKey(Publication, on_delete=models.CASCADE)
-    num_position = models.BigIntegerField()
+    paragraph = models.BigIntegerField()
+    position = models.BigIntegerField()
     id_author = models.BigIntegerField()
     text = models.TextField()
     rating = models.BigIntegerField()
     date = models.CharField(max_length=100)
 
     def __str__(self):
-            return str(str(self.publication) + "_" + str(self.num_position))
+            return str(str(self.publication) + "_" + str(self.paragraph) + "_" + str(self.position))
 
 
 # Модель просмотра страницы. Указывает кто просмотрел и когда
