@@ -150,7 +150,12 @@
     resize: none;
     border-radius: 0px;
     font-family: Courier;
-
+    border: none;
+    box-shadow: none;
+    padding: 3px 20px;
+    border-right: 3px solid #c9c9c9;
+    font-size: 14px;
+    overflow:  hidden;
 }
 
 
@@ -227,6 +232,6 @@
 
 #md-dynamic-paragraph-show:hover{
     border: 1px solid #8f8f8f;
-    background-color: rgba(2, 146, 218, 0.27);
+    background-color: rgba(120, 120, 120, 0.27);
     transition: all 0.5s ease 0s;
 }

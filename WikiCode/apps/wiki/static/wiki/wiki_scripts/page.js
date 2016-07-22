@@ -104,3 +104,54 @@ $("#wiki-btn-send-dynamic-comment").click(function () {
         }
     });
 });
+
+//Динамическое редактирование
+$("#edit_paragraph_wiki_tree_context").on("click", function () {
+
+    isEdit = true; var selected_num_paragraph = parseInt($("#selected_number_paragraph").val());
+    //Получаем все необходимые данные с абазаца
+    var height = $('#li-md-wikicode-'+selected_num_paragraph+'').css('height');
+    selectText = md_text[parseInt(selected_num_paragraph)];
+
+    //Заменяем элемент списка на input
+    $("#markdown-row-"+selected_num_paragraph+"")
+        .replaceWith(
+            '<textarea  class="form-control dyn-par" id="dynamic-paragraph"' +
+            'onKeyUp="selectChange()"' +
+            'style="height:'+height+';' +
+            '">' +
+            selectText +
+            '</textarea>');
+    //Делаем так, чтобы мы могли нажимать таб у любого текст ареа тега
+    var textareas = document.getElementsByTagName('textarea');
+    var count = textareas.length;
+    for(var i=0;i<count;i++){
+        textareas[i].onkeydown = function(e){
+            if(e.keyCode==9 || e.which==9){
+                e.preventDefault();
+                var s = this.selectionStart;
+                this.value = this.value.substring(0,this.selectionStart) + "\t" + this.value.substring(this.selectionEnd);
+                this.selectionEnd = s+1;
+            }
+        }
+    }
+    $(".dyn-par").focus();
+
+    //Устанвливаем курсор в конец строки
+    var input = document.getElementById ("dynamic-paragraph");
+    input.selectionStart = input.value.length-1;
+
+
+    //Как только теряем фокус:
+    $("#dynamic-paragraph").blur(function (e) {
+
+        //Применяем все и возвращаем все обратно
+        var new_md_text =  $("#dynamic-paragraph").val();
+        $("#dynamic-paragraph").replaceWith(
+            '<div class="md-hover" id="markdown-row-'+selected_num_paragraph+'"></div>'
+        );
+        document.getElementById('markdown-row-'+selected_num_paragraph).innerHTML = marked(new_md_text);
+        md_text[parseInt(selected_num_paragraph)] = new_md_text;
+        isEdit = false;
+    });
+});
