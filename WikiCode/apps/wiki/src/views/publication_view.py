@@ -24,7 +24,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 
-from WikiCode.apps.wiki.models import Publication, Statistics, Viewing
+from WikiCode.apps.wiki.models import Publication, Statistics, Viewing, DynamicComment
 from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.src.wiki_markdown import WikiMarkdown
 from WikiCode.apps.wiki.src.wiki_tree import WikiTree
@@ -105,6 +105,32 @@ def get_page(request, id):
         except User.DoesNotExist:
             print("Автора не существует")
 
+        # Загружаем все динамические комментарии в этой публикации
+        if wiki_settings.MODULE_DYNAMIC_PARAGRAPHS:
+            arr_dynamic_comments = DynamicComment.objects.filter(publication=publication)
+            dynamic_comments = []
+            # Далее, к составляем расширенный массив, с именем автора
+            for comment in arr_dynamic_comments:
+                try:
+                    name_author = User.objects.get(id_user=comment.id_author)
+                    name_author = name_author.nickname
+                except User.DoesNotExist:
+                    name_author = "Undefined"
+                dynamic_comments.append({
+                    "publication": comment.publication,
+                    "paragraph": comment.paragraph,
+                    "position": comment.position,
+                    "id_author": comment.id_author,
+                    "text": comment.text,
+                    "rating": comment.rating,
+                    "date": comment.date,
+                    "name_author": name_author
+                })
+
+
+        else:
+            dynamic_comments = None
+
         # И перед тем как перейти на страницу, добавим ей просмотр, если этот пользователь еще не смотрел
         # Этот конспект
         try:
@@ -132,7 +158,8 @@ def get_page(request, id):
             "user_data": check_auth(request),
             "user_id": cur_user_id,
             "preview_tree": html_preview_tree,
-            "module_dynamic_paragraphs": wiki_settings.MODULE_DYNAMIC_PARAGRAPHS
+            "module_dynamic_paragraphs": wiki_settings.MODULE_DYNAMIC_PARAGRAPHS,
+            "dynamic_comments": dynamic_comments
         }
 
         return render(request, 'wiki/page.html', context)
@@ -231,3 +258,57 @@ def get_publ_manager(request, id):
 
     except Publication.DoesNotExist:
         return get_error_page(request, ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
+
+
+@csrf_protect
+def get_add_dynamic_comment(request, id):
+    """Ajax представление. Добавление комментария."""
+
+    if request.method == "POST":
+        # Проверяем, аутентифицирован ли пользователь
+        if get_user_id(request) == -1:
+            return HttpResponse('no', content_type='text/html')
+        else:
+            # Если пользователь аутентифицирован то, добавляем динамический комментарий к теущему конспекту
+
+            try:
+                # Получаем текущую публикацию
+                publication = Publication.objects.get(id_publication=id)
+
+                # Получаем комментарий, который хотим оставить
+                dynamic_comment = request.POST.get('dynamic_comment')
+
+                # Получаем номер абзаца, в котором оставил пользователь комментарий
+                num_paragraph = request.POST.get('num_paragraph')
+
+                # Получаем все комментарии данного параграфа
+                dynamic_comments = DynamicComment.objects.filter(publication=publication, paragraph=num_paragraph)
+
+                # Получаем текущую дату
+                date = str(datetime.datetime.now())
+                date = date[:len(date) - 7]
+
+                # Получаем текущую позицию комментария в текущем абзаце
+                if not dynamic_comments:
+                    position = 0
+                else:
+                    position = dynamic_comments[len(dynamic_comments)-1].position + 1
+
+                # Создаем динамический комментарий
+                new_dynamic_comment = DynamicComment(publication=publication,
+                                                     paragraph=num_paragraph,
+                                                     position=position,
+                                                     id_author=get_user_id(request),
+                                                     text=dynamic_comment,
+                                                     rating=0,
+                                                     date=date)
+
+                new_dynamic_comment.save()
+
+                return HttpResponse('ok', content_type='text/html')
+
+            except Publication.DoesNotExist:
+                return get_error_page(request, ["This is publication not found!",
+                                                "Page not found: publ_manager/" + str(id) + "/"])
+    else:
+        return HttpResponse('no', content_type='text/html')

@@ -66,3 +66,41 @@ $(function() {
         tagData:["c++", "beginning"],
     });
 });
+
+
+// ---------------------------------------------------------- //
+// ---------------------POST запросы------------------------- //
+// ---------------------------------------------------------- //
+
+
+// Отправление динамического комментария
+$("#wiki-btn-send-dynamic-comment").click(function () {
+
+    // Получаем сообщение которое необходимо отправить
+    var dynamic_comment = $("#wiki-dynamic-comment-field").val();
+
+    // Получаем номер параграфа в котором пользователь хочет оставить комментарий
+    var num_paragraph = $("#selected_number_paragraph").val();
+
+
+    $.ajax({
+        type: "POST",
+        url: "add_dynamic_comment/",
+        data:{
+            'dynamic_comment':dynamic_comment,
+            'num_paragraph':num_paragraph
+        },
+        dataType: "text",
+        cache: false,
+        success: function(data){
+            if (data == 'ok'){
+                // Чисто с точки зрения фронтенда, добавляем этот комментарий, чтобы не делать дополнительный гет запрос.
+                // Либо сделать гет запрос)
+                location.reload();
+            }
+            else{
+                console.log("ERROR in page.js");
+            }
+        }
+    });
+});
