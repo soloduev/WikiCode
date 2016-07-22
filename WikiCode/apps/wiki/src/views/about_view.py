@@ -24,7 +24,7 @@ from .auth import check_auth, get_user_id
 
 
 def get_about(request):
-    with open("WikiCode/apps/wiki/mdtexts/docs/1.1.Description.md", "r", encoding='utf-8') as f:
+    with open("WikiCode/apps/wiki/docs/1.1.Description.md", "r", encoding='utf-8') as f:
         about_wikicode = f.read()
 
     context = {
