@@ -37,9 +37,11 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar-collapse-2">
                 <ul class="nav navbar-nav navbar-right">
-                    <li id="nav-bar-button1"><a href="{% url 'tree_manager' %}">Мое Дерево</a></li>
-                    <li id="nav-bar-button2"><a href="{% url 'create' %}">Создать</a></li>
-                    <li id="nav-bar-button3"><a href="{% url 'settings' %}">Настройки</a></li>
+                    {% if user_data != "None" %}
+                        <li id="nav-bar-button1"><a href="{% url 'tree_manager' %}">Мое Дерево</a></li>
+                        <li id="nav-bar-button2"><a href="{% url 'create' %}">Создать</a></li>
+                        <li id="nav-bar-button3"><a href="{% url 'settings' %}">Настройки</a></li>
+                    {% endif %}
                     <li id="nav-bar-button5"><a href="{% url 'about' %}">О платформе</a></li>
                     {% if user_data == "None" %}
                         <li><a class="btn btn-default btn-outline btn-circle" data-toggle="collapse" href="#nav-collapse2" aria-expanded="false" aria-controls="nav-collapse2" style="border-radius: 0px;">Войти</a></li>

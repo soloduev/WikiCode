@@ -58,10 +58,17 @@ Follow me on Twitter @maridlcrmn
 
 
 
-#nav-bar-button1:hover {  border-bottom: 4px solid #2b669a;  }
-#nav-bar-button2:hover {  border-bottom: 4px solid #2b669a;  }
-#nav-bar-button3:hover {  border-bottom: 4px solid #2b669a;  }
-#nav-bar-button5:hover {  border-bottom: 4px solid #2b669a;  }
+#nav-bar-button1:hover {  color: rgb(2, 150, 231); font-weight: bold; }
+#nav-bar-button2:hover {  color: rgb(2, 150, 231); font-weight: bold; }
+#nav-bar-button3:hover {  color: rgb(2, 150, 231); font-weight: bold; }
+#nav-bar-button5:hover {  color: rgb(2, 150, 231); font-weight: bold; }
+
+#wiki-brand-about{
+    margin-top: 1px;
+    font-size: 12px;
+    color: #bebebe;
+    font-style: italic;
+}
 
 .social:hover {
      -webkit-transform: scale(1.1);
