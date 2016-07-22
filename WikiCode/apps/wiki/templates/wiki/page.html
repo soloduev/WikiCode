@@ -262,17 +262,27 @@
                             </div>
                         </div>
 
-                        <hr>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <textarea type="text" rows="2" class="form-control btn-block" id="" name="" placeholder="Ваш комментарий..." autofocus style="border-radius: 0px; resize: none;"></textarea>
-                                <br>
+
+                        {% if user_data == "None" %}
+                            <hr>
+                            <div class="row">
+                                <div class="col-xs-12 text-center">
+                                    <span style="font-size: 12px; color: rgba(82, 82, 82, 0.44)">Войдите или зарегистрируйтесь, чтобы оставить комментарий</span>
+                                </div>
                             </div>
-                            <div class="col-xs-8"></div>
-                            <div class="col-xs-4">
-                                <button type="button" id="wiki-style-btn" class="btn btn-block" name="">Отправить</button>
+                        {% else %}
+                            <hr>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <textarea type="text" rows="2" class="form-control btn-block" id="wiki-dynamic-comment-field" name="" placeholder="Ваш комментарий..." autofocus style="border-radius: 0px; resize: none;"></textarea>
+                                    <br>
+                                </div>
+                                <div class="col-xs-8"></div>
+                                <div class="col-xs-4">
+                                    <button type="button" id="wiki-btn-send-dynamic-comment" class="btn btn-block" name="">Отправить</button>
+                                </div>
                             </div>
-                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
