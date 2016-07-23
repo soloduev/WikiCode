@@ -22,9 +22,26 @@
 import os
 import sys
 
-if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "WikiCode.settings")
+from WikiCode.apps.wiki.settings import wiki_settings
+from WikiCode.apps.wiki.src.wiki_tests import WikiTests
 
-    from django.core.management import execute_from_command_line
+# Если активирован модуль тестирования, запускаем сначала его
 
-    execute_from_command_line(sys.argv)
+STOP_SERVER = False
+
+if wiki_settings.RUN_TESTS:
+    wiki_tests = WikiTests()
+    ERRORS_NOT_FOUND = wiki_tests.run()
+
+    # Если включен модуль жесткого тестировния, то при обнаружении ошибки, перезапускаем сервер
+    if wiki_settings.HARD_TESTS and not ERRORS_NOT_FOUND:
+        STOP_SERVER = True
+
+
+if not STOP_SERVER:
+    if __name__ == "__main__":
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "WikiCode.settings")
+
+        from django.core.management import execute_from_command_line
+
+        execute_from_command_line(sys.argv)
