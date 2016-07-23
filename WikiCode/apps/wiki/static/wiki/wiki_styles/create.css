@@ -82,3 +82,14 @@
     color: #fff;
     transition: all 0.5s ease 0s;
 }
+
+
+.options-label
+{
+    margin-top: 4px;
+}
+
+.switch-block
+{
+    margin-left: 7px;
+}

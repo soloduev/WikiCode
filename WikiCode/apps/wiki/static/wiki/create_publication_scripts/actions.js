@@ -63,3 +63,12 @@ $("#lt-markdown-close-choose").click(function () {
     $("#div-lt-choose-folder").fadeOut(500);
 });
 
+// Работа с настройками конспекта
+$('#access-switch').switchable();
+$('#dynamic-switch').switchable();
+$('#main-comments-switch').switchable();
+$('#private-edit-switch').switchable();
+$('#contents-switch').switchable();
+$('#files-switch').switchable();
+$('#links-switch').switchable();
+$('#versions-switch').switchable();
