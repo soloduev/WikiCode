@@ -26,7 +26,8 @@
 }
 
 #wiki-style-btn,
-#wiki-btn-send-dynamic-comment{
+#wiki-btn-send-dynamic-comment,
+#wiki-btn-send-main-comment{
     background-color: #024f81;
     border-radius: 0px;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
@@ -36,7 +37,8 @@
 
 
 #wiki-style-btn:hover,
-#wiki-btn-send-dynamic-comment:hover{
+#wiki-btn-send-dynamic-comment:hover,
+#wiki-btn-send-main-comment:hover{
     background-color: #4da6d9;
     box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
     color: #fff;
@@ -234,4 +236,98 @@
     border: 1px solid #8f8f8f;
     background-color: rgba(120, 120, 120, 0.27);
     transition: all 0.5s ease 0s;
+}
+
+/* Main comments */
+
+.btn-show-comment {
+    color: #8d8d8d;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.5s ease 0s;
+}
+
+#main-comments-block{
+    transition: all 0.5s ease 0s;
+}
+
+.main-comment-author {
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.5s ease 0s;
+
+}
+
+.main-comment-author:hover{
+    text-decoration: none;
+    transition: all 0.5s ease 0s;
+    cursor: pointer;
+}
+
+.btn-show-comment:hover {
+    color: #0275bd;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.5s ease 0s;
+}
+
+.date-comment{
+    font-size: 12px;
+}
+
+.media-body .author {
+  display: inline-block;
+  font-size: 14px;
+  color: #026aae;
+  font-weight: 700;
+}
+
+.media-body .author:hover {
+  display: inline-block;
+  font-size: 14px;
+  color: #023e68;
+  font-weight: 700;
+    cursor: pointer;
+}
+
+.media-body .metadata {
+  display: inline-block;
+  margin-left: .5rem;
+  color: #777;
+  font-size: .8125rem;
+}
+.footer-comment {
+  color: #777;
+}
+.vote.plus:hover {
+  color: green;
+}
+.vote.minus:hover {
+  color: red;
+}
+.vote {
+  cursor: pointer;
+}
+.comment-reply a {
+  color: rgba(2, 117, 184, 0.48);
+}
+.comment-reply a:hover, .comment-reply a:focus {
+  color: #0275bd;
+  text-decoration: none;
+}
+.devide {
+  padding: 0px 4px;
+  font-size: 0.9em;
+}
+.media-text {
+  margin-bottom: 0.25rem;
+}
+.title-comments {
+  font-size: 1.4rem;
+  font-weight: bold;
+  line-height: 1.5rem;
+  color: rgba(0,0,0,.87);
+  margin-bottom: 1rem;
+  padding-bottom: .25rem;
+  border-bottom: 1px solid rgba(34,36,38,.15);
 }

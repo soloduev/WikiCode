@@ -159,7 +159,8 @@ def get_page(request, id):
             "user_id": cur_user_id,
             "preview_tree": html_preview_tree,
             "module_dynamic_paragraphs": wiki_settings.MODULE_DYNAMIC_PARAGRAPHS,
-            "dynamic_comments": dynamic_comments
+            "dynamic_comments": dynamic_comments,
+            "module_main_comments": wiki_settings.MODULE_MAIN_COMMENTS
         }
 
         return render(request, 'wiki/page.html', context)
