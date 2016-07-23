@@ -285,15 +285,16 @@
                 // Добавляем в модальное окно сам текст абзаца
                 document.getElementById('md-dynamic-paragraph-show').innerHTML = marked(md_text[selected_num_paragraph]);
                 // Для удобства, разбиваем весь добавляемый html код на части
-                var html_dynamic_comment_part_1 = '<div class="dynamic-comment-block"><div class="row"><div class="col-xs-8 text-left"><a href="#" style="text-decoration: none;"><b>';
-                var html_dynamic_comment_part_2 = '</b></a></div><div class="col-xs-4 text-right"><b><i><span style="font-size: 12px; color: rgba(82, 82, 82, 0.44);"><i class="fa fa-pencil" aria-hidden="true"> </i></span></i></b><b><i><span style="font-size: 12px; color: rgba(82, 82, 82, 0.44);"><i class="fa fa-times" aria-hidden="true"> </i></span></i></b><b><i><span style="font-size: 12px; color: rgba(82, 82, 82, 0.44);"><i class="fa fa-exclamation-triangle" aria-hidden="true"> </i></span></i></b></div></div><div class="row"><div class="col-xs-12 text-left">';
+                var html_dynamic_comment_part_1 = '<div class="dynamic-comment-block"><div class="row"><div class="col-xs-8 text-left"><a href=';
+                var html_dynamic_comment_part_1_1 = ' style="text-decoration: none;"><b>';
+                var html_dynamic_comment_part_2 = '</b></a></div><div class="col-xs-4 text-right"><b><i><span style="font-size: 12px; color: rgba(82, 82, 82, 0.44);"><i class="fa fa-exclamation-triangle" aria-hidden="true"> </i></span></i></b></div></div><div class="row"><div class="col-xs-12 text-left">';
                 var html_dynamic_comment_part_3 = '</div></div><div class="row"><div class="col-xs-4 text-left"><b><i><span style="font-size: 12px; color: rgba(82, 82, 82, 0.44);">';
                 var html_dynamic_comment_part_4 = '</span></i></b></div><div class="col-xs-8 text-right"><a href="#" style="text-decoration: none;"><b><i>Полезно <span style="font-size: 12px;"><i class="fa fa-thumbs-up" aria-hidden="true"></i></span> (';
                 var html_dynamic_comment_part_5 = ')</i></b></a></div></div></div>';
-                // Само добавление кода
+                // Само добавление кода"/user/{{ publication.id_author }}"
                 {% for comment in dynamic_comments %}
                     if(({{ comment.paragraph|escapejs }}) == selected_num_paragraph) {
-                        $("#dynamic-comments-div").append(html_dynamic_comment_part_1+'{{ comment.name_author|escapejs }}'+html_dynamic_comment_part_2+'{{ comment.text|escapejs }}'+html_dynamic_comment_part_3+'{{ comment.date|escapejs }}'+html_dynamic_comment_part_4+'{{ comment.rating|escapejs }}'+html_dynamic_comment_part_5);}
+                        $("#dynamic-comments-div").append(html_dynamic_comment_part_1+'"/user/{{ comment.id_author|escapejs }}"'+html_dynamic_comment_part_1_1+'{{ comment.name_author|escapejs }}'+html_dynamic_comment_part_2+'{{ comment.text|escapejs }}'+html_dynamic_comment_part_3+'{{ comment.date|escapejs }}'+html_dynamic_comment_part_4+'{{ comment.rating|escapejs }}'+html_dynamic_comment_part_5);}
                 {% endfor %}
             });
         {% endif %}
