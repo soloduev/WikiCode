@@ -23,6 +23,8 @@ from django.shortcuts import render
 from WikiCode.apps.wiki.models import User, Publication
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
 from .auth import check_auth, get_user_id
+from WikiCode.apps.wiki.src.wiki_tree import WikiTree
+
 
 
 def get_settings(request):
@@ -33,6 +35,10 @@ def get_settings(request):
         # Получаем данные пользователя
         user = User.objects.get(id_user=id)
         prewiew_path_publ = ""
+
+        wt = WikiTree(user.id_user)
+        wt.load_tree(user.tree)
+
         try:
             preview_publ = Publication.objects.get(id_publication=user.preview_publ_id)
             prewiew_path_publ = preview_publ.tree_path.split(":")[0]
@@ -46,6 +52,7 @@ def get_settings(request):
             "user_id": id,
             "user": user,
             "prewiew_path_publ":prewiew_path_publ,
+            "preview_tree": wt.generate_html_preview()
         }
 
         return render(request, 'wiki/settings.html', context)
