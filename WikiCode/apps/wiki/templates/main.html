@@ -38,7 +38,7 @@
             <div class="collapse navbar-collapse" id="navbar-collapse-2">
                 <ul class="nav navbar-nav navbar-right">
                     {% if user_data != "None" %}
-                        <li id="nav-bar-button1" title="Мои конспекты" class="vtip"><a href="{% url 'tree_manager' %}"><i class="fa fa-th-large" aria-hidden="true"></i></a></li>
+                        <li id="nav-bar-button1" title="Мои конспекты" class="vtip"><a href="{% url 'tree_manager' %}"><i class="fa fa-folder" aria-hidden="true"></i></a></li>
                         <li id="nav-bar-button2" title="Создать конспект" class="vtip"><a href="{% url 'create' %}"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></li>
                         <li id="nav-bar-button3" title="Мои настройки" class="vtip"><a href="{% url 'settings' %}"><i class="fa fa-cog" aria-hidden="true"></i></a></li>
                         <li id="nav-bar-button5" title="О платформе" class="vtip"><a href="{% url 'about' %}"><i class="fa fa-question-circle" aria-hidden="true"></i></a></li>
