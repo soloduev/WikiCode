@@ -425,12 +425,12 @@
             </div>
         </div>
     </div>
-    <button class="btn-lg" id="pollSlider-button"><span class="glyphicon glyphicon-tree-deciduous"></span> </button>
+    <button class="btn-lg" id="pollSlider-button"><span class="glyphicon glyphicon-folder-close"></span> </button>
     <button class="btn-lg" id="like-pollSlider-button"><span class="glyphicon glyphicon-thumbs-up"></span> </button>
     <button class="btn-lg" id="contents-pollSlider-button"><span class="glyphicon glyphicon-bookmark"></span> </button>
     <div id="wiki-left-page" class="sb-slidebar sb-left sb-width-custom">
         <br><br><br><br><br>
-        <label class="btn-block btn-primary text-center">ДЕРЕВО ПОЛЬЗОВАТЕЛЯ</label>
+        <label class="btn-block btn-primary text-center">КОНСПЕКТЫ {{ publication.nickname_author|upper }}</label>
         {% if preview_tree == "NONE" %}
             <div class="col-xs-12 text-center">
                 <label>Дерево отсутствует</label>

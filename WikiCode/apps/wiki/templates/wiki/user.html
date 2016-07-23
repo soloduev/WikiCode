@@ -34,7 +34,7 @@
         <div class="row">
             <div class="col-xs-12 col-sm-4 col-md-4">
                 <div class="row">
-                    <a id="a-tree-manager" href="{% url 'tree_manager' %}"><label class="text-center btn-primary btn-block">{% if other_user %}ДЕРЕВО ПОЛЬЗОВАТЕЛЯ{% else %}МОЕ ДЕРЕВО{% endif %}</label></a>
+                    <a id="a-tree-manager" href="{% url 'tree_manager' %}"><label class="text-center btn-primary btn-block">{% if other_user %}КОНСПЕКТЫ ПОЛЬЗОВАТЕЛЯ{% else %}МОИ КОНСПЕКТЫ{% endif %}</label></a>
                 </div>
                 <div class="row">
                     {% if preview_tree == "NONE" %}
@@ -117,7 +117,7 @@
                             <br>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                            <a href="{% url 'tree_manager' %}" class="btn btn-block" id="wiki-style-btn">Мое дерево <i class="glyphicon glyphicon-tree-deciduous"></i></a>
+                            <a href="{% url 'tree_manager' %}" class="btn btn-block" id="wiki-style-btn">Мои конспекты <i class="glyphicon glyphicon-folder-close"></i></a>
                             <br>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
