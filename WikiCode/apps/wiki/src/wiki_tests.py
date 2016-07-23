@@ -27,7 +27,7 @@
 # Для работы с этим модулем, необходимо в настройках платформы(settings/wiki_setting.py) прописать RUN_TESTS = True
 # И затем, если этот модуль запущен, просто стандартно запускать manage.py.
 
-# Подклучаем все тестирующие модули сюда
+# Подклучаем все тестирующие программы сюда
 
 from WikiCode.apps.wiki.src.tests.wiki_markdown.tests import WikiMarkdownTest
 from WikiCode.apps.wiki.src.tests.wiki_tree.tests import WikiTreeTest
