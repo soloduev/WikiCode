@@ -23,7 +23,7 @@ from xml.dom.minidom import parseString
 
 class WikiFileTree():
     """
-    :VERSION: 0.02
+    :VERSION: 0.03
     Класс для работы с файловым деревом на платформе WIKICODE.
     Файловое дерево педставляет из себя структуированный xml файл.
     Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -45,7 +45,10 @@ class WikiFileTree():
 
     def load_tree(self, xml_str: str) -> None:
         """Загружает дерево. Чтобы загрузить дерево в класс, передаем XML строку дерева"""
-        self.__xml_tree = xml_str
+        if type(xml_str) == str:
+            self.__xml_tree = xml_str
+        else:
+            self.__xml_tree = None
         # Узнаем id дерева(оно совпадает с id пользователя владеющего этим деревом)
 
     def create_tree(self, id: int) -> bool:
@@ -59,6 +62,7 @@ class WikiFileTree():
             self.__xml_tree = parseString(ET.tostring(wft_root)).toprettyxml()
             return True
         else:
+            self.__xml_tree = None
             return False
 
     def is_valid(self) -> bool:
@@ -69,7 +73,12 @@ class WikiFileTree():
 
     def get_id(self) -> int:
         """Возвращает id дерева"""
-        pass
+        if self.__xml_tree is not None:
+            root = ET.fromstring(self.__xml_tree)
+            tree_id = int(root.get('id'))
+            return tree_id
+        else:
+            return None
 
     def print_config(self) -> None:
         """Печатает параметры конфигурационного файла дерева"""
@@ -176,8 +185,6 @@ class WikiFileTree():
     # ----------------
     # Private methods:
     # ----------------
-
-
 
 
 

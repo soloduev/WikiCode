@@ -84,13 +84,13 @@ class WikiTreeTest(object):
 
     def __tests(self):
         # -------------------------------------
-        # СОЗДАНИЕ ДЕРЕВА
         def test_1(self):
             print("WikiFileTree: " + test_1.__name__)
             wft = wt_test.WikiFileTree()
             if not wft.create_tree(14):
                 self.__add_error("1","Arg Error!")
         test_1(self)
+
         # -------------------------------------
         def test_2(self):
             print("WikiFileTree: " + test_2.__name__)
@@ -98,6 +98,7 @@ class WikiTreeTest(object):
             if wft.create_tree("asas"):
                 self.__add_error("2", "Arg Error!")
         test_2(self)
+
         # -------------------------------------
         def test_3(self):
             print("WikiFileTree: " + test_3.__name__)
@@ -105,6 +106,7 @@ class WikiTreeTest(object):
             wft.create_tree(1)
             # wft.print_xml()
         test_3(self)
+
         # -------------------------------------
         def test_4(self):
             print("WikiFileTree: " + test_4.__name__)
@@ -116,6 +118,25 @@ class WikiTreeTest(object):
             if new_tree != loaded_tree:
                 self.__add_error("4","Not compare for loaded and create trees!")
         test_4(self)
+
+        # -------------------------------------
+        def test_5(self):
+            print("WikiFileTree: " + test_5.__name__)
+            wft = wt_test.WikiFileTree()
+            wft.create_tree(3423)
+            if wft.get_id() != 3423:
+                self.__add_error("5", "get_id is error!")
+            wft.create_tree(-212)
+            if wft.get_id() != -212:
+                self.__add_error("5.1", "get_id is error!")
+            wft.create_tree("")
+            if wft.get_id() is not None:
+                self.__add_error("5.2", "get_id is error!")
+            wft.create_tree("asasssa")
+            if wft.get_id() is not None:
+                self.__add_error("5.3", "get_id is error!")
+        test_5(self)
+
 
 
 
