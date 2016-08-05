@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<wiki_tree id="321212">
+    <folder id="3232" name="Уроки по С++" access="public" type="personal" style="default" show="closed">
+        <publication id="1" name="Lessons 1" access="private" type="personal" />
+        <publication id="2" name="Lessons 2" access="private" type="personal" />
+        <publication id="1" name="Lessons 1" access="private" type="personal" />
+        <publication id="1" name="Lessons 3" access="private" type="personal" />
+        <folder id="3232" name="Уроки по С++" access="public" type="personal" style="default" show="closed">
+            <publication id="1" name="Lessons 1" access="private" type="personal" />
+        </folder>
+        <publication id="1" name="Lessons 1" access="private" type="personal" />
+        <publication id="1" name="Lessons 1" access="private" type="personal" />
+    </folder>
+    <folder id="3232" name="Уроки по Java" access="public" type="personal" style="default" show="closed">
+
+    </folder>
+    <folder id="3232" name="Уроки по Python" access="public" type="personal" style="default" show="closed">
+
+    </folder>
+    <publication id="1" name="Lessons 1" access="private" type="personal" />
+</wiki_tree>
