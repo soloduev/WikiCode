@@ -17,10 +17,13 @@
 #   You should have received a copy of the GNU Affero General Public License
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
 
+import xml.etree.ElementTree as ET
+from xml.dom.minidom import parseString
+
 
 class WikiFileTree():
     """
-    :VERSION: 0.01
+    :VERSION: 0.02
     Класс для работы с файловым деревом на платформе WIKICODE.
     Файловое дерево педставляет из себя структуированный xml файл.
     Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -31,8 +34,7 @@ class WikiFileTree():
     """
 
     def __init__(self):
-        self.xml_tree = None    # Сама XML строка
-        self.id_tree = None     # ID дерева
+        self.__xml_tree = None    # Сама XML строка
         pass
 
     # ---------------
@@ -43,11 +45,21 @@ class WikiFileTree():
 
     def load_tree(self, xml_str: str) -> None:
         """Загружает дерево. Чтобы загрузить дерево в класс, передаем XML строку дерева"""
-        self.xml_tree = xml_str
+        self.__xml_tree = xml_str
         # Узнаем id дерева(оно совпадает с id пользователя владеющего этим деревом)
 
-    def create_tree(self, id: int) -> None:
+    def create_tree(self, id: int) -> bool:
         """Создает пустое дерево. Чтобы создать дерево, достаточно указать его id"""
+        if type(id) == int:
+            # Создаем новый корневой элемент
+            wft_root = ET.Element('wiki_tree')
+            # Задаем ему id
+            wft_root.set('id',str(id))
+            # Переводим xml в отформатированную строку
+            self.__xml_tree = parseString(ET.tostring(wft_root)).toprettyxml()
+            return True
+        else:
+            return False
 
     def is_valid(self) -> bool:
         """Проверка, валидно ли дерево. Выдает строку сообщения о валидности"""
@@ -62,6 +74,9 @@ class WikiFileTree():
     def print_config(self) -> None:
         """Печатает параметры конфигурационного файла дерева"""
         pass
+
+    def get_xml_str(self):
+        return self.__xml_tree
 
     # WORK WITH FOLDERS
 
@@ -125,7 +140,8 @@ class WikiFileTree():
 
     def print_xml(self) -> None:
         """Выводит в консоль xml всего дерева"""
-        pass
+        if self.__xml_tree is not None:
+            print(self.__xml_tree)
 
     def print_xml_folder(self, id: int) -> None:
         """Выводит xml папки"""

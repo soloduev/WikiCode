@@ -19,9 +19,9 @@
 
 # ТЕСТИРОВАНИЕ ФУНКЦИОНАЛА WIKITREE
 
-from WikiCode.apps.wiki.src.wiki_tree import WikiTree as wt_test
+from WikiCode.apps.wiki.src.future.wiki_tree import wiki_tree as wt_test
 
-# Version:       0.002
+# Version:       0.003
 # Total Tests:   0
 
 
@@ -33,6 +33,7 @@ class WikiTreeTest(object):
 
     # Запустить тесты
     def run(self):
+        self.__tests()
         return True
 
     # Вернуть все найденнные ошибки
@@ -69,10 +70,54 @@ class WikiTreeTest(object):
     # Тест обязан быть приватным
 
     # Пример теста:
-
-    # def __test_1(self):
-    #     """Проверяем, равно ли сорок два, сорока двум""
+    # -------------------------------------
+    # ТУТ РАСПОЛОГАЕМ ОПИСАНИЕ ТЕСТА
+    # def test_1(self):
     #     if 42 == 42:
     #         pass
     #     else:
     #         self.__add_error("1","42 not 42!")
+    # test_1(self)
+    # -------------------------------------
+
+    # В этой фунции описываем все тесты
+
+    def __tests(self):
+        # -------------------------------------
+        # СОЗДАНИЕ ДЕРЕВА
+        def test_1(self):
+            print("WikiFileTree: " + test_1.__name__)
+            wft = wt_test.WikiFileTree()
+            if not wft.create_tree(14):
+                self.__add_error("1","Arg Error!")
+        test_1(self)
+        # -------------------------------------
+        def test_2(self):
+            print("WikiFileTree: " + test_2.__name__)
+            wft = wt_test.WikiFileTree()
+            if wft.create_tree("asas"):
+                self.__add_error("2", "Arg Error!")
+        test_2(self)
+        # -------------------------------------
+        def test_3(self):
+            print("WikiFileTree: " + test_3.__name__)
+            wft = wt_test.WikiFileTree()
+            wft.create_tree(1)
+            # wft.print_xml()
+        test_3(self)
+        # -------------------------------------
+        def test_4(self):
+            print("WikiFileTree: " + test_4.__name__)
+            wft = wt_test.WikiFileTree()
+            wft.create_tree(1)
+            new_tree = wft.get_xml_str()
+            wft.load_tree(new_tree)
+            loaded_tree = wft.get_xml_str()
+            if new_tree != loaded_tree:
+                self.__add_error("4","Not compare for loaded and create trees!")
+        test_4(self)
+
+
+
+
+
