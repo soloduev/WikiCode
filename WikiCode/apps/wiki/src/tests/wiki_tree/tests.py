@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_tree import wiki_tree as wt_test
 
-# Version:       0.003
-# Total Tests:   0
+# Version:       0.004
+# Total Tests:   8
 
 
 class WikiTreeTest(object):
@@ -51,34 +51,26 @@ class WikiTreeTest(object):
             "msg": msg
         })
 
-    # ----- Сами тесты. Номера идут по порядку
-    # ----- Добавляя тест, его нужно прописать в run
-    # ----- Каждый тест не должен ничего возвращать
-    # ----- Если в нем ошибка, то добавляем ее с помощью self.__add_error
-
     # Обязательно должен быть порядковый номер теста
-    # Обязательно должен быть комментарий к тесту
-    # Все тесты должны быть упакованы строго по порядку в функцию run() и названия всех тестов должны отличаться
-    # Использовать один и тот же тест строго запрещено
     # Тесты не должны принимать никаких аргументов
     # Тесты не могут вызывать другие тесты
     # У всех тестов строго своя область видимости, они не должны обмениваться данными
     # Желательно, чтобы тест вызывал self.__add_error ровно 1 раз
     # Каждый тест должен использовать только тот единственный импорт, что имеется в данном сценарии, а именно wt_test
-    # При изменении файля, увеличиваем версию + 1 (В комментарии сверху файла)
+    # При изменении файла, увеличиваем версию + 1 (В комментарии сверху файла)
     # При добавлении нового теста, увеличиваем количество тестов + 1 (В комментарии сверху файла)
-    # Тест обязан быть приватным
+    # В конце теста обязан содержаться его вызов!
 
     # Пример теста:
-    # -------------------------------------
-    # ТУТ РАСПОЛОГАЕМ ОПИСАНИЕ ТЕСТА
+    # #-------------------------------------
+    # # ТУТ РАСПОЛОГАЕМ ОПИСАНИЕ ТЕСТА
     # def test_1(self):
     #     if 42 == 42:
     #         pass
     #     else:
     #         self.__add_error("1","42 not 42!")
     # test_1(self)
-    # -------------------------------------
+    # #-------------------------------------
 
     # В этой фунции описываем все тесты
 
@@ -203,6 +195,45 @@ class WikiTreeTest(object):
             # wft.print_xml()
 
         test_7(self)
+
+        # -------------------------------------
+        def test_8(self):
+            print("WikiFileTree: " + test_8.__name__)
+            wft = wt_test.WikiFileTree()
+            stats = set()
+            stats.add(wft.create_tree(1))
+            stats.add(wft.create_folder(id=1,access="private",type="saved",name="new folder",style="green",view="open",id_folder=-1))
+            stats.add(wft.create_folder(id=1.1,access="private",type="saved",name="new folder",style="green",view="open",id_folder=1))
+            stats.add(wft.create_folder(id=2,access="private",type="saved",name="new folder",style="green",view="open",id_folder=-1))
+            stats.add(wft.create_folder(id=2.1,access="private",type="saved",name="new folder",style="green",view="open",id_folder=2))
+            stats.add(wft.create_folder(id=3,access="private",type="saved",name="new folder",style="green",view="open",id_folder=-1))
+            stats.add(wft.delete_folder(1))
+            stats.add(wft.delete_folder(3))
+            # wft.print_xml()
+            if False in stats:
+                self.__add_error("8", "delete tree error!!")
+
+        test_8(self)
+
+        # -------------------------------------
+        def test_9(self):
+            print("WikiFileTree: " + test_9.__name__)
+            wft = wt_test.WikiFileTree()
+            stats = set()
+            stats.add(wft.delete_folder(4))
+            wft.create_tree(1)
+            stats.add(wft.delete_folder(1))
+            wft.create_folder(id=1, access="private", type="saved", name="new folder", style="green", view="open",id_folder=-1)
+            wft.create_folder(id=2, access="private", type="saved", name="new folder", style="green", view="open",id_folder=-1)
+            wft.create_folder(id=3, access="private", type="saved", name="new folder", style="green", view="open",id_folder=-1)
+            stats.add(wft.delete_folder("asas"))
+            stats.add(wft.delete_folder(4))
+            stats.add(wft.delete_folder(-3))
+            # wft.print_xml()
+            if True in stats:
+                self.__add_error("9", "delete tree error!!")
+
+        test_9(self)
 
 
 
