@@ -137,6 +137,73 @@ class WikiTreeTest(object):
                 self.__add_error("5.3", "get_id is error!")
         test_5(self)
 
+        # -------------------------------------
+        def test_6(self):
+            print("WikiFileTree: " + test_6.__name__)
+            wft = wt_test.WikiFileTree()
+            wft.create_tree(1)
+            for i in range(0,10):
+                k = -1
+                if i>3:
+                    k = i-1
+                status = wft.create_folder(id=i,
+                              access="public",
+                              type="personal",
+                              name="new folder",
+                              style="red",
+                              view="closed",
+                              id_folder=k)
+            # wft.print_xml()
+        test_6(self)
+
+        # -------------------------------------
+        def test_7(self):
+            print("WikiFileTree: " + test_7.__name__)
+            wft = wt_test.WikiFileTree()
+            wft.create_tree(1)
+            status = wft.create_folder(id=1,
+                                        access="protected",
+                                        type="personal",
+                                        name="new folder",
+                                        style="red",
+                                        view="closed",
+                                        id_folder=-1)
+            if status: self.__add_error("7.1", "create folders error!")
+
+            status = wft.create_folder(id=1,
+                                       access="public",
+                                       type="personal",
+                                       name="new folder",
+                                       style="red",
+                                       view="open",
+                                       id_folder=-1)
+
+            if not status: self.__add_error("7.2", "create folders error!")
+
+            status = wft.create_folder(id=1,
+                                       access="private",
+                                       type="saved",
+                                       name="new folder",
+                                       style="green",
+                                       view="open",
+                                       id_folder=-1)
+
+            if not status: self.__add_error("7.3", "create folders error!")
+
+            status = wft.create_folder(id=1,
+                                       access="private",
+                                       type="saved",
+                                       name="new folder",
+                                       style="green",
+                                       view="open",
+                                       id_folder=2)
+
+            if not status: self.__add_error("7.4", "create folders error!")
+
+            # wft.print_xml()
+
+        test_7(self)
+
 
 
 

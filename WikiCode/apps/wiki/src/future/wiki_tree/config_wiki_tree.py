@@ -20,4 +20,28 @@
 
 # ФАЙЛ КОНФИГУРАЦИИ РАБОТЫ WIKITREE
 
+params = {
 
+    # ПАРАМЕТРЫ ПАПОК
+
+    # Запрещенные символы для наименования папки
+    # Deprecated Symbols For Folder
+    "DSFF": {"\"", "\'"},
+
+    # Возможные варианты доступа папки
+    # Folder Access Values
+    "FAV": {"public", "private"},
+
+    # Возможные варианты типов папки
+    # Folder Types Values
+    "FTV": {"personal", "saved"},
+
+    # Возможные варианты стилей папки
+    # Folder Styles Values
+    "FSV": {"default", "red", "blue", "yellow", "green", "black"},
+
+    # Возможные варианты вида папки
+    # Folder View Values
+    "FVV": {"closed","open"},
+
+}

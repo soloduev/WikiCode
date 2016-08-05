@@ -35,3 +35,8 @@ print('---')
 # Проход по элементам
 for publ in xmlfile.getroot().iter('publication'):
     print(publ.get('name'))
+
+
+s = {"sss","aaa"}
+
+print("ssss" in s)

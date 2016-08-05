@@ -19,11 +19,12 @@
 
 import xml.etree.ElementTree as ET
 from xml.dom.minidom import parseString
+from WikiCode.apps.wiki.src.future.wiki_tree.config_wiki_tree import params as CONFIG
 
 
 class WikiFileTree():
     """
-    :VERSION: 0.03
+    :VERSION: 0.04
     Класс для работы с файловым деревом на платформе WIKICODE.
     Файловое дерево педставляет из себя структуированный xml файл.
     Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -58,8 +59,8 @@ class WikiFileTree():
             wft_root = ET.Element('wiki_tree')
             # Задаем ему id
             wft_root.set('id',str(id))
-            # Переводим xml в отформатированную строку
-            self.__xml_tree = parseString(ET.tostring(wft_root)).toprettyxml()
+            # Переводим xml в строку
+            self.__xml_tree = ET.tostring(wft_root)
             return True
         else:
             self.__xml_tree = None
@@ -85,13 +86,70 @@ class WikiFileTree():
         pass
 
     def get_xml_str(self):
-        return self.__xml_tree
+        return self.__format_xml(self.__xml_tree)
 
     # WORK WITH FOLDERS
 
-    def create_folder(self, id: int, name: str, access: str, type: str, style: str, show: str, id_folder: int = -1) -> None:
+    def create_folder(self, id: int, name: str, access: str, type: str, style: str, view: str, id_folder: int = -1) -> bool:
         """Создание новой папки"""
-        pass
+        if self.__xml_tree is not None:
+            # Получаем корневой элемент текущего дерева
+            root = ET.fromstring(self.__xml_tree)
+
+            # Создание папки
+            new_folder = ET.Element('folder')
+
+            # Проверяем новое название папки на запрещенные символы
+            for symbol in CONFIG["DSFF"]:
+                if name.find(symbol) != -1:
+                    return False
+
+            # Проверяем наличие папки с таким же именем
+            # some code here ... (Пока думаю, делать ли это)
+            new_folder.set('name', name)
+
+            # Проверяем, не отрицательный ли id
+            if id < -1:
+                return False
+            new_folder.set('id', str(id))
+
+            # Проверяем, правильное ли значение доступа задается папке
+            if access not in CONFIG["FAV"]:
+                return False
+            new_folder.set('access', access)
+
+            # Проверяем, правильный ли тип задается папке
+            if type not in CONFIG["FTV"]:
+                return False
+            new_folder.set('type', type)
+
+            # Проверяем, правильный ли стиль задается папке
+            if style not in CONFIG["FSV"]:
+                return False
+            new_folder.set('style', style)
+
+            # Проверяем, правильный ли стиль задается папке
+            if view not in CONFIG["FVV"]:
+                return False
+            new_folder.set('view', view)
+
+            # Узнаем, в какой папке создавать новую папку
+            # Если в корне
+            if id_folder == -1:
+                root.append(new_folder)
+            # Если в другой папке
+            else:
+                # Проход по элементам в поисках нужного id
+                for folder in root.iter('folder'):
+                    if folder.get('id') == str(id_folder):
+                        folder.append(new_folder)
+                        break
+
+            self.__xml_tree = ET.tostring(root)
+            return True
+        else:
+            return False
+
 
     def delete_folder(self, id: int) -> None:
         """Удаление папки с определенным id"""
@@ -150,7 +208,7 @@ class WikiFileTree():
     def print_xml(self) -> None:
         """Выводит в консоль xml всего дерева"""
         if self.__xml_tree is not None:
-            print(self.__xml_tree)
+            print(self.__format_xml(self.__xml_tree))
 
     def print_xml_folder(self, id: int) -> None:
         """Выводит xml папки"""
@@ -182,9 +240,20 @@ class WikiFileTree():
         """Возвращает html превью дерева, согласно конфигу"""
         pass
 
+    # WORK WITH ELEMENTS
+
+    def sort_element(self, id_folder):
+        """Сортирует все элементы в указанной папке"""
+        pass
+
     # ----------------
     # Private methods:
     # ----------------
+
+
+    def __format_xml(self, xml_str):
+        """Выравнивание xml строки"""
+        return parseString(xml_str).toprettyxml()
 
 
 
