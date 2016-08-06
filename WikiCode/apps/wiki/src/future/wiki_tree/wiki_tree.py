@@ -24,7 +24,7 @@ from WikiCode.apps.wiki.src.future.wiki_tree.config_wiki_tree import params as C
 
 class WikiFileTree():
     """
-    :VERSION: 0.16
+    :VERSION: 0.17
     Класс для работы с файловым деревом на платформе WIKICODE.
     Файловое дерево педставляет из себя структуированный xml файл.
     Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -313,9 +313,19 @@ class WikiFileTree():
                     return True
             return False
 
-    def retype_publication(self, id: int, new_type: str) -> None:
+    def retype_publication(self, id_publication: int, new_type: str) -> None:
         """Изменение типа конспекта"""
-        pass
+        if self.__xml_tree is not None and type(new_type) == str:
+            # Проверяем новый тип на валидность
+            if not self.__check_type(new_type): return False
+            # Получаем корневой элемент текущего дерева
+            root = ET.fromstring(self.__xml_tree)
+            for folder in root.iter('publication'):
+                if folder.get('id') == str(id_publication):
+                    folder.set('type', new_type)
+                    self.__xml_tree = ET.tostring(root)
+                    return True
+            return False
 
     def move_publication(self, id: int, to_id: int) -> None:
         """Перемещение конспекта. Если to_id == -1, то идет перемещение в корневую папку."""

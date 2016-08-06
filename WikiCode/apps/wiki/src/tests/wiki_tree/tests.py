@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_tree import wiki_tree as wt_test
 
-# Version:       0.015
-# Total Tests:   20
+# Version:       0.016
+# Total Tests:   21
 
 
 class WikiTreeTest(object):
@@ -503,9 +503,40 @@ class WikiTreeTest(object):
             stats.add(wft.reaccess_publication(42, "private"))
             # wft.print_xml()
             if False in stats:
-                self.__add_error("20", "rename_publication error!")
+                self.__add_error("20", "reaccess_publication error!")
 
         test_20(self)
+
+        # -------------------------------------
+        def test_21(self):
+            print("WikiFileTree: " + test_21.__name__)
+            wft = wt_test.WikiFileTree()
+            stats = set()
+            stats.add(wft.create_tree(1))
+            stats.add(wft.create_folder(id=2, access="private", type="saved", name="new folder", style="green", view="open",id_folder=-1))
+            stats.add(wft.create_folder(id=1, access="private", type="saved", name="new folder", style="green", view="open",id_folder=-1))
+            stats.add(wft.create_folder(id=3, access="private", type="saved", name="new folder", style="green", view="open",id_folder=1))
+            stats.add(wft.create_publication(id=17, id_folder=1, access="public", type="personal", name="Уроки по С++"))
+            stats.add(wft.create_publication(id=18, id_folder=2, access="public", type="personal", name="Уроки по С++"))
+            stats.add(wft.create_publication(id=19, id_folder=3, access="public", type="personal", name="Уроки по С++"))
+            stats.add(wft.create_publication(id=43, id_folder=-1, access="public", type="personal", name="Уроки по С++"))
+            stats.add(wft.create_publication(id=42, id_folder=-1, access="public", type="personal", name="Уроки по С++"))
+            stats.add(not wft.retype_publication(1, "personal"))
+            stats.add(wft.retype_publication(17, "saved"))
+            stats.add(not wft.retype_publication(18, "savedbl"))
+            stats.add(wft.retype_publication(18, "saved"))
+            stats.add(not wft.retype_publication(18, "saved'"))
+            stats.add(not wft.retype_publication(18, ""))
+            stats.add(not wft.retype_publication(18, 1))
+            stats.add(not wft.retype_publication("saved", "saved"))
+            stats.add(not wft.retype_publication("", "saved"))
+            stats.add(wft.retype_publication(42, "personal"))
+            stats.add(wft.retype_publication(42, "saved"))
+            # wft.print_xml()
+            if False in stats:
+                self.__add_error("21", "retype_publication error!")
+
+        test_21(self)
 
 
 
