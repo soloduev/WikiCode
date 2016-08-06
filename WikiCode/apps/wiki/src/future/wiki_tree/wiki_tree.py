@@ -24,7 +24,7 @@ from WikiCode.apps.wiki.src.future.wiki_tree.config_wiki_tree import params as C
 
 class WikiFileTree():
     """
-    :VERSION: 0.13
+    :VERSION: 0.14
     Класс для работы с файловым деревом на платформе WIKICODE.
     Файловое дерево педставляет из себя структуированный xml файл.
     Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -269,8 +269,21 @@ class WikiFileTree():
         else:
             return False
 
-    def delete_publication(self, id: int) -> None:
+    def delete_publication(self, id_publication: int) -> None:
         """Удаление публикации"""
+        if self.__xml_tree is not None:
+            # Получаем корневой элемент текущего дерева
+            root = ET.fromstring(self.__xml_tree)
+            parent = root.find('.//publication[@id="' + str(id_publication) + '"]...')
+            if parent is not None:
+                publication = parent.find('./publication[@id="' + str(id_publication) + '"]')
+                if publication is not None:
+                    parent.remove(publication)
+                    self.__xml_tree = ET.tostring(root)
+                    return True
+                return False
+            else:
+                return False
 
     def rename_publication(self, id: int, new_name: str) -> None:
         """Переименование публикации"""

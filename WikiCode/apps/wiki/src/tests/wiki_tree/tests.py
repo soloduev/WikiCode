@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_tree import wiki_tree as wt_test
 
-# Version:       0.012
-# Total Tests:   16
+# Version:       0.013
+# Total Tests:   18
 
 
 class WikiTreeTest(object):
@@ -385,9 +385,64 @@ class WikiTreeTest(object):
 
             # wft.print_xml()
             if False in stats:
-                self.__add_error("15", "review_folder error!")
+                self.__add_error("16", "review_folder error!")
 
         test_16(self)
+
+        # -------------------------------------
+        def test_17(self):
+            print("WikiFileTree: " + test_17.__name__)
+            wft = wt_test.WikiFileTree()
+            stats = set()
+            wft.create_tree(1)
+            stats.add(wft.create_folder(id=1, access="private", type="saved", name="new folder", style="green", view="open",id_folder=-1))
+            stats.add(wft.create_folder(id=2, access="private", type="saved", name="new folder", style="green", view="open",id_folder=-1))
+            stats.add(wft.create_folder(id=3, access="private", type="saved", name="new folder", style="green", view="open",id_folder=1))
+            stats.add(wft.create_publication(id=17, id_folder=1, access="public", type="personal", name="Уроки по С++"))
+            stats.add(wft.create_publication(id=18, id_folder=2, access="public", type="personal", name="Уроки по С++"))
+            stats.add(wft.create_publication(id=19, id_folder=3, access="public", type="personal", name="Уроки по С++"))
+            stats.add(wft.create_publication(id=42, id_folder=-1, access="public", type="personal", name="Уроки по С++"))
+            stats.add(wft.create_publication(id=43, id_folder=-1, access="public", type="personal", name="Уроки по С++"))
+            stats.add(not wft.delete_folder(4))
+            stats.add(wft.delete_publication(43))
+            stats.add(wft.delete_publication(42))
+            stats.add(wft.delete_publication(18))
+            stats.add(wft.delete_publication(17))
+            stats.add(wft.delete_publication(19))
+            stats.add(not wft.delete_publication(20))
+            stats.add(wft.delete_folder(1))
+            stats.add(wft.delete_folder(2))
+            stats.add(not wft.delete_folder(3))
+            # wft.print_xml()
+            if False in stats:
+                self.__add_error("17", "delete tree error!!")
+
+        test_17(self)
+
+        def test_18(self):
+            print("WikiFileTree: " + test_18.__name__)
+            wft = wt_test.WikiFileTree()
+            stats = set()
+            wft.create_tree(1)
+            stats.add(not wft.create_folder(id=2, access="private", type="saved", name="new folder", style="green", view="open",id_folder=-1))
+            stats.add(not wft.create_folder(id=3, access="private", type="saved", name="new folder", style="green", view="open",id_folder=1))
+            stats.add(not wft.create_folder(id=1, access="private", type="saved", name="new folder", style="green", view="open",id_folder=-1))
+            stats.add(not wft.create_publication(id=17, id_folder=1, access="public", type="personal", name="Уроки по С++"))
+            stats.add(not wft.create_publication(id=18, id_folder=2, access="public", type="personal", name="Уроки по С++"))
+            stats.add(not wft.create_publication(id=19, id_folder=3, access="public", type="personal", name="Уроки по С++"))
+            stats.add(not wft.create_publication(id=42, id_folder=-1, access="public", type="personal", name="Уроки по С++"))
+            stats.add(not wft.create_publication(id=43, id_folder=-1, access="public", type="personal", name="Уроки по С++"))
+            stats.add(wft.delete_publication("sadsa"))
+            stats.add(wft.delete_publication(46))
+            stats.add(not wft.delete_publication(42))
+            stats.add(wft.delete_publication(42))
+            stats.add(not wft.create_publication(id=42, id_folder=-1, access="public", type="personal", name="Уроки по С++"))
+            stats.add(not wft.delete_publication(42))
+            wft.print_xml()
+            if True in stats:
+                self.__add_error("18", "delete tree error!!")
+
+        test_18(self)
 
 
 
