@@ -24,7 +24,7 @@ from WikiCode.apps.wiki.src.future.wiki_tree.config_wiki_tree import params as C
 
 class WikiFileTree():
     """
-    :VERSION: 0.18
+    :VERSION: 0.19
     Класс для работы с файловым деревом на платформе WIKICODE.
     Файловое дерево педставляет из себя структуированный xml файл.
     Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -86,7 +86,6 @@ class WikiFileTree():
 
     # WORK WITH FOLDERS
 
-    # TODO: Сделать так, чтобы если создается публичная папка в приватной папке, она становилась приватной
     def create_folder(self, id: int, name: str, access: str, type: str, style: str, view: str, id_folder: int = -1) -> bool:
         """Создание новой папки"""
         if self.__xml_tree is not None:
@@ -125,6 +124,9 @@ class WikiFileTree():
                 # Проход по элементам в поисках нужного id
                 for folder in root.iter('folder'):
                     if folder.get('id') == str(id_folder):
+                        # Проверяем родительский доступ в папке:
+                        if folder.get('access') == 'private':
+                            new_folder.set('access','private')
                         folder.append(new_folder)
                         break
 

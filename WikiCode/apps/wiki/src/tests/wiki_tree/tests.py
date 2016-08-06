@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_tree import wiki_tree as wt_test
 
-# Version:       0.017
-# Total Tests:   22
+# Version:       0.018
+# Total Tests:   23
 
 
 class WikiTreeTest(object):
@@ -565,6 +565,21 @@ class WikiTreeTest(object):
                 self.__add_error("22", "move_publication error!")
 
         test_22(self)
+
+        # -------------------------------------
+        # ПРОВЕРЯЛОСЬ ИЗМЕНЕНИЕ ДОСТУПА ПРИ СОЗДАНИИ ПАПОК
+        def test_23(self):
+            print("WikiFileTree: " + test_23.__name__)
+            wft = wt_test.WikiFileTree()
+            wft.create_tree(1)
+            wft.create_folder(id=1, access="public", type="saved", name="new folder", style="green", view="open",id_folder=-1)
+            wft.create_folder(id=2, access="private", type="saved", name="new folder", style="green", view="open",id_folder=1)
+            wft.create_folder(id=3, access="public", type="saved", name="new folder", style="green", view="open",id_folder=2)
+            # wft.print_xml()
+
+        test_23(self)
+
+
 
 
 
