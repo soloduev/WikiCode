@@ -24,7 +24,7 @@ from WikiCode.apps.wiki.src.future.wiki_tree.config_wiki_tree import params as C
 
 class WikiFileTree():
     """
-    :VERSION: 0.15
+    :VERSION: 0.16
     Класс для работы с файловым деревом на платформе WIKICODE.
     Файловое дерево педставляет из себя структуированный xml файл.
     Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -299,9 +299,19 @@ class WikiFileTree():
                     return True
             return False
 
-    def reaccess_publication(self, id: int, new_access: str) -> None:
+    def reaccess_publication(self, id_publication: int, new_access: str) -> None:
         """Изменение доступа конспекта"""
-        pass
+        if self.__xml_tree is not None and type(new_access) == str:
+            # Проверяем новый доступ на валидность
+            if not self.__check_access(new_access): return False
+            # Получаем корневой элемент текущего дерева
+            root = ET.fromstring(self.__xml_tree)
+            for folder in root.iter('publication'):
+                if folder.get('id') == str(id_publication):
+                    folder.set('access', new_access)
+                    self.__xml_tree = ET.tostring(root)
+                    return True
+            return False
 
     def retype_publication(self, id: int, new_type: str) -> None:
         """Изменение типа конспекта"""

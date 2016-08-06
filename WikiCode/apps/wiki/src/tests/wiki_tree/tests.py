@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_tree import wiki_tree as wt_test
 
-# Version:       0.014
-# Total Tests:   19
+# Version:       0.015
+# Total Tests:   20
 
 
 class WikiTreeTest(object):
@@ -470,11 +470,42 @@ class WikiTreeTest(object):
             stats.add(not wft.rename_publication(43, 111))
             stats.add(not wft.rename_publication(43, "   "))
             stats.add(not wft.rename_publication(43, "  ' "))
-            wft.print_xml()
+            # wft.print_xml()
             if False in stats:
                 self.__add_error("19", "rename_publication error!")
 
         test_19(self)
+
+        # -------------------------------------
+        def test_20(self):
+            print("WikiFileTree: " + test_20.__name__)
+            wft = wt_test.WikiFileTree()
+            stats = set()
+            stats.add(wft.create_tree(1))
+            stats.add(wft.create_folder(id=1, access="private", type="saved", name="new folder", style="green", view="open",id_folder=-1))
+            stats.add(wft.create_folder(id=2, access="private", type="saved", name="new folder", style="green", view="open",id_folder=-1))
+            stats.add(wft.create_folder(id=3, access="private", type="saved", name="new folder", style="green", view="open",id_folder=1))
+            stats.add(wft.create_publication(id=17, id_folder=1, access="public", type="personal", name="Уроки по С++"))
+            stats.add(wft.create_publication(id=18, id_folder=2, access="public", type="personal", name="Уроки по С++"))
+            stats.add(wft.create_publication(id=19, id_folder=3, access="public", type="personal", name="Уроки по С++"))
+            stats.add(wft.create_publication(id=43, id_folder=-1, access="public", type="personal", name="Уроки по С++"))
+            stats.add(wft.create_publication(id=42, id_folder=-1, access="public", type="personal", name="Уроки по С++"))
+            stats.add(not wft.reaccess_publication(1, "public"))
+            stats.add(wft.reaccess_publication(17, "private"))
+            stats.add(not wft.reaccess_publication(18, "privatebl"))
+            stats.add(wft.reaccess_publication(18, "private"))
+            stats.add(not wft.reaccess_publication(18, "private'"))
+            stats.add(not wft.reaccess_publication(18, ""))
+            stats.add(not wft.reaccess_publication(18, 1))
+            stats.add(not wft.reaccess_publication("private", "private"))
+            stats.add(not wft.reaccess_publication("", "private"))
+            stats.add(wft.reaccess_publication(42, "public"))
+            stats.add(wft.reaccess_publication(42, "private"))
+            # wft.print_xml()
+            if False in stats:
+                self.__add_error("20", "rename_publication error!")
+
+        test_20(self)
 
 
 
