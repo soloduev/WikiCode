@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_tree import wiki_tree as wt_test
 
-# Version:       0.006
-# Total Tests:   10
+# Version:       0.007
+# Total Tests:   11
 
 
 class WikiTreeTest(object):
@@ -242,6 +242,26 @@ class WikiTreeTest(object):
             # wft.print_config()
 
         test_10(self)
+
+        # -------------------------------------
+        def test_11(self):
+            print("WikiFileTree: " + test_11.__name__)
+            wft = wt_test.WikiFileTree()
+            stats = set()
+            stats.add(wft.create_tree(1))
+            stats.add(wft.create_folder(id=1, access="private", type="saved", name="new folder", style="green", view="open", id_folder=-1))
+            stats.add(wft.create_folder(id=2, access="private", type="saved", name="new folder", style="green", view="open", id_folder=-1))
+            stats.add(wft.rename_folder(1, "cool folder!"))
+            stats.add(wft.rename_folder(2, "bad folder!"))
+            stats.add(not wft.rename_folder(3, "bad folder!"))
+            stats.add(not wft.rename_folder(1, 1))
+            stats.add(not wft.rename_folder(4, 1))
+            stats.add(not wft.rename_folder(1, "Hi 'planet'!"))
+            # wft.print_xml()
+            if False in stats:
+                self.__add_error("11", "rename_folder error!")
+
+        test_11(self)
 
 
 
