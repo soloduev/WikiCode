@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_tree import wiki_tree as wt_test
 
-# Version:       0.016
-# Total Tests:   21
+# Version:       0.017
+# Total Tests:   22
 
 
 class WikiTreeTest(object):
@@ -537,6 +537,34 @@ class WikiTreeTest(object):
                 self.__add_error("21", "retype_publication error!")
 
         test_21(self)
+
+        # -------------------------------------
+        def test_22(self):
+            print("WikiFileTree: " + test_22.__name__)
+            wft = wt_test.WikiFileTree()
+            stats = set()
+            stats.add(wft.create_tree(1))
+            stats.add(wft.create_folder(id=2, access="public", type="saved", name="new folder", style="green", view="open",id_folder=-1))
+            stats.add(wft.create_folder(id=1, access="private", type="saved", name="new folder", style="green", view="open",id_folder=-1))
+            stats.add(wft.create_folder(id=3, access="private", type="saved", name="new folder", style="green", view="open",id_folder=1))
+            stats.add(wft.create_publication(id=17, id_folder=1, access="public", type="personal", name="Уроки по С++"))
+            stats.add(wft.create_publication(id=18, id_folder=2, access="public", type="personal", name="Уроки по С++"))
+            stats.add(wft.create_publication(id=19, id_folder=3, access="public", type="personal", name="Уроки по С++"))
+            stats.add(wft.create_publication(id=43, id_folder=-1, access="public", type="personal", name="Уроки по С++"))
+            stats.add(wft.create_publication(id=42, id_folder=-1, access="public", type="personal", name="Уроки по С++"))
+            stats.add(wft.move_publication(42, 2))
+            stats.add(wft.move_publication(43, 2))
+            stats.add(wft.move_publication(43, -1))
+            stats.add(not wft.move_publication(43, 4))
+            stats.add(not wft.move_publication(20, 1))
+            stats.add(not wft.move_publication(43, "sas"))
+            stats.add(not wft.move_publication("sasa", "sas"))
+            stats.add(not wft.move_publication("sasa", 3))
+            # wft.print_xml()
+            if False in stats:
+                self.__add_error("22", "move_publication error!")
+
+        test_22(self)
 
 
 

@@ -24,7 +24,7 @@ from WikiCode.apps.wiki.src.future.wiki_tree.config_wiki_tree import params as C
 
 class WikiFileTree():
     """
-    :VERSION: 0.17
+    :VERSION: 0.18
     Класс для работы с файловым деревом на платформе WIKICODE.
     Файловое дерево педставляет из себя структуированный xml файл.
     Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -86,6 +86,7 @@ class WikiFileTree():
 
     # WORK WITH FOLDERS
 
+    # TODO: Сделать так, чтобы если создается публичная папка в приватной папке, она становилась приватной
     def create_folder(self, id: int, name: str, access: str, type: str, style: str, view: str, id_folder: int = -1) -> bool:
         """Создание новой папки"""
         if self.__xml_tree is not None:
@@ -132,8 +133,8 @@ class WikiFileTree():
         else:
             return False
 
-    # ВАЖНО! ПОТОМ ДОБАВИТЬ, ЧТО ПОСЛЕ УДАЛЕНИЯ ПАПКИ, ВОЗВРАЩАЮТСЯ ID ВСЕХ СОДЕРЖАЩИХСЯ ПАПОК И КОНСПЕКТОВ
-    # СЕЙЧАС ПРОСТО УДАЛЯЮТСЯ ТОЛЬКО ПАПКИ, Т.К. ПОКА НЕТ ВОЗМОЖНОСТИ СОЗДАВАТЬ КОНСПЕКТЫ
+    # TODO: ВАЖНО! ПОТОМ ДОБАВИТЬ, ЧТО ПОСЛЕ УДАЛЕНИЯ ПАПКИ, ВОЗВРАЩАЮТСЯ ID ВСЕХ СОДЕРЖАЩИХСЯ ПАПОК И КОНСПЕКТОВ
+    # TODO: СЕЙЧАС ПРОСТО УДАЛЯЮТСЯ ТОЛЬКО ПАПКИ, Т.К. ПОКА НЕТ ВОЗМОЖНОСТИ СОЗДАВАТЬ КОНСПЕКТЫ
     def delete_folder(self, id_folder: int) -> bool:
         """Удаление папки с определенным id"""
         if self.__xml_tree is not None:
@@ -164,6 +165,7 @@ class WikiFileTree():
                     return True
             return False
 
+    # TODO: Сделать так, чтобы acces папки не менялся на публичный, если она находмится в приватной папке
     def reaccess_folder(self, id_folder: int, new_access: str) -> bool:
         """Изменение доступа папки"""
         if self.__xml_tree is not None and type(new_access) == str:
@@ -227,6 +229,7 @@ class WikiFileTree():
 
     # WORK WITH PUBLICATIONS
 
+    # TODO: При создании публичной публикации в приватной папке, она становится приватной
     def create_publication(self, id: int, name: str, access: str, type: str, id_folder=-1) -> bool:
         """Создание нового конспекта"""
         if self.__xml_tree is not None:
@@ -269,7 +272,7 @@ class WikiFileTree():
         else:
             return False
 
-    def delete_publication(self, id_publication: int) -> None:
+    def delete_publication(self, id_publication: int) -> bool:
         """Удаление публикации"""
         if self.__xml_tree is not None:
             # Получаем корневой элемент текущего дерева
@@ -285,50 +288,89 @@ class WikiFileTree():
             else:
                 return False
 
-    def rename_publication(self, id_publication: int, new_name: str) -> None:
+    def rename_publication(self, id_publication: int, new_name: str) -> bool:
         """Переименование публикации"""
         if self.__xml_tree is not None and type(new_name) == str:
             # Проверяем новое имя на валидность
             if not self.__check_publication_name(new_name): return False
             # Получаем корневой элемент текущего дерева
             root = ET.fromstring(self.__xml_tree)
-            for folder in root.iter('publication'):
-                if folder.get('id') == str(id_publication):
-                    folder.set('name', self.__erase_str_side_all(new_name, " "))
+            for publication in root.iter('publication'):
+                if publication.get('id') == str(id_publication):
+                    publication.set('name', self.__erase_str_side_all(new_name, " "))
                     self.__xml_tree = ET.tostring(root)
                     return True
             return False
 
-    def reaccess_publication(self, id_publication: int, new_access: str) -> None:
+    # TODO: Сделать так, что изменить доступ публикации с приватного на публичный в приватной папке нельзя
+    def reaccess_publication(self, id_publication: int, new_access: str) -> bool:
         """Изменение доступа конспекта"""
         if self.__xml_tree is not None and type(new_access) == str:
             # Проверяем новый доступ на валидность
             if not self.__check_access(new_access): return False
             # Получаем корневой элемент текущего дерева
             root = ET.fromstring(self.__xml_tree)
-            for folder in root.iter('publication'):
-                if folder.get('id') == str(id_publication):
-                    folder.set('access', new_access)
+            for publication in root.iter('publication'):
+                if publication.get('id') == str(id_publication):
+                    publication.set('access', new_access)
                     self.__xml_tree = ET.tostring(root)
                     return True
             return False
 
-    def retype_publication(self, id_publication: int, new_type: str) -> None:
+    def retype_publication(self, id_publication: int, new_type: str) -> bool:
         """Изменение типа конспекта"""
         if self.__xml_tree is not None and type(new_type) == str:
             # Проверяем новый тип на валидность
             if not self.__check_type(new_type): return False
             # Получаем корневой элемент текущего дерева
             root = ET.fromstring(self.__xml_tree)
-            for folder in root.iter('publication'):
-                if folder.get('id') == str(id_publication):
-                    folder.set('type', new_type)
+            for publication in root.iter('publication'):
+                if publication.get('id') == str(id_publication):
+                    publication.set('type', new_type)
                     self.__xml_tree = ET.tostring(root)
                     return True
             return False
 
-    def move_publication(self, id: int, to_id: int) -> None:
+    def move_publication(self, id_publication: int, to_id_folder: int) -> bool:
         """Перемещение конспекта. Если to_id == -1, то идет перемещение в корневую папку."""
+        if self.__xml_tree is not None and type(id_publication) == int and type(to_id_folder) == int:
+            # Получаем корневой элемент текущего дерева
+            root = ET.fromstring(self.__xml_tree)
+            publication_moved = None
+            parent_1 = root.find('.//publication[@id="' + str(id_publication) + '"]...')
+            if parent_1 is not None:
+                publication_1 = parent_1.find('./publication[@id="' + str(id_publication) + '"]')
+                if publication_1 is not None:
+                    publication_moved = publication_1
+                    parent_1.remove(publication_1)
+                else:
+                    return False
+            else:
+                return False
+
+            if publication_moved is not None:
+                if to_id_folder == -1:
+                    root.append(publication_moved)
+                    self.__xml_tree = ET.tostring(root)
+                    return True
+                else:
+                    parent_2 = root.find('.//folder[@id="' + str(to_id_folder) + '"]...')
+                    if parent_2 is not None:
+                        folder = parent_2.find('./folder[@id="' + str(to_id_folder) + '"]')
+                        if folder is not None:
+                            if folder.get('access') == "private":
+                                publication_moved.set('access','private')
+                            folder.append(publication_moved)
+                            self.__xml_tree = ET.tostring(root)
+                            return True
+                        else:
+                            return False
+                    else:
+                        return False
+            else:
+                return False
+        else:
+            return False
 
     # VIEWS TREE
 
