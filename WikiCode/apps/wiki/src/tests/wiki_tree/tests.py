@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_tree import wiki_tree as wt_test
 
-# Version:       0.007
-# Total Tests:   11
+# Version:       0.008
+# Total Tests:   12
 
 
 class WikiTreeTest(object):
@@ -205,10 +205,13 @@ class WikiTreeTest(object):
             stats.add(wft.create_folder(id=1,access="private",type="saved",name="new folder",style="green",view="open",id_folder=-1))
             stats.add(wft.create_folder(id=1.1,access="private",type="saved",name="new folder",style="green",view="open",id_folder=1))
             stats.add(wft.create_folder(id=2,access="private",type="saved",name="new folder",style="green",view="open",id_folder=-1))
-            stats.add(wft.create_folder(id=2.1,access="private",type="saved",name="new folder",style="green",view="open",id_folder=2))
+            stats.add(wft.create_folder(id=21,access="private",type="saved",name="new folder",style="green",view="open",id_folder=2))
+            stats.add(wft.create_folder(id=211,access="private",type="saved",name="new folder",style="green",view="open",id_folder=21))
+            stats.add(wft.create_folder(id=2111,access="private",type="saved",name="new folder",style="green",view="open",id_folder=211))
             stats.add(wft.create_folder(id=3,access="private",type="saved",name="new folder",style="green",view="open",id_folder=-1))
             stats.add(wft.delete_folder(1))
             stats.add(wft.delete_folder(3))
+            stats.add(wft.delete_folder(2111))
             # wft.print_xml()
             if False in stats:
                 self.__add_error("8", "delete tree error!!")
@@ -251,17 +254,43 @@ class WikiTreeTest(object):
             stats.add(wft.create_tree(1))
             stats.add(wft.create_folder(id=1, access="private", type="saved", name="new folder", style="green", view="open", id_folder=-1))
             stats.add(wft.create_folder(id=2, access="private", type="saved", name="new folder", style="green", view="open", id_folder=-1))
+            stats.add(wft.create_folder(id=3, access="private", type="saved", name="new folder", style="green", view="open", id_folder=1))
             stats.add(wft.rename_folder(1, "cool folder!"))
             stats.add(wft.rename_folder(2, "bad folder!"))
-            stats.add(not wft.rename_folder(3, "bad folder!"))
+            stats.add(not wft.rename_folder(7, "bad folder!"))
             stats.add(not wft.rename_folder(1, 1))
             stats.add(not wft.rename_folder(4, 1))
             stats.add(not wft.rename_folder(1, "Hi 'planet'!"))
+            stats.add(wft.rename_folder(3, "simple text"))
             # wft.print_xml()
             if False in stats:
                 self.__add_error("11", "rename_folder error!")
 
         test_11(self)
+
+        # -------------------------------------
+        def test_12(self):
+            print("WikiFileTree: " + test_12.__name__)
+            wft = wt_test.WikiFileTree()
+            stats = set()
+            stats.add(wft.create_tree(1))
+            stats.add(wft.create_folder(id=1, access="private", type="saved", name="new folder", style="green", view="open", id_folder=-1))
+            stats.add(wft.create_folder(id=2, access="private", type="saved", name="new folder", style="green", view="open", id_folder=-1))
+            stats.add(wft.create_folder(id=3, access="private", type="saved", name="new folder", style="green", view="open", id_folder=1))
+            stats.add(wft.create_folder(id=4, access="private", type="saved", name="new folder", style="green", view="open", id_folder=3))
+            stats.add(wft.reaccess_folder(1, "public"))
+            stats.add(wft.reaccess_folder(2, "public"))
+            stats.add(not wft.reaccess_folder(8, "public"))
+            stats.add(not wft.reaccess_folder(1, 1))
+            stats.add(not wft.reaccess_folder(4, 1))
+            stats.add(wft.reaccess_folder(4, "public"))
+            stats.add(not wft.reaccess_folder(1, "strange"))
+            stats.add(wft.reaccess_folder(3, "public"))
+            # wft.print_xml()
+            if False in stats:
+                self.__add_error("12", "reaccess_folder error!")
+
+        test_12(self)
 
 
 
