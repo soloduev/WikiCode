@@ -24,7 +24,7 @@ from WikiCode.apps.wiki.src.future.wiki_tree.config_wiki_tree import params as C
 
 class WikiFileTree():
     """
-    :VERSION: 0.10
+    :VERSION: 0.11
     Класс для работы с файловым деревом на платформе WIKICODE.
     Файловое дерево педставляет из себя структуированный xml файл.
     Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -36,7 +36,6 @@ class WikiFileTree():
 
     def __init__(self):
         self.__xml_tree = None    # Сама XML строка
-        pass
 
     # ---------------
     # Public methods:
@@ -65,10 +64,6 @@ class WikiFileTree():
         else:
             self.__xml_tree = None
             return False
-
-    def is_valid(self) -> bool:
-        """Проверка, валидно ли дерево. Выдает строку сообщения о валидности"""
-        pass
 
     # GETS PARAMS TREE
 
@@ -181,7 +176,6 @@ class WikiFileTree():
                     self.__xml_tree = ET.tostring(root)
                     return True
             return False
-        pass
 
     def retype_folder(self, id_folder: int, new_type: str) -> None:
         """Изменение типа папки"""
@@ -196,11 +190,20 @@ class WikiFileTree():
                     self.__xml_tree = ET.tostring(root)
                     return True
             return False
-        pass
 
-    def restyle_folder(self, id: int, new_style: str) -> None:
+    def restyle_folder(self, id_folder: int, new_style: str) -> None:
         """Изменение стиля папки"""
-        pass
+        if self.__xml_tree is not None and type(new_style) == str:
+            # Проверяем новый стиль на валидность
+            if not self.__check_style(new_style): return False
+            # Получаем корневой элемент текущего дерева
+            root = ET.fromstring(self.__xml_tree)
+            for folder in root.iter('folder'):
+                if folder.get('id') == str(id_folder):
+                    folder.set('style', new_style)
+                    self.__xml_tree = ET.tostring(root)
+                    return True
+            return False
 
     def reshow_folder(self, id: int, new_show: str) -> None:
         """Изменение параметра отображения папки"""

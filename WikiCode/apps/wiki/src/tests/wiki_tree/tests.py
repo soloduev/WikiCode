@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_tree import wiki_tree as wt_test
 
-# Version:       0.009
-# Total Tests:   13
+# Version:       0.010
+# Total Tests:   14
 
 
 class WikiTreeTest(object):
@@ -315,6 +315,30 @@ class WikiTreeTest(object):
                 self.__add_error("13", "retype_folder error!")
 
         test_13(self)
+
+        # -------------------------------------
+        def test_14(self):
+            print("WikiFileTree: " + test_14.__name__)
+            wft = wt_test.WikiFileTree()
+            stats = set()
+            stats.add(wft.create_tree(1))
+            stats.add(wft.create_folder(id=1, access="private", type="saved", name="new folder", style="green", view="open",id_folder=-1))
+            stats.add(wft.create_folder(id=2, access="private", type="saved", name="new folder", style="green", view="open",id_folder=-1))
+            stats.add(wft.create_folder(id=3, access="private", type="saved", name="new folder", style="green", view="open",id_folder=1))
+            stats.add(wft.create_folder(id=4, access="private", type="saved", name="new folder", style="green", view="open",id_folder=3))
+            stats.add(wft.restyle_folder(1, "red"))
+            stats.add(wft.restyle_folder(2, "blue"))
+            stats.add(not wft.restyle_folder(8, "red"))
+            stats.add(not wft.restyle_folder(1, 1))
+            stats.add(not wft.restyle_folder(4, 1))
+            stats.add(wft.restyle_folder(4, "default"))
+            stats.add(not wft.restyle_folder(1, "strange"))
+            stats.add(wft.restyle_folder(3, "red"))
+            # wft.print_xml()
+            if False in stats:
+                self.__add_error("14", "restyle_folder error!")
+
+        test_14(self)
 
 
 
