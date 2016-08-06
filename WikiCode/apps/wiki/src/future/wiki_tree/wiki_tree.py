@@ -24,7 +24,7 @@ from WikiCode.apps.wiki.src.future.wiki_tree.config_wiki_tree import params as C
 
 class WikiFileTree():
     """
-    :VERSION: 0.05
+    :VERSION: 0.06
     Класс для работы с файловым деревом на платформе WIKICODE.
     Файловое дерево педставляет из себя структуированный xml файл.
     Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -83,7 +83,8 @@ class WikiFileTree():
 
     def print_config(self) -> None:
         """Печатает параметры конфигурационного файла дерева"""
-        pass
+        for key in CONFIG:
+            print(key, ":", CONFIG[key])
 
     def get_xml_str(self):
         return self.__format_xml(self.__xml_tree)

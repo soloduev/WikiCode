@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_tree import wiki_tree as wt_test
 
-# Version:       0.004
-# Total Tests:   8
+# Version:       0.006
+# Total Tests:   10
 
 
 class WikiTreeTest(object):
@@ -234,6 +234,14 @@ class WikiTreeTest(object):
                 self.__add_error("9", "delete tree error!!")
 
         test_9(self)
+
+        # -------------------------------------
+        def test_10(self):
+            print("WikiFileTree: " + test_10.__name__)
+            wft = wt_test.WikiFileTree()
+            # wft.print_config()
+
+        test_10(self)
 
 
 
