@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_tree import wiki_tree as wt_test
 
-# Version:       0.013
-# Total Tests:   18
+# Version:       0.014
+# Total Tests:   19
 
 
 class WikiTreeTest(object):
@@ -438,11 +438,43 @@ class WikiTreeTest(object):
             stats.add(wft.delete_publication(42))
             stats.add(not wft.create_publication(id=42, id_folder=-1, access="public", type="personal", name="Уроки по С++"))
             stats.add(not wft.delete_publication(42))
-            wft.print_xml()
+            # wft.print_xml()
             if True in stats:
                 self.__add_error("18", "delete tree error!!")
 
         test_18(self)
+
+        # -------------------------------------
+        def test_19(self):
+            print("WikiFileTree: " + test_19.__name__)
+            wft = wt_test.WikiFileTree()
+            stats = set()
+            stats.add(wft.create_tree(1))
+            stats.add(wft.create_folder(id=1, access="private", type="saved", name="new folder", style="green", view="open",id_folder=-1))
+            stats.add(wft.create_folder(id=2, access="private", type="saved", name="new folder", style="green", view="open",id_folder=-1))
+            stats.add(wft.create_folder(id=3, access="private", type="saved", name="new folder", style="green", view="open",id_folder=1))
+            stats.add(wft.create_publication(id=17, id_folder=1, access="public", type="personal", name="Уроки по С++"))
+            stats.add(wft.create_publication(id=18, id_folder=2, access="public", type="personal", name="Уроки по С++"))
+            stats.add(wft.create_publication(id=19, id_folder=3, access="public", type="personal", name="Уроки по С++"))
+            stats.add(wft.create_publication(id=42, id_folder=-1, access="public", type="personal", name="Уроки по С++"))
+            stats.add(wft.create_publication(id=43, id_folder=-1, access="public", type="personal", name="Уроки по С++"))
+            stats.add(wft.rename_folder(1, "cool folder!"))
+            stats.add(not wft.rename_publication(1, "cool folder!"))
+            stats.add(wft.rename_publication(17, "Уроки по Java"))
+            stats.add(wft.rename_publication(18, "Уроки по Scala"))
+            stats.add(wft.rename_publication(18, "Уроки по Clojure"))
+            stats.add(wft.rename_publication(18, " Уроки по Clojure  "))
+            stats.add(wft.rename_publication(43, "Уроки по Python"))
+            stats.add(not wft.rename_publication(43, "Уроки по 'Python'"))
+            stats.add(not wft.rename_publication(43, ""))
+            stats.add(not wft.rename_publication(43, 111))
+            stats.add(not wft.rename_publication(43, "   "))
+            stats.add(not wft.rename_publication(43, "  ' "))
+            wft.print_xml()
+            if False in stats:
+                self.__add_error("19", "rename_publication error!")
+
+        test_19(self)
 
 
 
