@@ -24,7 +24,7 @@ from WikiCode.apps.wiki.src.future.wiki_tree.config_wiki_tree import params as C
 
 class WikiFileTree():
     """
-    :VERSION: 0.11
+    :VERSION: 0.12
     Класс для работы с файловым деревом на платформе WIKICODE.
     Файловое дерево педставляет из себя структуированный xml файл.
     Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -205,9 +205,19 @@ class WikiFileTree():
                     return True
             return False
 
-    def reshow_folder(self, id: int, new_show: str) -> None:
+    def review_folder(self, id_folder: int, new_show: str) -> None:
         """Изменение параметра отображения папки"""
-        pass
+        if self.__xml_tree is not None and type(new_show) == str:
+            # Проверяем новый вид на валидность
+            if not self.__check_view(new_show): return False
+            # Получаем корневой элемент текущего дерева
+            root = ET.fromstring(self.__xml_tree)
+            for folder in root.iter('folder'):
+                if folder.get('id') == str(id_folder):
+                    folder.set('style', new_show)
+                    self.__xml_tree = ET.tostring(root)
+                    return True
+            return False
 
     def move_folder(self, id: int, to_id: int) -> None:
         """Перемещение папки"""

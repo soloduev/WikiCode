@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_tree import wiki_tree as wt_test
 
-# Version:       0.010
-# Total Tests:   14
+# Version:       0.011
+# Total Tests:   15
 
 
 class WikiTreeTest(object):
@@ -139,13 +139,13 @@ class WikiTreeTest(object):
                 if i>3:
                     k = i-1
                 status = wft.create_folder(id=i,
-                              access="public",
-                              type="personal",
-                              name="new folder",
-                              style="red",
-                              view="closed",
-                              id_folder=k)
-            # wft.print_xml()
+                                           access="public",
+                                           type="personal",
+                                           name="new folder",
+                                           style="red",
+                                           view="closed",
+                                           id_folder=k)
+                # wft.print_xml()
         test_6(self)
 
         # -------------------------------------
@@ -154,12 +154,12 @@ class WikiTreeTest(object):
             wft = wt_test.WikiFileTree()
             wft.create_tree(1)
             status = wft.create_folder(id=1,
-                                        access="protected",
-                                        type="personal",
-                                        name="new folder",
-                                        style="red",
-                                        view="closed",
-                                        id_folder=-1)
+                                       access="protected",
+                                       type="personal",
+                                       name="new folder",
+                                       style="red",
+                                       view="closed",
+                                       id_folder=-1)
             if status: self.__add_error("7.1", "create folders error!")
 
             status = wft.create_folder(id=1,
@@ -339,6 +339,30 @@ class WikiTreeTest(object):
                 self.__add_error("14", "restyle_folder error!")
 
         test_14(self)
+
+        # -------------------------------------
+        def test_15(self):
+            print("WikiFileTree: " + test_15.__name__)
+            wft = wt_test.WikiFileTree()
+            stats = set()
+            stats.add(wft.create_tree(1))
+            stats.add(wft.create_folder(id=2, access="private", type="saved", name="new folder", style="green", view="open",id_folder=-1))
+            stats.add(wft.create_folder(id=1, access="private", type="saved", name="new folder", style="green", view="open",id_folder=-1))
+            stats.add(wft.create_folder(id=3, access="private", type="saved", name="new folder", style="green", view="open",id_folder=1))
+            stats.add(wft.create_folder(id=4, access="private", type="saved", name="new folder", style="green", view="open",id_folder=3))
+            stats.add(wft.review_folder(1, "closed"))
+            stats.add(wft.review_folder(2, "closed"))
+            stats.add(not wft.review_folder(8, "closed"))
+            stats.add(not wft.review_folder(1, 1))
+            stats.add(not wft.review_folder(4, 1))
+            stats.add(wft.review_folder(4, "closed"))
+            stats.add(not wft.review_folder(1, "strange"))
+            stats.add(wft.review_folder(3, "closed"))
+            # wft.print_xml()
+            if False in stats:
+                self.__add_error("14", "review_folder error!")
+
+        test_15(self)
 
 
 
