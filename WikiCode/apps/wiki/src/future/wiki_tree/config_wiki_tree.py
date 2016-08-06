@@ -44,4 +44,10 @@ params = {
     # Folder View Values
     "FVV": {"closed","open"},
 
+    # ПАРАМЕТРЫ КОНСПЕКТОВ
+
+    # Запрещенные символы для наименования конспекта
+    # Deprecated Symbols For Publication
+    "DSFP": {"\"", "\'"},
+
 }

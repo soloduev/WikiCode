@@ -24,7 +24,7 @@ from WikiCode.apps.wiki.src.future.wiki_tree.config_wiki_tree import params as C
 
 class WikiFileTree():
     """
-    :VERSION: 0.12
+    :VERSION: 0.13
     Класс для работы с файловым деревом на платформе WIKICODE.
     Файловое дерево педставляет из себя структуированный xml файл.
     Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -106,8 +106,9 @@ class WikiFileTree():
             if not self.__check_style(style): return False      # Проверяем, правильный ли стиль задается папке
             if not self.__check_view(view): return False        # Проверяем, правильный ли вид задается папке
 
-            # Создаем параметры новой папки папку
-            new_folder.set('name', name)
+            # Создаем параметры новой папки
+            # Создавая новое имя папки, очищаем его от пробелов в начале и в конце
+            new_folder.set('name', self.__erase_str_side_all(name, " "))
             new_folder.set('id', str(id))
             new_folder.set('access', access)
             new_folder.set('type', type)
@@ -163,7 +164,7 @@ class WikiFileTree():
                     return True
             return False
 
-    def reaccess_folder(self, id_folder: int, new_access: str) -> None:
+    def reaccess_folder(self, id_folder: int, new_access: str) -> bool:
         """Изменение доступа папки"""
         if self.__xml_tree is not None and type(new_access) == str:
             # Проверяем новый доступ на валидность
@@ -177,7 +178,7 @@ class WikiFileTree():
                     return True
             return False
 
-    def retype_folder(self, id_folder: int, new_type: str) -> None:
+    def retype_folder(self, id_folder: int, new_type: str) -> bool:
         """Изменение типа папки"""
         if self.__xml_tree is not None and type(new_type) == str:
             # Проверяем новый тип на валидность
@@ -191,7 +192,7 @@ class WikiFileTree():
                     return True
             return False
 
-    def restyle_folder(self, id_folder: int, new_style: str) -> None:
+    def restyle_folder(self, id_folder: int, new_style: str) -> bool:
         """Изменение стиля папки"""
         if self.__xml_tree is not None and type(new_style) == str:
             # Проверяем новый стиль на валидность
@@ -205,7 +206,7 @@ class WikiFileTree():
                     return True
             return False
 
-    def review_folder(self, id_folder: int, new_show: str) -> None:
+    def review_folder(self, id_folder: int, new_show: str) -> bool:
         """Изменение параметра отображения папки"""
         if self.__xml_tree is not None and type(new_show) == str:
             # Проверяем новый вид на валидность
@@ -219,15 +220,54 @@ class WikiFileTree():
                     return True
             return False
 
-    def move_folder(self, id: int, to_id: int) -> None:
+    # ВАЖНО! При перемещении папки, помимо, ее перемещения, необходимо еще наследовать доступ, если например публичная папка попала в приватную
+    def move_folder(self, id: int, to_id: int) -> bool:
         """Перемещение папки"""
         pass
 
     # WORK WITH PUBLICATIONS
 
-    def create_publication(self, id: int, name: str, access: str, type: str, id_folder=-1) -> None:
+    def create_publication(self, id: int, name: str, access: str, type: str, id_folder=-1) -> bool:
         """Создание нового конспекта"""
-        pass
+        if self.__xml_tree is not None:
+            # Получаем корневой элемент текущего дерева
+            root = ET.fromstring(self.__xml_tree)
+
+            # Создание корня для конспека
+            new_publication = ET.Element('publication')
+
+            # Проверяем параметры на валидность
+            if not self.__check_publication_name(name): return False  # Праверяем имя на валидность
+            # Проверяем наличие папки с таким же именем
+            # some code here ... (Пока думаю, делать ли это)
+            # Проверяем, не отрицательный ли id
+            if not self.__check_id(id): return False
+            if not self.__check_access(access): return False  # Проверяем, правильное ли значение доступа задается папке
+            if not self.__check_type(type): return False  # Проверяем, правильный ли тип задается папке
+
+            # Создаем параметры нового конспекта
+            # Новое имя папки очищаем от пробелов в начале и в конце
+            new_publication.set('name', self.__erase_str_side_all(name, " "))
+            new_publication.set('id', str(id))
+            new_publication.set('access', access)
+            new_publication.set('type', type)
+
+            # Узнаем, в какой папке создавать новую папку
+            # Если в корне
+            if id_folder == -1:
+                root.append(new_publication)
+            # Если в другой папке
+            else:
+                # Проход по элементам в поисках нужного id
+                for folder in root.iter('folder'):
+                    if folder.get('id') == str(id_folder):
+                        folder.append(new_publication)
+                        break
+
+            self.__xml_tree = ET.tostring(root)
+            return True
+        else:
+            return False
 
     def delete_publication(self, id: int) -> None:
         """Удаление публикации"""
@@ -300,7 +340,20 @@ class WikiFileTree():
 
     def __check_name(self, name: str) -> bool:
         """Проверяем новое название папки на запрещенные символы"""
+        # Очищаем пробелы по бокам и смотрим, не пустая ли строка
+        if self.__erase_str_side_all(name, " ") == "": return False
+        if name == "": return False
         for symbol in CONFIG["DSFF"]:
+            if name.find(symbol) != -1:
+                return False
+        return True
+
+    def __check_publication_name(self, name: str) -> bool:
+        """Проверяем новое название конспекта на запрещенные символы"""
+        # Очищаем пробелы по бокам и смотрим, не пустая ли строка
+        if self.__erase_str_side_all(name, " ") == "": return False
+        if name == "": return False
+        for symbol in CONFIG["DSFP"]:
             if name.find(symbol) != -1:
                 return False
         return True
@@ -336,6 +389,28 @@ class WikiFileTree():
             return False
         else:
             return True
+
+    def __erase_str_side(self, str, symbols):
+        """Очищает указанную строку по бокам один раз"""
+        if str[:len(symbols)] == symbols:
+            str = str[len(symbols):]
+        if str[-len(symbols):] == symbols:
+            str = str[:-len(symbols)]
+        return str
+
+    def __erase_str_side_all(self, str, symbols):
+        """Очищает указанную строку по бокам, до тех пор, пока она не исчезнет"""
+        isErased = True
+        while isErased:
+            isErased = False
+            if str[:len(symbols)] == symbols:
+                str = str[len(symbols):]
+                isErased = True
+            if str[-len(symbols):] == symbols:
+                str = str[:-len(symbols)]
+                isErased = True
+        return str
+
 
 
 
