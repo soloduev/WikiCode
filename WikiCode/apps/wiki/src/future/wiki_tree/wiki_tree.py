@@ -24,7 +24,7 @@ from WikiCode.apps.wiki.src.future.wiki_tree.config_wiki_tree import params as C
 
 class WikiFileTree():
     """
-    :VERSION: 0.06
+    :VERSION: 0.07
     Класс для работы с файловым деревом на платформе WIKICODE.
     Файловое дерево педставляет из себя структуированный xml файл.
     Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -97,41 +97,26 @@ class WikiFileTree():
             # Получаем корневой элемент текущего дерева
             root = ET.fromstring(self.__xml_tree)
 
-            # Создание папки
+            # Создание корня для папки
             new_folder = ET.Element('folder')
 
-            # Проверяем новое название папки на запрещенные символы
-            for symbol in CONFIG["DSFF"]:
-                if name.find(symbol) != -1:
-                    return False
-
+            # Проверяем параметры на валидность
+            if not self.__check_name(name): return False        # Праверяем имя на валидность
             # Проверяем наличие папки с таким же именем
             # some code here ... (Пока думаю, делать ли это)
-            new_folder.set('name', name)
-
             # Проверяем, не отрицательный ли id
-            if id < -1:
-                return False
+            if not self.__check_id(id): return False
+            if not self.__check_access(access): return False    # Проверяем, правильное ли значение доступа задается папке
+            if not self.__check_type(type): return False        # Проверяем, правильный ли тип задается папке
+            if not self.__check_style(style): return False      # Проверяем, правильный ли стиль задается папке
+            if not self.__check_view(view): return False        # Проверяем, правильный ли вид задается папке
+
+            # Создаем параметры новой папки папку
+            new_folder.set('name', name)
             new_folder.set('id', str(id))
-
-            # Проверяем, правильное ли значение доступа задается папке
-            if access not in CONFIG["FAV"]:
-                return False
             new_folder.set('access', access)
-
-            # Проверяем, правильный ли тип задается папке
-            if type not in CONFIG["FTV"]:
-                return False
             new_folder.set('type', type)
-
-            # Проверяем, правильный ли стиль задается папке
-            if style not in CONFIG["FSV"]:
-                return False
             new_folder.set('style', style)
-
-            # Проверяем, правильный ли стиль задается папке
-            if view not in CONFIG["FVV"]:
-                return False
             new_folder.set('view', view)
 
             # Узнаем, в какой папке создавать новую папку
@@ -169,9 +154,8 @@ class WikiFileTree():
         else:
             return False
 
-    def rename_folder(self, id: int, new_name: str) -> None:
+    def rename_folder(self, id_folder: int, new_name: str) -> None:
         """Переименование папки"""
-        pass
 
     def reaccess_folder(self, id: int, new_access: str) -> None:
         """Изменение доступа папки"""
@@ -264,10 +248,48 @@ class WikiFileTree():
     # Private methods:
     # ----------------
 
-
     def __format_xml(self, xml_str):
         """Выравнивание xml строки"""
         return parseString(xml_str).toprettyxml()
+
+    def __check_name(self, name: str) -> bool:
+        """Проверяем новое название папки на запрещенные символы"""
+        for symbol in CONFIG["DSFF"]:
+            if name.find(symbol) != -1:
+                return False
+        return True
+
+    def __check_id(self, id: int) -> bool:
+        """Проверяем id на валидность"""
+        if id < -1:
+            return False
+        else:
+            return True
+
+    def __check_access(self, access: str) -> bool:
+        """Проверяем access на валидность"""
+        if access not in CONFIG["FAV"]:
+            return False
+        else:
+            return True
+
+    def __check_type(self, type: str) -> bool:
+        if type not in CONFIG["FTV"]:
+            return False
+        else:
+            return True
+
+    def __check_style(self, style: str) -> bool:
+        if style not in CONFIG["FSV"]:
+            return False
+        else:
+            return True
+
+    def __check_view(self, view: str) -> bool:
+        if view not in CONFIG["FVV"]:
+            return False
+        else:
+            return True
 
 
 
