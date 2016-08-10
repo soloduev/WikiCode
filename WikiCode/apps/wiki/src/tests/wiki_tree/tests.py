@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_tree import wiki_tree as wt_test
 
-# Version:       0.020
-# Total Tests:   26
+# Version:       0.021
+# Total Tests:   27
 
 
 class WikiTreeTest(object):
@@ -637,9 +637,28 @@ class WikiTreeTest(object):
 
             wft.create_publication(42, "Новый урок", "public", "personal", 2)
             wft.create_publication(43, "Новый урок", "public", "personal", 1)
-            wft.print_xml()
+            # wft.print_xml()
 
         test_26(self)
+
+        # -------------------------------------
+        # Проверяем изменение доступа конспекта в приватной папке
+        def test_27(self):
+            print("WikiFileTree: " + test_27.__name__)
+            wft = wt_test.WikiFileTree()
+            wft.create_tree(1)
+            wft.create_folder(id=1, access="public", type="saved", name="new folder", style="green", view="open",
+                              id_folder=-1)
+            wft.create_folder(id=2, access="private", type="saved", name="new folder", style="green", view="open",
+                              id_folder=1)
+            wft.create_folder(id=3, access="public", type="saved", name="new folder", style="green", view="open",
+                              id_folder=2)
+
+            wft.create_publication(42, "Новый урок", "public", "personal", 2)
+            wft.reaccess_publication(42, "public")
+            # wft.print_xml()
+
+        test_27(self)
 
 
 

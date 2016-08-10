@@ -24,7 +24,7 @@ from WikiCode.apps.wiki.src.future.wiki_tree.config_wiki_tree import params as C
 
 class WikiFileTree():
     """
-    :VERSION: 0.21
+    :VERSION: 0.22
     Класс для работы с файловым деревом на платформе WIKICODE.
     Файловое дерево педставляет из себя структуированный xml файл.
     Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -325,7 +325,13 @@ class WikiFileTree():
             root = ET.fromstring(self.__xml_tree)
             for publication in root.iter('publication'):
                 if publication.get('id') == str(id_publication):
-                    publication.set('access', new_access)
+                    # Получаем родителя
+                    parent = root.find('.//publication[@id="' + str(id_publication) + '"]...')
+                    # Если доступ родителя приватный, то публикация остается приватной
+                    if parent.get('access') == 'private':
+                        publication.set('access', 'private')
+                    else:
+                        publication.set('access', new_access)
                     self.__xml_tree = ET.tostring(root)
                     return True
             return False
