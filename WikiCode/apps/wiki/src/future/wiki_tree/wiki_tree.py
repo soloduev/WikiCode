@@ -19,7 +19,7 @@
 
 import xml.etree.ElementTree as ET
 from xml.dom.minidom import parseString
-from WikiCode.apps.wiki.src.future.wiki_tree.config_wiki_tree import params as CONFIG
+from WikiCode.apps.wiki.src.future.wiki_tree.config import params as CONFIG
 
 
 class WikiFileTree():
@@ -31,7 +31,7 @@ class WikiFileTree():
     Также, дерево способно конвертировать xml в html код, под необходимый фронтенд.
     Дерево обязано содержать конфигурационный файл для создание фронтенд html файла, чтобы можно было удобно его настраивать.
     Исходный код дерева старается быть таким, чтобы деревао можно было легко модернизировать и улучшать, добавляя в него новые и новые элементы.
-    В файле example_wiki_tree.xml отображен пример дерева и его возможностей.
+    В файле example.xml отображен пример дерева и его возможностей.
     """
 
     def __init__(self):
@@ -315,7 +315,6 @@ class WikiFileTree():
                     return True
             return False
 
-    # TODO: Сделать так, что изменить доступ публикации с приватного на публичный в приватной папке нельзя
     def reaccess_publication(self, id_publication: int, new_access: str) -> bool:
         """Изменение доступа конспекта"""
         if self.__xml_tree is not None and type(new_access) == str:
