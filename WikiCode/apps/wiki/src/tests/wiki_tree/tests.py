@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_tree import wiki_tree as wt_test
 
-# Version:       0.018
-# Total Tests:   23
+# Version:       0.019
+# Total Tests:   25
 
 
 class WikiTreeTest(object):
@@ -578,6 +578,50 @@ class WikiTreeTest(object):
             # wft.print_xml()
 
         test_23(self)
+
+        # -------------------------------------
+        # ПРОВЕРЯЛОСЬ ИЗМЕНЕНИЕ ДОСТУПА ПРИ ИЗМЕНЕНИИ ДОСТУПА ПАПКИ
+        def test_24(self):
+            print("WikiFileTree: " + test_24.__name__)
+            wft = wt_test.WikiFileTree()
+            wft.create_tree(1)
+            wft.create_folder(id=1, access="public", type="saved", name="new folder", style="green", view="open",
+                              id_folder=-1)
+            wft.create_folder(id=2, access="private", type="saved", name="new folder", style="green", view="open",
+                              id_folder=1)
+            wft.create_folder(id=3, access="public", type="saved", name="new folder", style="green", view="open",
+                              id_folder=2)
+
+            wft.reaccess_folder(3, 'public')
+            wft.reaccess_folder(2, 'public')
+            # wft.print_xml()
+
+        test_24(self)
+
+        # -------------------------------------
+
+        # ПРОВЕРЯЛОСЬ ИЗМЕНЕНИЕ ДОСТУПА ПРИ ИЗМЕНЕНИИ ДОСТУПА ПАПКИ
+        def test_25(self):
+            print("WikiFileTree: " + test_25.__name__)
+            wft = wt_test.WikiFileTree()
+            wft.create_tree(1)
+            wft.create_folder(id=1, access="public", type="saved", name="new folder", style="green", view="open",
+                              id_folder=-1)
+            wft.create_folder(id=2, access="public", type="saved", name="new folder", style="green", view="open",
+                              id_folder=1)
+            wft.create_folder(id=3, access="public", type="saved", name="new folder", style="green", view="open",
+                              id_folder=2)
+
+            wft.reaccess_folder(1, 'private')
+            wft.reaccess_folder(3, 'public')
+            wft.reaccess_folder(2, 'public')
+            wft.reaccess_folder(1, 'public')
+            wft.reaccess_folder(3, 'public')
+            wft.reaccess_folder(2, 'public')
+            wft.reaccess_folder(3, 'public')
+            # wft.print_xml()
+
+        test_25(self)
 
 
 

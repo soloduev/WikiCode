@@ -24,7 +24,7 @@ from WikiCode.apps.wiki.src.future.wiki_tree.config_wiki_tree import params as C
 
 class WikiFileTree():
     """
-    :VERSION: 0.19
+    :VERSION: 0.20
     Класс для работы с файловым деревом на платформе WIKICODE.
     Файловое дерево педставляет из себя структуированный xml файл.
     Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -167,7 +167,6 @@ class WikiFileTree():
                     return True
             return False
 
-    # TODO: Сделать так, чтобы acces папки не менялся на публичный, если она находмится в приватной папке
     def reaccess_folder(self, id_folder: int, new_access: str) -> bool:
         """Изменение доступа папки"""
         if self.__xml_tree is not None and type(new_access) == str:
@@ -177,7 +176,17 @@ class WikiFileTree():
             root = ET.fromstring(self.__xml_tree)
             for folder in root.iter('folder'):
                 if folder.get('id') == str(id_folder):
-                    folder.set('access', new_access)
+                    parent = root.find('.//folder[@id="' + str(id_folder) + '"]...')
+                    # Если родительская папка имела приватный доступ, то изменить доступ на публичный невозможно
+                    if parent.get('access') == 'private':
+                        folder.set('access', 'private')
+
+                    else:
+                        # Если меняем доступ у папки на приватный, меняем все подпапки на приватные
+                        if new_access == 'private':
+                            for sub_folder in folder.iter('folder'):
+                                sub_folder.set('access', 'private')
+                        folder.set('access', new_access)
                     self.__xml_tree = ET.tostring(root)
                     return True
             return False
