@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_comments import wiki_comments as wc_test
 
-# Version:       0.003
-# Total Tests:   2
+# Version:       0.004
+# Total Tests:   3
 
 
 class WikiCommentsTest(object):
@@ -104,6 +104,17 @@ class WikiCommentsTest(object):
             # print(xml_str_2)
 
         test_2(self)
+
+        # -------------------------------------
+        # Проверка id
+        def test_3(self):
+            print("WikiComments: " + test_3.__name__)
+            wc = wc_test.WikiComments()
+            wc.create_comments(1)
+            if wc.get_id() != 1: self.__add_error("3", "id error!")
+            wc.create_comments("sadfsad")
+            if wc.get_id() != None: self.__add_error("3", "id error!")
+        test_3(self)
 
 
 
