@@ -116,6 +116,16 @@ class WikiCommentsTest(object):
             if wc.get_id() != None: self.__add_error("3", "id error!")
         test_3(self)
 
+        # -------------------------------------
+        # Проверка на использование функции создания комментариев
+        def test_4(self):
+            print("WikiComments: " + test_4.__name__)
+            wc = wc_test.WikiComments()
+            if wc.create_comment(1,3,"dsgfhdsfdsf","Hellen","332432",False):
+                self.__add_error("4", "Error create comments!")
+
+        test_4(self)
+
 
 
 

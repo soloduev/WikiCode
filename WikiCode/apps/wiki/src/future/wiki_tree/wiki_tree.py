@@ -88,7 +88,7 @@ class WikiFileTree():
 
     def create_folder(self, id: int, name: str, access: str, type: str, style: str, view: str, id_folder: int = -1) -> bool:
         """Создание новой папки"""
-        if self.__xml_tree is not None:
+        if self.__xml_tree:
             # Получаем корневой элемент текущего дерева
             root = ET.fromstring(self.__xml_tree)
 

@@ -21,4 +21,8 @@
 # ФАЙЛ КОНФИГУРАЦИИ РАБОТЫ WIKICOMMENTS
 
 params = {
+
+    # Запрещенные символы в тексте комментариев:
+    # Deprecated Symbols In Comments
+    "DSIC": {">","<"},
 }

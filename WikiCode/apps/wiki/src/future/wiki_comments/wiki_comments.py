@@ -76,7 +76,8 @@ class WikiComments():
 
     def print_config(self) -> None:
         """Печатает параметры конфигурационного файла комментариев"""
-        pass
+        for key in CONFIG:
+            print(key, ":", CONFIG[key])
 
     def get_xml_str(self) -> str:
         """Возвращает xml строку текущих комментариев"""
@@ -84,10 +85,24 @@ class WikiComments():
 
     # WORK WITH COMMENTS
 
+    # TODO: Доделать функцию. Был срочно прерван. Придется отойти от разработки на сегодня.
     def create_comment(self, id_comment: int ,user_id: int, text: str, user_name: str,
                        date: str, is_moderator: bool) -> bool:
         """Создает новый комментарий в дереве."""
-        pass
+        if self.__xml_comments:
+            # Получаем корневой элемент текущих комментариев
+            root = ET.fromstring(self.__xml_comments)
+
+            # Создание корня для комментария
+            new_folder = ET.Element('comment')
+
+            # Проверяем параметры на валидность
+
+
+
+            return True
+        else:
+            return False
 
 
     def edit_comment(self, id_comment: int, text: str, date: str) -> bool:
