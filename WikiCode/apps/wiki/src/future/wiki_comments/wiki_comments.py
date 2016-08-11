@@ -24,7 +24,7 @@ from WikiCode.apps.wiki.src.future.wiki_comments.config import params as CONFIG
 
 class WikiComments():
     """
-       :VERSION: 0.2
+       :VERSION: 0.3
        Класс для работы с комментариями на платформе WIKICODE.
        Комментарии педставляет из себя структуированный xml файл.
        Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -44,7 +44,10 @@ class WikiComments():
 
     def load_comments(self, xml_str: str) -> None:
         """Загрузка комментариев. Необхожимо передать xml строчку."""
-        pass
+        if type(xml_str) == str:
+            self.__xml_comments = xml_str
+        else:
+            self.__xml_comments = None
 
     def create_comments(self, id: int) -> bool:
         """Создает пустую xml комментариев. Необходимо передать id новых комментариев."""
@@ -72,7 +75,7 @@ class WikiComments():
 
     def get_xml_str(self) -> str:
         """Возвращает xml строку текущих комментариев"""
-        pass
+        return self.__format_xml(self.__xml_comments)
 
     # WORK WITH COMMENTS
 
@@ -133,9 +136,11 @@ class WikiComments():
         """Конвертурует по конфигурационному файлу html фронтенд для комментариев."""
         pass
 
-
     # ----------------
     # Private methods:
     # ----------------
 
+    def __format_xml(self, xml_str):
+        """Выравнивание xml строки"""
+        return parseString(xml_str).toprettyxml()
 

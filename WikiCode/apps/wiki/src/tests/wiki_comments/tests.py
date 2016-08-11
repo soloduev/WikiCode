@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_comments import wiki_comments as wc_test
 
-# Version:       0.002
-# Total Tests:   1
+# Version:       0.003
+# Total Tests:   2
 
 
 class WikiCommentsTest(object):
@@ -80,7 +80,6 @@ class WikiCommentsTest(object):
         def test_1(self):
             print("WikiComments: " + test_1.__name__)
             wc = wc_test.WikiComments()
-
             stats = set()
             stats.add(wc.create_comments(1))
             stats.add(wc.create_comments(-1))
@@ -90,6 +89,21 @@ class WikiCommentsTest(object):
             if False in stats:
                 self.__add_error("1", "Create comments error")
         test_1(self)
+
+        # -------------------------------------
+        # ЗАГРУЗКА КОММЕНТАРИЕВ
+        def test_2(self):
+            print("WikiComments: " + test_2.__name__)
+            wc = wc_test.WikiComments()
+            wc.create_comments(1)
+            xml_str_1 = wc.get_xml_str()
+            wc.load_comments(xml_str_1)
+            xml_str_2 = wc.get_xml_str()
+            # print(xml_str_1)
+            # print()
+            # print(xml_str_2)
+
+        test_2(self)
 
 
 
