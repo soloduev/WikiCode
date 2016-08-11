@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_comments import wiki_comments as wc_test
 
-# Version:       0.001
-# Total Tests:   0
+# Version:       0.002
+# Total Tests:   1
 
 
 class WikiCommentsTest(object):
@@ -76,10 +76,19 @@ class WikiCommentsTest(object):
 
     def __tests(self):
         # -------------------------------------
+        # СОЗДАНИЕ КОММЕНТАРИЕВ
         def test_1(self):
             print("WikiComments: " + test_1.__name__)
             wc = wc_test.WikiComments()
 
+            stats = set()
+            stats.add(wc.create_comments(1))
+            stats.add(wc.create_comments(-1))
+            stats.add(wc.create_comments(0))
+            stats.add(wc.create_comments(324324))
+            stats.add(not wc.create_comments("asas"))
+            if False in stats:
+                self.__add_error("1", "Create comments error")
         test_1(self)
 
 
