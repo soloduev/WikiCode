@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_permissions import wiki_permissions as wp_test
 
-# Version:       0.001
-# Total Tests:   0
+# Version:       0.002
+# Total Tests:   3
 
 
 class WikiPermissionsTest(object):
@@ -81,4 +81,38 @@ class WikiPermissionsTest(object):
             print("WikiPermissions: " + test_1.__name__)
             wp = wp_test.WikiPermissions()
             stats = set()
+            stats.add(wp.create_permissions(1))
+            # wp.print_xml()
+
+            if False in stats:
+                self.__add_error("1", "Create permissions error")
+
         test_1(self)
+
+        # -------------------------------------
+        # ЗАГРУЗКА СПИСКОВ ДОСТУПА
+        def test_2(self):
+            print("WikiPermissions: " + test_2.__name__)
+            wp = wp_test.WikiPermissions()
+            stats = set()
+            wp.create_permissions(13)
+            text = wp.get_xml_str()
+            stats.add(wp.load_permissions(text))
+
+            # wp.print_xml()
+
+            if False in stats:
+                self.__add_error("2", "Load permissions error")
+
+        test_2(self)
+
+        # -------------------------------------
+        # ПРОВЕРКА ID
+        def test_3(self):
+            print("WikiPermissions: " + test_3.__name__)
+            wp = wp_test.WikiPermissions()
+            wp.create_permissions(42)
+            if wp.get_id() != 42:
+                self.__add_error("3", "id error!")
+
+        test_3(self)

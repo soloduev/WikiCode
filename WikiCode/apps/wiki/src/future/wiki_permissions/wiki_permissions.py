@@ -23,7 +23,7 @@ from xml.dom.minidom import parseString
 
 class WikiPermissions():
     """
-       :VERSION: 0.1
+       :VERSION: 0.2
        Класс для работы со списками доступа у конспекта.
        Список доступа педставляет из себя структуированный xml файл.
        Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -32,7 +32,7 @@ class WikiPermissions():
        В файле example.xml отображен пример xml списка и его возможностей.
        """
     def __init__(self):
-        self.__xml_ermissions = None
+        self.__xml_permissions = None
 
     # ---------------
     # Public methods:
@@ -42,21 +42,39 @@ class WikiPermissions():
 
     def load_permissions(self, xml_str: str) -> None:
         """Загрузка списка. Необхожимо передать xml строчку."""
-        pass
+        if type(xml_str) == str:
+            self.__xml_permissions = xml_str
+        else:
+            self.__xml_permissions = None
 
     def create_permissions(self, id: int) -> bool:
         """Создает пустую xml списка. Необходимо передать id нового списка."""
-        pass
+        if type(id) == int:
+            # Создаем новый корневой элемент
+            wpt_root = ET.Element('wiki_permissions')
+            # Задаем ему id
+            wpt_root.set('id',str(id))
+            # Переводим xml в строку
+            self.__xml_permissions = ET.tostring(wpt_root)
+            return True
+        else:
+            self.__xml_permissions = None
+            return False
 
     # GETS PARAMS TREE
 
     def get_id(self) -> int:
         """Возвращает id списка"""
-        pass
+        if self.__xml_permissions is not None:
+            root = ET.fromstring(self.__xml_permissions)
+            tree_id = int(root.get('id'))
+            return tree_id
+        else:
+            return None
 
     def get_xml_str(self) -> str:
         """Возвращает xml строку текущего списка доступа"""
-        pass
+        return self.__format_xml(self.__xml_permissions)
 
     # WORK WITH LIST
 
@@ -88,6 +106,12 @@ class WikiPermissions():
         """Напечатать все списки доступа"""
         pass
 
+     # VIEWS TREE
+
+    def print_xml(self) -> None:
+        """Выводит в консоль xml всего дерева"""
+        if self.__xml_permissions is not None:
+            print(self.__format_xml(self.__xml_permissions))
     # ----------------
     # Private methods:
     # ----------------
