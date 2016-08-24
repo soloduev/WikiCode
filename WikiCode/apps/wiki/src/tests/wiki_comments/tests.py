@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_comments import wiki_comments as wc_test
 
-# Version:       0.007
-# Total Tests:   7
+# Version:       0.008
+# Total Tests:   8
 
 
 class WikiCommentsTest(object):
@@ -179,6 +179,29 @@ class WikiCommentsTest(object):
             # wc.print_xml()
 
         test_7(self)
+
+        # -------------------------------------
+        # Проверка ответа на комментарий
+        def test_8(self):
+            print("WikiComments: " + test_8.__name__)
+            wc = wc_test.WikiComments()
+            wc.create_comments(1)
+            states = set()
+            states.add(wc.create_comment(1, 2, "Hello!", "Boris", "17.08.2017", False))
+            states.add(wc.create_comment(16, 4, "Hi!", "Katya", "20.08.2017", False))
+            states.add(wc.create_comment(26, 8, "How are you?", "Petya", "21.08.2017", False))
+            states.add(wc.reply(70,4,"Vasya","Good",26,"14.09.2017",False))
+            states.add(wc.reply(74,4,"Vasya","Perfect!",26,"14.09.2017",False))
+            states.add(wc.reply(77,5,"Nastya","And you?",74,"14.09.2017",False))
+            states.add(wc.reply(78,4,"Vasya","Very good",77,"14.09.2017",False))
+            states.add(not wc.reply(80,4,"Borya","Bad",25,"14.09.2017",False))
+
+            if False in states:
+                self.__add_error("8", "Reply comments")
+
+            # wc.print_xml()
+
+        test_8(self)
 
 
 

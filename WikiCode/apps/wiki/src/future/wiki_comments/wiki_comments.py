@@ -24,7 +24,7 @@ from WikiCode.apps.wiki.src.future.wiki_comments.config import params as CONFIG
 
 class WikiComments():
     """
-       :VERSION: 0.7
+       :VERSION: 0.8
        Класс для работы с комментариями на платформе WIKICODE.
        Комментарии педставляет из себя структуированный xml файл.
        Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -153,11 +153,38 @@ class WikiComments():
         else:
             return False
 
-
-    def reply(self, new_id:int, reply_id: int, text: str, reply_name: int,
+    # TODO: Произвести валидацию всех аргументов
+    def reply(self, new_id:int, user_id: int, user_name: str, text: str, reply_id: int,
               date: str, is_moderator: bool) -> bool:
         """Ответ на существующий комментарий"""
-        pass
+        if self.__xml_comments:
+            # Получаем корневой элемент текущих комментариев
+            root = ET.fromstring(self.__xml_comments)
+            # Получаем необходимый нам комментарий по его id
+            for comment in root.iter('comment'):
+                if comment.get('id') == str(reply_id):
+                    # Создаем ответ
+                    new_comment = ET.Element('comment')
+                    # Задаем параметры новому комментарию
+                    new_comment.set('id', str(new_id))
+                    new_comment.set('user_id', str(user_id))
+                    new_comment.set('text', text)
+                    new_comment.set('user_name', user_name)
+                    new_comment.set('date', date)
+                    new_comment.set('is_moderator', str(is_moderator))
+                    # Параметры, которые задаем по-умолчанию для только что созданного комментария
+                    new_comment.set('answered_id', str(reply_id))
+                    new_comment.set('answered_name', comment.get('user_name'))
+                    new_comment.set('rating', str(0))
+                    new_comment.set('is_edit', str(False))
+                    new_comment.set('is_claim', str(False))
+                    # Сохраняем все
+                    comment.append(new_comment)
+                    self.__xml_comments = ET.tostring(root)
+                    return True
+            return False
+        else:
+            return False
 
     def complain(self, id_comment: int) -> bool:
         """Отправить жалобу на комментарий."""
