@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_permissions import wiki_permissions as wp_test
 
-# Version:       0.004
-# Total Tests:   5
+# Version:       0.005
+# Total Tests:   7
 
 
 class WikiPermissionsTest(object):
@@ -152,3 +152,39 @@ class WikiPermissionsTest(object):
                 self.__add_error("5", "add in black list error!")
 
         test_5(self)
+
+        # -------------------------------------
+        # ПРОВЕРКА НА УДАОЕНИЕ ПОЛЬЗОВАТЕЛЯ ИЗ БЕЛОГО СПИСКА
+        def test_6(self):
+            print("WikiPermissions: " + test_6.__name__)
+            stats = set()
+            wp = wp_test.WikiPermissions()
+            stats.add(wp.create_permissions(42, 14))
+            stats.add(wp.add_to_white_list(1, "Vasya", "watcher", "None"))
+            stats.add(wp.add_to_white_list(4, "Vasya", "watcher", "None"))
+            stats.add(wp.remove_from_white_list(4))
+            stats.add(not wp.remove_from_white_list(5))
+
+            # wp.print_xml()
+            if False in stats:
+                self.__add_error("6", "remove in white list error!")
+
+        test_6(self)
+
+        # -------------------------------------
+        # ПРОВЕРКА НА УДАОЕНИЕ ПОЛЬЗОВАТЕЛЯ ИЗ ЧЕРНОГО СПИСКА
+        def test_7(self):
+            print("WikiPermissions: " + test_7.__name__)
+            stats = set()
+            wp = wp_test.WikiPermissions()
+            stats.add(wp.create_permissions(42, 14))
+            stats.add(wp.add_to_black_list(1, "Vasya", "ban", "None"))
+            stats.add(wp.add_to_black_list(4, "Vasya", "ban", "None"))
+            stats.add(wp.remove_from_black_list(4))
+            stats.add(not wp.remove_from_black_list(5))
+
+            # wp.print_xml()
+            if False in stats:
+                self.__add_error("7", "remove in black list error!")
+
+        test_7(self)
