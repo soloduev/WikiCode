@@ -397,22 +397,27 @@ class WikiFileTree():
         if self.__xml_tree is not None:
             print(self.__format_xml(self.__xml_tree))
 
+    # TODO: Реализовать. Может, когда-нибудь пригодится для отладки
     def print_xml_folder(self, id: int) -> None:
         """Выводит xml папки"""
         pass
 
+    # TODO: Реализовать. Может, когда-нибудь пригодится для отладки
     def print_xml_publication(self, id: int) -> None:
         """Выводит xml конспекта"""
         pass
 
+    # TODO: Реализовать. Может, когда-нибудь пригодится для отладки
     def print(self) -> None:
         """Красиво выводит все дерево"""
         pass
 
+    # TODO: Реализовать. Может, когда-нибудь пригодится для отладки
     def print_folder(self, id: int) -> None:
         """Красиво выводит всю папку"""
         pass
 
+    # TODO: Реализовать. Может, когда-нибудь пригодится для отладки
     def print_publication(self, id: int) -> None:
         """Красиво выводт конспект"""
         pass

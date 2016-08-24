@@ -24,7 +24,7 @@ from WikiCode.apps.wiki.src.future.wiki_comments.config import params as CONFIG
 
 class WikiComments():
     """
-       :VERSION: 0.9
+       :VERSION: 0.10
        Класс для работы с комментариями на платформе WIKICODE.
        Комментарии педставляет из себя структуированный xml файл.
        Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -211,7 +211,7 @@ class WikiComments():
             # Получаем необходимый нам комментарий по его id
             for comment in root.iter('comment'):
                 if comment.get('id') == str(id_comment):
-                    # Меняем флаг
+                    # Меняем рейтинг
                     comment.set('rating', str(int(comment.get('rating')) + 1))
                     # Сохраняем все
                     self.__xml_comments = ET.tostring(root)
@@ -228,7 +228,7 @@ class WikiComments():
             # Получаем необходимый нам комментарий по его id
             for comment in root.iter('comment'):
                 if comment.get('id') == str(id_comment):
-                    # Меняем флаг
+                    # Меняем рейтинг
                     comment.set('rating', str(int(comment.get('rating')) -1))
                     # Сохраняем все
                     self.__xml_comments = ET.tostring(root)
@@ -241,12 +241,56 @@ class WikiComments():
 
     def print_comment(self, id_comment: int) -> None:
         """Отображает информацию о комментарии"""
-        pass
+        if self.__xml_comments:
+            # Получаем корневой элемент текущих комментариев
+            root = ET.fromstring(self.__xml_comments)
+            # Получаем необходимый нам комментарий по его id
+            for comment in root.iter('comment'):
+                if comment.get('id') == str(id_comment):
+                    print("id:" + comment.get("id"))
+                    print("user_id:" + comment.get("user_id"))
+                    print("user_name:" + comment.get("user_name"))
+                    print("answered_id:" + comment.get("answered_id"))
+                    print("answered_name:" + comment.get("answered_name"))
+                    print("date:" + comment.get("date"))
+                    print("rating:" + comment.get("rating"))
+                    print("is_edit:" + comment.get("is_edit"))
+                    print("is_claim:" + comment.get("is_claim"))
+                    print("is_moderator:" + comment.get("is_moderator"))
+                    print("text:" + comment.get("text"))
+                    return True
+            return False
+        else:
+            return False
 
     def debug_comment(self, id_comment: int) -> tuple:
         """Возвращает все параметры комментария в виде кортежа. Необходимо для тестирования."""
-        pass
+        if self.__xml_comments:
+            # Получаем корневой элемент текущих комментариев
+            root = ET.fromstring(self.__xml_comments)
+            # Получаем необходимый нам комментарий по его id
+            for comment in root.iter('comment'):
+                if comment.get('id') == str(id_comment):
+                    # Cоставляем список
+                    resultParam = []
+                    resultParam.append(comment.get("id"))
+                    resultParam.append(comment.get("user_id"))
+                    resultParam.append(comment.get("user_name"))
+                    resultParam.append(comment.get("answered_id"))
+                    resultParam.append(comment.get("answered_name"))
+                    resultParam.append(comment.get("date"))
+                    resultParam.append(comment.get("rating"))
+                    resultParam.append(comment.get("is_edit"))
+                    resultParam.append(comment.get("is_claim"))
+                    resultParam.append(comment.get("is_moderator"))
+                    resultParam.append(comment.get("text"))
+                    # Возвращаем кортеж
+                    return tuple(resultParam)
+            return ()
+        else:
+            return ()
 
+    # TODO: Реализовать. Может, когда-нибудь пригодится для отладки
     def print(self) -> None:
         """Отображает красиво все комментарии"""
         pass
