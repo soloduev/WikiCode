@@ -24,7 +24,7 @@ from WikiCode.apps.wiki.src.future.wiki_permissions import config as CONFIG
 
 class WikiPermissions():
     """
-       :VERSION: 0.7
+       :VERSION: 0.8
        Класс для работы со списками доступа у конспекта.
        Список доступа педставляет из себя структуированный xml файл.
        Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -194,7 +194,21 @@ class WikiPermissions():
 
     def show(self):
         """Напечатать все списки доступа"""
-        pass
+        if self.__xml_permissions is not None:
+            root = ET.fromstring(self.__xml_permissions)
+            white_list = root.find('./white_list')
+            black_list = root.find('./black_list')
+            print("White list:")
+            for user in white_list.iter('user'):
+                print(user.get('id'), user.get('permission'), user.get('user_name'), user.get('status'))
+
+            print("Black list:")
+            for user in black_list.iter('user'):
+                print(user.get('id'), user.get('permission'), user.get('user_name'), user.get('status'))
+
+            return True
+        else:
+            return False
 
      # VIEWS TREE
 

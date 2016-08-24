@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_permissions import wiki_permissions as wp_test
 
-# Version:       0.006
-# Total Tests:   9
+# Version:       0.007
+# Total Tests:   10
 
 
 class WikiPermissionsTest(object):
@@ -210,7 +210,7 @@ class WikiPermissionsTest(object):
         test_8(self)
 
         # -------------------------------------
-        # ПРОВЕРКА НА ПОЛУЧЕНИЕ КОРТЕЖА ПОЛЬЗОВАТЕЛЕЙ ИЗ БЕЛОГО СПИСКА
+        # ПРОВЕРКА НА ПОЛУЧЕНИЕ КОРТЕЖА ПОЛЬЗОВАТЕЛЕЙ ИЗ ЧЕРНОГО СПИСКА
         def test_9(self):
             print("WikiPermissions: " + test_9.__name__)
             stats = set()
@@ -228,3 +228,23 @@ class WikiPermissionsTest(object):
                 self.__add_error("9", "get tuple in black list error!")
 
         test_9(self)
+
+        # -------------------------------------
+        # ПРОВЕРКА НА ВЫВОД СПИСКОВ
+        def test_10(self):
+            print("WikiPermissions: " + test_10.__name__)
+            stats = set()
+            wp = wp_test.WikiPermissions()
+            stats.add(wp.create_permissions(42, 14))
+            stats.add(wp.add_to_white_list(1, "Vasya", "watcher", "None"))
+            stats.add(wp.add_to_black_list(2, "Katya", "ban", "None"))
+            stats.add(wp.add_to_white_list(3, "Masha", "editor", "None"))
+            stats.add(wp.add_to_white_list(4, "Svetlana", "watcher", "None"))
+            stats.add(wp.add_to_black_list(5, "Maxim", "ban", "None"))
+
+            # stats.add(wp.show())
+
+            if False in stats:
+                self.__add_error("10", "show list error!")
+
+        test_10(self)
