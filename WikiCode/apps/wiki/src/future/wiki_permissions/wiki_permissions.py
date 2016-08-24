@@ -23,7 +23,7 @@ from xml.dom.minidom import parseString
 
 class WikiPermissions():
     """
-       :VERSION: 0.2
+       :VERSION: 0.3
        Класс для работы со списками доступа у конспекта.
        Список доступа педставляет из себя структуированный xml файл.
        Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -54,6 +54,9 @@ class WikiPermissions():
             wpt_root = ET.Element('wiki_permissions')
             # Задаем ему id
             wpt_root.set('id',str(id))
+            # Создаем белый и черный список
+            wpt_root.append(ET.Element('white_list'))
+            wpt_root.append(ET.Element('black_list'))
             # Переводим xml в строку
             self.__xml_permissions = ET.tostring(wpt_root)
             return True
