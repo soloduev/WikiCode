@@ -24,7 +24,7 @@ from WikiCode.apps.wiki.src.future.wiki_comments.config import params as CONFIG
 
 class WikiComments():
     """
-       :VERSION: 0.8
+       :VERSION: 0.9
        Класс для работы с комментариями на платформе WIKICODE.
        Комментарии педставляет из себя структуированный xml файл.
        Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -188,15 +188,54 @@ class WikiComments():
 
     def complain(self, id_comment: int) -> bool:
         """Отправить жалобу на комментарий."""
-        pass
+        if self.__xml_comments:
+            # Получаем корневой элемент текущих комментариев
+            root = ET.fromstring(self.__xml_comments)
+            # Получаем необходимый нам комментарий по его id
+            for comment in root.iter('comment'):
+                if comment.get('id') == str(id_comment):
+                    # Меняем флаг
+                    comment.set('is_claim', str(True))
+                    # Сохраняем все
+                    self.__xml_comments = ET.tostring(root)
+                    return True
+            return False
+        else:
+            return False
 
     def up_rating(self, id_comment: int) -> bool:
         """Повысить рейтинг комментарию"""
-        pass
+        if self.__xml_comments:
+            # Получаем корневой элемент текущих комментариев
+            root = ET.fromstring(self.__xml_comments)
+            # Получаем необходимый нам комментарий по его id
+            for comment in root.iter('comment'):
+                if comment.get('id') == str(id_comment):
+                    # Меняем флаг
+                    comment.set('rating', str(int(comment.get('rating')) + 1))
+                    # Сохраняем все
+                    self.__xml_comments = ET.tostring(root)
+                    return True
+            return False
+        else:
+            return False
 
     def down_rating(self, id_comment: int) -> bool:
         """Понизить рейтинг комментарию"""
-        pass
+        if self.__xml_comments:
+            # Получаем корневой элемент текущих комментариев
+            root = ET.fromstring(self.__xml_comments)
+            # Получаем необходимый нам комментарий по его id
+            for comment in root.iter('comment'):
+                if comment.get('id') == str(id_comment):
+                    # Меняем флаг
+                    comment.set('rating', str(int(comment.get('rating')) -1))
+                    # Сохраняем все
+                    self.__xml_comments = ET.tostring(root)
+                    return True
+            return False
+        else:
+            return False
 
     # VIEWS TREE
 

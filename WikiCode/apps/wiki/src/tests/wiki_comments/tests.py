@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_comments import wiki_comments as wc_test
 
-# Version:       0.008
-# Total Tests:   8
+# Version:       0.009
+# Total Tests:   9
 
 
 class WikiCommentsTest(object):
@@ -202,6 +202,32 @@ class WikiCommentsTest(object):
             # wc.print_xml()
 
         test_8(self)
+
+        # -------------------------------------
+        # Проверка йункция complain, up_rating, down_rating
+        def test_9(self):
+            print("WikiComments: " + test_9.__name__)
+            wc = wc_test.WikiComments()
+            wc.create_comments(1)
+            states = set()
+            states.add(wc.create_comment(1, 2, "Hello!", "Boris", "17.08.2017", False))
+            states.add(wc.create_comment(16, 4, "Hi!", "Katya", "20.08.2017", False))
+            states.add(wc.create_comment(26, 8, "How are you?", "Petya", "21.08.2017", False))
+            states.add(wc.complain(16))
+            states.add(not wc.complain(25))
+            states.add(wc.up_rating(1))
+            states.add(wc.up_rating(1))
+            states.add(wc.up_rating(1))
+            states.add(wc.down_rating(1))
+            states.add(wc.down_rating(16))
+            states.add(not wc.down_rating(17))
+
+            if False in states:
+                self.__add_error("9", "Claim/rating comments")
+
+            wc.print_xml()
+
+        test_9(self)
 
 
 
