@@ -24,7 +24,7 @@ from WikiCode.apps.wiki.src.future.wiki_permissions import config as CONFIG
 
 class WikiPermissions():
     """
-       :VERSION: 0.6
+       :VERSION: 0.7
        Класс для работы со списками доступа у конспекта.
        Список доступа педставляет из себя структуированный xml файл.
        Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -158,11 +158,39 @@ class WikiPermissions():
 
     def get_white_list(self):
         """Вернуть кортеж всех пользователей, из белого списка"""
-        pass
+        if self.__xml_permissions is not None:
+            root = ET.fromstring(self.__xml_permissions)
+            white_list = root.find('./white_list')
+            resultList = []
+            for user in white_list.iter('user'):
+                userElem = {
+                    "id":user.get('id'),
+                    "permission":user.get('permission'),
+                    "user_name":user.get('user_name'),
+                    "status":user.get('status'),
+                }
+                resultList.append(userElem)
+            return tuple(resultList)
+        else:
+            return ()
 
     def get_black_list(self):
         """Вернуть кортеж всех пользователей, из белого списка"""
-        pass
+        if self.__xml_permissions is not None:
+            root = ET.fromstring(self.__xml_permissions)
+            black_list = root.find('./black_list')
+            resultList = []
+            for user in black_list.iter('user'):
+                userElem = {
+                    "id":user.get('id'),
+                    "permission":user.get('permission'),
+                    "user_name":user.get('user_name'),
+                    "status":user.get('status'),
+                }
+                resultList.append(userElem)
+            return tuple(resultList)
+        else:
+            return ()
 
     def show(self):
         """Напечатать все списки доступа"""

@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_permissions import wiki_permissions as wp_test
 
-# Version:       0.005
-# Total Tests:   7
+# Version:       0.006
+# Total Tests:   9
 
 
 class WikiPermissionsTest(object):
@@ -188,3 +188,43 @@ class WikiPermissionsTest(object):
                 self.__add_error("7", "remove in black list error!")
 
         test_7(self)
+
+        # -------------------------------------
+        # ПРОВЕРКА НА ПОЛУЧЕНИЕ КОРТЕЖА ПОЛЬЗОВАТЕЛЕЙ ИЗ БЕЛОГО СПИСКА
+        def test_8(self):
+            print("WikiPermissions: " + test_8.__name__)
+            stats = set()
+            wp = wp_test.WikiPermissions()
+            stats.add(wp.create_permissions(42, 14))
+            stats.add(wp.add_to_white_list(1, "Vasya", "watcher", "None"))
+            stats.add(wp.add_to_white_list(4, "Vasya", "editor", "None"))
+            users = wp.get_white_list()
+            #print(users)
+            if len(users) != 2 and users[0]["id"] != 1 and users[1]["permission"] != "editor":
+                self.__add_error("8", "get tuple white error!")
+
+            # wp.print_xml()
+            if False in stats:
+                self.__add_error("8", "get tuple in white list error!")
+
+        test_8(self)
+
+        # -------------------------------------
+        # ПРОВЕРКА НА ПОЛУЧЕНИЕ КОРТЕЖА ПОЛЬЗОВАТЕЛЕЙ ИЗ БЕЛОГО СПИСКА
+        def test_9(self):
+            print("WikiPermissions: " + test_9.__name__)
+            stats = set()
+            wp = wp_test.WikiPermissions()
+            stats.add(wp.create_permissions(42, 14))
+            stats.add(wp.add_to_black_list(1, "Vasya", "ban", "None"))
+            stats.add(wp.add_to_black_list(4, "Vasya", "ban", "None"))
+            users = wp.get_black_list()
+            # print(users)
+            if len(users) != 2 and users[0]["id"] != 1 and users[1]["permission"] != "ban":
+                self.__add_error("8", "get tuple black error!")
+
+            # wp.print_xml()
+            if False in stats:
+                self.__add_error("9", "get tuple in black list error!")
+
+        test_9(self)
