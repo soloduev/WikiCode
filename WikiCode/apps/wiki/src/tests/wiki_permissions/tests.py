@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_permissions import wiki_permissions as wp_test
 
-# Version:       0.002
-# Total Tests:   3
+# Version:       0.003
+# Total Tests:   4
 
 
 class WikiPermissionsTest(object):
@@ -81,7 +81,7 @@ class WikiPermissionsTest(object):
             print("WikiPermissions: " + test_1.__name__)
             wp = wp_test.WikiPermissions()
             stats = set()
-            stats.add(wp.create_permissions(1))
+            stats.add(wp.create_permissions(1, 42))
             # wp.print_xml()
 
             if False in stats:
@@ -95,7 +95,7 @@ class WikiPermissionsTest(object):
             print("WikiPermissions: " + test_2.__name__)
             wp = wp_test.WikiPermissions()
             stats = set()
-            wp.create_permissions(13)
+            wp.create_permissions(13, 42)
             text = wp.get_xml_str()
             stats.add(wp.load_permissions(text))
 
@@ -111,8 +111,26 @@ class WikiPermissionsTest(object):
         def test_3(self):
             print("WikiPermissions: " + test_3.__name__)
             wp = wp_test.WikiPermissions()
-            wp.create_permissions(42)
+            wp.create_permissions(42, 14)
             if wp.get_id() != 42:
                 self.__add_error("3", "id error!")
 
         test_3(self)
+
+        # -------------------------------------
+        # ПРОВЕРКА ДОБАВЛЕНИЯ ПОЛЬЗОВАТЕЛЯ В БЕЛЫЙ СПИСОК
+        def test_4(self):
+            print("WikiPermissions: " + test_4.__name__)
+            stats = set()
+            wp = wp_test.WikiPermissions()
+            stats.add(wp.create_permissions(42, 14))
+            stats.add(wp.add_to_white_list(1,"Vasya","watcher","None"))
+            stats.add(wp.add_to_white_list(4,"Vasya","editor","None"))
+            stats.add(not wp.add_to_white_list(4,"Vasya","ban","None"))
+            stats.add(not wp.add_to_white_list(4,"Vasya","admin","None"))
+
+            # wp.print_xml()
+            if False in stats:
+                self.__add_error("4", "add in white list error!")
+
+        test_4(self)

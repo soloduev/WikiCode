@@ -19,11 +19,12 @@
 
 import xml.etree.ElementTree as ET
 from xml.dom.minidom import parseString
+from WikiCode.apps.wiki.src.future.wiki_permissions import config as CONFIG
 
 
 class WikiPermissions():
     """
-       :VERSION: 0.3
+       :VERSION: 0.4
        Класс для работы со списками доступа у конспекта.
        Список доступа педставляет из себя структуированный xml файл.
        Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -47,13 +48,14 @@ class WikiPermissions():
         else:
             self.__xml_permissions = None
 
-    def create_permissions(self, id: int) -> bool:
+    def create_permissions(self, id: int, id_creator: int) -> bool:
         """Создает пустую xml списка. Необходимо передать id нового списка."""
         if type(id) == int:
             # Создаем новый корневой элемент
             wpt_root = ET.Element('wiki_permissions')
             # Задаем ему id
             wpt_root.set('id',str(id))
+            wpt_root.set('id_creator',str(id_creator))
             # Создаем белый и черный список
             wpt_root.append(ET.Element('white_list'))
             wpt_root.append(ET.Element('black_list'))
@@ -81,9 +83,28 @@ class WikiPermissions():
 
     # WORK WITH LIST
 
+    # TODO: Реализовать валидацию полей
     def add_to_white_list(self, id_user: int, name_user: str, permission: str, status: str):
         """Добавление пользователя в белый список"""
-        pass
+        if self.__xml_permissions is not None:
+            root = ET.fromstring(self.__xml_permissions)
+            white_list = root.find('./white_list')
+
+            # Валидация доступа
+            if permission not in CONFIG.params["WHITE_PERMS"]:
+                return False
+
+            # Создаем нового пользователя
+            new_user = ET.Element("user")
+            new_user.set('id', str(id_user))
+            new_user.set('user_name', name_user)
+            new_user.set('permission', permission)
+            new_user.set('status', status)
+            white_list.append(new_user)
+            self.__xml_permissions = ET.tostring(root)
+            return True
+        else:
+            return None
 
     def add_to_black_list(self, id_user: int, name_user: str, permission: str, status: str):
         """Добавление пользователя в черный список"""

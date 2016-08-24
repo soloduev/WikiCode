@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<wiki_permissions id="1132">
+<wiki_permissions id="1132" id_creator="1212">
     <white_list>
-        <user id="121" permission="creator" user_name="Vasya" status="None"></user>
+        <user id="121" permission="watcher" user_name="Vasya" status="None"></user>
         <user id="121" permission="editor" user_name="Katya" status="Student"></user>
         <user id="121" permission="watcher" user_name="Sasha" status="Student"></user>
     </white_list>
