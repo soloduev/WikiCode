@@ -24,7 +24,7 @@ from WikiCode.apps.wiki.src.future.wiki_comments.config import params as CONFIG
 
 class WikiComments():
     """
-       :VERSION: 0.4
+       :VERSION: 0.5
        Класс для работы с комментариями на платформе WIKICODE.
        Комментарии педставляет из себя структуированный xml файл.
        Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -85,21 +85,31 @@ class WikiComments():
 
     # WORK WITH COMMENTS
 
-    # TODO: Доделать функцию. Был срочно прерван. Придется отойти от разработки на сегодня.
     def create_comment(self, id_comment: int ,user_id: int, text: str, user_name: str,
                        date: str, is_moderator: bool) -> bool:
         """Создает новый комментарий в дереве."""
         if self.__xml_comments:
             # Получаем корневой элемент текущих комментариев
             root = ET.fromstring(self.__xml_comments)
-
             # Создание корня для комментария
-            new_folder = ET.Element('comment')
-
-            # Проверяем параметры на валидность
-
-
-
+            new_comment = ET.Element('comment')
+            # Задаем параметры новому комментарию
+            new_comment.set('id_comment', str(id_comment))
+            new_comment.set('user_id', str(user_id))
+            new_comment.set('text', text)
+            new_comment.set('user_name', user_name)
+            new_comment.set('date', date)
+            new_comment.set('is_moderator', str(is_moderator))
+            # Параметры, которые задаем по-умолчанию для только что созданного комментария
+            new_comment.set('answered_id', str(None))
+            new_comment.set('answered_name', str(None))
+            new_comment.set('rating', str(0))
+            new_comment.set('is_edit', str(False))
+            new_comment.set('is_claim', str(False))
+            # Добавляем новый комментарий в корень
+            root.append(new_comment)
+            # Сохраняем комментарии ввиде строки
+            self.__xml_comments = ET.tostring(root)
             return True
         else:
             return False
@@ -148,7 +158,8 @@ class WikiComments():
 
     def print_xml(self) -> None:
         """Отображает отформатировнную xml строку текущих комментариев."""
-        pass
+        if self.__xml_comments is not None:
+            print(self.__format_xml(self.__xml_comments))
 
     # WORK WITH CONVERTING
 
