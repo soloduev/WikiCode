@@ -24,7 +24,7 @@ from WikiCode.apps.wiki.src.future.wiki_comments.config import params as CONFIG
 
 class WikiComments():
     """
-       :VERSION: 0.5
+       :VERSION: 0.6
        Класс для работы с комментариями на платформе WIKICODE.
        Комментарии педставляет из себя структуированный xml файл.
        Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -84,7 +84,7 @@ class WikiComments():
         return self.__format_xml(self.__xml_comments)
 
     # WORK WITH COMMENTS
-
+    # TODO: Необходимо добавить валидацию полей, особенно дату
     def create_comment(self, id_comment: int ,user_id: int, text: str, user_name: str,
                        date: str, is_moderator: bool) -> bool:
         """Создает новый комментарий в дереве."""
@@ -94,7 +94,7 @@ class WikiComments():
             # Создание корня для комментария
             new_comment = ET.Element('comment')
             # Задаем параметры новому комментарию
-            new_comment.set('id_comment', str(id_comment))
+            new_comment.set('id', str(id_comment))
             new_comment.set('user_id', str(user_id))
             new_comment.set('text', text)
             new_comment.set('user_name', user_name)
@@ -114,10 +114,27 @@ class WikiComments():
         else:
             return False
 
-
+    # TODO: Произвести валидацию текста по конфигу
+    # TODO: Произвести валидацию даты по конфигу
+    # TODO: Сделать так, чтобы нельзя было изменить комментарий из-за разницы дат. Опять же согласно конфигу.
     def edit_comment(self, id_comment: int, text: str, date: str) -> bool:
         """Позволяет редактировать комментарий, если не прошло определенное время указанное в конфигурационном файле."""
-        pass
+        if self.__xml_comments:
+            # Получаем корневой элемент текущих комментариев
+            root = ET.fromstring(self.__xml_comments)
+            # Получаем необходимый нам комментарий по его id
+            for comment in root.iter('comment'):
+                if comment.get('id') == str(id_comment):
+                    # Меняем его текст и дату и ставим флаг, что комментарий был изменен
+                    comment.set('text', text)
+                    comment.set('date', date)
+                    comment.set('is_edit', str(True))
+                    # Сохраняем все
+                    self.__xml_comments = ET.tostring(root)
+                    return True
+            return False
+        else:
+            return False
 
 
     def delete_comment(self, id_comment: int) -> bool:
