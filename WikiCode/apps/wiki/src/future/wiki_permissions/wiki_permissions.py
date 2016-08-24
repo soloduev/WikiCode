@@ -24,7 +24,7 @@ from WikiCode.apps.wiki.src.future.wiki_permissions import config as CONFIG
 
 class WikiPermissions():
     """
-       :VERSION: 0.4
+       :VERSION: 0.5
        Класс для работы со списками доступа у конспекта.
        Список доступа педставляет из себя структуированный xml файл.
        Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -108,7 +108,25 @@ class WikiPermissions():
 
     def add_to_black_list(self, id_user: int, name_user: str, permission: str, status: str):
         """Добавление пользователя в черный список"""
-        pass
+        if self.__xml_permissions is not None:
+            root = ET.fromstring(self.__xml_permissions)
+            black_list = root.find('./black_list')
+
+            # Валидация доступа
+            if permission not in CONFIG.params["BLACK_PERMS"]:
+                return False
+
+            # Создаем нового пользователя
+            new_user = ET.Element("user")
+            new_user.set('id', str(id_user))
+            new_user.set('user_name', name_user)
+            new_user.set('permission', permission)
+            new_user.set('status', status)
+            black_list.append(new_user)
+            self.__xml_permissions = ET.tostring(root)
+            return True
+        else:
+            return None
 
     def remove_from_white_list(self, id_user):
         """Убрать пользователя из белого списка"""

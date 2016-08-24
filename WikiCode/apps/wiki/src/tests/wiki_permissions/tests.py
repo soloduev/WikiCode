@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_permissions import wiki_permissions as wp_test
 
-# Version:       0.003
-# Total Tests:   4
+# Version:       0.004
+# Total Tests:   5
 
 
 class WikiPermissionsTest(object):
@@ -134,3 +134,21 @@ class WikiPermissionsTest(object):
                 self.__add_error("4", "add in white list error!")
 
         test_4(self)
+
+        # -------------------------------------
+        # ПРОВЕРКА ДОБАВЛЕНИЯ ПОЛЬЗОВАТЕЛЯ В БЕЛЫЙ СПИСОК
+        def test_5(self):
+            print("WikiPermissions: " + test_5.__name__)
+            stats = set()
+            wp = wp_test.WikiPermissions()
+            stats.add(wp.create_permissions(42, 14))
+            stats.add(wp.add_to_black_list(1, "Vasya", "ban", "None"))
+            stats.add(wp.add_to_black_list(4, "Vasya", "ban", "None"))
+            stats.add(not wp.add_to_black_list(4, "Vasya", "wather", "None"))
+            stats.add(not wp.add_to_black_list(4, "Vasya", "editor", "None"))
+
+            # wp.print_xml()
+            if False in stats:
+                self.__add_error("5", "add in black list error!")
+
+        test_5(self)
