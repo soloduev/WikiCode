@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_comments import wiki_comments as wc_test
 
-# Version:       0.006
-# Total Tests:   6
+# Version:       0.007
+# Total Tests:   7
 
 
 class WikiCommentsTest(object):
@@ -145,14 +145,40 @@ class WikiCommentsTest(object):
             print("WikiComments: " + test_6.__name__)
             wc = wc_test.WikiComments()
             wc.create_comments(1)
-            wc.create_comment(1, 2, "Hello!", "Boris", "17.08.2017", False)
-            wc.create_comment(16, 4, "Hi!", "Katya", "20.08.2017", False)
-            wc.create_comment(26, 8, "How are you?", "Petya", "21.08.2017", False)
-            wc.edit_comment(16, "Bye!", "20.08.2017")
-            wc.print_xml()
+            states = set()
+            states.add(wc.create_comment(1, 2, "Hello!", "Boris", "17.08.2017", False))
+            states.add(wc.create_comment(16, 4, "Hi!", "Katya", "20.08.2017", False))
+            states.add(wc.create_comment(26, 8, "How are you?", "Petya", "21.08.2017", False))
+            states.add(wc.edit_comment(16, "Bye!", "20.08.2017"))
+            states.add(not wc.edit_comment(15, "Bye!", "20.08.2017"))
+
+            if False in states:
+                self.__add_error("6", "Edit comments")
+
+            # wc.print_xml()
 
         test_6(self)
 
+        # -------------------------------------
+        # Проверка на удаление комментария
+        def test_7(self):
+            print("WikiComments: " + test_7.__name__)
+            wc = wc_test.WikiComments()
+            wc.create_comments(1)
+            states = set()
+            states.add(wc.create_comment(1, 2, "Hello!", "Boris", "17.08.2017", False))
+            states.add(wc.create_comment(16, 4, "Hi!", "Katya", "20.08.2017", False))
+            states.add(wc.create_comment(26, 8, "How are you?", "Petya", "21.08.2017", False))
+            states.add(wc.delete_comment(26))
+            states.add(wc.delete_comment(16))
+            states.add(not wc.delete_comment(2))
+
+            if False in states:
+                self.__add_error("7", "Delete comments")
+
+            # wc.print_xml()
+
+        test_7(self)
 
 
 

@@ -24,7 +24,7 @@ from WikiCode.apps.wiki.src.future.wiki_comments.config import params as CONFIG
 
 class WikiComments():
     """
-       :VERSION: 0.6
+       :VERSION: 0.7
        Класс для работы с комментариями на платформе WIKICODE.
        Комментарии педставляет из себя структуированный xml файл.
        Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -139,7 +139,19 @@ class WikiComments():
 
     def delete_comment(self, id_comment: int) -> bool:
         """Удаляет комментарий, указав его id."""
-        pass
+        if self.__xml_comments is not None:
+            # Получаем корневой элемент текущего дерева
+            root = ET.fromstring(self.__xml_comments)
+            parent = root.find('.//comment[@id="' + str(id_comment) + '"]...')
+            if parent is not None:
+                comment = parent.find('./comment[@id="' + str(id_comment) + '"]')
+                if comment is not None:
+                    parent.remove(comment)
+                    self.__xml_comments = ET.tostring(root)
+                    return True
+            return False
+        else:
+            return False
 
 
     def reply(self, new_id:int, reply_id: int, text: str, reply_name: int,
