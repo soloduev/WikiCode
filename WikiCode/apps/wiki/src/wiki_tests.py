@@ -33,6 +33,7 @@ from WikiCode.apps.wiki.src.tests.wiki_markdown.tests import WikiMarkdownTest
 from WikiCode.apps.wiki.src.tests.wiki_tree.tests import WikiTreeTest
 from WikiCode.apps.wiki.src.tests.wiki_comments.tests import WikiCommentsTest
 from WikiCode.apps.wiki.src.tests.wiki_permissions.tests import WikiPermissionsTest
+from WikiCode.apps.wiki.src.tests.wiki_versions.tests import WikiVersionsTest
 
 
 # WIKI_TEST.    Version 0.3
@@ -56,6 +57,7 @@ class WikiTests(object):
         wtt = WikiTreeTest()
         wct = WikiCommentsTest()
         wpt = WikiPermissionsTest()
+        wvt = WikiVersionsTest()
 
         # Запускаем тесты
         # При добавлении нового теста, необходимо его запустить
@@ -63,6 +65,7 @@ class WikiTests(object):
         wtt.run()
         wct.run()
         wpt.run()
+        wvt.run()
 
         # Получаем ошибки с этих тестов
         # Также, при добавлении нового теста, необходимо считать с него ошибки
@@ -70,6 +73,7 @@ class WikiTests(object):
         for err in wtt.get_errors(): errors.append(err)
         for err in wct.get_errors(): errors.append(err)
         for err in wpt.get_errors(): errors.append(err)
+        for err in wvt.get_errors(): errors.append(err)
 
         # Проверяем на наличие ошибок
         # Если ошибок нет
