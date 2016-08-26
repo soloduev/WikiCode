@@ -19,7 +19,7 @@
 
 # ТЕСТИРОВАНИЕ ФУНКЦИОНАЛА MARKDOWN ПАРСЕРА
 
-from WikiCode.apps.wiki.src.wiki_markdown import WikiMarkdown as wm_test
+from WikiCode.apps.wiki.src.future.wiki_markdown import wiki_markdown as wm_test
 
 # Version:       0.002
 # Total Tests:   0
@@ -33,7 +33,7 @@ class WikiMarkdownTest(object):
 
     # Запустить тесты
     def run(self):
-
+        self.__tests()
         return True
 
     # Вернуть все найденнные ошибки
@@ -77,3 +77,12 @@ class WikiMarkdownTest(object):
     #         pass
     #     else:
     #         self.__add_error("1","42 not 42!")
+
+    def __tests(self):
+        def test_1(self):
+            print("WikiMarkdown: " + test_1.__name__)
+            wm = wm_test.WikiMarkdown("# Hello world!")
+            stats = set()
+            if False in stats:
+                self.__add_error("1", "Create wikimarkdown error")
+        test_1(self)
