@@ -25,6 +25,7 @@ from .models import Viewing
 from .models import Developer
 from .models import BugReport
 from .models import DynamicComment
+from .models import Comment
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User as DjangoUser
 
@@ -50,3 +51,4 @@ admin.site.register(Viewing)
 admin.site.register(Developer)
 admin.site.register(BugReport)
 admin.site.register(DynamicComment)
+admin.site.register(Comment)
