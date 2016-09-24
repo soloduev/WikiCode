@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_comments import wiki_comments as wc_test
 
-# Version:       0.010
-# Total Tests:   10
+# Version:       0.011
+# Total Tests:   11
 
 
 class WikiCommentsTest(object):
@@ -248,6 +248,25 @@ class WikiCommentsTest(object):
                 self.__add_error("10", "Claim/rating comments")
 
         test_10(self)
+
+        # -------------------------------------
+        # Проверка генерации html
+        def test_11(self):
+            print("WikiComments: " + test_11.__name__)
+            wc = wc_test.WikiComments()
+            wc.create_comments(1)
+
+            wc.create_comment(1, 2, "Hello!", "Boris", "17.08.2017", False)
+            wc.create_comment(16, 4, "Hi!", "Katya", "20.08.2017", False)
+            wc.create_comment(26, 8, "How are you?", "Petya", "21.08.2017", False)
+            wc.reply(30,30,"Borya","hff",1,"23.02.2010",False)
+            wc.reply(33,30,"Borya","hff2",1,"23.02.2010",False)
+            wc.reply(35,33,"Borya","333",33,"23.02.2010",False)
+            # wc.print_xml()
+            # print(wc.to_html())
+
+
+        test_11(self)
 
 
 

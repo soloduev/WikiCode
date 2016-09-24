@@ -24,7 +24,7 @@ from WikiCode.apps.wiki.src.future.wiki_comments.config import params as CONFIG
 
 class WikiComments():
     """
-       :VERSION: 0.10
+       :VERSION: 0.11
        Класс для работы с комментариями на платформе WIKICODE.
        Комментарии педставляет из себя структуированный xml файл.
        Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -302,9 +302,102 @@ class WikiComments():
 
     # WORK WITH CONVERTING
 
+    # ------------------------------------------------
+    # Variant 1 --------------------------------------
+    # ------------------------------------------------
     def to_html(self) -> str:
-        """Конвертурует по конфигурационному файлу html фронтенд для комментариев."""
-        pass
+        """Конвертурует в html фронтенд для комментариев."""
+        if self.__xml_comments:
+            # Получаем корневой элемент текущих комментариев
+            root = ET.fromstring(self.__xml_comments)
+            root_ul = ET.Element('ul')
+            # Проходим по всем комментариям и создаем <li> для каждого
+            comments = root.findall('./comment')
+            for comment in comments:
+                new_li = ET.Element('li')
+                root_ul.append(new_li)
+                self.append_html_comment(comment, new_li)
+            result_str = self.__format_xml(ET.tostring(root_ul))
+            return result_str.replace('<?xml version="1.0" ?>\n', '')
+        else:
+            return None
+
+    # ------------------------------------------------
+    # Variant 1 --------------------------------------
+    # ------------------------------------------------
+    def append_html_comment(self, comment, new_li):
+        """ Генерация html для варианта 1"""
+        new_div = ET.Element('div')
+        new_div.set('class', 'media')
+        new_li.append(new_div)
+        media_left = ET.Element('div')
+        media_left.set('class', 'media-left')
+        media_left_href = ET.Element('a')
+        media_left_href.set('href', '#')
+        new_img = ET.Element('img')
+        new_img.set('class', 'media-object img-rounded')
+        new_img.set('src', 'path_to_avatar')
+        new_img.set('alt', '...')
+        media_left_href.append(new_img)
+        media_left.append(media_left_href)
+        new_div.append(media_left)
+        media_body = ET.Element('div')
+        media_body.set('class', 'media-body')
+        media_heading = ET.Element('div')
+        media_heading.set('class', 'media-heading')
+        author = ET.Element('div')
+        author.set('class', 'author')
+        author.text = comment.get('user_name')
+        meta_data = ET.Element('div')
+        meta_data.set('class', 'metadata')
+        span_date = ET.Element('span')
+        span_date.set('class', 'date')
+        span_date.text = comment.get('date')
+        meta_data.append(span_date)
+        media_heading.append(author)
+        media_heading.append(meta_data)
+        media_body.append(media_heading)
+        media_text = ET.Element('div')
+        media_text.set('class', 'media-text text-justify')
+        media_text.text = comment.get('text')
+        media_body.append(media_text)
+        footer_comment = ET.Element('div')
+        footer_comment.set('class', 'footer-comment')
+        span_plus = ET.Element('span')
+        span_plus.set('class', 'vote plus')
+        span_plus.set('title', 'Нравится')
+        icon_plus = ET.Element('i')
+        icon_plus.set('class', 'fa fa-thumbs-up')
+        span_plus.append(icon_plus)
+        span_rating = ET.Element('span')
+        span_rating.set('class', 'rating')
+        span_rating.text = comment.get('rating')
+        span_minus = ET.Element('span')
+        span_minus.set('class', 'vote minus')
+        span_minus.set('title', 'Не нравится')
+        icon_minus = ET.Element('i')
+        icon_minus.set('class', 'fa fa-thumbs-down')
+        span_minus.append(icon_minus)
+        span_devide = ET.Element('span')
+        span_devide.set('class', 'devide')
+        span_devide.text = '|'
+        span_comment_reply = ET.Element('span')
+        span_comment_reply.set('class', 'comment-reply')
+        href_reply = ET.Element('a')
+        href_reply.set('class', 'reply')
+        href_reply.text = 'ответить'
+        span_comment_reply.append(href_reply)
+        footer_comment.append(span_plus)
+        footer_comment.append(span_rating)
+        footer_comment.append(span_minus)
+        footer_comment.append(span_devide)
+        footer_comment.append(span_comment_reply)
+        media_body.append(footer_comment)
+        new_div.append(media_body)
+
+        comments = comment.findall('./comment')
+        for child_comment in comments:
+            self.append_html_comment(child_comment, new_div)
 
     # ----------------
     # Private methods:
