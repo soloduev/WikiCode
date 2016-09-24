@@ -19,7 +19,7 @@
 
 # ТЕСТИРОВАНИЕ ФУНКЦИОНАЛА WIKICOMMENTS
 
-from WikiCode.apps.wiki.src.future.wiki_comments import wiki_comments as wc_test
+from WikiCode.apps.wiki.src.modules.wiki_comments import wiki_comments as wc_test
 
 # Version:       0.011
 # Total Tests:   11
