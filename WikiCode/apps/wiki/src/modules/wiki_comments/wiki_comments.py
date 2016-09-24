@@ -25,7 +25,7 @@ from WikiCode.apps.wiki.src.modules.wiki_comments.config import params as CONFIG
 
 class WikiComments():
     """
-       :VERSION: 0.13
+       :VERSION: 0.14
        Класс для работы с комментариями на платформе WIKICODE.
        Комментарии педставляет из себя структуированный xml файл.
        Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -327,16 +327,20 @@ class WikiComments():
             for comment in comments:
                 new_li = ET.Element('li')
                 root_ul.append(new_li)
-                self.append_html_comment(comment, new_li)
+                self.__append_html_comment(comment, new_li)
             result_str = self.__format_xml(ET.tostring(root_ul))
             return result_str[result_str.find('\n'):]
         else:
             return None
 
+    # ----------------
+    # Private methods:
+    # ----------------
+
     # ------------------------------------------------
     # Variant 1 --------------------------------------
     # ------------------------------------------------
-    def append_html_comment(self, comment, new_li):
+    def __append_html_comment(self, comment, new_li):
         """ Генерация html для варианта 1"""
         new_div = ET.Element('div')
         new_div.set('class', 'media')
@@ -408,11 +412,7 @@ class WikiComments():
 
         comments = comment.findall('./comment')
         for child_comment in comments:
-            self.append_html_comment(child_comment, new_div)
-
-    # ----------------
-    # Private methods:
-    # ----------------
+            self.__append_html_comment(child_comment, new_div)
 
     def __format_xml(self, xml_str):
         """Выравнивание xml строки"""
