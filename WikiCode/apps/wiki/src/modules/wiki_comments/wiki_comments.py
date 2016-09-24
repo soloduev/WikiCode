@@ -25,7 +25,7 @@ from WikiCode.apps.wiki.src.modules.wiki_comments.config import params as CONFIG
 
 class WikiComments():
     """
-       :VERSION: 0.12
+       :VERSION: 0.13
        Класс для работы с комментариями на платформе WIKICODE.
        Комментарии педставляет из себя структуированный xml файл.
        Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -237,6 +237,16 @@ class WikiComments():
             return False
         else:
             return False
+
+    def get_count(self) -> int:
+        """ Узнать сколько всего оставлено комментариев """
+        if self.__xml_comments:
+            # Получаем корневой элемент текущих комментариев
+            root = ET.fromstring(self.__xml_comments)
+            comments = root.findall(".//comment")
+            return len(comments)
+        else:
+            return 0
 
     # VIEWS TREE
 

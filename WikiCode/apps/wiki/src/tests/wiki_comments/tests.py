@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.modules.wiki_comments import wiki_comments as wc_test
 
-# Version:       0.011
-# Total Tests:   11
+# Version:       0.012
+# Total Tests:   12
 
 
 class WikiCommentsTest(object):
@@ -267,6 +267,29 @@ class WikiCommentsTest(object):
 
 
         test_11(self)
+
+        # -------------------------------------
+        # Проверка функции возвращающей количество комментариев
+        def test_12(self):
+            print("WikiComments: " + test_12.__name__)
+            wc = wc_test.WikiComments()
+            wc.create_comments(1)
+
+            wc.create_comment(1, 2, "Hello!", "Boris", "17.08.2017", False)
+            wc.create_comment(16, 4, "Hi!", "Katya", "20.08.2017", False)
+            wc.create_comment(26, 8, "How are you?", "Petya", "21.08.2017", False)
+            wc.reply(30, 30, "Borya", "hff", 1, "23.02.2010", False)
+            wc.reply(33, 30, "Borya", "hff2", 1, "23.02.2010", False)
+            wc.reply(35, 33, "Borya", "333", 33, "23.02.2010", False)
+            if wc.get_count() != 6:
+                self.__add_error("12", "get_count() is invalid")
+
+            wc_2 = wc_test.WikiComments()
+            wc_2.create_comments(1)
+            if wc_2.get_count() != 0:
+                self.__add_error("12", "get_count() is invalid")
+
+        test_12(self)
 
 
 
