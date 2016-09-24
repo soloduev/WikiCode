@@ -79,6 +79,18 @@ class Viewing(models.Model):
                    " publ:" + str(self.id_publ))
 
 
+# Модель любого комментария
+class Comment(models.Model):
+    id_comment = models.BigIntegerField()
+    id_author = models.BigIntegerField()
+    id_publication = models.BigIntegerField()
+    date = models.CharField(max_length=100)
+    text = models.TextField()
+
+    def __str__(self):
+        return str("id:" + str(self.id_comment))
+
+
 class Statistics(models.Model):
     id_statistics = models.IntegerField()
     # Зарегестрировано юзеров
@@ -87,6 +99,7 @@ class Statistics(models.Model):
     users_total_reg = models.BigIntegerField(default=0)
     user_online = models.BigIntegerField()
     publications_create = models.BigIntegerField()
+    total_comments = models.BigIntegerField()
 
     def __str__(self):
         return str(self.id_statistics)
