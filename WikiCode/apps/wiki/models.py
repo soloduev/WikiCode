@@ -47,6 +47,7 @@ class Publication(models.Model):
     html_page = models.TextField()
     tree_path = models.TextField()
     read = models.BigIntegerField()
+    main_comments = models.TextField()
 
     def __str__(self):
         return str(self.id_publication)
