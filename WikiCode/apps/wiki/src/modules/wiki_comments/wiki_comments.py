@@ -25,7 +25,7 @@ from WikiCode.apps.wiki.src.modules.wiki_comments.config import params as CONFIG
 
 class WikiComments():
     """
-       :VERSION: 0.16
+       :VERSION: 0.17
        Класс для работы с комментариями на платформе WIKICODE.
        Комментарии педставляет из себя структуированный xml файл.
        Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -330,7 +330,11 @@ class WikiComments():
                 new_li.set('class', 'media')
                 root_ul.append(new_li)
                 self.__append_html_comment(comment, new_li)
+            # Преобразуем xml в отформатировнную строчку
             result_str = self.__format_xml(ET.tostring(root_ul))
+            # Обрабатываем пути к аватаркам
+            result_str = result_str.replace('"#path_to_avatar#"', "\"/static/wiki/images/avatars/avatar.jpg\"")
+            # Возвращая строчку, убираем в ней первую строку(xml decloration)
             return result_str[result_str.find('\n'):]
         else:
             return None
@@ -350,7 +354,7 @@ class WikiComments():
         media_left_href.set('href', '#')
         new_img = ET.Element('img')
         new_img.set('class', 'media-object img-rounded')
-        new_img.set('src', 'path_to_avatar')
+        new_img.set('src', '#path_to_avatar#')
         new_img.set('alt', '...')
         media_left_href.append(new_img)
         media_left.append(media_left_href)
