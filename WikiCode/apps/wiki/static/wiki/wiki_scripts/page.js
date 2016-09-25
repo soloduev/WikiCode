@@ -155,3 +155,44 @@ $("#edit_paragraph_wiki_tree_context").on("click", function () {
         isEdit = false;
     });
 });
+
+// Событие клика кнопки "ответить на комментарий". Устанавливает id, на какой комментарий необходимо ответить
+$('.main-comment-reply').click(function(eventObject){
+    $("#reply_id_user").val(''+this.getAttribute('id_comment'));
+});
+
+// Событие клика кнопки "оставить комментарий". Устанавливает id, на какой комментарий необходимо ответить -1.
+$('#wiki-style-btn-send-main-comment').click(function(eventObject){
+    $("#reply_id_user").val('-1');
+});
+
+// Отправление общего комментария
+$("#wiki-btn-send-main-comment").click(function () {
+
+    // Получаем сообщение которое необходимо отправить
+    var main_comment = $("#wiki-main-comment-field").val();
+
+    // Получаем id того пользователя, которому произошел ответ
+    var reply_author_id = $("#reply_id_user").val();
+    
+    $.ajax({
+        type: "POST",
+        url: "add_main_comment/",
+        data:{
+            'main_comment': main_comment,
+            'reply_author_id': reply_author_id,
+        },
+        dataType: "text",
+        cache: false,
+        success: function(data){
+            if (data == 'ok'){
+                // Чисто с точки зрения фронтенда, добавляем этот комментарий, чтобы не делать дополнительный гет запрос.
+                // Либо сделать гет запрос))
+                location.reload();
+            }
+            else{
+                console.log("ERROR in page.js. Add_main_comment()");
+            }
+        }
+    });
+});

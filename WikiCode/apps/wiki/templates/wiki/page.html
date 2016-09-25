@@ -116,79 +116,19 @@
                                                     <div class="col-xs-12" id="main-comments-block" hidden>
                                                         <div class="row">
                                                             <div class="comments">
-                                                                <h3>Комментарии (6)</h3>
-                                                                <ul class="media-list">
-                                                                    <li>
-                                                                        <div class="media">
-                                                                            <div class="media-left">
-                                                                                <a href="#">
-                                                                                    <img class="media-object img-rounded" src={% static 'wiki/avatar.jpg' %} alt="...">
-                                                                                </a>
-                                                                            </div>
-                                                                            <div class="media-body">
-                                                                                <div class="media-heading">
-                                                                                    <div class="author">Дима</div>
-                                                                                    <div class="metadata">
-                                                                                        <span class="date">16 ноября 2015, 13:43</span>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="media-text text-justify">Simple text</div>
-                                                                                <div class="footer-comment">
-                                                                            <span class="vote plus" title="Нравится">
-                                                                              <i class="fa fa-thumbs-up"></i>
-                                                                            </span>
-                                                                                    <span class="rating">+1</span>
-                                                                            <span class="vote minus" title="Не нравится">
-                                                                              <i class="fa fa-thumbs-down"></i>
-                                                                            </span>
-                                                                                    <span class="devide">|</span>
-                                                                            <span class="comment-reply">
-                                                                             <a href="#" class="reply">ответить</a>
-                                                                            </span>
-                                                                                </div>
-
-                                                                            </div>
-                                                                        </div>
-                                                                    </li>
-                                                                    <li>
-                                                                        <div class="media">
-                                                                            <div class="media-left">
-                                                                                <a href="#">
-                                                                                    <img class="media-object img-rounded" src={% static 'wiki/avatar.jpg' %} alt="...">
-                                                                                </a>
-                                                                            </div>
-                                                                            <div class="media-body">
-                                                                                <div class="media-heading">
-                                                                                    <div class="author">Дима</div>
-                                                                                    <div class="metadata">
-                                                                                        <span class="date">16 ноября 2015, 13:43</span>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="media-text text-justify">Simple text</div>
-                                                                                <div class="footer-comment">
-                                                                            <span class="vote plus" title="Нравится">
-                                                                              <i class="fa fa-thumbs-up"></i>
-                                                                            </span>
-                                                                                    <span class="rating">+1</span>
-                                                                            <span class="vote minus" title="Не нравится">
-                                                                              <i class="fa fa-thumbs-down"></i>
-                                                                            </span>
-                                                                                    <span class="devide">|</span>
-                                                                            <span class="comment-reply">
-                                                                             <a href="#" class="reply">ответить</a>
-                                                                            </span>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </li>
-                                                                </ul>
+                                                                {% if main_comments_count > 0 %}
+                                                                    <h3>Комментарии ({{ main_comments_count }})</h3>
+                                                                    {{ main_comments|safe }}
+                                                                {% else %}
+                                                                    <h4 class="text-center">Комментариев нет. Станьте первым!</h4>
+                                                                {% endif %}
                                                             </div>
                                                         </div>
                                                         {% if user_data != "None" %}
                                                             <div class="row text-center">
                                                                 <hr>
                                                                 <br>
-                                                                <button id="wiki-style-btn" data-toggle="modal" data-target="#modal_main_comment" class="btn">Оставить комментарий</button>
+                                                                <button id="wiki-style-btn-send-main-comment" data-toggle="modal" data-target="#modal_main_comment" class="btn">Оставить комментарий</button>
                                                                 <br>
                                                                 <br>
                                                             </div>
@@ -340,6 +280,8 @@
     {% endif %}
 
     {% if module_main_comments %}
+        <!--Выбранный id пользователя, которому идет ответ. Заполняется в главном скрипте для этой страницы -->
+        <input hidden value="" id="reply_id_user">
         <!--Модальное окно для общего комментирования-->
         <div class="modal fade" id="modal_main_comment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">

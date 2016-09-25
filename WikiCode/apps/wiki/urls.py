@@ -58,6 +58,7 @@ urlpatterns = [
 
     # События на странице конспекта
     url(r'^page/(?P<id>[0-9]+)/add_dynamic_comment/$', views.add_dynamic_comment, name='add_dynamic_comment'),
+    url(r'^page/(?P<id>[0-9]+)/add_main_comment/$', views.add_main_comment, name='add_main_comment'),
 
     # События на странице пользователя
 

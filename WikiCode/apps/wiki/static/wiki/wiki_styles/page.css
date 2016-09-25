@@ -26,6 +26,7 @@
 }
 
 #wiki-style-btn,
+#wiki-style-btn-send-main-comment,
 #wiki-btn-send-dynamic-comment,
 #wiki-btn-send-main-comment{
     background-color: #024f81;
@@ -37,6 +38,7 @@
 
 
 #wiki-style-btn:hover,
+#wiki-style-btn-send-main-comment:hover,
 #wiki-btn-send-dynamic-comment:hover,
 #wiki-btn-send-main-comment:hover{
     background-color: #4da6d9;

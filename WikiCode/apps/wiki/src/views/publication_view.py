@@ -24,12 +24,14 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 
-from WikiCode.apps.wiki.models import Publication, Statistics, Viewing, DynamicComment
+from WikiCode.apps.wiki.models import Publication, Statistics, Viewing, DynamicComment, Comment
 from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.src.wiki_markdown import WikiMarkdown
 from WikiCode.apps.wiki.src.wiki_tree import WikiTree
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
 from WikiCode.apps.wiki.settings import wiki_settings
+from WikiCode.apps.wiki.src.modules.wiki_comments.wiki_comments import WikiComments
+
 from .auth import check_auth, get_user_id
 
 
@@ -131,6 +133,10 @@ def get_page(request, id):
         else:
             dynamic_comments = None
 
+        # Конвертируем общие комментарии
+        wiki_comments = WikiComments()
+        wiki_comments.load_comments(publication.main_comments)
+
         # И перед тем как перейти на страницу, добавим ей просмотр, если этот пользователь еще не смотрел
         # Этот конспект
         try:
@@ -160,7 +166,9 @@ def get_page(request, id):
             "preview_tree": html_preview_tree,
             "module_dynamic_paragraphs": wiki_settings.MODULE_DYNAMIC_PARAGRAPHS,
             "dynamic_comments": dynamic_comments,
-            "module_main_comments": wiki_settings.MODULE_MAIN_COMMENTS
+            "module_main_comments": wiki_settings.MODULE_MAIN_COMMENTS,
+            "main_comments": wiki_comments.to_html(),
+            "main_comments_count": wiki_comments.get_count()
         }
 
         return render(request, 'wiki/page.html', context)
@@ -197,6 +205,8 @@ def get_create_page(request):
             publ = Publication.objects.get(id_publication=newid)
             return get_error_page(request,["Конспект с таким id уже существует!"])
         except Publication.DoesNotExist:
+            wiki_comments = WikiComments()
+            wiki_comments.create_comments(newid)
             new_publication = Publication(
                 id_publication=newid,
                 id_author=user.id_user,
@@ -207,7 +217,8 @@ def get_create_page(request):
                 theme=form["theme"],
                 html_page=ready_page,
                 tree_path=form["folder"]+form["title"]+".publ:"+str(newid),
-                read=0)
+                read=0,
+                main_comments=wiki_comments.get_xml_str())
 
 
         # Загружаем дерево пользователя
@@ -311,5 +322,95 @@ def get_add_dynamic_comment(request, id):
             except Publication.DoesNotExist:
                 return get_error_page(request, ["This is publication not found!",
                                                 "Page not found: publ_manager/" + str(id) + "/"])
+    else:
+        return HttpResponse('no', content_type='text/html')
+
+
+@csrf_protect
+def get_add_main_comment(request, id):
+    """Ajax представление. Добавление общего комментария."""
+
+    if request.method == "POST":
+        # Проверяем, аутентифицирован ли пользователь
+        if get_user_id(request) == -1:
+            return HttpResponse('no', content_type='text/html')
+        else:
+            # Если пользователь аутентифицирован то, добавляем общий комментарий к текущему конспекту
+
+            try:
+                # Получаем текущую публикацию
+                publication = Publication.objects.get(id_publication=id)
+
+                # Получаем пользователя, оставляющего комментарий
+                current_user = User.objects.get(id_user=get_user_id(request))
+
+                # Получаем комментарий, который хотим оставить
+                main_comment = request.POST.get('main_comment')
+
+                # Получаем id автора, которому нужно ответить
+                reply_id = int(request.POST.get('reply_author_id'))
+
+                # Загружаем имеющиеся комментарии у конспекта
+                wiki_comments = WikiComments()
+                wiki_comments.load_comments(publication.main_comments)
+
+                # Узнаем количество комментариев
+                stat = Statistics.objects.get(id_statistics=1)
+                total_comments = stat.total_comments
+
+                # Если комментарий не пустой
+                if main_comment:
+
+                    # Получаем текущую дату
+                    date = str(datetime.datetime.now())
+                    date = date[:len(date) - 7]
+
+                    new_comment = Comment(id_comment=total_comments + 1,
+                                          id_author=get_user_id(request),
+                                          text=main_comment,
+                                          id_publication=id,
+                                          date=date)
+
+                    # Повышаем у статистики количество созданных комментариев
+                    stat.total_comments += 1
+
+                    # Если пользователь создал новый комментарий, ни кому не ответив:
+                    if reply_id == -1:
+                        # Создаем новый комментарий в xml
+                        wiki_comments.create_comment(id_comment=total_comments + 1,
+                                                     user_id=get_user_id(request),
+                                                     text=main_comment,
+                                                     user_name=current_user.nickname,
+                                                     date=date,
+                                                     is_moderator=False)
+                    else:
+                        # Отвечаем на существующий комментарий
+                        wiki_comments.reply(new_id=total_comments + 1,
+                                            user_id=get_user_id(request),
+                                            user_name=current_user.nickname,
+                                            text=main_comment,
+                                            reply_id=reply_id,
+                                            date=date,
+                                            is_moderator=False)
+
+                    # Обновляем все комментарии в публикации
+                    publication.main_comments = wiki_comments.get_xml_str()
+
+                    # Сохраняем все изменения в БД
+                    publication.save()
+                    stat.save()
+                    new_comment.save()
+
+                    return HttpResponse('ok', content_type='text/html')
+                else:
+                    print("Пустой комментарий добавлять нельзя!")
+                    return HttpResponse('no', content_type='text/html')
+
+            except Publication.DoesNotExist:
+                return get_error_page(request, ["This is publication not found!",
+                                                "Page not found: publ_manager/" + str(id) + "/"])
+            except User.DoesNotExist:
+                return get_error_page(request, ["This is user not found!",
+                                    "User not found: user/" + str(get_user_id(request)) + "/"])
     else:
         return HttpResponse('no', content_type='text/html')

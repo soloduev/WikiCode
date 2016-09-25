@@ -203,6 +203,12 @@ def set_preview_publ_in_tree(request):
 def add_dynamic_comment(request, id):
     return publication_view.get_add_dynamic_comment(request, id)
 
+# Добавление общего комментария к конспекту
+@develop_mode_id
+@login_required
+def add_main_comment(request, id):
+    return publication_view.get_add_main_comment(request, id)
+
 
 # Здесь не должно быть никаких декораторов!!!
 def login_developer(request):
