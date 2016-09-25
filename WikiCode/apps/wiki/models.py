@@ -92,6 +92,18 @@ class Comment(models.Model):
         return str("id:" + str(self.id_comment))
 
 
+# Модель папки
+class Folder(models.Model):
+    id_folder = models.BigIntegerField()
+    id_author = models.BigIntegerField()
+    date = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return str(self.id_folder)
+
+
+# Модель в единственном экземпляре, для хранения статистики
 class Statistics(models.Model):
     id_statistics = models.IntegerField()
     # Зарегестрировано юзеров
@@ -100,7 +112,8 @@ class Statistics(models.Model):
     users_total_reg = models.BigIntegerField(default=0)
     user_online = models.BigIntegerField()
     publications_create = models.BigIntegerField()
-    total_comments = models.BigIntegerField()
+    total_comments = models.BigIntegerField()   # Всего создано комментариев
+    total_folders = models.BigIntegerField()    # Всего создано папок
 
     def __str__(self):
         return str(self.id_statistics)
