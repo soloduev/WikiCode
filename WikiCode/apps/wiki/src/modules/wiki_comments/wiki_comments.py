@@ -25,7 +25,7 @@ from WikiCode.apps.wiki.src.modules.wiki_comments.config import params as CONFIG
 
 class WikiComments():
     """
-       :VERSION: 0.15
+       :VERSION: 0.16
        Класс для работы с комментариями на платформе WIKICODE.
        Комментарии педставляет из себя структуированный xml файл.
        Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -360,8 +360,11 @@ class WikiComments():
         media_heading = ET.Element('div')
         media_heading.set('class', 'media-heading')
         author = ET.Element('div')
-        author.set('class', 'author')
-        author.text = comment.get('user_name')
+        author.set('class', 'author') #/user/2/
+        author_href = ET.Element('a')
+        author_href.set('href', '/user/'+str(comment.get('user_id')))
+        author_href.text = comment.get('user_name')
+        author.append(author_href)
         meta_data = ET.Element('div')
         meta_data.set('class', 'metadata')
         span_date = ET.Element('span')
