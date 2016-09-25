@@ -25,7 +25,7 @@ from WikiCode.apps.wiki.src.modules.wiki_comments.config import params as CONFIG
 
 class WikiComments():
     """
-       :VERSION: 0.14
+       :VERSION: 0.15
        Класс для работы с комментариями на платформе WIKICODE.
        Комментарии педставляет из себя структуированный xml файл.
        Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -322,10 +322,12 @@ class WikiComments():
             # Получаем корневой элемент текущих комментариев
             root = ET.fromstring(self.__xml_comments)
             root_ul = ET.Element('ul')
+            root_ul.set('class', 'media-list')
             # Проходим по всем комментариям и создаем <li> для каждого
             comments = root.findall('./comment')
             for comment in comments:
                 new_li = ET.Element('li')
+                new_li.set('class', 'media')
                 root_ul.append(new_li)
                 self.__append_html_comment(comment, new_li)
             result_str = self.__format_xml(ET.tostring(root_ul))
@@ -340,11 +342,8 @@ class WikiComments():
     # ------------------------------------------------
     # Variant 1 --------------------------------------
     # ------------------------------------------------
-    def __append_html_comment(self, comment, new_li):
+    def __append_html_comment(self, comment, new_div):
         """ Генерация html для варианта 1"""
-        new_div = ET.Element('div')
-        new_div.set('class', 'media')
-        new_li.append(new_div)
         media_left = ET.Element('div')
         media_left.set('class', 'media-left')
         media_left_href = ET.Element('a')
@@ -382,6 +381,7 @@ class WikiComments():
         span_plus.set('class', 'vote plus')
         span_plus.set('title', 'Нравится')
         icon_plus = ET.Element('i')
+        icon_plus.text = ' '
         icon_plus.set('class', 'fa fa-thumbs-up')
         span_plus.append(icon_plus)
         span_rating = ET.Element('span')
@@ -392,6 +392,7 @@ class WikiComments():
         span_minus.set('title', 'Не нравится')
         icon_minus = ET.Element('i')
         icon_minus.set('class', 'fa fa-thumbs-down')
+        icon_minus.text = ' '
         span_minus.append(icon_minus)
         span_devide = ET.Element('span')
         span_devide.set('class', 'devide')
@@ -399,7 +400,10 @@ class WikiComments():
         span_comment_reply = ET.Element('span')
         span_comment_reply.set('class', 'comment-reply')
         href_reply = ET.Element('a')
-        href_reply.set('class', 'reply')
+        href_reply.set('class', 'reply main-comment-reply')
+        href_reply.set('data-toggle', 'modal')
+        href_reply.set('data-target', '#modal_main_comment')
+        href_reply.set('id_comment', comment.get('id'))
         href_reply.text = 'ответить'
         span_comment_reply.append(href_reply)
         footer_comment.append(span_plus)
@@ -409,10 +413,12 @@ class WikiComments():
         footer_comment.append(span_comment_reply)
         media_body.append(footer_comment)
         new_div.append(media_body)
-
         comments = comment.findall('./comment')
         for child_comment in comments:
-            self.__append_html_comment(child_comment, new_div)
+            new_child_div = ET.Element('div')
+            new_child_div.set('class', 'media')
+            media_body.append(new_child_div)
+            self.__append_html_comment(child_comment, new_child_div)
 
     def __format_xml(self, xml_str):
         """Выравнивание xml строки"""
