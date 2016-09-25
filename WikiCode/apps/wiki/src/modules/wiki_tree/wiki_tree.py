@@ -25,7 +25,7 @@ from WikiCode.apps.wiki.src.modules.wiki_tree.config import params as CONFIG
 
 class WikiFileTree():
     """
-    :VERSION: 0.25
+    :VERSION: 0.26
     Класс для работы с файловым деревом на платформе WIKICODE.
     Файловое дерево педставляет из себя структуированный xml файл.
     Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -83,7 +83,11 @@ class WikiFileTree():
             print(key, ":", CONFIG[key])
 
     def get_xml_str(self):
-        return self.__format_xml(self.__xml_tree)
+        result_str = self.__format_xml(self.__xml_tree)
+        result_str = result_str.replace('\n', '')
+        result_str = result_str.replace('\t', '')
+        result_str = result_str.replace('>', '>\n')
+        return result_str
 
     def get_num_root_folders(self) -> int:
         """Возвращает количество корневых папок"""
