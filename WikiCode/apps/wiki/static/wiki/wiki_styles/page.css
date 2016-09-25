@@ -284,6 +284,14 @@
   font-weight: 700;
 }
 
+.media-left{
+    border-left: solid 2px rgba(183, 183, 183, 0.48);
+}
+
+.media-left:hover{
+    border-left: solid 2px rgba(2, 136, 214, 0.89);
+}
+
 .media-body .author:hover {
   display: inline-block;
   font-size: 14px;
@@ -296,7 +304,7 @@
   display: inline-block;
   margin-left: .5rem;
   color: #777;
-  font-size: .8125rem;
+  font-size: 1rem;
 }
 .footer-comment {
   color: #777;
@@ -316,6 +324,7 @@
 .comment-reply a:hover, .comment-reply a:focus {
   color: #0275bd;
   text-decoration: none;
+    cursor: pointer;
 }
 .devide {
   padding: 0px 4px;
