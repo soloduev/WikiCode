@@ -31,6 +31,7 @@ from WikiCode.apps.wiki.src.wiki_tree import WikiTree
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
 from WikiCode.apps.wiki.settings import wiki_settings
 from WikiCode.apps.wiki.src.modules.wiki_comments.wiki_comments import WikiComments
+from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
 
 from .auth import check_auth, get_user_id
 
@@ -47,11 +48,14 @@ def get_create(request):
             if path.count(".publ") == 1:
                 path = path[:path.rfind("/")+1]
         user = User.objects.get(email=user_data)
-        wt = WikiTree(user.id_user)
-        wt.load_tree(user.tree)
+
+        # wt = WikiTree(user.id_user)   # old version
+        # wt.load_tree(user.tree)       # old version
+        wft = WikiFileTree()            # new version
+        wft.load_tree(user.file_tree)   # new version
 
         # Проверяем, не пустует ли его дерево:
-        if wt.get_nums_root_folder() == 0:
+        if wft.get_num_root_folders() == 0:
             empty_tree = True
         else:
             empty_tree = False
@@ -59,7 +63,8 @@ def get_create(request):
         context = {
             "user_data": user_data,
             "user_id": get_user_id(request),
-            "dynamic_tree": wt.generate_html_dynamic_folders(),
+            # "dynamic_tree": wt.generate_html_dynamic_folders(), # old version
+            "dynamic_tree": "",                                   # new version
             "path": path,
             "empty_tree":empty_tree,
         }
@@ -101,9 +106,14 @@ def get_page(request, id):
         # Загружаем превью дерево автора
         try:
             author_user = User.objects.get(id_user=publication.id_author)
-            wt = WikiTree(author_user.id_user)
-            wt.load_tree(author_user.tree)
-            html_preview_tree = wt.generate_html_preview()
+
+            # wt = WikiTree(author_user.id_user)                # old version
+            # wt.load_tree(author_user.tree)                    # old version
+            # html_preview_tree = wt.generate_html_preview()    # old version
+
+            wft = WikiFileTree()                                # new version
+            wft.load_tree(author_user.file_tree)                # new version
+            html_preview_tree = ""
         except User.DoesNotExist:
             print("Автора не существует")
 
@@ -222,11 +232,20 @@ def get_create_page(request):
 
 
         # Загружаем дерево пользователя
-        wt = WikiTree(user.id_user)
-        wt.load_tree(user.tree)
+        # wt = WikiTree(user.id_user)   # old version
+        # wt.load_tree(user.tree)       # old version
+        wft = WikiFileTree()            # new version
+        wft.load_tree(user.file_tree)   # new version
+
         # Добавляем этот конспект в папку
-        wt.add_publication(form["folder"],form["title"],newid)
-        user.tree = wt.get_tree()
+        # wt.add_publication(form["folder"],form["title"],newid)    # old version
+        # user.tree = wt.get_tree()                                 # old version
+        wft.create_publication(id=newid,
+                               name=form["title"],
+                               access="public",
+                               type="personal")                     # new version
+        user.file_tree = wft.get_xml_str()                          # new version
+
         # Увеличиваем количество публикаций в статистике у пользователя
         user.publications += 1
 
