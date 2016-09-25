@@ -28,6 +28,7 @@ class User(models.Model):
     nickname = models.CharField(max_length=100)
     email = models.EmailField(max_length=100)
     tree = models.TextField()
+    file_tree = models.TextField()
     publications = models.BigIntegerField()
     avatar = models.ImageField(upload_to='avatars')
     preview_publ_id = models.BigIntegerField()
