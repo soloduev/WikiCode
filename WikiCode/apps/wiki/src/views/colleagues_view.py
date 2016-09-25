@@ -16,13 +16,11 @@
 #
 #   You should have received a copy of the GNU Affero General Public License
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
-from django.http import HttpResponse
 from django.shortcuts import render
-from django.views.decorators.csrf import csrf_protect
 
 from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
-from WikiCode.apps.wiki.src.wiki_tree import WikiTree
+from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
 from .auth import check_auth, get_user_id
 
 
@@ -30,14 +28,14 @@ def get_colleagues(request):
     user_data = check_auth(request)
     try:
         user = User.objects.get(email=user_data)
-        wt = WikiTree(user.id_user)
-        wt.load_tree(user.tree)
+        wft = WikiFileTree()
+        wft.load_tree(user.file_tree)
 
         user_id = get_user_id(request)
         context = {
             "user_data": user_data,
             "user_id": user_id,
-            "preview_tree": wt.generate_html_preview(),
+            "preview_tree": wft.to_html_preview()
         }
 
         return render(request, 'wiki/colleagues.html', context)

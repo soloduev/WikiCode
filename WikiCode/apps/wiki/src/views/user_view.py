@@ -16,12 +16,11 @@
 #
 #   You should have received a copy of the GNU Affero General Public License
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
-import datetime
 
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login
 from django.contrib.auth.models import User as DjangoUser
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 
@@ -29,9 +28,8 @@ from WikiCode.apps.wiki.models import Publication
 from WikiCode.apps.wiki.models import Statistics
 from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.models import User as WikiUser
-from WikiCode.apps.wiki.src.wiki_tree import WikiTree
-from WikiCode.apps.wiki.src.views.error_view import get_error_page
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
+from WikiCode.apps.wiki.src.views.error_view import get_error_page
 from .auth import check_auth, get_user_id
 
 
@@ -43,8 +41,8 @@ def get_user(request, id):
         if str(get_user_id(request)) == id:
             # Отрисовываем страницу текущего пользователя
 
-            wt = WikiTree(user.id_user)
-            wt.load_tree(user.tree)
+            wft = WikiFileTree()
+            wft.load_tree(user.file_tree)
 
             user_id = get_user_id(request)
             # Получаем текст превью публикации
@@ -62,7 +60,7 @@ def get_user(request, id):
                 context = {
                     "user_data": user_data,
                     "user_id": user_id,
-                    "preview_tree": wt.generate_html_preview(),
+                    "preview_tree": wft.to_html_preview(),
                     "user":user,
                     "prewiew_publ_text":preview_publ_text,
                     "prewiew_publ_title":prewiew_publ_title,
@@ -76,8 +74,8 @@ def get_user(request, id):
         else:
             # Отрисовываем страницу другого пользователя
             other_user = User.objects.get(id_user=id)
-            wt = WikiTree(other_user.id_user)
-            wt.load_tree(other_user.tree)
+            wft = WikiFileTree()
+            wft.load_tree(other_user.file_tree)
 
             # Получаем текст превью публикации
             try:
@@ -93,7 +91,7 @@ def get_user(request, id):
             context = {
                 "user_data": user_data,
                 "user_id": get_user_id(request),
-                "preview_tree": wt.generate_html_preview(),
+                "preview_tree": wft.to_html_preview(),
                 "user":other_user,
                 "prewiew_publ_text": preview_publ_text,
                 "prewiew_publ_title": prewiew_publ_title,
@@ -134,9 +132,8 @@ def get_create_user(request):
             stat.users_reg += 1
 
             # Создаем дерево по умолчанию для юзера
-            # new_tree = WikiTree(total_reg_users)          # old version
-            wft = WikiFileTree()                            # new version
-            wft.create_tree(total_reg_users)                # new version
+            wft = WikiFileTree()
+            wft.create_tree(total_reg_users)
 
             # Создаем нового юзера
             new_wiki_user = WikiUser(user=user,
@@ -144,7 +141,7 @@ def get_create_user(request):
                                      email=form["user_email"],
                                      id_user=total_reg_users,
                                      tree="",
-                                     file_tree=wft.get_xml_str(),    # new version
+                                     file_tree=wft.get_xml_str(),
                                      avatar="none.jpg",
                                      name="anonymous",
                                      publications=0,

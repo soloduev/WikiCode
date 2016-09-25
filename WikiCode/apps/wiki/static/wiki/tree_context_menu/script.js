@@ -134,18 +134,18 @@
       if ( taskItemInContext ) {
         e.preventDefault();
         toggleMenuOn();
-        // Здесь необходимо выбрать какое контекстное меню отображать
 
+        // Здесь необходимо выбрать какое контекстное меню отображать
         var str_line = ''+taskItemInContext.getAttribute("data-id");
+        var type_elem = ''+taskItemInContext.getAttribute("type_elem");
 
         $('#jstree').jstree(true).deselect_all();
         $('#jstree').jstree(true).select_node(str_line);
 
-        if(str_line.indexOf(".publ")!=-1)
+        if(type_elem == "publ")
         {
           //Это конспект
           //Показываем нужные
-
           $("#lt-context-menu-3").attr("style", "");
           $("#lt-context-menu-3-0").attr("style", "");
           $("#lt-context-menu-3-1").attr("style", "");
@@ -159,10 +159,7 @@
           $("#lt-context-menu-8").attr("style", "display: none;");
           $("#lt-context-menu-9").attr("style", "display: none;");
         }
-        else{
-          var path = ''+str_line.split(":")[0];
-          if(path[path.length-1] === "/")
-          {
+        else if(type_elem == "folder"){
             //Это папка
             //Скрываем не нужные опции контекстного меню
             $("#lt-context-menu-3").attr("style", "display: none;");
@@ -177,13 +174,10 @@
             $("#lt-context-menu-7").attr("style", "");
             $("#lt-context-menu-8").attr("style", "");
             $("#lt-context-menu-9").attr("style", "");
-          }
-          else {
-            //Это другой файл
-          }
         }
-
-
+        else {
+            //Это другой файл
+        }
 
         positionMenu(e);
       } else {

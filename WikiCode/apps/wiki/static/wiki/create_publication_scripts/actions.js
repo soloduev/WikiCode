@@ -25,8 +25,7 @@ $("#jstree")
 // listen for event
     .on('changed.jstree', function (e, data) {
         var full_path = ''+data.selected;
-        var arr = full_path.split(':');
-        $("#lt-markdown-folder").val(arr[0]);
+        $("#lt-markdown-folder").val(full_path);
     })
     // create the instance
     .jstree({

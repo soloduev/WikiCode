@@ -88,67 +88,21 @@ $("#jstree")
         },
     });
 
-//Теперь, для дерева сохраненных конспектов
-$("#jstree-saved")
-// listen for event
-    .on('changed.jstree', function (e, data) {
-        if(is_user_tree)
-        {
-            $('#jstree').jstree(true).deselect_all();
-        }
-        is_user_tree = false
-        is_saved_tree = true;
-        selected_file_in_tree = data.selected;
-
-        if(adding_folder_to !== "NONE" && adding_folder_to != selected_file_in_tree)
-        {
-            $("#div_accept_delete_elem_saved").attr("style", "display: none;");
-            $("#div_folder_name_input_for_saved").attr("style", "display: none;");
-            $("#div_accept_delete_publ_saved").attr("style", "display: none;");
-            $("#panel_inputs_for_saved").attr("style", "");
-        }
-
-    })
-    // create the instance
-    .jstree({
-
-        "types" : {
-            "folder" : {
-                "icon" : "glyphicon glyphicon-folder-open"
-            },
-            "publ": {
-                "icon": "glyphicon glyphicon-list-alt"
-            },
-            "contents": {
-                "icon": "glyphicon glyphicon-bookmark"
-            },
-        },
-
-
-        "plugins" : [ "wholerow", "types"],
-
-        "core" : {
-            "multiple" : false,
-        },
-    });
 
 //Добавление папки в дерево
 $("#add_folder_in_wiki_tree").click(function () {
 
     if(selected_file_in_tree !== "NONE_SELECT")
     {
-        if((''+selected_file_in_tree).indexOf(".publ") != -1)
+        if((''+selected_file_in_tree).indexOf("publ:") != -1)
         {
 
         }
         else
         {
-            if(''+((''+((''+selected_file_in_tree).split(":")[0])).split("/")[0])!=="Saved")
-            {
-                $("#div_folder_name_input").attr("style", "");
-                $("#panel_inputs").attr("style", "display: none;");
-                adding_folder_to = selected_file_in_tree;
-            }
+            $("#div_folder_name_input").attr("style", "");
+            $("#panel_inputs").attr("style", "display: none;");
+            adding_folder_to = selected_file_in_tree;
         }
     }
 });
@@ -176,9 +130,12 @@ $("#add_global_folder_in_wiki_tree").click(function () {
 //Удаление папки из дерева из контекстного меню
 $("#delete_folder_in_wiki_tree_context").click(function () {
 
+    var type_elem = (''+selected_file_in_tree).split(':')[0];
+    var id_elem = (''+selected_file_in_tree).split(':')[1];
+
     if(selected_file_in_tree !== "NONE_SELECT")
     {
-        if((''+selected_file_in_tree).indexOf(".publ") != -1)
+        if((''+selected_file_in_tree).indexOf("publ:") != -1)
         {
 
         }
@@ -190,7 +147,7 @@ $("#delete_folder_in_wiki_tree_context").click(function () {
                 type: "POST",
                 url: "check_folder_for_delete/",
                 data:{
-                    'answer':''+selected_file_in_tree,
+                    'answer':''+id_elem,
                 },
                 dataType: "text",
                 cache: false,
@@ -238,6 +195,9 @@ $("#cancel_add_global_folder_in_wiki_tree").click(function () {
 $("#accept_add_folder_in_wiki_tree").click(function () {
 
     new_folder_name = $("#folder_name_input").val();
+    var type_elem = (''+selected_file_in_tree).split(':')[0];
+    var id_elem = (''+selected_file_in_tree).split(':')[1];
+
 
     if(new_folder_name !== "")
     {
@@ -245,7 +205,7 @@ $("#accept_add_folder_in_wiki_tree").click(function () {
             type: "POST",
             url: "add_folder_in_tree/",
             data:{
-                'answer':new_folder_name+"^^^"+selected_file_in_tree,
+                'answer':new_folder_name+"^^^"+id_elem,
             },
             dataType: "text",
             cache: false,
@@ -382,7 +342,7 @@ $("#open_settings_publ_in_wiki_tree_context").click(function () {
 //Переименовать конспект из контекстного меню
 $("#rename_publ_in_wiki_tree_context").click(function () {
     if(selected_file_in_tree !== "NONE_SELECT") {
-        if (('' + selected_file_in_tree).indexOf(".publ") != -1) {
+        if (('' + selected_file_in_tree).indexOf("publ:") != -1) {
             $("#div_rename_publ_input").attr("style", "");
             $("#panel_inputs").attr("style", "display: none;");
             adding_folder_to = selected_file_in_tree
@@ -405,14 +365,17 @@ $("#cancel_rename_publ_in_wiki_tree").click(function () {
 $("#accept_rename_publ_in_wiki_tree").click(function () {
 
     if (selected_file_in_tree !== "NONE_SELECT") {
-        if (('' + selected_file_in_tree).indexOf(".publ") != -1) {
+        if (('' + selected_file_in_tree).indexOf("publ:") != -1) {
+
+            var type_elem = (''+selected_file_in_tree).split(':')[0];
+            var id_elem = (''+selected_file_in_tree).split(':')[1];
 
             new_name_publ = $("#rename_publ_input").val();
             $.ajax({
                 type: "POST",
                 url: "rename_publ_in_tree/",
                 data:{
-                    'answer':''+new_name_publ+"^^^"+selected_file_in_tree,
+                    'answer':''+new_name_publ+"^^^"+id_elem,
                 },
                 dataType: "text",
                 cache: false,
@@ -462,7 +425,7 @@ $("#cancel_rename_folder_in_wiki_tree").click(function () {
 $("#accept_rename_folder_in_wiki_tree").click(function () {
 
     if (selected_file_in_tree !== "NONE_SELECT") {
-        if (('' + selected_file_in_tree).indexOf(".publ") != -1) {
+        if (('' + selected_file_in_tree).indexOf("publ:") != -1) {
 
 
         }
@@ -470,11 +433,14 @@ $("#accept_rename_folder_in_wiki_tree").click(function () {
         {
             new_name_folder = $("#rename_folder_input").val();
 
+            var type_elem = (''+selected_file_in_tree).split(':')[0];
+            var id_elem = (''+selected_file_in_tree).split(':')[1];
+
             $.ajax({
                 type: "POST",
                 url: "rename_folder_in_tree/",
                 data:{
-                    'answer':''+new_name_folder+"^^^"+selected_file_in_tree,
+                    'answer':''+new_name_folder+"^^^"+id_elem,
                 },
                 dataType: "text",
                 cache: false,
@@ -493,13 +459,16 @@ $("#accept_rename_folder_in_wiki_tree").click(function () {
 $("#set_preview_publ_in_wiki_tree_context").click(function () {
 
     if (selected_file_in_tree !== "NONE_SELECT") {
-        if (('' + selected_file_in_tree).indexOf(".publ") != -1) {
+        if (('' + selected_file_in_tree).indexOf("publ:") != -1) {
+
+            var type_elem = (''+selected_file_in_tree).split(':')[0];
+            var id_elem = (''+selected_file_in_tree).split(':')[1];
 
             $.ajax({
                 type: "POST",
                 url: "set_preview_publ_in_tree/",
                 data:{
-                    'publ':''+selected_file_in_tree,
+                    'publ':''+id_elem,
                 },
                 dataType: "text",
                 cache: false,

@@ -459,6 +459,31 @@ class WikiFileTree():
             return ""
 
     # Variant 1
+    def to_html_dynamic_folders(self) -> str:
+        """Возвращает html динамического дерева только с папками"""
+        if self.__xml_tree is not None:
+            # Получаем корневой элемент текущего дерева
+            root = ET.fromstring(self.__xml_tree)
+            # Получаем все папки в корне и проходим по ним
+            folders = root.findall("./folder")
+            root = ET.Element("root")
+            for folder in folders:
+                # Вызываем рекурсивный метод обработки папки
+                self.__append_dynamic_folder_without_publs(folder, root)
+
+            # Форматируем xml в строку
+            result_str = self.__format_xml(ET.tostring(root))
+            # Убираем xml decloration
+            result_str = result_str.replace('<?xml version="1.0" ?>\n', '')
+            # Убираем корневой вспомагательный элемент
+            result_str = result_str.replace('<root>\n', '')
+            result_str = result_str.replace('</root>\n', '')
+
+            return result_str
+        else:
+            return ""
+
+    # Variant 1
     def to_html_preview(self) -> str:
         """Возвращает html превью дерева"""
         if self.__xml_tree is not None:
@@ -625,6 +650,25 @@ class WikiFileTree():
             publ_li.set('data-jstree', '{ "type" : "publ" }')
             publ_li.text = publication.get('name')
             ul.append(publ_li)
+
+    # Variant 1
+
+    def __append_dynamic_folder_without_publs(self, folder, root):
+        """Добавляет папку в нод"""
+        li = ET.Element("li")
+        li.set('type_elem', 'folder')
+        li.set('class', 'task')
+        li.set('data-id', 'folder:' + folder.get('id'))
+        li.set('id', 'folder:' + folder.get('id'))
+        li.set('data-jstree', '{ "type" : "folder" }')
+        li.text = folder.get('name')
+        ul = ET.Element("ul")
+        ul.text = " "
+        li.append(ul)
+        root.append(li)
+        folders = folder.findall("./folder")
+        for child_folder in folders:
+            self.__append_dynamic_folder_without_publs(child_folder, ul)
 
 
 

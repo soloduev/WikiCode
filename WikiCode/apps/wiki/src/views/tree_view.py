@@ -18,12 +18,12 @@
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
 
 import datetime
+
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 
 from WikiCode.apps.wiki.models import User, Publication, Statistics, Folder
-from WikiCode.apps.wiki.src.wiki_tree import WikiTree
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
 from .auth import check_auth, get_user_id
 
@@ -32,14 +32,15 @@ def get_tree_manager(request):
     user_data = check_auth(request)
     try:
         user = User.objects.get(email=user_data)
-        wt = WikiTree(user.id_user)
-        wt.load_tree(user.tree)
+
+        wft = WikiFileTree()            # new version
+        wft.load_tree(user.file_tree)   # new version
 
         context = {
             "user_data": user_data,
             "user_id": get_user_id(request),
-            "preview_tree": wt.generate_html_preview(),
-            "dynamic_tree": wt.generate_html_dynamic()
+            "preview_tree": wft.to_html_preview(),
+            "dynamic_tree": wft.to_html_dynamic()
         }
 
         return render(request, 'wiki/tree_manager.html', context)
@@ -68,22 +69,17 @@ def get_add_folder_in_tree(request):
             # Получаем текущую статистику платформы
             stat = Statistics.objects.get(id_statistics=1)
 
-            # wt = WikiTree(user.id_user)               # old version
-            # wt.load_tree(user.tree)                   # old version
-            # wt.add_folder(path, folder_name)          # old version
-            # user.tree = wt.get_tree()                 # old version
-
-            wft = WikiFileTree()                        # new version
-            wft.load_tree(user.file_tree)               # new version
+            wft = WikiFileTree()
+            wft.load_tree(user.file_tree)
             wft.create_folder(id=stat.total_folders + 1,
                               name=folder_name,
                               access="public",
                               type="personal",
                               style="blue",
                               view="closed",
-                              id_folder=id_folder)      # new version
+                              id_folder=id_folder)
 
-            user.file_tree = wft.get_xml_str()          # new version
+            user.file_tree = wft.get_xml_str()
 
             # Получаем текущую дату
             date = str(datetime.datetime.now())
@@ -122,25 +118,26 @@ def get_del_elem_in_tree(request):
     """Ajax представление. Удаление элемента в дереве пользователя"""
 
     if request.method == "POST":
-        path_publ = request.POST.get('answer')
-        user_data = check_auth(request)
-
-
-        try:
-            user = User.objects.get(email=user_data)
-            wt = WikiTree(user.id_user)
-            wt.load_tree(user.tree)
-
-            if wt.check_folder_for_delete(path_publ.split(":")[0]):
-                wt.delete_folder(path_publ.split(":")[0])
-                user.tree = wt.get_tree()
-                user.save()
-                return HttpResponse('ok', content_type='text/html')
-            else:
-                return HttpResponse('no', content_type='text/html')
-
-        except User.DoesNotExist:
-            return HttpResponse('no', content_type='text/html')
+        # path_publ = request.POST.get('answer')
+        # user_data = check_auth(request)
+        #
+        #
+        # try:
+        #     user = User.objects.get(email=user_data)
+        #     wt = WikiTree(user.id_user)
+        #     wt.load_tree(user.tree)
+        #
+        #     if wt.check_folder_for_delete(path_publ.split(":")[0]):
+        #         wt.delete_folder(path_publ.split(":")[0])
+        #         user.tree = wt.get_tree()
+        #         user.save()
+        #         return HttpResponse('ok', content_type='text/html')
+        #     else:
+        #         return HttpResponse('no', content_type='text/html')
+        #
+        # except User.DoesNotExist:
+        #     return HttpResponse('no', content_type='text/html')
+        return HttpResponse('ok', content_type='text/html')
 
     else:
         return HttpResponse('no', content_type='text/html')
@@ -151,25 +148,26 @@ def get_check_folder_for_delete(request):
     """Ajax представление. Проверка папку на пустоту, для ее удаления"""
 
     if request.method == "POST":
-        path_publ = request.POST.get('answer')
-        user_data = check_auth(request)
-
-
-        try:
-            user = User.objects.get(email=user_data)
-            wt = WikiTree(user.id_user)
-            wt.load_tree(user.tree)
-
-            if wt.check_folder_for_delete(path_publ.split(":")[0]):
-                return HttpResponse('ok', content_type='text/html')
-            else:
-                return HttpResponse('no', content_type='text/html')
-
-        except User.DoesNotExist:
-            return HttpResponse('no', content_type='text/html')
+        # path_publ = request.POST.get('answer')
+        # user_data = check_auth(request)
+        #
+        #
+        # try:
+        #     user = User.objects.get(email=user_data)
+        #     wt = WikiTree(user.id_user)
+        #     wt.load_tree(user.tree)
+        #
+        #     if wt.check_folder_for_delete(path_publ.split(":")[0]):
+        #         return HttpResponse('ok', content_type='text/html')
+        #     else:
+        #         return HttpResponse('no', content_type='text/html')
+        #
+        # except User.DoesNotExist:
+        #     return HttpResponse('no', content_type='text/html')
+        return HttpResponse('ok', content_type='text/html')
 
     else:
-        return HttpResponse('no', content_type='text/html')\
+        return HttpResponse('no', content_type='text/html')
 
 
 
@@ -196,18 +194,15 @@ def get_delete_publ_in_tree(request):
             # Получаем дерево пользователя
 
             # Устанавливаем id пользователя
-            wt = WikiTree(user.id_user)
+            wft = WikiFileTree()
             # Загружаем его дерево
-            wt.load_tree(user.tree)
-            # Удаляем публикацию по указанному пути
-            wt.delete_publication(arr[0])
-            user.tree = wt.get_tree()
+            wft.load_tree(user.file_tree)
+            # Удаляем публикацию по указанному id
+            wft.delete_publication(int(id_publ))
+            user.file_tree = wft.get_xml_str()
 
             # Уменьшаем количество публикаций у пользователя
             user.publications -= 1
-            # Уменьшаем количество публикаций в глобальной статистике
-            stat.publications_delete += 1
-
 
             publication.delete()
             user.save()
@@ -235,33 +230,32 @@ def get_rename_publ_in_tree(request):
         user_data = check_auth(request)
         arr = str(answer).split("^^^")
         new_name_publ = arr[0]
-        path = arr[1].split(":")[0]
-        id = arr[1].split(":")[1]
+        id = arr[1]
 
         try:
             user = User.objects.get(email=user_data)
             publication = Publication.objects.get(id_publication=id)
-            wt = WikiTree(user.id_user)
-            wt.load_tree(user.tree)
-            is_rename = wt.rename_publication(path, new_name_publ)
-            # Пока переименование конспекта осуществиться даже, если конспект с таким именем уже существует
-            if is_rename:
-                publication.title = new_name_publ
-                user.tree = wt.get_tree()
-                # Теперь переименовываем заголовок конспекта внутри его html содержания
-                with open("WikiCode/apps/wiki/generate_pages/gen_page.gen", "r", encoding='utf-8') as f:
-                    gen_page = f.read()
-                first_part = "<!DOCTYPE html><html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"><title>" + \
-                             new_name_publ + '</title></head><xmp theme="' + publication.theme.lower() + '" style="display:none;">'
-                second_part = publication.text
-                ready_page = first_part + second_part + gen_page
-                f = open("media/publications/" + id + ".html", 'tw', encoding='utf-8')
-                f.close()
+            wft = WikiFileTree()
+            wft.load_tree(user.file_tree)
+            wft.rename_publication(int(id), new_name_publ)
 
-                with open("media/publications/" + id + ".html", "wb") as f:
-                    f.write(ready_page.encode("utf-8"))
-                publication.save()
-                user.save()
+            publication.title = new_name_publ
+            user.file_tree = wft.get_xml_str()
+
+            # Теперь переименовываем заголовок конспекта внутри его html содержания
+            with open("WikiCode/apps/wiki/generate_pages/gen_page.gen", "r", encoding='utf-8') as f:
+                gen_page = f.read()
+            first_part = "<!DOCTYPE html><html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"><title>" + \
+                         new_name_publ + '</title></head><xmp theme="' + publication.theme.lower() + '" style="display:none;">'
+            second_part = publication.text
+            ready_page = first_part + second_part + gen_page
+            f = open("media/publications/" + id + ".html", 'tw', encoding='utf-8')
+            f.close()
+
+            with open("media/publications/" + id + ".html", "wb") as f:
+                f.write(ready_page.encode("utf-8"))
+            publication.save()
+            user.save()
 
             return HttpResponse('ok', content_type='text/html')
         except User.DoesNotExist:
@@ -277,9 +271,32 @@ def get_rename_publ_in_tree(request):
 def get_rename_folder_in_tree(request):
     """Ajax представление. Переименование папки"""
     if request.method == "POST":
-        # Важно понимать, что при переименовывании папки, все конспекты внутри него, МЕНЯЮТ СВОЙ ПУТЬ В ДЕРЕВЕ!!!
+        answer = request.POST.get('answer')
+        user_data = check_auth(request)
+        arr = str(answer).split("^^^")
+        new_name_folder = arr[0]
+        id = arr[1]
 
-        return HttpResponse('no', content_type='text/html')
+        try:
+            user = User.objects.get(email=user_data)
+            folder = Folder.objects.get(id_folder=id)
+            wft = WikiFileTree()
+            wft.load_tree(user.file_tree)
+            wft.rename_folder(id, new_name_folder)
+
+            folder.name = new_name_folder
+            user.file_tree = wft.get_xml_str()
+
+            # Сохраняем все изменения в БД
+            user.save()
+            folder.save()
+
+            return HttpResponse('ok', content_type='text/html')
+        except User.DoesNotExist:
+            return HttpResponse('no', content_type='text/html')
+        except Folder.DoesNotExist:
+            return HttpResponse('no', content_type='text/html')
+
     else:
         return HttpResponse('no', content_type='text/html')
 
@@ -293,7 +310,7 @@ def get_set_preview_publ_in_tree(request):
         user_id = get_user_id(request)
 
         # Получаем id той публикации, которую хотим сделать превью
-        id_publ = int(publ.split(":")[1])
+        id_publ = int(publ)
 
         try:
             user = User.objects.get(id_user=user_id)

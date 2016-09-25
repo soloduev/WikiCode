@@ -26,33 +26,27 @@ from django.views.decorators.csrf import csrf_protect
 
 from WikiCode.apps.wiki.models import Publication, Statistics, Viewing, DynamicComment, Comment
 from WikiCode.apps.wiki.models import User
-from WikiCode.apps.wiki.src.wiki_markdown import WikiMarkdown
-from WikiCode.apps.wiki.src.wiki_tree import WikiTree
-from WikiCode.apps.wiki.src.views.error_view import get_error_page
 from WikiCode.apps.wiki.settings import wiki_settings
 from WikiCode.apps.wiki.src.modules.wiki_comments.wiki_comments import WikiComments
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
-
+from WikiCode.apps.wiki.src.views.error_view import get_error_page
+from WikiCode.apps.wiki.src.wiki_markdown import WikiMarkdown
 from .auth import check_auth, get_user_id
 
 
 def get_create(request):
     user_data = check_auth(request)
     try:
-        # Получения пути к папке, где хотим создать конспект
-        path = ""
+        # Получения id папки, в которой хотим создать конспект
+        input_folder_id = ""
         full_path = str(request.POST.get('folder_publ'))
 
         if full_path != "None" and full_path != "NONE":
-            path = full_path.split(":")[0]
-            if path.count(".publ") == 1:
-                path = path[:path.rfind("/")+1]
+            input_folder_id = full_path
         user = User.objects.get(email=user_data)
 
-        # wt = WikiTree(user.id_user)   # old version
-        # wt.load_tree(user.tree)       # old version
-        wft = WikiFileTree()            # new version
-        wft.load_tree(user.file_tree)   # new version
+        wft = WikiFileTree()
+        wft.load_tree(user.file_tree)
 
         # Проверяем, не пустует ли его дерево:
         if wft.get_num_root_folders() == 0:
@@ -63,9 +57,8 @@ def get_create(request):
         context = {
             "user_data": user_data,
             "user_id": get_user_id(request),
-            # "dynamic_tree": wt.generate_html_dynamic_folders(), # old version
-            "dynamic_tree": "",                                   # new version
-            "path": path,
+            "dynamic_tree": wft.to_html_dynamic_folders(),
+            "path": input_folder_id,
             "empty_tree":empty_tree,
         }
 
@@ -85,8 +78,8 @@ def get_page(request, id):
 
         try:
             user = User.objects.get(id_user=publication.id_author)
-            wt = WikiTree(user.id_user)
-            wt.load_tree(user.tree)
+            wft = WikiFileTree()
+            wft.load_tree(user.file_tree)
         except User.DoesNotExist:
             return get_error_page(request, ["Не удалось загрузить юзера. Его уже не существует!"])
 
@@ -107,13 +100,9 @@ def get_page(request, id):
         try:
             author_user = User.objects.get(id_user=publication.id_author)
 
-            # wt = WikiTree(author_user.id_user)                # old version
-            # wt.load_tree(author_user.tree)                    # old version
-            # html_preview_tree = wt.generate_html_preview()    # old version
-
-            wft = WikiFileTree()                                # new version
-            wft.load_tree(author_user.file_tree)                # new version
-            html_preview_tree = ""
+            wft = WikiFileTree()
+            wft.load_tree(author_user.file_tree)
+            html_preview_tree = wft.to_html_preview()
         except User.DoesNotExist:
             print("Автора не существует")
 
@@ -226,25 +215,22 @@ def get_create_page(request):
                 text=form["text"],
                 theme=form["theme"],
                 html_page=ready_page,
-                tree_path=form["folder"]+form["title"]+".publ:"+str(newid),
+                tree_path=form["folder"],
                 read=0,
                 main_comments=wiki_comments.get_xml_str())
 
-
         # Загружаем дерево пользователя
-        # wt = WikiTree(user.id_user)   # old version
-        # wt.load_tree(user.tree)       # old version
-        wft = WikiFileTree()            # new version
-        wft.load_tree(user.file_tree)   # new version
+        wft = WikiFileTree()
+        wft.load_tree(user.file_tree)
 
         # Добавляем этот конспект в папку
-        # wt.add_publication(form["folder"],form["title"],newid)    # old version
-        # user.tree = wt.get_tree()                                 # old version
         wft.create_publication(id=newid,
                                name=form["title"],
                                access="public",
-                               type="personal")                     # new version
-        user.file_tree = wft.get_xml_str()                          # new version
+                               type="personal",
+                               id_folder=form['folder'].split(':')[1])  # new version
+
+        user.file_tree = wft.get_xml_str()                              # new version
 
         # Увеличиваем количество публикаций в статистике у пользователя
         user.publications += 1
@@ -281,7 +267,7 @@ def get_publ_manager(request, id):
                 "user_data": user_data,
                 "user_id": current_id,
                 "publication":_publication,
-                "tree_path":_publication.tree_path.split(":")[0]
+                "tree_path":_publication.tree_path
             }
             return render(request, 'wiki/publ_manager.html', context)
         else:
