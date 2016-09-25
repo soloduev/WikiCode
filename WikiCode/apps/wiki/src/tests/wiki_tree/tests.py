@@ -19,7 +19,7 @@
 
 # ТЕСТИРОВАНИЕ ФУНКЦИОНАЛА WIKITREE
 
-from WikiCode.apps.wiki.src.future.wiki_tree import wiki_tree as wt_test
+from WikiCode.apps.wiki.src.modules.wiki_tree import wiki_tree as wt_test
 
 # Version:       0.021
 # Total Tests:   27

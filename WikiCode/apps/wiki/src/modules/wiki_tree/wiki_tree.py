@@ -19,7 +19,8 @@
 
 import xml.etree.ElementTree as ET
 from xml.dom.minidom import parseString
-from WikiCode.apps.wiki.src.future.wiki_tree.config import params as CONFIG
+
+from WikiCode.apps.wiki.src.modules.wiki_tree.config import params as CONFIG
 
 
 class WikiFileTree():
@@ -426,6 +427,7 @@ class WikiFileTree():
 
     def to_html_dynamic(self) -> str:
         """Возвращает html динамического дерева, согласно конфигу"""
+
         pass
 
     def to_html_preview(self) -> str:
