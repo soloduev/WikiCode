@@ -25,7 +25,7 @@ from WikiCode.apps.wiki.src.modules.wiki_comments.config import params as CONFIG
 
 class WikiComments():
     """
-       :VERSION: 0.17
+       :VERSION: 0.18
        Класс для работы с комментариями на платформе WIKICODE.
        Комментарии педставляет из себя структуированный xml файл.
        Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -82,7 +82,11 @@ class WikiComments():
 
     def get_xml_str(self) -> str:
         """Возвращает xml строку текущих комментариев"""
-        return self.__format_xml(self.__xml_comments)
+        result_str = self.__format_xml(self.__xml_comments)
+        result_str = result_str.replace('\n', '')
+        result_str = result_str.replace('\t', '')
+        result_str = result_str.replace('>', '>\n')
+        return result_str
 
     # WORK WITH COMMENTS
     # TODO: Необходимо добавить валидацию полей, особенно дату
