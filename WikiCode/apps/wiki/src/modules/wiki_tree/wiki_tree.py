@@ -25,7 +25,7 @@ from WikiCode.apps.wiki.src.modules.wiki_tree.config import params as CONFIG
 
 class WikiFileTree():
     """
-    :VERSION: 0.24
+    :VERSION: 0.25
     Класс для работы с файловым деревом на платформе WIKICODE.
     Файловое дерево педставляет из себя структуированный xml файл.
     Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -433,10 +433,30 @@ class WikiFileTree():
 
     # WORK WITH CONVERTING
 
+    # Variant 1
     def to_html_dynamic(self) -> str:
         """Возвращает html динамического дерева"""
+        if self.__xml_tree is not None:
+            # Получаем корневой элемент текущего дерева
+            root = ET.fromstring(self.__xml_tree)
+            # Получаем все папки в корне и проходим по ним
+            folders = root.findall("./folder")
+            root = ET.Element("root")
+            for folder in folders:
+                # Вызываем рекурсивный метод обработки папки
+                self.__append_dynamic_folder(folder, root)
 
-        pass
+            # Форматируем xml в строку
+            result_str = self.__format_xml(ET.tostring(root))
+            # Убираем xml decloration
+            result_str = result_str.replace('<?xml version="1.0" ?>\n', '')
+            # Убираем корневой вспомагательный элемент
+            result_str = result_str.replace('<root>\n', '')
+            result_str = result_str.replace('</root>\n', '')
+
+            return result_str
+        else:
+            return ""
 
     # Variant 1
     def to_html_preview(self) -> str:
@@ -576,6 +596,34 @@ class WikiFileTree():
             publ_span.set('class', 'glyphicon glyphicon-share-alt')
             publ_href.append(publ_span)
             publ_li.append(publ_href)
+            ul.append(publ_li)
+
+    # Variant 1
+    def __append_dynamic_folder(self, folder, root):
+        """Добавляет папку в нод"""
+        li = ET.Element("li")
+        li.set('type_elem', 'folder')
+        li.set('class', 'task')
+        li.set('data-id', 'folder:' + folder.get('id'))
+        li.set('id', 'folder:' + folder.get('id'))
+        li.set('data-jstree', '{ "type" : "folder" }')
+        li.text = folder.get('name')
+        ul = ET.Element("ul")
+        ul.text = " "
+        li.append(ul)
+        root.append(li)
+        folders = folder.findall("./folder")
+        for child_folder in folders:
+            self.__append_dynamic_folder(child_folder, ul)
+        publications = folder.findall("./publication")
+        for publication in publications:
+            publ_li = ET.Element('li')
+            publ_li.set('type_elem', 'publ')
+            publ_li.set('class', 'task')
+            publ_li.set('data-id', 'publ:' + publication.get('id'))
+            publ_li.set('id', 'publ:' + publication.get('id'))
+            publ_li.set('data-jstree', '{ "type" : "publ" }')
+            publ_li.text = publication.get('name')
             ul.append(publ_li)
 
 
