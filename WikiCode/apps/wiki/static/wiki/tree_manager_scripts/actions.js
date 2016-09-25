@@ -269,7 +269,7 @@ $("#accept_add_global_folder_in_wiki_tree").click(function () {
             type: "POST",
             url: "add_folder_in_tree/",
             data:{
-                'answer':new_folder_name+"^^^global",
+                'answer':new_folder_name+"^^^-1",   // Добавляем папку в корень
             },
             dataType: "text",
             cache: false,

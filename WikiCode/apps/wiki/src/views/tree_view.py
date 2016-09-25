@@ -17,13 +17,14 @@
 #   You should have received a copy of the GNU Affero General Public License
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
 
-
+import datetime
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 
-from WikiCode.apps.wiki.models import User, Publication, Statistics
+from WikiCode.apps.wiki.models import User, Publication, Statistics, Folder
 from WikiCode.apps.wiki.src.wiki_tree import WikiTree
+from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
 from .auth import check_auth, get_user_id
 
 
@@ -59,15 +60,48 @@ def get_add_folder_in_tree(request):
         user_data = check_auth(request)
         split_answer = answer.split("^^^")
         folder_name = split_answer[0]
-        path = split_answer[1].split(":")[0]
+        id_folder = int(split_answer[1])
 
         try:
             user = User.objects.get(email=user_data)
-            wt = WikiTree(user.id_user)
-            wt.load_tree(user.tree)
-            wt.add_folder(path, folder_name)
-            user.tree = wt.get_tree()
+
+            # Получаем текущую статистику платформы
+            stat = Statistics.objects.get(id_statistics=1)
+
+            # wt = WikiTree(user.id_user)               # old version
+            # wt.load_tree(user.tree)                   # old version
+            # wt.add_folder(path, folder_name)          # old version
+            # user.tree = wt.get_tree()                 # old version
+
+            wft = WikiFileTree()                        # new version
+            wft.load_tree(user.file_tree)               # new version
+            wft.create_folder(id=stat.total_folders + 1,
+                              name=folder_name,
+                              access="public",
+                              type="personal",
+                              style="blue",
+                              view="closed",
+                              id_folder=id_folder)      # new version
+
+            user.file_tree = wft.get_xml_str()          # new version
+
+            # Получаем текущую дату
+            date = str(datetime.datetime.now())
+            date = date[:len(date) - 7]
+
+            # Создаем новую папку в БД
+            new_folder = Folder(id_folder=stat.total_folders + 1,
+                                id_author=get_user_id(request),
+                                name=folder_name,
+                                date=date)              # new version
+
+            # Обновляем статистику
+            stat.total_folders += 1
+
+            # Сохраняем все изменения в БД
             user.save()
+            stat.save()
+            new_folder.save()
 
             return HttpResponse('ok', content_type='text/html')
 
