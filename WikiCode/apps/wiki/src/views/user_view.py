@@ -31,6 +31,7 @@ from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.models import User as WikiUser
 from WikiCode.apps.wiki.src.wiki_tree import WikiTree
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
+from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
 from .auth import check_auth, get_user_id
 
 
@@ -132,26 +133,22 @@ def get_create_user(request):
             stat.users_total_reg += 1
             stat.users_reg += 1
 
-
             # Создаем дерево по умолчанию для юзера
-            new_tree = WikiTree(total_reg_users)
+            # new_tree = WikiTree(total_reg_users)          # old version
+            wft = WikiFileTree()                            # new version
+            wft.create_tree(total_reg_users)                # new version
 
             # Создаем нового юзера
             new_wiki_user = WikiUser(user=user,
                                      nickname=form["user_nickname"],
                                      email=form["user_email"],
                                      id_user=total_reg_users,
-                                     tree=new_tree.get_tree(),
+                                     tree="",
+                                     file_tree=wft.get_xml_str(),    # new version
                                      avatar="none.jpg",
                                      name="anonymous",
                                      publications=0,
-                                     imports=0,
-                                     comments=0,
-                                     imports_it=0,
-                                     commented_it=0,
                                      preview_publ_id=-1)
-
-
 
             user = authenticate(username=form["user_nickname"], password=form["user_password"])
 
@@ -164,8 +161,6 @@ def get_create_user(request):
             else:
                 print(">>>>>>>>>>>>>> WIKI ERROR: invalid login")
 
-
-            all_publications = Publication.objects.filter(is_public=True)
 
             # Сохранение всех изменений в БД
             new_wiki_user.save()
