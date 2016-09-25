@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.modules.wiki_tree import wiki_tree as wt_test
 
-# Version:       0.022
-# Total Tests:   28
+# Version:       0.023
+# Total Tests:   29
 
 
 class WikiTreeTest(object):
@@ -690,6 +690,30 @@ class WikiTreeTest(object):
             # wft.print_xml()
 
         test_28(self)
+
+        # -------------------------------------
+        # Проверяем функцию генерации preview html
+        def test_29(self):
+            print("WikiFileTree: " + test_28.__name__)
+            wft = wt_test.WikiFileTree()
+            wft.create_tree(1)
+
+            wft.create_folder(id=1, access="public", type="saved", name="new folder", style="green", view="open",
+                              id_folder=-1)
+            wft.create_folder(id=2, access="private", type="saved", name="new folder", style="green", view="open",
+                              id_folder=1)
+            wft.create_folder(id=3, access="public", type="saved", name="new folder", style="green", view="open",
+                              id_folder=2)
+
+            wft.create_publication(42, "Новый урок", "public", "personal", 2)
+            wft.create_folder(4, "assa", "private", "personal", "green", "open")
+
+
+            wft.print_xml()
+            print("")
+            print(wft.to_html_preview())
+
+        test_29(self)
 
 
 
