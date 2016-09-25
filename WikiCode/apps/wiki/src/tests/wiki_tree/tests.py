@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.modules.wiki_tree import wiki_tree as wt_test
 
-# Version:       0.021
-# Total Tests:   27
+# Version:       0.022
+# Total Tests:   28
 
 
 class WikiTreeTest(object):
@@ -659,6 +659,37 @@ class WikiTreeTest(object):
             # wft.print_xml()
 
         test_27(self)
+
+        # -------------------------------------
+        # Проверяем функцию получения количества корневых папок
+        def test_28(self):
+            print("WikiFileTree: " + test_28.__name__)
+            wft = wt_test.WikiFileTree()
+            wft.create_tree(1)
+
+            if wft.get_num_root_folders() != 0:
+                self.__add_error("28", "invalid count: get_num_root_folders()")
+
+            wft.create_folder(id=1, access="public", type="saved", name="new folder", style="green", view="open",
+                              id_folder=-1)
+            wft.create_folder(id=2, access="private", type="saved", name="new folder", style="green", view="open",
+                              id_folder=1)
+            wft.create_folder(id=3, access="public", type="saved", name="new folder", style="green", view="open",
+                              id_folder=2)
+
+            wft.create_publication(42, "Новый урок", "public", "personal", 2)
+
+            if wft.get_num_root_folders() != 1:
+                self.__add_error("28", "invalid count: get_num_root_folders()")
+
+            wft.create_folder(4,"assa","private","personal","green","open")
+
+            if wft.get_num_root_folders() != 2:
+                self.__add_error("28", "invalid count: get_num_root_folders()")
+
+            # wft.print_xml()
+
+        test_28(self)
 
 
 
