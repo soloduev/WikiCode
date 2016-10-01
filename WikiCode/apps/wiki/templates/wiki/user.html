@@ -37,7 +37,7 @@
                     <a id="a-tree-manager" href="{% url 'tree_manager' %}"><label class="text-center btn-primary btn-block">{% if other_user %}КОНСПЕКТЫ ПОЛЬЗОВАТЕЛЯ{% else %}МОИ КОНСПЕКТЫ{% endif %}</label></a>
                 </div>
                 <div class="row">
-                    {% if preview_tree == "NONE" %}
+                    {% if preview_tree == None %}
                         <div class="col-xs-12 text-center">
                             <label>Дерево отсутствует</label>
                         </div>
