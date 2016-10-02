@@ -24,7 +24,7 @@ from WikiCode.apps.wiki.src.future.wiki_versions import config as CONFIG
 
 class WikiVersions():
     """
-       :VERSION: 0.1
+       :VERSION: 0.2
        Система контроля версий для md конспектов.
        Жует только md конспекты и собственный архив с версиями.
        Архив представляет из себя обычный zip/tar файл, в котором перечислены текстовые файлы версий,
@@ -35,6 +35,48 @@ class WikiVersions():
        """
     def __init__(self):
         pass
+
+    # ---------------
+    # Inner classes
+    # ---------------
+
+    # Отдельная версия
+    class Version():
+        def __init__(self):
+            self.__id = 0
+            self.__comment = ""
+            self.__commit_msg = ""
+            self.__diff = []
+            # Формат хранения разницы с предыдущей/следующей версией:
+            # Каждый элемент списка представляет из себя кортеж, именуемый операцией
+            # Порядок операций применяется к файлу сверху вниз
+            # Первый параметр операции - это тип:
+            # "+" - добавлена строка в файле
+            # "-" - убрана строка в файле
+            # Второй параметр - это индекс строки. В случае с добавлением, индекс указывает, на какое место нужно
+            #    добавить новую строку. В случае с удалением, все понятно.
+            # При выполнении операций, все строки файла нумеруются с нуля.
+            # При добавлении и удалении изменяется переменная смещения. Например, если произошло 5 раз удаление,
+            #    то смещение будет равно -5. Это необходимо для того, чтобы сравнивались нужные индексы строк до
+            #    и после.
+            # Сама версия, ничего не знает о самом файле.
+
+        def set_id(self, id):
+            self.__id = id
+
+        def set_comment(self, comment):
+            self.__comment = comment
+
+        def set_commit_msg(self, msg):
+            self.__commit_msg = msg
+
+        def append_diff(self, type, index):
+            pass
+
+        
+
+
+
 
     # ---------------
     # Public methods:
@@ -135,8 +177,43 @@ class WikiVersions():
 
     # GENERATING
 
-
     # ----------------
     # Private methods:
     # ----------------
+    def __highest_overall_sequence(self, seq_1, seq_2):
+        """Функция нахождения наибольшей общей последовательности"""
 
+        # Сначала составляем пустую матрицу, заполняем ее нулями. N seq_1 + 1 and N seq_2 + 1.
+        max_len = []
+        for i in range(0, len(seq_1) + 1):
+            max_len.append([])
+            for j in range(0, len(seq_2) + 1):
+                max_len[i].append(0)
+
+        # Проходим по матрице и заполняем ее в соответствии с алгоритмов
+        for i in range(len(seq_1) - 1, -1, -1):
+            for j in range(len(seq_2) - 1, -1, -1):
+                if seq_1[i] == seq_2[j]:
+                    max_len[i][j] = 1 + max_len[i+1][j+1]
+                else:
+                    max_len[i][j] = max(max_len[i+1][j], max_len[i][j+1])
+
+        # Создаем пустую результирующую последовательность
+        type_seq = type(seq_1)
+        res = type_seq()
+
+        # Проходим по матрице сверху вниз, оперативно получая максимальную последовательность.
+        i = 0
+        j = 0
+        while max_len[i][j] != 0 and i < len(seq_1) and j < len(seq_2):
+            if seq_1[i] == seq_2[j]:
+                res += seq_1[i]
+                i += 1
+                j += 1
+            else:
+                if max_len[i][j] == max_len[i+1][j]:
+                    i += 1
+                else:
+                    j += 1
+
+        return res

@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_versions import wiki_versions as wv_test
 
-# Version:       0.001
-# Total Tests:   1
+# Version:       0.002
+# Total Tests:   2
 
 
 class WikiVersionsTest(object):
@@ -86,3 +86,24 @@ class WikiVersionsTest(object):
                 self.__add_error("1", "Create versions error")
 
         test_1(self)
+
+        # -------------------------------------
+        # Тестирование функции нахождения наибольшей общей последовательности
+        def test_2(self):
+            print("WikiVersions: " + test_2.__name__)
+            wv = wv_test.WikiVersions()
+
+            seq_1 = "abcd103ab"
+            seq_2 = "xd3aback"
+            true_answer = "d3ab"
+            result = wv._WikiVersions__highest_overall_sequence(seq_1, seq_2)
+            if true_answer != result: self.__add_error("2", "highest_overall_sequence(seq_1, seq_2)")
+
+            seq_1 = ["a", "b", "c", "d", "1", "0", "3", "a", "b"]
+            seq_2 = ["x", "d", "3", "a", "b", "a", "c", "k"]
+            true_answer = ['d', '3', 'a', 'b']
+            result = wv._WikiVersions__highest_overall_sequence(seq_1, seq_2)
+            if true_answer != result: self.__add_error("2", "highest_overall_sequence(seq_1, seq_2)")
+
+        test_2(self)
+
