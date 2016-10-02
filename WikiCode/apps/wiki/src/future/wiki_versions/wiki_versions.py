@@ -24,7 +24,7 @@ from WikiCode.apps.wiki.src.future.wiki_versions import config as CONFIG
 
 class WikiVersions():
     """
-       :VERSION: 0.2
+       :VERSION: 0.3
        Система контроля версий для md конспектов.
        Жует только md конспекты и собственный архив с версиями.
        Архив представляет из себя обычный zip/tar файл, в котором перечислены текстовые файлы версий,
@@ -180,8 +180,11 @@ class WikiVersions():
     # ----------------
     # Private methods:
     # ----------------
+
     def __highest_overall_sequence(self, seq_1, seq_2):
-        """Функция нахождения наибольшей общей последовательности"""
+        """Функция нахождения наибольшей общей последовательности. Может принимать только последовательности,
+        элементы которых можно друг с другом сравнивать и те последовательности, к которым можно добавлять элементы
+        с помощью оператора '+=', и те последовательности, к которым можно обратиться по индексу 'seq[i]'."""
 
         # Сначала составляем пустую матрицу, заполняем ее нулями. N seq_1 + 1 and N seq_2 + 1.
         max_len = []
@@ -217,3 +220,41 @@ class WikiVersions():
                     j += 1
 
         return res
+
+    def __get_diff(self, seq_1, seq_2):
+        """Возвращает кортеж изменений. 0: Сначала удаления, 1: Затем добавления.
+        Каждое изменение содержит:
+        0: Индекс в последовательности
+        1: Содержимое изменения
+        Принимает последовательность до и новую последовательность."""
+
+        # Получаем наибольшую общую последовательность
+        hos = self.__highest_overall_sequence(seq_1, seq_2)
+        len_hos = len(hos)
+
+        res_diff = []
+        for i in range(0, len(seq_1) + len(seq_2)):
+            res_diff.append(None)
+
+        # Сначала получаем порядок последовательность удалений и того, что осталось
+        seq_del = []
+        hos_index = 0
+        for i in range(0, len(seq_1)):
+            if hos_index < len_hos:
+                if seq_1[i] == hos[hos_index]:
+                    hos_index += 1
+                    continue
+            seq_del.append((i, seq_1[i]))
+
+        # Затем, получаем порядок того, что добавилось
+        seq_add = []
+        hos_index = 0
+        for i in range(0, len(seq_2)):
+            if hos_index < len_hos:
+                if seq_2[i] == hos[hos_index]:
+                    hos_index += 1
+                    continue
+            seq_add.append((i, seq_2[i]))
+
+        return seq_del, seq_add
+

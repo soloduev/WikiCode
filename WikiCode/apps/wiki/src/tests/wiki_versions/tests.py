@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.future.wiki_versions import wiki_versions as wv_test
 
-# Version:       0.002
-# Total Tests:   2
+# Version:       0.003
+# Total Tests:   3
 
 
 class WikiVersionsTest(object):
@@ -106,4 +106,23 @@ class WikiVersionsTest(object):
             if true_answer != result: self.__add_error("2", "highest_overall_sequence(seq_1, seq_2)")
 
         test_2(self)
+
+        # -------------------------------------
+        # Тестирование функции возвращения разницы двух последовательностей
+        def test_3(self):
+            print("WikiVersions: " + test_3.__name__)
+            wv = wv_test.WikiVersions()
+
+            seq_1 = "abcd103ab"
+            seq_2 = "xd3aback"
+            need_result = ([(0, 'a'), (1, 'b'), (2, 'c'), (4, '1'), (5, '0')], [(0, 'x'), (5, 'a'), (6, 'c'), (7, 'k')])
+            result = wv._WikiVersions__get_diff(seq_1, seq_2)
+            if need_result != result: self.__add_error("3", "get_diff(seq_1, seq_2)")
+
+            seq_1 = ["a", "b", "c", "d", "1", "0", "3", "a", "b"]
+            seq_2 = ["x", "d", "3", "a", "b", "a", "c", "k"]
+            result = wv._WikiVersions__get_diff(seq_1, seq_2)
+            if need_result != result: self.__add_error("3", "get_diff(seq_1, seq_2)")
+
+        test_3(self)
 
