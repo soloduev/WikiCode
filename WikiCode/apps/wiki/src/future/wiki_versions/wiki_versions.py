@@ -24,7 +24,7 @@ from WikiCode.apps.wiki.src.future.wiki_versions import config as CONFIG
 
 class WikiVersions():
     """
-       :VERSION: 0.3
+       :VERSION: 0.4
        Система контроля версий для md конспектов.
        Жует только md конспекты и собственный архив с версиями.
        Архив представляет из себя обычный zip/tar файл, в котором перечислены текстовые файлы версий,
@@ -46,7 +46,7 @@ class WikiVersions():
             self.__id = 0
             self.__comment = ""
             self.__commit_msg = ""
-            self.__diff = []
+            self.__diff = ()
             # Формат хранения разницы с предыдущей/следующей версией:
             # Каждый элемент списка представляет из себя кортеж, именуемый операцией
             # Порядок операций применяется к файлу сверху вниз
@@ -256,5 +256,5 @@ class WikiVersions():
                     continue
             seq_add.append((i, seq_2[i]))
 
-        return seq_del, seq_add
+        return tuple(seq_del), tuple(seq_add)
 

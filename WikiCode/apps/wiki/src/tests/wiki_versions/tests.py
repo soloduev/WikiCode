@@ -21,7 +21,7 @@
 
 from WikiCode.apps.wiki.src.future.wiki_versions import wiki_versions as wv_test
 
-# Version:       0.003
+# Version:       0.004
 # Total Tests:   3
 
 
@@ -115,7 +115,7 @@ class WikiVersionsTest(object):
 
             seq_1 = "abcd103ab"
             seq_2 = "xd3aback"
-            need_result = ([(0, 'a'), (1, 'b'), (2, 'c'), (4, '1'), (5, '0')], [(0, 'x'), (5, 'a'), (6, 'c'), (7, 'k')])
+            need_result = (((0, 'a'), (1, 'b'), (2, 'c'), (4, '1'), (5, '0')), ((0, 'x'), (5, 'a'), (6, 'c'), (7, 'k')))
             result = wv._WikiVersions__get_diff(seq_1, seq_2)
             if need_result != result: self.__add_error("3", "get_diff(seq_1, seq_2)")
 
