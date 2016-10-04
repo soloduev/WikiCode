@@ -101,7 +101,7 @@ $(document).ready(function () {
 $("#wiki_nickname").on("change", function () {
     if($("#wiki_nickname").val().length < 3 && $("#wiki_nickname").val() !== "")
     {
-        $("#wiki_nickname_message").text("Nickname должен быть от 3 до 12 символов");
+        $("#wiki_nickname_message").text("Nickname должен быть от 3 до 12 символов.");
         $("#wiki_nickname_message").attr("style","color: red;");
     }
     else if($("#wiki_nickname").val() === "")
