@@ -18,13 +18,14 @@
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
 
 import xml.etree.ElementTree as ET
+import pickle
 from xml.dom.minidom import parseString
 from WikiCode.apps.wiki.src.future.wiki_versions import config as CONFIG
 
 
-class WikiVersions():
+class WikiVersions:
     """
-       :VERSION: 0.4
+       :VERSION: 0.5
        Система контроля версий для md конспектов.
        Жует только md конспекты и собственный архив с версиями.
        Архив представляет из себя обычный zip/tar файл, в котором перечислены текстовые файлы версий,
@@ -33,50 +34,12 @@ class WikiVersions():
        Класс хранит все версии в виде разниц между файлами.
        В виде целого файла, хранит лишь текущую его версию.
        """
+
     def __init__(self):
-        pass
-
-    # ---------------
-    # Inner classes
-    # ---------------
-
-    # Отдельная версия
-    class Version():
-        def __init__(self):
-            self.__id = 0
-            self.__comment = ""
-            self.__commit_msg = ""
-            self.__diff = ()
-            # Формат хранения разницы с предыдущей/следующей версией:
-            # Каждый элемент списка представляет из себя кортеж, именуемый операцией
-            # Порядок операций применяется к файлу сверху вниз
-            # Первый параметр операции - это тип:
-            # "+" - добавлена строка в файле
-            # "-" - убрана строка в файле
-            # Второй параметр - это индекс строки. В случае с добавлением, индекс указывает, на какое место нужно
-            #    добавить новую строку. В случае с удалением, все понятно.
-            # При выполнении операций, все строки файла нумеруются с нуля.
-            # При добавлении и удалении изменяется переменная смещения. Например, если произошло 5 раз удаление,
-            #    то смещение будет равно -5. Это необходимо для того, чтобы сравнивались нужные индексы строк до
-            #    и после.
-            # Сама версия, ничего не знает о самом файле.
-
-        def set_id(self, id):
-            self.__id = id
-
-        def set_comment(self, comment):
-            self.__comment = comment
-
-        def set_commit_msg(self, msg):
-            self.__commit_msg = msg
-
-        def append_diff(self, type, index):
-            pass
-
-        
-
-
-
+        self.__versions = []  # Список всех версий. Каждый элемент представляет из себя кортеж со следующими значениями:
+        # [(id_user, commit_msg, comment, diff, date, seq), ... ]
+        self.__head_index = -1  # Индекс HEAD версии
+        self.__xml_graph = ""  # Граф версий
 
     # ---------------
     # Public methods:
@@ -84,17 +47,42 @@ class WikiVersions():
 
     # LOADS AND CREATING
 
-    def create_versions(self, id_publication: int, md_str: str):
+    def create_versions(self, id_publication: int, user_id: int, seq: list, comment: str = "", commit_msg: str = ""):
         """Принимает id конспекта и его md текст. Создает файл первой версии. То есть, сам файл."""
-        pass
+        # Сначала, создаем xml граф версий
+        root = ET.Element("WikiVersions")
+        root.set("id", str(id_publication))
+        default_branch = ET.Element("branch")
+        default_branch.set("name", "default")
+        first_version = ET.Element("version")
+        first_version.set("type", "head")
+        first_version.text = "1"
+        default_branch.append(first_version)
+        root.append(default_branch)
+        self.__xml_graph = ET.tostring(root)
+
+        # Затем, создаем первую версию
+        new_version = (user_id, commit_msg, comment, (), None, seq)
+
+        self.__versions.clear()
+        self.__versions.append(new_version)
+
+        # Задаем index head версии
+        self.__head_index = 1
 
     def get_archive(self):
         """Возвращает архив всех версий."""
-        pass
-
-    def save(self, path: str):
-        """Сохраняет архив по определнному пути"""
-        pass
+        if self.__head_index != -1:
+            data = {
+                "head_index": self.__head_index,
+                "versions": self.__versions,
+                "graph": self.__xml_graph
+            }
+            # Сериализуем данные в архив
+            archive = pickle.dumps(data)
+            return archive
+        else:
+            return None
 
     def load_versions(self, archive):
         """Загружает архив и собственно, сам head, то есть, главный файл."""
@@ -175,6 +163,14 @@ class WikiVersions():
         """Отображает разницу между предыдущей версией"""
         pass
 
+    def get_xml_str(self) -> str:
+        """Возвращает xml строку текущих комментариев"""
+        result_str = self.__format_xml(self.__xml_graph)
+        result_str = result_str.replace('\n', '')
+        result_str = result_str.replace('\t', '')
+        result_str = result_str.replace('>', '>\n')
+        return result_str
+
     # GENERATING
 
     # ----------------
@@ -197,9 +193,9 @@ class WikiVersions():
         for i in range(len(seq_1) - 1, -1, -1):
             for j in range(len(seq_2) - 1, -1, -1):
                 if seq_1[i] == seq_2[j]:
-                    max_len[i][j] = 1 + max_len[i+1][j+1]
+                    max_len[i][j] = 1 + max_len[i + 1][j + 1]
                 else:
-                    max_len[i][j] = max(max_len[i+1][j], max_len[i][j+1])
+                    max_len[i][j] = max(max_len[i + 1][j], max_len[i][j + 1])
 
         # Создаем пустую результирующую последовательность
         type_seq = type(seq_1)
@@ -214,7 +210,7 @@ class WikiVersions():
                 i += 1
                 j += 1
             else:
-                if max_len[i][j] == max_len[i+1][j]:
+                if max_len[i][j] == max_len[i + 1][j]:
                     i += 1
                 else:
                     j += 1
@@ -258,3 +254,6 @@ class WikiVersions():
 
         return tuple(seq_del), tuple(seq_add)
 
+    def __format_xml(self, xml_str):
+        """Выравнивание xml строки"""
+        return parseString(xml_str).toprettyxml()

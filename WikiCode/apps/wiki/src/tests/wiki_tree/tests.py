@@ -709,9 +709,9 @@ class WikiTreeTest(object):
             wft.create_folder(4, "assa", "private", "personal", "green", "open")
 
 
-            wft.print_xml()
-            print("")
-            print(wft.to_html_preview())
+            # wft.print_xml()
+            # print("")
+            # print(wft.to_html_preview())
 
         test_29(self)
 

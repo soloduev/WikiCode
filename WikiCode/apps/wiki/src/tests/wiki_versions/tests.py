@@ -20,9 +20,10 @@
 # ТЕСТИРОВАНИЕ ФУНКЦИОНАЛА WIKIVERSIONS
 
 from WikiCode.apps.wiki.src.future.wiki_versions import wiki_versions as wv_test
+import pickle
 
-# Version:       0.004
-# Total Tests:   3
+# Version:       0.005
+# Total Tests:   4
 
 
 class WikiVersionsTest(object):
@@ -125,4 +126,19 @@ class WikiVersionsTest(object):
             if need_result != result: self.__add_error("3", "get_diff(seq_1, seq_2)")
 
         test_3(self)
+
+        # -------------------------------------
+        # Тестирование создания новой версии и архива
+        def test_4(self):
+            print("WikiVersions: " + test_4.__name__)
+            wv = wv_test.WikiVersions()
+
+            wv.create_versions(1,1,["Hello!\n", "world!"])
+
+            # print(wv.get_xml_str())
+            # obj = wv.get_archive()
+
+            # print(pickle.loads(obj))
+
+        test_4(self)
 
