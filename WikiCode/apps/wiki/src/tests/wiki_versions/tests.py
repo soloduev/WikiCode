@@ -142,3 +142,26 @@ class WikiVersionsTest(object):
 
         test_4(self)
 
+        # -------------------------------------
+        # Тестирование загрузки конфигурационного файла
+        def test_5(self):
+            print("WikiVersions: " + test_5.__name__)
+
+            wv = wv_test.WikiVersions()
+            wv.create_versions(1, 1, ["Hello!\n", "world!"])
+            some_archive = wv.get_archive()
+
+            wv_2 = wv_test.WikiVersions()
+            wv_2.load_versions("gj")
+
+            if wv_2.get_xml_str() != "": self.__add_error("5", "get_archive()")
+            if wv_2.get_head_index() != -1: self.__add_error("5", "get_archive()")
+
+            wv_3 = wv_test.WikiVersions()
+            wv_3.load_versions(some_archive)
+
+            # wv_3.get_xml_str()
+            if wv_3.get_head_index() != 1: self.__add_error("5", "get_archive()")
+
+        test_5(self)
+

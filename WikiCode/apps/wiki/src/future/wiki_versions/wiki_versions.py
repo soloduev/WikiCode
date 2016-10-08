@@ -25,7 +25,7 @@ from WikiCode.apps.wiki.src.future.wiki_versions import config as CONFIG
 
 class WikiVersions:
     """
-       :VERSION: 0.5
+       :VERSION: 0.6
        Система контроля версий для md конспектов.
        Жует только md конспекты и собственный архив с версиями.
        Архив представляет из себя обычный zip/tar файл, в котором перечислены текстовые файлы версий,
@@ -86,7 +86,13 @@ class WikiVersions:
 
     def load_versions(self, archive):
         """Загружает архив и собственно, сам head, то есть, главный файл."""
-        pass
+        try:
+            data = pickle.loads(archive)
+            self.__head_index = data["head_index"]
+            self.__versions = data["versions"]
+            self.__xml_graph = data["graph"]
+        except TypeError:
+            print("WikiVersions can't load archive")
 
     def load(self, path_to_archive):
         """Загружает архив по его пути."""
@@ -165,11 +171,17 @@ class WikiVersions:
 
     def get_xml_str(self) -> str:
         """Возвращает xml строку текущих комментариев"""
-        result_str = self.__format_xml(self.__xml_graph)
-        result_str = result_str.replace('\n', '')
-        result_str = result_str.replace('\t', '')
-        result_str = result_str.replace('>', '>\n')
-        return result_str
+        if self.__xml_graph:
+            result_str = self.__format_xml(self.__xml_graph)
+            result_str = result_str.replace('\n', '')
+            result_str = result_str.replace('\t', '')
+            result_str = result_str.replace('>', '>\n')
+            return result_str
+        else:
+            return ""
+
+    def get_head_index(self) -> int:
+        return self.__head_index
 
     # GENERATING
 
