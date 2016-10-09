@@ -57,78 +57,92 @@
                 <div class="row">
                     <br><br><!--NICKNAME-->
                     <div class="col-xs-6 col-sm-6 col-md-5 text-right">
-                        <h4>Ваш nickname:</h4>
+                        <h5>Ваш nickname:</h5>
                     </div>
-                    <div class="col-xs-6 col-sm-4 col-md-3">
+                    <div class="col-xs-6 col-sm-6 col-md-7">
                         <input class="form-control" style="border-radius: 0px;" value="{{ user.nickname }}">
                     </div>
-                    <div class="col-xs-0 col-sm-2 col-md-4"></div>
                 </div>
                 <div class="row">
                     <!--Email-->
                     <br>
                     <div class="col-xs-6 col-sm-6 col-md-5 text-right">
-                        <h4>Ваш email:</h4>
+                        <h5>Ваш email:</h5>
                     </div>
-                    <div class="col-xs-6 col-sm-4 col-md-3">
+                    <div class="col-xs-6 col-sm-6 col-md-7">
                         <input class="form-control" style="border-radius: 0px;" value="{{ user.email }}">
                     </div>
-                    <div class="col-xs-0 col-sm-2 col-md-4"></div>
                 </div>
                 <div class="row">
                     <!--Name-->
                     <br>
                     <div class="col-xs-6 col-sm-6 col-md-5 text-right">
-                        <h4>Ваше имя:</h4>
+                        <h5>Ваше имя:</h5>
                     </div>
-                    <div class="col-xs-6 col-sm-4 col-md-3">
+                    <div class="col-xs-6 col-sm-6 col-md-7">
                         <input class="form-control" style="border-radius: 0px;" value="{{ user.name }}">
                     </div>
-                    <div class="col-xs-0 col-sm-2 col-md-4"></div>
                 </div>
                 <div class="row">
                     <!--Name-->
                     <br>
                     <div class="col-xs-6 col-sm-6 col-md-5 text-right">
-                        <h4>Ваш аватар:</h4>
+                        <h5>Ваш пароль:</h5>
                     </div>
-                    <div class="col-xs-6 col-sm-4 col-md-3">
+                    <div class="col-xs-4 col-sm-4 col-md-5">
+                        <input type="password" value="password" disabled="true" class="form-control" style="border-radius: 0px;">
+                    </div>
+                    <div class="col-xs-2 col-sm-2 col-md-2">
+                        <a id="wiki-style-btn" class="btn btn-block" style="border-radius: 0px;" data-toggle="modal" data-target="#modal_edit_password"><i class="fa fa-edit"></i></a>
+                    </div>
+                </div>
+                <div class="row">
+                    <!--Name-->
+                    <br>
+                    <div class="col-xs-6 col-sm-6 col-md-5 text-right">
+                        <h5>Ваш аватар:</h5>
+                    </div>
+                    <div class="col-xs-4 col-sm-4 col-md-5">
                         <input class="form-control" style="border-radius: 0px;">
                     </div>
-                    <div class="col-xs-0 col-sm-2 col-md-4"></div>
+                    <div class="col-xs-2 col-sm-2 col-md-2">
+                        <a id="wiki-style-btn" class="btn btn-block" style="border-radius: 0px;"><i class="fa fa-folder-open-o">...</i></a>
+                    </div>
                 </div>
                 <div class="row">
                     <!--Prewiew publication-->
                     <br>
                     <div class="col-xs-6 col-sm-6 col-md-5 text-right">
-                        <h4>Путь к Вашему превью-конспекту:</h4>
+                        <h5>Путь к Вашему превью-конспекту:</h5>
                     </div>
-                    <div class="col-xs-6 col-sm-4 col-md-3">
+                    <div class="col-xs-4 col-sm-4 col-md-5">
                         <input class="form-control" style="border-radius: 0px;" value="{{ prewiew_path_publ }}">
                     </div>
-                    <div class="col-xs-0 col-sm-2 col-md-4"></div>
-                </div>
-                <div class="row">
-                    <!--Display your tree by default-->
-                    <br>
-                    <div class="col-xs-6 col-sm-6 col-md-5 text-right">
-                        <h4>Отображение Вашего дерева по умолчанию</h4>
+                    <div class="col-xs-2 col-sm-2 col-md-2">
+                        <a id="wiki-style-btn" class="btn btn-block" style="border-radius: 0px;"><i class="fa fa-graduation-cap"></i>...</a>
                     </div>
-                    <div class="col-xs-6 col-sm-4 col-md-3">
-                        <input class="form-control" style="border-radius: 0px;">
-                    </div>
-                    <div class="col-xs-0 col-sm-2 col-md-4"></div>
                 </div>
                 <div class="row">
                     <!--The path for saving the default publication-->
                     <br>
                     <div class="col-xs-6 col-sm-6 col-md-5 text-right">
-                        <h4>Путь к папке по умолчанию, для сохранения конспекта:</h4>
+                        <h5>Путь к папке по умолчанию, для сохранения конспекта:</h5>
                     </div>
-                    <div class="col-xs-6 col-sm-4 col-md-3">
+                    <div class="col-xs-4 col-sm-4 col-md-5">
                         <input class="form-control" style="border-radius: 0px;">
                     </div>
-                    <div class="col-xs-0 col-sm-2 col-md-4"></div>
+                    <div class="col-xs-2 col-sm-2 col-md-2">
+                        <a id="wiki-style-btn" class="btn btn-block" style="border-radius: 0px;"><i class="fa fa-folder-open-o"></i>...</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <!--Display your tree by default-->
+                    <br>
+                    <div class="col-xs-6 col-sm-6 col-md-5 text-right">
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-md-7">
+                        <a id="wiki-style-btn" class="btn btn-block" style="border-radius: 0px;">Задать отображение дерева по умолчанию</a>
+                    </div>
                 </div>
                 <hr>
                 <div class="row">
@@ -136,13 +150,38 @@
                     <br>
                     <div class="col-xs-6 col-sm-6 col-md-5 text-right">
                     </div>
-                    <div class="col-xs-6 col-sm-4 col-md-3">
+                    <div class="col-xs-6 col-sm-6 col-md-7">
                         <a id="wiki-style-btn" class="btn btn-block" style="border-radius: 0px;">Сохранить настройки</a>
                     </div>
-                    <div class="col-xs-0 col-sm-2 col-md-4"></div>
                 </div>
                 <br>
                 <br>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно указывающее, для изменения пароля -->
+    <div class="modal fade" id="modal_edit_password" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Изменение пароля:</h4>
+                </div>
+                <div class="modal-body">
+                    <label>Введите старый пароль</label>
+                    <input id="user_password_input" type="password" name="user_password" placeholder="Старый пароль" class="form-control btn-block"  required style="border-radius: 0px;height: 30px; width: 250px;" pattern="[a-zA-Z0-9]{6,16}" maxlength="16" title="Пароль должен состоять только из букв латинского алфавита и цифр. Его длина должна находиться в диапазоне от 6 до 16 символов.">
+                    <br>
+                    <label>Введите новый пароль</label>
+                    <input id="user_password_input" type="password" name="user_password" placeholder="Новый пароль" class="form-control btn-block"  required style="border-radius: 0px;height: 30px; width: 250px;" pattern="[a-zA-Z0-9]{6,16}" maxlength="16" title="Пароль должен состоять только из букв латинского алфавита и цифр. Его длина должна находиться в диапазоне от 6 до 16 символов.">
+                    <br>
+                    <label>Введите новый пароль снова</label>
+                    <input id="user_password_repeat_input" type="password" name="user_password_repeat" placeholder="Повторите новый пароль" class="form-control btn-block"  required style="border-radius: 0px;height: 30px; width: 250px;" pattern="[a-zA-Z0-9]{6,16}" maxlength="16" title="Пароль должен состоять только из букв латинского алфавита и цифр. Его длина должна находиться в диапазоне от 6 до 16 символов.">
+                    <br>
+                </div>
+                <div class="modal-footer">
+                    <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Изменить пароль</button>
+                </div>
             </div>
         </div>
     </div>
