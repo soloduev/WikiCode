@@ -168,20 +168,23 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="myModalLabel">Изменение пароля:</h4>
                 </div>
-                <div class="modal-body">
-                    <label>Введите старый пароль</label>
-                    <input id="user_password_input" type="password" name="user_password" placeholder="Старый пароль" class="form-control btn-block"  required style="border-radius: 0px;height: 30px; width: 250px;" pattern="[a-zA-Z0-9]{6,16}" maxlength="16" title="Пароль должен состоять только из букв латинского алфавита и цифр. Его длина должна находиться в диапазоне от 6 до 16 символов.">
-                    <br>
-                    <label>Введите новый пароль</label>
-                    <input id="user_password_input" type="password" name="user_password" placeholder="Новый пароль" class="form-control btn-block"  required style="border-radius: 0px;height: 30px; width: 250px;" pattern="[a-zA-Z0-9]{6,16}" maxlength="16" title="Пароль должен состоять только из букв латинского алфавита и цифр. Его длина должна находиться в диапазоне от 6 до 16 символов.">
-                    <br>
-                    <label>Введите новый пароль снова</label>
-                    <input id="user_password_repeat_input" type="password" name="user_password_repeat" placeholder="Повторите новый пароль" class="form-control btn-block"  required style="border-radius: 0px;height: 30px; width: 250px;" pattern="[a-zA-Z0-9]{6,16}" maxlength="16" title="Пароль должен состоять только из букв латинского алфавита и цифр. Его длина должна находиться в диапазоне от 6 до 16 символов.">
-                    <br>
-                </div>
-                <div class="modal-footer">
-                    <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Изменить пароль</button>
-                </div>
+                <form action="{% url 'repassword_user' %}" method="post" onsubmit="return validate_repassword_form();">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <label>Введите старый пароль</label>
+                        <input id="old_password_input" type="password" name="user_password" placeholder="Старый пароль" class="form-control btn-block"  required style="border-radius: 0px;height: 30px; width: 250px;" pattern="[a-zA-Z0-9]{6,16}" maxlength="16" title="Пароль должен состоять только из букв латинского алфавита и цифр. Его длина должна находиться в диапазоне от 6 до 16 символов.">
+                        <br>
+                        <label>Введите новый пароль</label>
+                        <input id="user_password_input" type="password" name="user_new_password" placeholder="Новый пароль" class="form-control btn-block"  required style="border-radius: 0px;height: 30px; width: 250px;" pattern="[a-zA-Z0-9]{6,16}" maxlength="16" title="Пароль должен состоять только из букв латинского алфавита и цифр. Его длина должна находиться в диапазоне от 6 до 16 символов.">
+                        <br>
+                        <label>Введите новый пароль снова</label>
+                        <input id="user_password_repeat_input" type="password" name="user_password_repeat" placeholder="Повторите новый пароль" class="form-control btn-block"  required style="border-radius: 0px;height: 30px; width: 250px;" pattern="[a-zA-Z0-9]{6,16}" maxlength="16" title="Пароль должен состоять только из букв латинского алфавита и цифр. Его длина должна находиться в диапазоне от 6 до 16 символов.">
+                        <br>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="wiki-style-btn" type="submit" class="btn">Изменить пароль</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -190,4 +193,5 @@
 {% block add_script %}
     {% load staticfiles %}
     <link href={% static "wiki/wiki_styles/settings.css" %} type="text/css" rel="stylesheet">
+    <script src={% static "wiki/wiki_scripts/settings.js" %}></script>
 {% endblock %}

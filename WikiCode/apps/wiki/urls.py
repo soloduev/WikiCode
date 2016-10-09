@@ -69,4 +69,8 @@ urlpatterns = [
 
     # Событие на странице уведомлений
 
+    # События на странице настроек пользователя
+    url(r'^settings/check_password/$', views.check_password, name='check_password'),
+    url(r'^settings/repassword_user/$', views.repassword_user, name='repassword_user'),
+
 ]
