@@ -44,7 +44,7 @@ vers = {
         "comments": [],
         "diff": [],
         "date": 'some date...',
-        "type": 'head(H), root(R), leaf(L), merge(M)',
+        "type": 'Head(H), Root(R), Leaf(L), Merge(M), Node(N)',
         "seq": 'if this is head',
         "branch": 'branch name',
     },

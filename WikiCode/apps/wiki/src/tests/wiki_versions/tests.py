@@ -22,8 +22,8 @@
 from WikiCode.apps.wiki.src.future.wiki_versions import wiki_versions as wv_test
 import pickle
 
-# Version:       0.006
-# Total Tests:   5
+# Version:       0.007
+# Total Tests:   7
 
 
 class WikiVersionsTest(object):
@@ -94,12 +94,6 @@ class WikiVersionsTest(object):
             print("WikiVersions: " + test_2.__name__)
             wv = wv_test.WikiVersions()
 
-            seq_1 = "abcd103ab"
-            seq_2 = "xd3aback"
-            true_answer = "d3ab"
-            result = wv._WikiVersions__highest_overall_sequence(seq_1, seq_2)
-            if true_answer != result: self.__add_error("2", "highest_overall_sequence(seq_1, seq_2)")
-
             seq_1 = ["a", "b", "c", "d", "1", "0", "3", "a", "b"]
             seq_2 = ["x", "d", "3", "a", "b", "a", "c", "k"]
             true_answer = ['d', '3', 'a', 'b']
@@ -114,11 +108,7 @@ class WikiVersionsTest(object):
             print("WikiVersions: " + test_3.__name__)
             wv = wv_test.WikiVersions()
 
-            seq_1 = "abcd103ab"
-            seq_2 = "xd3aback"
             need_result = (((0, 'a'), (1, 'b'), (2, 'c'), (4, '1'), (5, '0')), ((0, 'x'), (5, 'a'), (6, 'c'), (7, 'k')))
-            result = wv._WikiVersions__get_diff(seq_1, seq_2)
-            if need_result != result: self.__add_error("3", "get_diff(seq_1, seq_2)")
 
             seq_1 = ["a", "b", "c", "d", "1", "0", "3", "a", "b"]
             seq_2 = ["x", "d", "3", "a", "b", "a", "c", "k"]
@@ -160,14 +150,56 @@ class WikiVersionsTest(object):
         test_5(self)
 
         # -------------------------------------
-        # Тестирование создание новой версии
+        # Тестирование получения head_index
         def test_6(self):
             print("WikiVersions: " + test_6.__name__)
 
             wv = wv_test.WikiVersions()
+
+            if wv.get_head_index() is not None:
+                self.__add_error("6", "get_head_index()")
+
             wv.create_versions(1, ["Hello", "world!", "I", "love", "you!"])
 
-
+            if wv.get_head_index() != 1:
+                self.__add_error("6", "get_head_index()")
 
         test_6(self)
+
+        # -------------------------------------
+        # Тестирование создания новой версии.(Новая версия всегда создается после head версии)
+        def test_7(self):
+            print("WikiVersions: " + test_7.__name__)
+
+            wv = wv_test.WikiVersions()
+            if wv.new_version(1, ["Hi", "world!", "We", "love", "me!", "Bye!"]) != False:
+                self.__add_error("7", "new_version()")
+
+            wv.create_versions(1, ["Hello", "world!", "I", "love", "you!"])
+            wv.new_version(1, ["Hi", "world!", "We", "love", "me!", "Bye!"])
+            # wv.show_tree()
+            if wv.get_head_index() != 1:
+                self.__add_error("7", "get_head_index()")
+
+            need = {'date': '', 'commit_msg': '', 'type': 'Head', 'id_user': 1, 'branch': 'master', 'comments': [], 'seq': ['Hello', 'world!', 'I', 'love', 'you!'], 'diff': []}
+            if wv.get_dict_head() != need:
+                self.__add_error("7", "get_dict_head()")
+
+            need = {'seq': ['Hello', 'world!', 'I', 'love', 'you!'], 'type': 'Head', 'comments': [], 'branch': 'master', 'diff': [], 'commit_msg': '', 'id_user': 1, 'date': ''}
+            if wv.get_dict_version(1) != need:
+                self.__add_error("7", "get_dict_version(1)")
+
+            need = {'branch': 'unknown', 'comments': [], 'type': 'Node', 'date': '', 'diff': (((0, 'Hello'), (2, 'I'), (4, 'you!')), ((0, 'Hi'), (2, 'We'), (4, 'me!'), (5, 'Bye!'))), 'seq': None, 'id_user': 1, 'commit_msg': ''}
+            if wv.get_dict_version(2) != need:
+                self.__add_error("7", "get_dict_version(2)")
+
+            wv.new_version(1, ["Hi", "world!", "I", "love", "you!"])
+            wv.new_version(1, ["Hi", "world!", "I", "love", "we!"])
+            # wv.show_tree()
+
+            need = {'seq': None, 'comments': [], 'type': 'Node', 'branch': 'unknown', 'diff': (((0, 'Hello'), (4, 'you!')), ((0, 'Hi'), (4, 'we!'))), 'date': '', 'id_user': 1, 'commit_msg': ''}
+            if wv.get_dict_version(4) != need:
+                self.__add_error("7", "get_dict_version(4)")
+
+        test_7(self)
 

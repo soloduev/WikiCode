@@ -23,7 +23,7 @@ from WikiCode.apps.wiki.src.future.wiki_versions import config as CONFIG
 
 class WikiVersions:
     """
-       :VERSION: 0.8
+       :VERSION: 0.9
        Система контроля версий для md конспектов.
        Жует только md конспекты и собственный архив с версиями.
        Архив представляет из себя обычный сериализованный python файл, в котором хранится вся информация о текущей
@@ -88,11 +88,33 @@ class WikiVersions:
 
     # WORK WITH VERSIONS
 
-    def new_version(self, new_seq: list, id_user: int, message: str = None):
+    def new_version(self, id_user: int, new_seq: list, message: str = "", date: str = ""):
         """Создает новую версию для head.
         Принимает обновленную последовательность, id пользователя, который произвел
         новую версию, и сообщение к коммиту"""
+        if self.__graph:
+            new_version_index = len(self.__versions) + 1
+            self.__append_version(self.__graph,
+                                  self.get_head_index(),
+                                  new_version_index)
 
+            head_version = self.__versions[self.__head_index]
+            diff = self.__get_diff(head_version['seq'], new_seq)
+
+            self.__versions[new_version_index] = {
+                "id_user": id_user,
+                "commit_msg": message,
+                "comments": [],
+                "diff": diff,
+                "date": date,
+                "type": 'Node',
+                "seq": None,
+                "branch": 'unknown',  # TODO: Реализовать получение имени ветки от head
+            }
+
+            return True
+        else:
+            return False
 
 
     def set_head(self, num_version: int):
@@ -143,22 +165,34 @@ class WikiVersions:
 
     def show_tree(self):
         """Отображает красиво отформатированную строку ветки для дебага."""
-        pass
+        self.__print_graph(self.__graph)
+
+    def get_dict_tree(self):
+        """Возвращает self.__graph"""
+        return self.__graph
 
     def show_version(self, num_version: int):
         """Отображает краткую информацию о версии под номером"""
-        pass
+        print(self.__versions[num_version])
+
+    def get_dict_version(self, num_version: int):
+        """Возвращает определенную версию в виде словаря"""
+        return self.__versions[num_version]
 
     def show_head(self):
         """Отображает краткую информацию о head версии"""
+        print(self.__versions[self.__head_index])
 
+    def get_dict_head(self):
+        """Возвращает head версию в виде словаря"""
+        return self.__versions[self.__head_index]
 
     def show_dif(self, version: int):
         """Отображает разницу между предыдущей версией"""
         pass
 
     def get_head_index(self) -> int:
-        pass
+        return self.__head_index
 
     # GENERATING
 
@@ -195,7 +229,7 @@ class WikiVersions:
         j = 0
         while max_len[i][j] != 0 and i < len(seq_1) and j < len(seq_2):
             if seq_1[i] == seq_2[j]:
-                res += seq_1[i]
+                res += [seq_1[i]]
                 i += 1
                 j += 1
             else:
