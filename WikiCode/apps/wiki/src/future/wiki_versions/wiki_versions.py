@@ -23,7 +23,7 @@ from WikiCode.apps.wiki.src.future.wiki_versions import config as CONFIG
 
 class WikiVersions:
     """
-       :VERSION: 0.10
+       :VERSION: 0.11
        Система контроля версий для md конспектов.
        Жует только md конспекты и собственный архив с версиями.
        Архив представляет из себя обычный сериализованный python файл, в котором хранится вся информация о текущей
@@ -54,7 +54,7 @@ class WikiVersions:
                 "comments": [],
                 "diff": [],
                 "date": date,
-                "type": 'Head',
+                "type": 'HeadLeaf',
                 "seq": seq,
                 "branch": 'master',
             }
@@ -101,6 +101,16 @@ class WikiVersions:
             head_version = self.__versions[self.__head_index]
             diff = self.__get_diff(head_version['seq'], new_seq)
 
+            # Определяем тип Head, чтобы заменить его на новый, если Head является листом
+            new_head_type = head_version['type']
+            if new_head_type == 'HeadLeaf':
+                new_head_type = "Head"
+            elif new_head_type == 'HeadMergeLeaf':
+                new_head_type = "HeadMerge"
+
+            # Заменяем тип head
+            head_version['type'] = new_head_type
+
             self.__versions[new_version_index] = {
                 "id_user": id_user,
                 "commit_msg": message,
@@ -126,7 +136,8 @@ class WikiVersions:
 
             # Затем переходим от одной версии к другой по циклу
             for i in range(0, len(path) - 1):
-                pass
+                next_ver = self.__versions[path[i+1]]
+                self.__switch_versions([path[i+1], next_ver['type']])
 
             return True
         else:
@@ -203,6 +214,18 @@ class WikiVersions:
 
     def get_head_index(self) -> int:
         return self.__head_index
+
+    def get_raw_tree(self):
+        result_raw = ""
+        if self.__graph:
+            for key, values in self.__graph.items():
+                if not values:
+                    result_raw += str(key) + ":" + str(self.__versions[key]['type'])
+                for v in values:
+                    result_raw += str(key) + ":" + str(self.__versions[key]['type']) + " -> " + str(v) + ", "
+            return result_raw
+        else:
+            return None
 
     # GENERATING
 
@@ -297,12 +320,27 @@ class WikiVersions:
             head_type = head['type']
             to_index = next_ver[0]
             to_type = next_ver[1]
+            to_version = self.__versions[to_index]
 
             if head_type == 'Head':
                 if to_type == 'Node':
-                    pass
+                    roll = self.__to_roll(head['seq'], to_version['diff'])
+                    to_version['type'] = 'Head'
+                    to_version['diff'] = []
+                    to_version['seq'] = roll[0]
+                    head['type'] = 'Node'
+                    head['diff'] = roll[1]
+                    head['seq'] = None
+                    self.__head_index = to_index
                 elif to_type == 'Leaf':
-                    pass
+                    roll = self.__to_roll(head['seq'], to_version['diff'])
+                    to_version['type'] = 'HeadLeaf'
+                    to_version['diff'] = []
+                    to_version['seq'] = roll[0]
+                    head['type'] = 'Node'
+                    head['diff'] = roll[1]
+                    head['seq'] = None
+                    self.__head_index = to_index
                 elif to_type == 'Merge':
                     pass
                 elif to_type == 'MergeLeaf':
@@ -311,7 +349,14 @@ class WikiVersions:
                     return False
             elif head_type == 'HeadLeaf':
                 if to_type == 'Node':
-                    pass
+                    roll = self.__to_roll(head['seq'], to_version['diff'])
+                    to_version['type'] = 'Head'
+                    to_version['diff'] = []
+                    to_version['seq'] = roll[0]
+                    head['type'] = 'Leaf'
+                    head['diff'] = roll[1]
+                    head['seq'] = None
+                    self.__head_index = to_index
                 elif to_type == 'Merge':
                     pass
                 else:
@@ -385,9 +430,14 @@ class WikiVersions:
 
     # Вывод всего графа для отладки
     def __print_graph(self, graph):
-        for key, values in graph.items():
-            for v in values:
-                print(str(key) + " -> " + str(v))
+        if self.__graph:
+            for key, values in graph.items():
+                if not values:
+                    print(str(key) + ":" + str(self.__versions[key]['type']))
+                for v in values:
+                    print(str(key) + ":" + str(self.__versions[key]['type']) + " -> " + str(v))
+        else:
+            print("Tree not found!")
 
     # Добавление новой версии в граф
     def __append_version(self, graph, prev, new):

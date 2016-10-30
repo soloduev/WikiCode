@@ -22,7 +22,7 @@
 from WikiCode.apps.wiki.src.future.wiki_versions import wiki_versions as wv_test
 import pickle
 
-# Version:       0.008
+# Version:       0.009
 # Total Tests:   9
 
 
@@ -125,7 +125,7 @@ class WikiVersionsTest(object):
 
             wv.create_versions(1, ["Hello", "world!", "I", "love", "you!"])
             obj = wv.get_archive()
-            need = {'graph': {1: []}, 'versions': {1: {'type': 'Head', 'branch': 'master', 'seq': ['Hello', 'world!', 'I', 'love', 'you!'], 'comments': [], 'date': '', 'id_user': 1, 'commit_msg': '', 'diff': []}}, 'head_index': 1}
+            need = {'graph': {1: []}, 'versions': {1: {'type': 'HeadLeaf', 'branch': 'master', 'seq': ['Hello', 'world!', 'I', 'love', 'you!'], 'comments': [], 'date': '', 'id_user': 1, 'commit_msg': '', 'diff': []}}, 'head_index': 1}
             if need != pickle.loads(obj):
                 self.__add_error("4", "get_archive()")
 
@@ -143,7 +143,7 @@ class WikiVersionsTest(object):
             wv_2 = wv_test.WikiVersions()
             wv_2.load_versions(some_archive)
             obj = wv_2.get_archive()
-            need = {'graph': {1: []}, 'versions': {1: {'type': 'Head', 'branch': 'master', 'seq': ['Hello', 'world!', 'I', 'love', 'you!'], 'comments': [], 'date': '', 'id_user': 1, 'commit_msg': '', 'diff': []}}, 'head_index': 1}
+            need = {'graph': {1: []}, 'versions': {1: {'type': 'HeadLeaf', 'branch': 'master', 'seq': ['Hello', 'world!', 'I', 'love', 'you!'], 'comments': [], 'date': '', 'id_user': 1, 'commit_msg': '', 'diff': []}}, 'head_index': 1}
             if need != pickle.loads(obj):
                 self.__add_error("5", "load_versions()")
 
@@ -269,15 +269,92 @@ class WikiVersionsTest(object):
         test_8(self)
 
         # -------------------------------------
-        # Тестирование накатов
+        # Тестирование накатов, чисто для Node, Head, Leaf. Все без мержей.
         def test_9(self):
             print("WikiVersions: " + test_9.__name__)
 
-            wv = wv_test.WikiVersions()
-            wv.create_versions(1, ['Perfect!', 'This is best SVC!', 'Hello', 'world!', 'I', 'very', 'love', 'we!'])
-            wv.new_version(1, ["Hello", "world!", "I", "love", "you!"])
+            # Варианты версий:
+            ver_1 = ['Perfect!', 'This is best SVC!', 'Hello', 'world!', 'I', 'very', 'love', 'we!']
+            ver_2 = ["Hello", "world!", "I", "love", "you!"]
+            ver_3 = ["Hello", "world!", "I", "love", "me!"]
+            ver_4 = ["Some text...", "And", "love", "we!"]
+            ver_5 = ["Append", "Some text...", "Or", "love", "we", "all!"]
+            ver_6 = ["love"]
 
-            # print(wv.get_dict_version(2)['diff'])
+            wv = wv_test.WikiVersions()
+            wv.create_versions(1, ver_1)
+            wv.new_version(1, ver_2)
+            wv.set_head(2)
+            wv.new_version(1, ver_3)
+            wv.set_head(3)
+            if wv.get_raw_tree() != '1:Node -> 2, 2:Node -> 1, 2:Node -> 3, 3:HeadLeaf -> 2, ':
+                self.__add_error("9", "set_head() - 1")
+            if wv.get_dict_head()['seq'] != ver_3:
+                self.__add_error("9", "set_head() - 1.1")
+            wv.set_head(1)
+            if wv.get_raw_tree() != '1:Head -> 2, 2:Node -> 1, 2:Node -> 3, 3:Leaf -> 2, ':
+                self.__add_error("9", "set_head() - 2")
+            if wv.get_dict_head()['seq'] != ver_1:
+                self.__add_error("9", "set_head() - 2.1")
+            wv.set_head(2)
+            if wv.get_raw_tree() != '1:Node -> 2, 2:Head -> 1, 2:Head -> 3, 3:Leaf -> 2, ':
+                self.__add_error("9", "set_head() - 3")
+            if wv.get_dict_head()['seq'] != ver_2:
+                self.__add_error("9", "set_head() - 3.1")
+            wv.set_head(1)
+            wv.new_version(1, ver_4)
+            if wv.get_raw_tree() != '1:Head -> 2, 1:Head -> 4, 2:Node -> 1, 2:Node -> 3, 3:Leaf -> 2, 4:Leaf -> 1, ':
+                self.__add_error("9", "set_head() - 4")
+            wv.set_head(4)
+            if wv.get_raw_tree() != '1:Node -> 2, 1:Node -> 4, 2:Node -> 1, 2:Node -> 3, 3:Leaf -> 2, 4:HeadLeaf -> 1, ':
+                self.__add_error("9", "set_head() - 5")
+            if wv.get_dict_head()['seq'] != ver_4:
+                self.__add_error("9", "set_head() - 5.1")
+            wv.new_version(1, ver_5)
+            if wv.get_raw_tree() != '1:Node -> 2, 1:Node -> 4, 2:Node -> 1, 2:Node -> 3, 3:Leaf -> 2, 4:Head -> 1, 4:Head -> 5, 5:Leaf -> 4, ':
+                self.__add_error("9", "set_head() - 6")
+            if wv.get_dict_head()['seq'] != ver_4:
+                self.__add_error("9", "set_head() - 6.1")
+            wv.new_version(1, ver_6)
+            if wv.get_raw_tree() != '1:Node -> 2, 1:Node -> 4, 2:Node -> 1, 2:Node -> 3, 3:Leaf -> 2, 4:Head -> 1, 4:Head -> 5, 4:Head -> 6, 5:Leaf -> 4, 6:Leaf -> 4, ':
+                self.__add_error("9", "set_head() - 7")
+            if wv.get_dict_head()['seq'] != ver_4:
+                self.__add_error("9", "set_head() - 7.1")
+            wv.set_head(6)
+            if wv.get_raw_tree() != '1:Node -> 2, 1:Node -> 4, 2:Node -> 1, 2:Node -> 3, 3:Leaf -> 2, 4:Node -> 1, 4:Node -> 5, 4:Node -> 6, 5:Leaf -> 4, 6:HeadLeaf -> 4, ':
+                self.__add_error("9", "set_head() - 8")
+            if wv.get_dict_head()['seq'] != ver_6:
+                self.__add_error("9", "set_head() - 8.1")
+            wv.set_head(5)
+            if wv.get_raw_tree() != '1:Node -> 2, 1:Node -> 4, 2:Node -> 1, 2:Node -> 3, 3:Leaf -> 2, 4:Node -> 1, 4:Node -> 5, 4:Node -> 6, 5:HeadLeaf -> 4, 6:Leaf -> 4, ':
+                self.__add_error("9", "set_head() - 9")
+            if wv.get_dict_head()['seq'] != ver_5:
+                self.__add_error("9", "set_head() - 9.1")
+            wv.set_head(2)
+            if wv.get_raw_tree() != '1:Node -> 2, 1:Node -> 4, 2:Head -> 1, 2:Head -> 3, 3:Leaf -> 2, 4:Node -> 1, 4:Node -> 5, 4:Node -> 6, 5:Leaf -> 4, 6:Leaf -> 4, ':
+                self.__add_error("9", "set_head() - 10")
+            if wv.get_dict_head()['seq'] != ver_2:
+                self.__add_error("9", "set_head() - 10.1")
+            wv.set_head(6)
+            if wv.get_raw_tree() != '1:Node -> 2, 1:Node -> 4, 2:Node -> 1, 2:Node -> 3, 3:Leaf -> 2, 4:Node -> 1, 4:Node -> 5, 4:Node -> 6, 5:Leaf -> 4, 6:HeadLeaf -> 4, ':
+                self.__add_error("9", "set_head() - 11")
+            if wv.get_dict_head()['seq'] != ver_6:
+                self.__add_error("9", "set_head() - 11.1")
+            wv.set_head(3)
+            if wv.get_raw_tree() != '1:Node -> 2, 1:Node -> 4, 2:Node -> 1, 2:Node -> 3, 3:HeadLeaf -> 2, 4:Node -> 1, 4:Node -> 5, 4:Node -> 6, 5:Leaf -> 4, 6:Leaf -> 4, ':
+                self.__add_error("9", "set_head() - 12")
+            if wv.get_dict_head()['seq'] != ver_3:
+                self.__add_error("9", "set_head() - 12.1")
+            wv.set_head(3)
+            if wv.get_raw_tree() != '1:Node -> 2, 1:Node -> 4, 2:Node -> 1, 2:Node -> 3, 3:HeadLeaf -> 2, 4:Node -> 1, 4:Node -> 5, 4:Node -> 6, 5:Leaf -> 4, 6:Leaf -> 4, ':
+                self.__add_error("9", "set_head() - 13")
+            if wv.get_dict_head()['seq'] != ver_3:
+                self.__add_error("9", "set_head() - 13.1")
+            wv.set_head(1)
+            if wv.get_raw_tree() != '1:Head -> 2, 1:Head -> 4, 2:Node -> 1, 2:Node -> 3, 3:Leaf -> 2, 4:Node -> 1, 4:Node -> 5, 4:Node -> 6, 5:Leaf -> 4, 6:Leaf -> 4, ':
+                self.__add_error("9", "set_head() - 13")
+            if wv.get_dict_head()['seq'] != ver_1:
+                self.__add_error("9", "set_head() - 13.1")
 
         test_9(self)
 
