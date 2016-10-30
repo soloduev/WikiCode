@@ -22,8 +22,8 @@
 from WikiCode.apps.wiki.src.future.wiki_versions import wiki_versions as wv_test
 import pickle
 
-# Version:       0.012
-# Total Tests:   12
+# Version:       0.013
+# Total Tests:   13
 
 
 class WikiVersionsTest(object):
@@ -451,4 +451,31 @@ class WikiVersionsTest(object):
                 self.__add_error("12", "get_head() - 3")
 
         test_12(self)
+
+        # -------------------------------------
+        # Тестирование получения diff версий
+        def test_13(self):
+            print("WikiVersions: " + test_13.__name__)
+
+            wv = wv_test.WikiVersions()
+            wv.create_versions(1, ["Hello", "world!", "I", "love", "you!"])
+            wv.new_version(1, ["Hello", "world!", "I", "love", "me!"])
+            wv.set_head(2)
+            wv.new_version(1, ["Hi", "world!", "I", "love", "me!"])
+            wv.set_head(3)
+            wv.new_version(1, ["Hi", "planet!", "I", "love", "me!"])
+            wv.set_head(1)
+            wv.new_version(1, ["What", "is", "me!", "a"])
+            wv.set_head(5)
+            wv.new_version(1, ["What", "me!", "a", "!"])
+            wv.set_head(6)
+
+            if wv.get_diff(4) != (((1, 'world!'),), ((1, 'planet!'),)):
+                self.__add_error("13", "get_diff(4)")
+
+            if wv.get_diff(1) != (((0, 'What'), (1, 'is'), (2, 'me!'), (3, 'a')), ((0, 'Hello'), (1, 'world!'), (2, 'I'), (3, 'love'), (4, 'you!'))):
+                self.__add_error("13", "get_diff(1)")
+
+        test_13(self)
+
 
