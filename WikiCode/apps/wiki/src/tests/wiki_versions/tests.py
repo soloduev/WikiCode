@@ -22,8 +22,8 @@
 from WikiCode.apps.wiki.src.future.wiki_versions import wiki_versions as wv_test
 import pickle
 
-# Version:       0.005
-# Total Tests:   4
+# Version:       0.006
+# Total Tests:   5
 
 
 class WikiVersionsTest(object):
@@ -77,7 +77,7 @@ class WikiVersionsTest(object):
 
     def __tests(self):
         # -------------------------------------
-        # СОЗДАНИЕ СПИСКОВ ДОСТУПА
+        # Создание версий
         def test_1(self):
             print("WikiVersions: " + test_1.__name__)
             wv = wv_test.WikiVersions()
@@ -133,35 +133,41 @@ class WikiVersionsTest(object):
             print("WikiVersions: " + test_4.__name__)
             wv = wv_test.WikiVersions()
 
-            wv.create_versions(1,1,["Hello!\n", "world!"])
-
-            # print(wv.get_xml_str())
-            # obj = wv.get_archive()
-
-            # print(pickle.loads(obj))
+            wv.create_versions(1, ["Hello", "world!", "I", "love", "you!"])
+            obj = wv.get_archive()
+            need = {'graph': {1: []}, 'versions': {1: {'type': 'Head', 'branch': 'master', 'seq': ['Hello', 'world!', 'I', 'love', 'you!'], 'comments': [], 'date': '', 'id_user': 1, 'commit_msg': '', 'diff': []}}, 'head_index': 1}
+            if need != pickle.loads(obj):
+                self.__add_error("4", "get_archive()")
 
         test_4(self)
 
         # -------------------------------------
-        # Тестирование загрузки конфигурационного файла
+        # Тестирование загрузки архива
         def test_5(self):
             print("WikiVersions: " + test_5.__name__)
 
             wv = wv_test.WikiVersions()
-            wv.create_versions(1, 1, ["Hello!\n", "world!"])
+            wv.create_versions(1, ["Hello", "world!", "I", "love", "you!"])
             some_archive = wv.get_archive()
 
             wv_2 = wv_test.WikiVersions()
-            wv_2.load_versions("gj")
-
-            if wv_2.get_xml_str() != "": self.__add_error("5", "get_archive()")
-            if wv_2.get_head_index() != -1: self.__add_error("5", "get_archive()")
-
-            wv_3 = wv_test.WikiVersions()
-            wv_3.load_versions(some_archive)
-
-            # wv_3.get_xml_str()
-            if wv_3.get_head_index() != 1: self.__add_error("5", "get_archive()")
+            wv_2.load_versions(some_archive)
+            obj = wv_2.get_archive()
+            need = {'graph': {1: []}, 'versions': {1: {'type': 'Head', 'branch': 'master', 'seq': ['Hello', 'world!', 'I', 'love', 'you!'], 'comments': [], 'date': '', 'id_user': 1, 'commit_msg': '', 'diff': []}}, 'head_index': 1}
+            if need != pickle.loads(obj):
+                self.__add_error("5", "load_versions()")
 
         test_5(self)
+
+        # -------------------------------------
+        # Тестирование создание новой версии
+        def test_6(self):
+            print("WikiVersions: " + test_6.__name__)
+
+            wv = wv_test.WikiVersions()
+            wv.create_versions(1, ["Hello", "world!", "I", "love", "you!"])
+
+
+
+        test_6(self)
 

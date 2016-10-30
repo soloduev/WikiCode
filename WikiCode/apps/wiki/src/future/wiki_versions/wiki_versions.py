@@ -17,29 +17,26 @@
 #   You should have received a copy of the GNU Affero General Public License
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
 
-import xml.etree.ElementTree as ET
 import pickle
-from xml.dom.minidom import parseString
 from WikiCode.apps.wiki.src.future.wiki_versions import config as CONFIG
 
 
 class WikiVersions:
     """
-       :VERSION: 0.6
+       :VERSION: 0.7
        Система контроля версий для md конспектов.
        Жует только md конспекты и собственный архив с версиями.
-       Архив представляет из себя обычный zip/tar файл, в котором перечислены текстовые файлы версий,
-       а также, единая папка с файлами, которые отличаются от md конспектов.
+       Архив представляет из себя обычный сериализованный python файл, в котором хранится вся информация о текущей
+       версии и всех изменениях.
 
        Класс хранит все версии в виде разниц между файлами.
        В виде целого файла, хранит лишь текущую его версию.
        """
 
     def __init__(self):
-        self.__versions = []  # Список всех версий. Каждый элемент представляет из себя кортеж со следующими значениями:
-        # [(id_user, commit_msg, comment, diff, date, seq), ... ]
-        self.__head_index = -1  # Индекс HEAD версии
-        self.__xml_graph = ""  # Граф версий
+        self.__graph = None
+        self.__versions = None
+        self.__head_index = None
 
     # ---------------
     # Public methods:
@@ -47,36 +44,31 @@ class WikiVersions:
 
     # LOADS AND CREATING
 
-    def create_versions(self, id_publication: int, user_id: int, seq: list, comment: str = "", commit_msg: str = ""):
+    def create_versions(self, id_user: int, seq: list, comment: str = "", commit_msg: str = "", date: str = ""):
         """Принимает id конспекта и его md текст. Создает файл первой версии. То есть, сам файл."""
-        # Сначала, создаем xml граф версий
-        root = ET.Element("WikiVersions")
-        root.set("id", str(id_publication))
-        default_branch = ET.Element("branch")
-        default_branch.set("name", "default")
-        first_version = ET.Element("version")
-        first_version.set("type", "head")
-        first_version.text = "1"
-        default_branch.append(first_version)
-        root.append(default_branch)
-        self.__xml_graph = ET.tostring(root)
-
-        # Затем, создаем первую версию
-        new_version = (user_id, commit_msg, comment, (), None, seq)
-
-        self.__versions.clear()
-        self.__versions.append(new_version)
-
-        # Задаем index head версии
+        self.__graph = {1: []}
+        self.__versions = {
+            1: {
+                "id_user": id_user,
+                "commit_msg": commit_msg,
+                "comments": [],
+                "diff": [],
+                "date": date,
+                "type": 'Head',
+                "seq": seq,
+                "branch": 'master',
+            }
+        }
         self.__head_index = 1
+
 
     def get_archive(self):
         """Возвращает архив всех версий."""
-        if self.__head_index != -1:
+        if self.__head_index:
             data = {
                 "head_index": self.__head_index,
                 "versions": self.__versions,
-                "graph": self.__xml_graph
+                "graph": self.__graph
             }
             # Сериализуем данные в архив
             archive = pickle.dumps(data)
@@ -90,27 +82,23 @@ class WikiVersions:
             data = pickle.loads(archive)
             self.__head_index = data["head_index"]
             self.__versions = data["versions"]
-            self.__xml_graph = data["graph"]
+            self.__graph = data["graph"]
         except TypeError:
             print("WikiVersions can't load archive")
 
-    def load(self, path_to_archive):
-        """Загружает архив по его пути."""
-        pass
-
     # WORK WITH VERSIONS
 
-    def new_version(self, md_str: str, comments: list, message: str = None):
+    def new_version(self, new_seq: list, id_user: int, message: str = None):
         """Создает новую версию для head.
-        Принимает обновленный md text и список комментариев к абзацам.
-        Возвращает новый список комментариев, для их обновления в БД."""
-        pass
+        Принимает обновленную последовательность, id пользователя, который произвел
+        новую версию, и сообщение к коммиту"""
+
+
 
     def set_head(self, num_version: int):
         """Устанавливает head любой из версий.
-        То есть, производит откаты и накаты и меняет основной файл.
-        Возвращает новый список комментариев, для их обновления в БД."""
-        pass
+        То есть, производит откаты и накаты и меняет основной файл."""
+
 
     def set_comment(self, num_version: int, comment: int):
         """Добавляет комментарий к любой из версий"""
@@ -128,8 +116,8 @@ class WikiVersions:
         pass
 
     def get_head(self):
-        """Возвращает md файл."""
-        pass
+        """Возвращает последовательность HEAD версии"""
+
 
     def get_diff(self, version: int):
         """Возвращает в виде списка разницу между предыдущей версией"""
@@ -163,25 +151,14 @@ class WikiVersions:
 
     def show_head(self):
         """Отображает краткую информацию о head версии"""
-        pass
+
 
     def show_dif(self, version: int):
         """Отображает разницу между предыдущей версией"""
         pass
 
-    def get_xml_str(self) -> str:
-        """Возвращает xml строку текущих комментариев"""
-        if self.__xml_graph:
-            result_str = self.__format_xml(self.__xml_graph)
-            result_str = result_str.replace('\n', '')
-            result_str = result_str.replace('\t', '')
-            result_str = result_str.replace('>', '>\n')
-            return result_str
-        else:
-            return ""
-
     def get_head_index(self) -> int:
-        return self.__head_index
+        pass
 
     # GENERATING
 
@@ -265,7 +242,3 @@ class WikiVersions:
             seq_add.append((i, seq_2[i]))
 
         return tuple(seq_del), tuple(seq_add)
-
-    def __format_xml(self, xml_str):
-        """Выравнивание xml строки"""
-        return parseString(xml_str).toprettyxml()
