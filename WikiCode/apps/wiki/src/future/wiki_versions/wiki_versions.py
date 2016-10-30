@@ -23,7 +23,7 @@ from WikiCode.apps.wiki.src.future.wiki_versions import config as CONFIG
 
 class WikiVersions:
     """
-       :VERSION: 0.11
+       :VERSION: 0.12
        Система контроля версий для md конспектов.
        Жует только md конспекты и собственный архив с версиями.
        Архив представляет из себя обычный сериализованный python файл, в котором хранится вся информация о текущей
@@ -60,7 +60,6 @@ class WikiVersions:
             }
         }
         self.__head_index = 1
-
 
     def get_archive(self):
         """Возвращает архив всех версий."""
@@ -126,7 +125,6 @@ class WikiVersions:
         else:
             return False
 
-
     def set_head(self, num_version: int):
         """Устанавливает head любой из версий.
         То есть, производит откаты и накаты и меняет основной файл."""
@@ -136,16 +134,20 @@ class WikiVersions:
 
             # Затем переходим от одной версии к другой по циклу
             for i in range(0, len(path) - 1):
-                next_ver = self.__versions[path[i+1]]
-                self.__switch_versions([path[i+1], next_ver['type']])
+                next_ver = self.__versions[path[i + 1]]
+                self.__switch_versions([path[i + 1], next_ver['type']])
 
             return True
         else:
             return False
 
-    def set_comment(self, num_version: int, comment: int):
+    def set_comment(self, num_version: int, comment: str):
         """Добавляет комментарий к любой из версий"""
-        pass
+        if self.__graph:
+            if 0 < num_version <= len(self.__graph):
+                self.__versions[num_version]['comments'].append(comment)
+        else:
+            return False
 
     def get_version(self, num_version: int):
         """Возвращает определенную версию.
@@ -160,7 +162,6 @@ class WikiVersions:
 
     def get_head(self):
         """Возвращает последовательность HEAD версии"""
-
 
     def get_diff(self, version: int):
         """Возвращает в виде списка разницу между предыдущей версией"""

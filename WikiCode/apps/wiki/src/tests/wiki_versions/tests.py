@@ -22,8 +22,8 @@
 from WikiCode.apps.wiki.src.future.wiki_versions import wiki_versions as wv_test
 import pickle
 
-# Version:       0.009
-# Total Tests:   9
+# Version:       0.010
+# Total Tests:   10
 
 
 class WikiVersionsTest(object):
@@ -357,4 +357,32 @@ class WikiVersionsTest(object):
                 self.__add_error("9", "set_head() - 13.1")
 
         test_9(self)
+
+        # -------------------------------------
+        # Тестирование загрузки архива
+        def test_10(self):
+            print("WikiVersions: " + test_10.__name__)
+
+            wv = wv_test.WikiVersions()
+            wv.create_versions(1, ["Hello", "world!", "I", "love", "you!"])
+            wv.new_version(1, ["Hello", "world!", "I", "love", "me!"])
+            wv.set_head(2)
+            wv.new_version(1, ["Hi", "world!", "I", "love", "me!"])
+            wv.set_head(3)
+            wv.new_version(1, ["Hi", "planet!", "I", "love", "me!"])
+            wv.set_head(4)
+
+            wv.set_comment(2, "Edit you to me")
+            wv.set_comment(2, "Really!")
+
+            if wv.get_dict_version(2)['comments'] != ['Edit you to me', 'Really!']:
+                self.__add_error("10", "set_comments() - 1")
+            if wv.get_dict_version(3)['comments']:
+                self.__add_error("10", "set_comments() - 2")
+
+            wv.set_comment(4, "Wow!")
+            if wv.get_dict_version(4)['comments'] != ['Wow!']:
+                self.__add_error("10", "set_comments() - 3")
+
+        test_10(self)
 
