@@ -22,8 +22,8 @@
 from WikiCode.apps.wiki.src.future.wiki_versions import wiki_versions as wv_test
 import pickle
 
-# Version:       0.007
-# Total Tests:   7
+# Version:       0.008
+# Total Tests:   9
 
 
 class WikiVersionsTest(object):
@@ -189,7 +189,7 @@ class WikiVersionsTest(object):
             if wv.get_dict_version(1) != need:
                 self.__add_error("7", "get_dict_version(1)")
 
-            need = {'branch': 'unknown', 'comments': [], 'type': 'Node', 'date': '', 'diff': (((0, 'Hello'), (2, 'I'), (4, 'you!')), ((0, 'Hi'), (2, 'We'), (4, 'me!'), (5, 'Bye!'))), 'seq': None, 'id_user': 1, 'commit_msg': ''}
+            need = {'branch': 'unknown', 'comments': [], 'type': 'Leaf', 'date': '', 'diff': (((0, 'Hello'), (2, 'I'), (4, 'you!')), ((0, 'Hi'), (2, 'We'), (4, 'me!'), (5, 'Bye!'))), 'seq': None, 'id_user': 1, 'commit_msg': ''}
             if wv.get_dict_version(2) != need:
                 self.__add_error("7", "get_dict_version(2)")
 
@@ -197,9 +197,87 @@ class WikiVersionsTest(object):
             wv.new_version(1, ["Hi", "world!", "I", "love", "we!"])
             # wv.show_tree()
 
-            need = {'seq': None, 'comments': [], 'type': 'Node', 'branch': 'unknown', 'diff': (((0, 'Hello'), (4, 'you!')), ((0, 'Hi'), (4, 'we!'))), 'date': '', 'id_user': 1, 'commit_msg': ''}
+            need = {'seq': None, 'comments': [], 'type': 'Leaf', 'branch': 'unknown', 'diff': (((0, 'Hello'), (4, 'you!')), ((0, 'Hi'), (4, 'we!'))), 'date': '', 'id_user': 1, 'commit_msg': ''}
             if wv.get_dict_version(4) != need:
                 self.__add_error("7", "get_dict_version(4)")
 
         test_7(self)
+
+        # -------------------------------------
+        # Тестирование накатов версий
+        def test_8(self):
+            print("WikiVersions: " + test_8.__name__)
+
+            wv = wv_test.WikiVersions()
+
+            result = wv._WikiVersions__to_roll(["Hello", "world!", "I", "love", "you!"],
+                                      (((0, 'Hello'), (2, 'I'), (4, 'you!')),
+                                       ((0, 'Hi'), (2, 'We'), (4, 'me!'), (5, 'Bye!'))))
+
+            need = ['Hi', 'world!', 'We', 'love', 'me!', 'Bye!']
+            if result[0] != need:
+                self.__add_error("8", "_WikiVersions__to_roll() - 1")
+            need = (((0, 'Hi'), (2, 'We'), (4, 'me!'), (5, 'Bye!')), ((0, 'Hello'), (2, 'I'), (4, 'you!')))
+            if result[1] != need:
+                self.__add_error("8", "_WikiVersions__to_roll() - 1.1")
+
+
+            result = wv._WikiVersions__to_roll(["Hello", "world!", "I", "love", "you!"],
+                                               (((4, 'you!'),),
+                                                ((0, 'Perfect!'), (1, 'This is best SVC!'), (5, 'very'), (7, 'we!'))))
+
+            need = ['Perfect!', 'This is best SVC!', 'Hello', 'world!', 'I', 'very', 'love', 'we!']
+            if result[0] != need:
+                self.__add_error("8", "_WikiVersions__to_roll() - 2")
+            need = (((0, 'Perfect!'), (1, 'This is best SVC!'), (5, 'very'), (7, 'we!')), ((4, 'you!'),))
+            if result[1] != need:
+                self.__add_error("8", "_WikiVersions__to_roll() - 2.1")
+
+
+            result = wv._WikiVersions__to_roll(["Hello", "world!", "I", "love", "you!"],
+                                               (((0, 'Hi'), (1, 'world!'), (2, 'I'), (3, 'love'), (4, 'you!')), ()))
+
+            need = []
+            if result[0] != need:
+                self.__add_error("8", "_WikiVersions__to_roll() - 3")
+            need = ((), ((0, 'Hello'), (1, 'world!'), (2, 'I'), (3, 'love'), (4, 'you!')))
+            if result[1] != need:
+                self.__add_error("8", "_WikiVersions__to_roll() - 3.1")
+
+            result = wv._WikiVersions__to_roll(["Hello", "world!", "I", "love", "you!"],
+                                               (((0, 'Hi'), (1, 'world!'), (2, 'I'), (3, 'love'), (4, 'you!')),
+                                                ((0, 'My'), (1, 'name'), (2, 'is'), (3, 'Charls'), (4, 'Darvin'))))
+
+            need = ['My', 'name', 'is', 'Charls', 'Darvin']
+            if result[0] != need:
+                self.__add_error("8", "_WikiVersions__to_roll() - 4")
+            need = (((0, 'My'), (1, 'name'), (2, 'is'), (3, 'Charls'), (4, 'Darvin')), ((0, 'Hello'), (1, 'world!'), (2, 'I'), (3, 'love'), (4, 'you!')))
+            if result[1] != need:
+                self.__add_error("8", "_WikiVersions__to_roll() - 4.1")
+
+
+            result = wv._WikiVersions__to_roll([],
+                                               ((), ((0, 'My'), (1, 'name'), (2, 'is'), (3, 'Charls'), (4, 'Darvin'))))
+
+            need = ['My', 'name', 'is', 'Charls', 'Darvin']
+            if result[0] != need:
+                self.__add_error("8", "_WikiVersions__to_roll() - 5")
+            need = (((0, 'My'), (1, 'name'), (2, 'is'), (3, 'Charls'), (4, 'Darvin')), ())
+            if result[1] != need:
+                self.__add_error("8", "_WikiVersions__to_roll() - 4.1")
+
+        test_8(self)
+
+        # -------------------------------------
+        # Тестирование накатов
+        def test_9(self):
+            print("WikiVersions: " + test_9.__name__)
+
+            wv = wv_test.WikiVersions()
+            wv.create_versions(1, ['Perfect!', 'This is best SVC!', 'Hello', 'world!', 'I', 'very', 'love', 'we!'])
+            wv.new_version(1, ["Hello", "world!", "I", "love", "you!"])
+
+            # print(wv.get_dict_version(2)['diff'])
+
+        test_9(self)
 

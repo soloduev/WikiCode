@@ -23,7 +23,7 @@ from WikiCode.apps.wiki.src.future.wiki_versions import config as CONFIG
 
 class WikiVersions:
     """
-       :VERSION: 0.9
+       :VERSION: 0.10
        Система контроля версий для md конспектов.
        Жует только md конспекты и собственный архив с версиями.
        Архив представляет из себя обычный сериализованный python файл, в котором хранится вся информация о текущей
@@ -107,7 +107,7 @@ class WikiVersions:
                 "comments": [],
                 "diff": diff,
                 "date": date,
-                "type": 'Node',
+                "type": 'Leaf',
                 "seq": None,
                 "branch": 'unknown',  # TODO: Реализовать получение имени ветки от head
             }
@@ -120,7 +120,17 @@ class WikiVersions:
     def set_head(self, num_version: int):
         """Устанавливает head любой из версий.
         То есть, производит откаты и накаты и меняет основной файл."""
+        if self.__graph:
+            # Сначала получаем путь от head версии, до той, на которую необходимо переключиться
+            path = self.__find_shortest_path(self.__graph, self.__head_index, num_version)
 
+            # Затем переходим от одной версии к другой по циклу
+            for i in range(0, len(path) - 1):
+                pass
+
+            return True
+        else:
+            return False
 
     def set_comment(self, num_version: int, comment: int):
         """Добавляет комментарий к любой из версий"""
@@ -276,6 +286,83 @@ class WikiVersions:
             seq_add.append((i, seq_2[i]))
 
         return tuple(seq_del), tuple(seq_add)
+
+    def __switch_versions(self, next_ver):
+        """Данный метод переключает РЯДОМ стоящие версии.
+        Аргумент next_ver представляет из себя пару: индекс версии и тип версии, на которую необходимо переключить
+        head версию.
+        Например: [31, "Merge"]. """
+        if self.__graph:
+            head = self.__versions[self.__head_index]
+            head_type = head['type']
+            to_index = next_ver[0]
+            to_type = next_ver[1]
+
+            if head_type == 'Head':
+                if to_type == 'Node':
+                    pass
+                elif to_type == 'Leaf':
+                    pass
+                elif to_type == 'Merge':
+                    pass
+                elif to_type == 'MergeLeaf':
+                    pass
+                else:
+                    return False
+            elif head_type == 'HeadLeaf':
+                if to_type == 'Node':
+                    pass
+                elif to_type == 'Merge':
+                    pass
+                else:
+                    return False
+            elif head_type == 'HeadMerge':
+                if to_type == 'Node':
+                    pass
+                elif to_type == 'Leaf':
+                    pass
+                elif to_type == 'Merge':
+                    pass
+                elif to_type == 'MergeLeaf':
+                    pass
+                else:
+                    return False
+            elif head_type == 'HeadMergeLeaf':
+                if to_type == 'Node':
+                    pass
+                elif to_type == 'Merge':
+                    pass
+                else:
+                    return False
+            else:
+                return False
+        else:
+            return False
+
+    def __to_roll(self, seq, diff):
+        """Производить накат версии.
+        Возвращает кортеж.
+        Первый параметр кортежа - новая последовательность seq.
+        Второй парметр кортежа, это новый порожденный diff."""
+
+        # Порождаем новую последовательность, проходим по всем удалениям, и удаляем части
+        new_seq = seq.copy()
+        offset = 0
+        for item in diff[0]:
+            index = item[0]
+            value = item[1]
+            del new_seq[index - offset]
+            offset += 1
+
+        # Теперь, добавляем новые
+        for item in diff[1]:
+            index = item[0]
+            value = item[1]
+            new_seq.insert(index, value)
+
+        new_diff = self.__get_diff(new_seq, seq)
+
+        return new_seq, new_diff
 
     # WORK WITH GRAPH
     # Все методы ниже, работают чисто на уровне переменной self.__graph
