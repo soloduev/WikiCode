@@ -22,8 +22,8 @@
 from WikiCode.apps.wiki.src.future.wiki_versions import wiki_versions as wv_test
 import pickle
 
-# Version:       0.011
-# Total Tests:   11
+# Version:       0.012
+# Total Tests:   12
 
 
 class WikiVersionsTest(object):
@@ -418,4 +418,37 @@ class WikiVersionsTest(object):
                 self.__add_error("11", "get_version(5)")
 
         test_11(self)
+
+        # -------------------------------------
+        # Тестирование получения head версии
+        def test_12(self):
+            print("WikiVersions: " + test_12.__name__)
+
+            wv = wv_test.WikiVersions()
+            wv.create_versions(1, ["Hello", "world!", "I", "love", "you!"])
+            wv.new_version(1, ["Hello", "world!", "I", "love", "me!"])
+            wv.set_head(2)
+            wv.new_version(1, ["Hi", "world!", "I", "love", "me!"])
+            wv.set_head(3)
+            wv.new_version(1, ["Hi", "planet!", "I", "love", "me!"])
+            wv.set_head(1)
+            wv.new_version(1, ["What", "is", "me!", "a"])
+            wv.set_head(5)
+            wv.new_version(1, ["What", "me!", "a", "!"])
+            wv.set_head(6)
+
+            if wv.get_head() != ["What", "me!", "a", "!"]:
+                self.__add_error("12", "get_head() - 1")
+
+            wv.set_head(1)
+
+            if wv.get_head() != ["Hello", "world!", "I", "love", "you!"]:
+                self.__add_error("12", "get_head() - 2")
+
+            wv.set_head(4)
+
+            if wv.get_head() != ["Hi", "planet!", "I", "love", "me!"]:
+                self.__add_error("12", "get_head() - 3")
+
+        test_12(self)
 

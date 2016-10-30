@@ -23,7 +23,7 @@ from WikiCode.apps.wiki.src.future.wiki_versions import config as CONFIG
 
 class WikiVersions:
     """
-       :VERSION: 0.13
+       :VERSION: 0.14
        Система контроля версий для md конспектов.
        Жует только md конспекты и собственный архив с версиями.
        Архив представляет из себя обычный сериализованный python файл, в котором хранится вся информация о текущей
@@ -180,6 +180,10 @@ class WikiVersions:
 
     def get_head(self):
         """Возвращает последовательность HEAD версии"""
+        if self.__graph:
+            return self.__versions[self.__head_index]['seq']
+        else:
+            return False
 
     def get_diff(self, version: int):
         """Возвращает в виде списка разницу между предыдущей версией"""
