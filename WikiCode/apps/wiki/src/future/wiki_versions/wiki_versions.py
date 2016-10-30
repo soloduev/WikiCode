@@ -23,7 +23,7 @@ from WikiCode.apps.wiki.src.future.wiki_versions import config as CONFIG
 
 class WikiVersions:
     """
-       :VERSION: 0.7
+       :VERSION: 0.8
        Система контроля версий для md конспектов.
        Жует только md конспекты и собственный архив с версиями.
        Архив представляет из себя обычный сериализованный python файл, в котором хранится вся информация о текущей
@@ -242,3 +242,60 @@ class WikiVersions:
             seq_add.append((i, seq_2[i]))
 
         return tuple(seq_del), tuple(seq_add)
+
+    # WORK WITH GRAPH
+    # Все методы ниже, работают чисто на уровне переменной self.__graph
+
+    # Нахождение наикротчайшего пути
+    def __find_shortest_path(self, graph, start, end, path=[]):
+        path = path + [start]
+        if start == end:
+            return path
+        if not start in graph:
+            return None
+        shortest = None
+        for node in graph[start]:
+            if node not in path:
+                newpath = self.__find_shortest_path(graph, node, end, path)
+                if newpath:
+                    if not shortest or len(newpath) < len(shortest):
+                        shortest = newpath
+        return shortest
+
+    # Вывод всего графа для отладки
+    def __print_graph(self, graph):
+        for key, values in graph.items():
+            for v in values:
+                print(str(key) + " -> " + str(v))
+
+    # Добавление новой версии в граф
+    def __append_version(self, graph, prev, new):
+        graph[prev].append(new)
+        graph[new] = [prev]
+
+    # Проверяет, является ли версия листом
+    def __is_leaf(self, graph, version):
+        links = graph[version]
+        if len(graph) == 1:
+            return True
+        elif version != 1 and len(links) == 1:
+            return True
+        else:
+            return False
+
+    # Слияние версий
+    def __merge_versions(self, graph, versions, new):
+        # Сначала проверяем все версии, являются ли они листами
+        is_leafs = True
+        for version in versions:
+            if not self.__is_leaf(graph, version):
+                is_leafs = False
+                break
+        if is_leafs:
+            graph[new] = []
+            for version in versions:
+                graph[version].append(new)
+                graph[new].append(version)
+            return True
+        else:
+            return False
