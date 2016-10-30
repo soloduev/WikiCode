@@ -22,8 +22,8 @@
 from WikiCode.apps.wiki.src.future.wiki_versions import wiki_versions as wv_test
 import pickle
 
-# Version:       0.010
-# Total Tests:   10
+# Version:       0.011
+# Total Tests:   11
 
 
 class WikiVersionsTest(object):
@@ -359,7 +359,7 @@ class WikiVersionsTest(object):
         test_9(self)
 
         # -------------------------------------
-        # Тестирование загрузки архива
+        # Тестирование установки комментариев
         def test_10(self):
             print("WikiVersions: " + test_10.__name__)
 
@@ -385,4 +385,37 @@ class WikiVersionsTest(object):
                 self.__add_error("10", "set_comments() - 3")
 
         test_10(self)
+
+        # -------------------------------------
+        # Тестирование получения seq любой версии. То есть, получения, любой версии
+        def test_11(self):
+            print("WikiVersions: " + test_11.__name__)
+
+            wv = wv_test.WikiVersions()
+            wv.create_versions(1, ["Hello", "world!", "I", "love", "you!"])
+            wv.new_version(1, ["Hello", "world!", "I", "love", "me!"])
+            wv.set_head(2)
+            wv.new_version(1, ["Hi", "world!", "I", "love", "me!"])
+            wv.set_head(3)
+            wv.new_version(1, ["Hi", "planet!", "I", "love", "me!"])
+            wv.set_head(1)
+            wv.new_version(1, ["What", "is", "me!", "a"])
+            wv.set_head(5)
+            wv.new_version(1, ["What", "me!", "a", "!"])
+            wv.set_head(6)
+
+            if wv.get_version(1) != ["Hello", "world!", "I", "love", "you!"]:
+                self.__add_error("11", "get_version(1)")
+            if wv.get_version(5) != ["What", "is", "me!", "a"]:
+                self.__add_error("11", "get_version(5)")
+            if wv.get_version(2) != ["Hello", "world!", "I", "love", "me!"]:
+                self.__add_error("11", "get_version(2)")
+            if wv.get_version(4) != ["Hi", "planet!", "I", "love", "me!"]:
+                self.__add_error("11", "get_version(4)")
+            if wv.get_version(6) != ["What", "me!", "a", "!"]:
+                self.__add_error("11", "get_version(6)")
+            if wv.get_version(5) != ["What", "is", "me!", "a"]:
+                self.__add_error("11", "get_version(5)")
+
+        test_11(self)
 

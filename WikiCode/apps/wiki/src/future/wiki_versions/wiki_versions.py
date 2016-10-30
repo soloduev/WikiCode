@@ -23,7 +23,7 @@ from WikiCode.apps.wiki.src.future.wiki_versions import config as CONFIG
 
 class WikiVersions:
     """
-       :VERSION: 0.12
+       :VERSION: 0.13
        Система контроля версий для md конспектов.
        Жует только md конспекты и собственный архив с версиями.
        Архив представляет из себя обычный сериализованный python файл, в котором хранится вся информация о текущей
@@ -152,8 +152,26 @@ class WikiVersions:
     def get_version(self, num_version: int):
         """Возвращает определенную версию.
         То есть, делает откаты, накаты но не меняет файл.
-        Возвращает md файл и список комментариев, для получения их в БД."""
-        pass
+        Возвращает md файл(seq)"""
+        if self.__graph:
+            if 0 < num_version <= len(self.__graph):
+                # Запоминаем индекс текущей head версии
+                head_index = self.__head_index
+
+                # Получаем head нужной версии
+                self.set_head(num_version)
+
+                # Затем, получаем seq head версии
+                result_seq = self.__versions[self.__head_index]['seq']
+
+                # И возвращаем обратно head версию
+                self.set_head(head_index)
+
+                return result_seq
+            else:
+                return False
+        else:
+            return False
 
     def merge(self, versions: list):
         """Производит объединение любых версий в одну.
