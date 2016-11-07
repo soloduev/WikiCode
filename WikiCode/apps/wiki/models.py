@@ -49,6 +49,7 @@ class Publication(models.Model):
     tree_path = models.TextField()
     read = models.BigIntegerField()
     main_comments = models.TextField()
+    versions = models.BinaryField(blank=True)
 
     def __str__(self):
         return str(self.id_publication)

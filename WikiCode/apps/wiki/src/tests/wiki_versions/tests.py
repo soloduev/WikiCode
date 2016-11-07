@@ -19,8 +19,10 @@
 
 # ТЕСТИРОВАНИЕ ФУНКЦИОНАЛА WIKIVERSIONS
 
-from WikiCode.apps.wiki.src.future.wiki_versions import wiki_versions as wv_test
 import pickle
+
+from WikiCode.apps.wiki.src.modules.wiki_versions import wiki_versions as wv_test
+
 
 # Version:       0.013
 # Total Tests:   13

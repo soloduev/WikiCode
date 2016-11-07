@@ -18,7 +18,6 @@
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
 
 import pickle
-from WikiCode.apps.wiki.src.future.wiki_versions import config as CONFIG
 
 
 class WikiVersions:

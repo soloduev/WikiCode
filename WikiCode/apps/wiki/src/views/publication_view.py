@@ -29,6 +29,7 @@ from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.settings import wiki_settings
 from WikiCode.apps.wiki.src.modules.wiki_comments.wiki_comments import WikiComments
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
+from WikiCode.apps.wiki.src.modules.wiki_versions.wiki_versions import WikiVersions
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
 from WikiCode.apps.wiki.src.wiki_markdown import WikiMarkdown
 from .auth import check_auth, get_user_id
@@ -204,8 +205,18 @@ def get_create_page(request):
             publ = Publication.objects.get(id_publication=newid)
             return get_error_page(request,["Конспект с таким id уже существует!"])
         except Publication.DoesNotExist:
+            # Создаем первые комментарии
             wiki_comments = WikiComments()
             wiki_comments.create_comments(newid)
+
+            # Создаем первую версию конспекта
+            wiki_versions = WikiVersions()
+            wm = WikiMarkdown()                 # Получаем все абзацы
+            paragraphs = wm.split(form["text"])
+            wiki_versions.create_versions(id_user=user.id_user,
+                                          seq=list(paragraphs))
+            archive = wiki_versions.get_archive()
+
             new_publication = Publication(
                 id_publication=newid,
                 id_author=user.id_user,
@@ -217,7 +228,8 @@ def get_create_page(request):
                 html_page=ready_page,
                 tree_path=form["folder"],
                 read=0,
-                main_comments=wiki_comments.get_xml_str())
+                main_comments=wiki_comments.get_xml_str(),
+                versions=archive)
 
         # Загружаем дерево пользователя
         wft = WikiFileTree()
