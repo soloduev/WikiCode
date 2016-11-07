@@ -171,7 +171,7 @@ def get_page(request, id):
             "main_comments_count": wiki_comments.get_count()
         }
 
-        return render(request, 'wiki/page.html', context)
+        return render(request, 'wiki/page/page.html', context)
     except Publication.DoesNotExist:
         return get_error_page(request, ["This is publication not found!", "Page not found: page/"+str(id)+"/"])
 
