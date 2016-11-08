@@ -24,8 +24,8 @@ import pickle
 from WikiCode.apps.wiki.src.modules.wiki_versions import wiki_versions as wv_test
 
 
-# Version:       0.014
-# Total Tests:   14
+# Version:       0.015
+# Total Tests:   15
 
 
 class WikiVersionsTest(object):
@@ -512,5 +512,36 @@ branch_1.commit({message: " "});
                 self.__add_error("14", "generate_js()")
 
         test_14(self)
+
+        # -------------------------------------
+        # Тестирование получения количества версий
+        def test_15(self):
+            print("WikiVersions: " + test_15.__name__)
+
+            wv = wv_test.WikiVersions()
+
+            if wv.get_count_versions() != 0:
+                self.__add_error("15", "get_count_versions() - 1")
+
+            wv.create_versions(1, ["Hello", "world!", "I", "love", "you!"])
+
+            if wv.get_count_versions() != 1:
+                self.__add_error("15", "get_count_versions() - 2")
+
+            wv.new_version(1, ["Hello", "world!", "I", "love", "me!"])
+            wv.set_head(2)
+            wv.new_version(1, ["Hi", "world!", "I", "love", "me!"])
+            wv.set_head(3)
+            wv.new_version(1, ["Hi", "planet!", "I", "love", "me!"])
+            wv.set_head(1)
+            wv.new_version(1, ["What", "is", "me!", "a"])
+            wv.set_head(5)
+            wv.new_version(1, ["What", "me!", "a", "!"])
+            wv.set_head(6)
+
+            if wv.get_count_versions() != 6:
+                self.__add_error("15", "get_count_versions() - 3")
+
+        test_15(self)
 
 

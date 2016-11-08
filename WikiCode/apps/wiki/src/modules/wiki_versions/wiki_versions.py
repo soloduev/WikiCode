@@ -22,7 +22,7 @@ import pickle
 
 class WikiVersions:
     """
-       :VERSION: 0.16
+       :VERSION: 0.17
        Система контроля версий для md конспектов.
        Жует только md конспекты и собственный архив с версиями.
        Архив представляет из себя обычный сериализованный python файл, в котором хранится вся информация о текущей
@@ -254,6 +254,12 @@ class WikiVersions:
             return result_raw
         else:
             return None
+
+    def get_count_versions(self) -> int:
+        if self.__graph:
+            return len(self.__versions)
+        else:
+            return 0
 
     # GENERATING
 
