@@ -196,3 +196,34 @@ $("#wiki-btn-send-main-comment").click(function () {
         }
     });
 });
+
+// Сохранение изменений в конспекте
+$("#wiki-style-btn-save-publ").click(function () {
+
+
+    var myMap = {};
+    for (var i = 1; i < md_text.length; i++) {
+        myMap[i.toString()] = md_text[i];
+    }
+
+    myMap["count_paragraphs"] = (md_text.length - 1).toString();
+    $.ajax({
+        type: "POST",
+        url: "save_publication/",
+        data: myMap,
+        dataType: "text",
+        cache: false,
+        success: function(data){
+            if (data == 'eq'){
+                //location.reload();
+            }
+            else if(data == 'not_eq'){
+                location.reload();
+            }
+            else{
+                console.log("ERROR in page.js. Save publ");
+            }
+        }
+    });
+});
+

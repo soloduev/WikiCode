@@ -219,6 +219,12 @@ def add_dynamic_comment(request, id):
 def add_main_comment(request, id):
     return publication_view.get_add_main_comment(request, id)
 
+# Сохранение изменений в конспекте
+@develop_mode_id
+@login_required
+def save_publication(request, id):
+    return publication_view.get_save_publication(request, id)
+
 
 # Здесь не должно быть никаких декораторов!!!
 def login_developer(request):
