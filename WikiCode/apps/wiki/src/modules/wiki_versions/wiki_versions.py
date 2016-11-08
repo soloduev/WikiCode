@@ -22,7 +22,7 @@ import pickle
 
 class WikiVersions:
     """
-       :VERSION: 0.17
+       :VERSION: 0.18
        Система контроля версий для md конспектов.
        Жует только md конспекты и собственный архив с версиями.
        Архив представляет из себя обычный сериализованный python файл, в котором хранится вся информация о текущей
@@ -290,14 +290,14 @@ class WikiVersions:
                             if self.__head_index == branches[i][j]:
                                 str_commits.append(('branch_' + str(i + 1) + '.commit({message: "Head", dotColor: "white"});\n', branches[i][j]))
                             else:
-                                str_commits.append(('branch_' + str(i + 1) + '.commit({message: " "});\n', branches[i][j]))
+                                str_commits.append(('branch_' + str(i + 1) + '.commit({message: " ", onClick: function(commit) { to_version = ' + str(branches[i][j]) + '; show_version();}});\n', branches[i][j]))
                         else:
                             for isc in range(0, len(str_commits)):
                                 if str_commits[isc][1] == branches[i][j-1]:
                                     if self.__head_index == branches[i][j]:
                                         str_commits.insert(isc+1, ('branch_' + str(i + 1) + '.commit({message: " ", dotColor: "white"});\n', branches[i][j]))
                                     else:
-                                        str_commits.insert(isc+1, ('branch_' + str(i + 1) + '.commit({message: " "});\n', branches[i][j]))
+                                        str_commits.insert(isc+1, ('branch_' + str(i + 1) + '.commit({message: " ", onClick: function(commit) { to_version = ' + str(branches[i][j]) + '; show_version();}});\n', branches[i][j]))
             # Добавляем коммиты в результирующую строку
             for sc in str_commits:
                 result_js += sc[0]
