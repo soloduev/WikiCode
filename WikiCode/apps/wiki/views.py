@@ -219,11 +219,19 @@ def add_dynamic_comment(request, id):
 def add_main_comment(request, id):
     return publication_view.get_add_main_comment(request, id)
 
+
 # Сохранение изменений в конспекте
 @develop_mode_id
 @login_required
 def save_publication(request, id):
     return publication_view.get_save_publication(request, id)
+
+
+# Получение абзацев определеноой версии
+@develop_mode_id
+@login_required
+def get_version(request, id):
+    return publication_view.get_get_version(request, id)
 
 
 # Здесь не должно быть никаких декораторов!!!

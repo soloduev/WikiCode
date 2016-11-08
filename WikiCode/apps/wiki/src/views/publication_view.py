@@ -18,7 +18,7 @@
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import datetime
+import datetime, json
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -444,7 +444,7 @@ def get_add_main_comment(request, id):
 
 @csrf_protect
 def get_save_publication(request, id):
-    """Ajax представление. Добавление общего комментария."""
+    """Ajax представление. Сохранение изменений в конспекте."""
 
     if request.method == "POST":
         # Проверяем, аутентифицирован ли пользователь
@@ -492,6 +492,43 @@ def get_save_publication(request, id):
                         return HttpResponse('not_eq', content_type='text/html')
                 else:
                     return HttpResponse('not_eq', content_type='text/html')
+
+            except Publication.DoesNotExist:
+                return get_error_page(request, ["This is publication not found!",
+                                                "Page not found: publ_manager/" + str(id) + "/"])
+    else:
+        return HttpResponse('no', content_type='text/html')
+
+@csrf_protect
+def get_get_version(request, id):
+    """ Ajax представление. Получение конкретной версии конспекта """
+
+    if request.method == "GET":
+        # Проверяем, аутентифицирован ли пользователь
+        if get_user_id(request) == -1:
+            return HttpResponse('no', content_type='text/html')
+        else:
+            # Если пользователь аутентифицирован то, начинаем получать все изменения
+            try:
+                # Получаем текущую публикацию
+                publication = Publication.objects.get(id_publication=id)
+                # Получаем пользователя, оставляющего комментарий
+                current_user = User.objects.get(id_user=get_user_id(request))
+                # Получаем количество абзацев
+                to_version = int(request.GET.get("to_version"))
+
+                wiki_versions = WikiVersions()
+                wiki_versions.load_versions(publication.versions)
+                paragraphs = wiki_versions.get_version(to_version)
+
+                context = {}
+
+                for i in range(0, len(paragraphs)):
+                    context[str(i+1)] = paragraphs[i]
+
+                context["count"] = str(len(paragraphs))
+
+                return HttpResponse(json.dumps(context), content_type="application/json")
 
             except Publication.DoesNotExist:
                 return get_error_page(request, ["This is publication not found!",

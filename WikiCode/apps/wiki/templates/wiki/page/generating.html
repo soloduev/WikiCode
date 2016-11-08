@@ -118,6 +118,33 @@
             };
             var myTemplate = new GitGraph.Template( myTemplateConfig );
             var gitgraph = new GitGraph( {template: myTemplate} );
+            var to_version;
+            
+            function show_version() {
+                $.ajax({
+                    type: "GET",
+                    url: "get_version/",
+                    data: {
+                        "to_version": to_version.toString(),
+                    },
+                    dataType: "text",
+                    cache: false,
+                    success: function(data){
+                        if (data == 'no'){
+                            console.log("ERROR in page.js. to_version");
+                        }
+                        else{
+                            // console.log(data);
+                            var json = JSON.parse(data);
+                            var count_versions = parseInt(json['count']);
+                            console.log(count_versions);
+                            for(var i=0; i < count_versions; i++){
+                                document.getElementById('v_markdown-row-'+(i+1).toString()+'').innerHTML = marked(json[(i+1).toString()]);
+                            }
+                        }
+                    }
+                });
+            };
 
             {{ versions_js|safe }}
 
