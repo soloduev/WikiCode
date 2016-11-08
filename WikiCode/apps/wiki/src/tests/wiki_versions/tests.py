@@ -24,8 +24,8 @@ import pickle
 from WikiCode.apps.wiki.src.modules.wiki_versions import wiki_versions as wv_test
 
 
-# Version:       0.013
-# Total Tests:   13
+# Version:       0.014
+# Total Tests:   14
 
 
 class WikiVersionsTest(object):
@@ -479,5 +479,38 @@ class WikiVersionsTest(object):
                 self.__add_error("13", "get_diff(1)")
 
         test_13(self)
+
+        # -------------------------------------
+        # Тестирование генерации js, отрисовывающего ветку версий
+        def test_14(self):
+            print("WikiVersions: " + test_14.__name__)
+
+            wv = wv_test.WikiVersions()
+            wv.create_versions(1, ["Hello", "world!", "I", "love", "you!"])
+            wv.set_head(1)
+            wv.new_version(1, ["Hello", "world!", "I", "love", "me!"])
+            wv.new_version(1, ["Hi", "world!", "I", "love", "me!"])
+            wv.set_head(3)
+            wv.new_version(1, ["Hi", "planet!", "I", "love", "me!"])
+            wv.set_head(4)
+            wv.new_version(1, ["What", "is", "me!", "a"])
+            wv.new_version(1, ["What", "me!", "a", "!"])
+            wv.set_head(6)
+
+            result_js = wv.generate_js()
+            need = """var branch_1 = gitgraph.branch("branch_1");
+var branch_2 = gitgraph.branch("branch_2");
+var branch_3 = gitgraph.branch("branch_3");
+branch_1.commit({message: " "});
+branch_2.commit({message: " "});
+branch_2.commit({message: " "});
+branch_3.commit({message: " ", dotColor: "white"});
+branch_2.commit({message: " "});
+branch_1.commit({message: " "});
+"""
+            if need != result_js:
+                self.__add_error("14", "generate_js()")
+
+        test_14(self)
 
 

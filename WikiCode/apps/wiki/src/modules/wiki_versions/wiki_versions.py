@@ -22,7 +22,7 @@ import pickle
 
 class WikiVersions:
     """
-       :VERSION: 0.15
+       :VERSION: 0.16
        Система контроля версий для md конспектов.
        Жует только md конспекты и собственный архив с версиями.
        Архив представляет из себя обычный сериализованный python файл, в котором хранится вся информация о текущей
@@ -256,6 +256,47 @@ class WikiVersions:
             return None
 
     # GENERATING
+
+    def generate_js(self):
+        """ Метод генерирует js код для отрисовки ветки версий """
+        result_js = ""
+        if self.__graph:
+            # Сначала находим все листы
+            leafs = []
+            for key, value in self.__versions.items():
+                if "Leaf" in value["type"]:
+                    leafs.append(key)
+            # Затем, зная все листы, получаем все ветки(путь для каждой)
+            branches = []
+            for leaf in leafs:
+                branches.append(self.__find_shortest_path(self.__graph, 1, leaf))
+            # Создаем все js переменные для веток
+            for i in range(0, len(branches)):
+                result_js += 'var branch_' + str(i + 1) + ' = gitgraph.branch("branch_' + str(i + 1) + '");\n'
+            # Производим коммиты
+            visited_versions = set()
+            str_commits = []
+            for i in range(0, len(branches)):
+                for j in range(0, len(branches[i])):
+                    if branches[i][j] not in visited_versions:
+                        visited_versions.add(branches[i][j])
+                        if j == 0:
+                            if self.__head_index == branches[i][j]:
+                                str_commits.append(('branch_' + str(i + 1) + '.commit({message: "Head", dotColor: "white"});\n', branches[i][j]))
+                            else:
+                                str_commits.append(('branch_' + str(i + 1) + '.commit({message: " "});\n', branches[i][j]))
+                        else:
+                            for isc in range(0, len(str_commits)):
+                                if str_commits[isc][1] == branches[i][j-1]:
+                                    if self.__head_index == branches[i][j]:
+                                        str_commits.insert(isc+1, ('branch_' + str(i + 1) + '.commit({message: " ", dotColor: "white"});\n', branches[i][j]))
+                                    else:
+                                        str_commits.insert(isc+1, ('branch_' + str(i + 1) + '.commit({message: " "});\n', branches[i][j]))
+            # Добавляем коммиты в результирующую строку
+            for sc in str_commits:
+                result_js += sc[0]
+
+        return result_js
 
     # ----------------
     # Private methods:
