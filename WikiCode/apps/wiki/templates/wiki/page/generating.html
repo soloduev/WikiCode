@@ -89,110 +89,39 @@
         {% endif %}
 
 
-        /* Working with graphs */
-
-        var myTemplateConfig = {
-            colors: [ "#2882ba", "#f2abaf", "#80a870" ], // branches colors, 1 per column
-            branch: {
-                lineWidth: 8,
-                spacingX: 50,
-                showLabel: false,                  // display branch names on graph
-            },
-            commit: {
-                spacingY: -80,
-                dot: {
-                    size: 12
+        {% if module_versions %}
+            /* Working with graphs */
+            var myTemplateConfig = {
+                colors: [ "#2882ba", "#f2abaf", "#80a870" ], // branches colors, 1 per column
+                branch: {
+                    lineWidth: 8,
+                    spacingX: 50,
+                    showLabel: false,                  // display branch names on graph
                 },
-                message: {
-                    displayAuthor: false,
-                    displayBranch: false,
-                    displayHash: false,
-                    font: "normal 12pt Arial"
-                },
-                shouldDisplayTooltipsInCompactMode: false, // default = true
-                tooltipHTMLFormatter: function ( commit ) {
-                    return "" + commit.sha1 + "" + ": " + commit.message;
+                commit: {
+                    spacingY: -80,
+                    dot: {
+                        size: 12,
+                        strokeWidth: 3,
+                    },
+                    message: {
+                        displayAuthor: false,
+                        displayBranch: false,
+                        displayHash: false,
+                        font: "normal 12pt Arial"
+                    },
+                    shouldDisplayTooltipsInCompactMode: false, // default = true
+                    tooltipHTMLFormatter: function ( commit ) {
+                        return "" + commit.sha1 + "" + ": " + commit.message;
+                    }
                 }
-            }
-        };
-        var myTemplate = new GitGraph.Template( myTemplateConfig );
+            };
+            var myTemplate = new GitGraph.Template( myTemplateConfig );
+            var gitgraph = new GitGraph( {template: myTemplate} );
 
-        var gitgraph = new GitGraph( {template: myTemplate} );
+            {{ versions_js|safe }}
 
-        var master = gitgraph.branch("master");
-
-        master.commit({
-            dotSize: 8,
-            dotStrokeWidth: 3,
-            message: " ",
-            onClick: function(commit) {
-                console.log("Oh, you clicked my commit?!", commit);
-            }
-        });
-
-        master.commit({
-            dotSize: 8,
-            dotStrokeWidth: 3,
-            message: " ",
-            onClick: function(commit) {
-                console.log("Oh, you clicked my commit?!", commit);
-            }
-        });
-
-        var develop = gitgraph.branch("develop");
-
-        master.commit({
-            dotColor: "white",
-            dotSize: 8,
-            dotStrokeWidth: 3,
-            message: " ",
-            onClick: function(commit) {
-                console.log("Oh, you clicked my commit?!", commit);
-            }
-        });
-
-        master.commit({
-            dotSize: 8,
-            dotStrokeWidth: 3,
-            message: " ",
-            onClick: function(commit) {
-                console.log("Oh, you clicked my commit?!", commit);
-            }
-        });
-
-        develop.commit({
-            dotSize: 8,
-            dotStrokeWidth: 3,
-            message: " ",
-            onClick: function(commit) {
-
-            }
-        });
-
-        var branch_3 = develop.branch("develop");
-
-
-        develop.commit({
-            dotSize: 8,
-            dotStrokeWidth: 3,
-            message: " ",
-            onClick: function(commit) {
-                console.log("Oh, you clicked my commit?!", commit);
-            }
-        });
-
-        branch_3.commit({
-            dotSize: 8,
-            dotStrokeWidth: 3,
-            message: " ",
-            onClick: function(commit) {
-                console.log("Oh, you clicked my commit?!", commit);
-            }
-        });
-
-        gitgraph.canvas.addEventListener( "commit:mouseover", function ( event ) {
-            console.log( "You're over a commit.", "Here is a bunch of data ->", event.data );
-        } );
+        {% endif %}
 
 
 

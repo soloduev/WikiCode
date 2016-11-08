@@ -133,6 +133,13 @@ def get_page(request, id):
         else:
             dynamic_comments = None
 
+        if wiki_settings.MODULE_VERSIONS:
+            wiki_version = WikiVersions()
+            wiki_version.load_versions(publication.versions)
+            versions_js = wiki_version.generate_js()
+        else:
+            versions_js = None
+
         # Конвертируем общие комментарии
         wiki_comments = WikiComments()
         wiki_comments.load_comments(publication.main_comments)
@@ -168,7 +175,9 @@ def get_page(request, id):
             "dynamic_comments": dynamic_comments,
             "module_main_comments": wiki_settings.MODULE_MAIN_COMMENTS,
             "main_comments": wiki_comments.to_html(),
-            "main_comments_count": wiki_comments.get_count()
+            "main_comments_count": wiki_comments.get_count(),
+            "module_versions": wiki_settings.MODULE_VERSIONS,
+            "versions_js": versions_js
         }
 
         return render(request, 'wiki/page/page.html', context)
