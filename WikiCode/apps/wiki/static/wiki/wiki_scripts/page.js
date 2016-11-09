@@ -226,4 +226,32 @@ $("#wiki-style-btn-save-publ").click(function () {
         }
     });
 });
+//
+// Сохранение изменений в конспекте
+$("#set_head_version").click(function () {
+    var to_version_str = $("#to_version_value").val();
+    if(to_version_str  === "")
+    {
+    }
+    else
+    {
+        $.ajax({
+            type: "POST",
+            url: "set_head/",
+            data: {
+                "to_version": to_version_str,
+            },
+            dataType: "text",
+            cache: false,
+            success: function(data){
+                if (data == 'ok'){
+                    location.reload();
+                }
+                else{
+                    console.log("ERROR in page.js. Set HEAD Version.");
+                }
+            }
+        });
+    }
 
+});

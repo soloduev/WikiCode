@@ -520,7 +520,7 @@ def get_get_version(request, id):
                 publication = Publication.objects.get(id_publication=id)
                 # Получаем пользователя, оставляющего комментарий
                 current_user = User.objects.get(id_user=get_user_id(request))
-                # Получаем количество абзацев
+                # Получаем версию, которую нужно отобразить
                 to_version = int(request.GET.get("to_version"))
 
                 wiki_versions = WikiVersions()
@@ -536,6 +536,48 @@ def get_get_version(request, id):
 
                 return HttpResponse(json.dumps(context), content_type="application/json")
 
+            except Publication.DoesNotExist:
+                return get_error_page(request, ["This is publication not found!",
+                                                "Page not found: publ_manager/" + str(id) + "/"])
+    else:
+        return HttpResponse('no', content_type='text/html')
+
+
+@csrf_protect
+def get_set_head(request, id):
+    """ Ajax представление. становление выбранной версии как HEAD """
+
+    if request.method == "POST":
+        # Проверяем, аутентифицирован ли пользователь
+        if get_user_id(request) == -1:
+            return HttpResponse('no', content_type='text/html')
+        else:
+            # Если пользователь аутентифицирован то, начинаем получать все изменения
+            try:
+                # Получаем текущую публикацию
+                publication = Publication.objects.get(id_publication=id)
+                # Получаем пользователя, оставляющего комментарий
+                current_user = User.objects.get(id_user=get_user_id(request))
+                # Получаем версию, которую необходимо сделать HEAD
+                to_version = int(request.POST.get("to_version"))
+                # Переключаем версию
+                wiki_markdown = WikiMarkdown()
+                wiki_versions = WikiVersions()
+                wiki_versions.load_versions(publication.versions)
+                wiki_versions.set_head(to_version)
+                # Устанавливаем новое состояние версий
+                publication.versions = wiki_versions.get_archive()
+                # Получаем чисто текст текущей
+                paragraphs = wiki_versions.get_head()
+                md_text = ""
+                for paragraph in paragraphs:
+                    md_text += paragraph
+                # Устанавливаем текущий текст конспекта
+                publication.text = md_text
+                # Сохраняем все изменения в БД
+                publication.save()
+
+                return HttpResponse('ok', content_type='text/html')
             except Publication.DoesNotExist:
                 return get_error_page(request, ["This is publication not found!",
                                                 "Page not found: publ_manager/" + str(id) + "/"])

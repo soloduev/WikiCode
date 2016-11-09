@@ -234,6 +234,13 @@ def get_version(request, id):
     return publication_view.get_get_version(request, id)
 
 
+# Установление HEAD выбранной версии конспекта
+@develop_mode_id
+@login_required
+def set_head(request, id):
+    return publication_view.get_set_head(request, id)
+
+
 # Здесь не должно быть никаких декораторов!!!
 def login_developer(request):
     return develop_view.get_login_developer(request)
