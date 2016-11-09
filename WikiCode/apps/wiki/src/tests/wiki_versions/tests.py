@@ -24,7 +24,7 @@ import pickle
 from WikiCode.apps.wiki.src.modules.wiki_versions import wiki_versions as wv_test
 
 
-# Version:       0.017
+# Version:       0.018
 # Total Tests:   15
 
 
@@ -500,12 +500,12 @@ class WikiVersionsTest(object):
             need = """var branch_1 = gitgraph.branch("branch_1");
 var branch_2 = gitgraph.branch("branch_2");
 var branch_3 = gitgraph.branch("branch_3");
-branch_1.commit({message: " ", onClick: function(commit) { to_version = 1; show_version();}});
-branch_2.commit({message: " ", onClick: function(commit) { to_version = 3; show_version();}});
-branch_2.commit({message: " ", onClick: function(commit) { to_version = 4; show_version();}});
-branch_3.commit({message: " ", dotColor: "white", onClick: function(commit) { to_version = 6; show_version();}});
-branch_2.commit({message: " ", onClick: function(commit) { to_version = 5; show_version();}});
-branch_1.commit({message: " ", onClick: function(commit) { to_version = 2; show_version();}});
+branch_1.commit({message: " ", onClick: function(commit) { to_version = 1; $("#to_version_value").val("1"); show_version();}});
+branch_2.commit({message: " ", onClick: function(commit) { to_version = 3; $("#to_version_value").val("3"); show_version();}});
+branch_2.commit({message: " ", onClick: function(commit) { to_version = 4; $("#to_version_value").val("4"); show_version();}});
+branch_3.commit({message: " ", dotColor: "white", onClick: function(commit) { to_version = 6; $("#to_version_value").val("6"); show_version();}});
+branch_2.commit({message: " ", onClick: function(commit) { to_version = 5; $("#to_version_value").val("5"); show_version();}});
+branch_1.commit({message: " ", onClick: function(commit) { to_version = 2; $("#to_version_value").val("2"); show_version();}});
 """
             if need != result_js:
                 self.__add_error("14", "generate_js()")
