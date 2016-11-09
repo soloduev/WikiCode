@@ -24,7 +24,7 @@ import pickle
 from WikiCode.apps.wiki.src.modules.wiki_versions import wiki_versions as wv_test
 
 
-# Version:       0.016
+# Version:       0.017
 # Total Tests:   15
 
 
@@ -503,7 +503,7 @@ var branch_3 = gitgraph.branch("branch_3");
 branch_1.commit({message: " ", onClick: function(commit) { to_version = 1; show_version();}});
 branch_2.commit({message: " ", onClick: function(commit) { to_version = 3; show_version();}});
 branch_2.commit({message: " ", onClick: function(commit) { to_version = 4; show_version();}});
-branch_3.commit({message: " ", dotColor: "white"});
+branch_3.commit({message: " ", dotColor: "white", onClick: function(commit) { to_version = 6; show_version();}});
 branch_2.commit({message: " ", onClick: function(commit) { to_version = 5; show_version();}});
 branch_1.commit({message: " ", onClick: function(commit) { to_version = 2; show_version();}});
 """
