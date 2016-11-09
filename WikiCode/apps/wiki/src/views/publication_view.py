@@ -446,6 +446,19 @@ def get_add_main_comment(request, id):
 def get_save_publication(request, id):
     """Ajax представление. Сохранение изменений в конспекте."""
 
+    # Вспомогательный метод. Создает новую версию
+    def create_new_version(md_paragraphs, publication):
+        wiki_versions = WikiVersions()
+        wiki_versions.load_versions(publication.versions)
+        wiki_versions.new_version(publication.id_author, md_paragraphs)
+        wiki_versions.set_head(wiki_versions.get_count_versions())
+        new_text = ""
+        for p in wiki_versions.get_head():
+            new_text += p
+        publication.text = new_text
+        publication.versions = wiki_versions.get_archive()
+        publication.save()
+
     if request.method == "POST":
         # Проверяем, аутентифицирован ли пользователь
         if get_user_id(request) == -1:
@@ -460,12 +473,13 @@ def get_save_publication(request, id):
                 # Получаем количество абзацев
                 count_paragraphs = int(request.POST.get("count_paragraphs"))
                 # Получаем абзацы
-                md_paragraphs = []
+                md_text = ""
                 for i in range(0, count_paragraphs):
-                    md_paragraphs.append(request.POST.get(str(i+1)))
+                    md_text += request.POST.get(str(i+1))
+                wiki_markdown = WikiMarkdown()
+                md_paragraphs = wiki_markdown.split(md_text)
 
                 # Сверяем с теми, что есть на данный момент:
-                wiki_markdown = WikiMarkdown()
                 current_paragraphs = wiki_markdown.split(publication.text)
                 if len(current_paragraphs) == len(md_paragraphs):
                     equals = True
@@ -477,20 +491,11 @@ def get_save_publication(request, id):
                         return HttpResponse('eq', content_type='text/html')
                     else:
                         # Если версии не равны, порождаем новую.
-                        wiki_versions = WikiVersions()
-                        wiki_versions.load_versions(publication.versions)
-                        wiki_versions.new_version(publication.id_author, md_paragraphs)
-                        wiki_versions.set_head(wiki_versions.get_count_versions())
-                        new_text = ""
-                        for p in wiki_versions.get_head():
-                            new_text += p
-                        publication.text = new_text
-                        publication.versions = wiki_versions.get_archive()
-
-                        publication.save()
-
+                        create_new_version(md_paragraphs, publication)
                         return HttpResponse('not_eq', content_type='text/html')
                 else:
+                    # Порождаем новую версию
+                    create_new_version(md_paragraphs, publication)
                     return HttpResponse('not_eq', content_type='text/html')
 
             except Publication.DoesNotExist:
@@ -498,6 +503,7 @@ def get_save_publication(request, id):
                                                 "Page not found: publ_manager/" + str(id) + "/"])
     else:
         return HttpResponse('no', content_type='text/html')
+
 
 @csrf_protect
 def get_get_version(request, id):

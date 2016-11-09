@@ -134,11 +134,15 @@
                             console.log("ERROR in page.js. to_version");
                         }
                         else{
-                            // console.log(data);
+                            // Перед тем, как парсить контент, удаляем весь блок отображения версии
+                            $('#version_block_show').empty();
+
+                            // Парсим ответ и отображаем его
                             var json = JSON.parse(data);
                             var count_versions = parseInt(json['count']);
                             console.log(count_versions);
                             for(var i=0; i < count_versions; i++){
+                                $('#version_block_show').append('<li style="border-top: solid 1px #cbcbcb; text-align: left; background-color: rgba(255, 255, 255, 0)"><div class="md-hover" id="v_markdown-row-'+(i+1).toString()+'"></div></li>');
                                 document.getElementById('v_markdown-row-'+(i+1).toString()+'').innerHTML = marked(json[(i+1).toString()]);
                             }
                         }
