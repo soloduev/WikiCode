@@ -22,7 +22,7 @@ import pickle
 
 class WikiVersions:
     """
-       :VERSION: 0.20
+       :VERSION: 0.21
        Система контроля версий для md конспектов.
        Жует только md конспекты и собственный архив с версиями.
        Архив представляет из себя обычный сериализованный python файл, в котором хранится вся информация о текущей
@@ -276,11 +276,10 @@ class WikiVersions:
             branches = []
             for leaf in leafs:
                 branches.append(self.__find_shortest_path(self.__graph, 1, leaf))
-            # Создаем все js переменные для веток
-            for i in range(0, len(branches)):
-                result_js += 'var branch_' + str(i + 1) + ' = gitgraph.branch("branch_' + str(i + 1) + '");\n'
+
             # Производим коммиты
             visited_versions = set()
+            max_branch = 0
             str_commits = []
             for i in range(0, len(branches)):
                 for j in range(0, len(branches[i])):
@@ -298,8 +297,14 @@ class WikiVersions:
                                         str_commits.insert(isc+1, ('branch_' + str(i + 1) + '.commit({message: " ", dotColor: "white", onClick: function(commit) { to_version = ' + str(branches[i][j]) + '; $("#to_version_value").val("' + str(branches[i][j]) + '"); show_version();}});\n', branches[i][j]))
                                     else:
                                         str_commits.insert(isc+1, ('branch_' + str(i + 1) + '.commit({message: " ", onClick: function(commit) { to_version = ' + str(branches[i][j]) + '; $("#to_version_value").val("' + str(branches[i][j]) + '"); show_version();}});\n', branches[i][j]))
+
             # Добавляем коммиты в результирующую строку
+            result_js += 'var branch_1 = gitgraph.branch("branch_1");\n'
+            cur_branch_number = 1
             for sc in str_commits:
+                if "branch_" + str(cur_branch_number + 1) in sc[0]:
+                    result_js += 'var branch_' + str(cur_branch_number + 1) + ' = gitgraph.branch("branch_' + str(cur_branch_number + 1) + '");\n'
+                    cur_branch_number+=1
                 result_js += sc[0]
 
         return result_js
