@@ -92,17 +92,17 @@
         {% if module_versions %}
             /* Working with graphs */
             var myTemplateConfig = {
-                colors: [ "#2882ba", "#f2abaf", "#80a870" ], // branches colors, 1 per column
+                colors: [ "#2882ba", "#f2abaf", "#80a870", "#4cc0c4", "#6ac181", "#e6e878", "#f2815c" ], // branches colors, 1 per column
                 branch: {
-                    lineWidth: 8,
-                    spacingX: 50,
+                    lineWidth: 6,
+                    spacingX: 20,
                     showLabel: false,                  // display branch names on graph
                 },
                 commit: {
-                    spacingY: -80,
+                    spacingY: -40,
                     dot: {
-                        size: 12,
-                        strokeWidth: 3,
+                        size: 8,
+                        strokeWidth: 2,
                     },
                     message: {
                         displayAuthor: false,
