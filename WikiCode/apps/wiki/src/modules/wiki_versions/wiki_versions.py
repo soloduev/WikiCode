@@ -22,7 +22,7 @@ import pickle
 
 class WikiVersions:
     """
-       :VERSION: 0.21
+       :VERSION: 0.22
        Система контроля версий для md конспектов.
        Жует только md конспекты и собственный архив с версиями.
        Архив представляет из себя обычный сериализованный python файл, в котором хранится вся информация о текущей
@@ -301,11 +301,14 @@ class WikiVersions:
             # Добавляем коммиты в результирующую строку
             result_js += 'var branch_1 = gitgraph.branch("branch_1");\n'
             cur_branch_number = 1
-            for sc in str_commits:
-                if "branch_" + str(cur_branch_number + 1) in sc[0]:
-                    result_js += 'var branch_' + str(cur_branch_number + 1) + ' = gitgraph.branch("branch_' + str(cur_branch_number + 1) + '");\n'
-                    cur_branch_number+=1
-                result_js += sc[0]
+            created_branches = set()
+            created_branches.add("branch_1")
+            # TODO: Пока работает только до 9 веток! Исправить потом!
+            for i in range(0, len(str_commits)):
+                if str_commits[i][0][:8] not in created_branches:
+                    result_js += 'var ' + str_commits[i][0][:8] + ' = ' + str_commits[i-1][0][:8] + '.branch("branch_' + str(cur_branch_number + 1) + '");\n'
+                    created_branches.add(str_commits[i][0][:8])
+                result_js += str_commits[i][0]
 
         return result_js
 
