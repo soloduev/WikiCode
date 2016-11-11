@@ -121,6 +121,7 @@
             var to_version;
             
             function show_version() {
+                $("#set_head_version").show('slow');
                 $.ajax({
                     type: "GET",
                     url: "get_version/",
@@ -135,6 +136,7 @@
                         }
                         else{
                             // Перед тем, как парсить контент, удаляем весь блок отображения версии
+                            $('#version_block_show').fadeOut(300);
                             $('#version_block_show').empty();
 
                             // Парсим ответ и отображаем его
@@ -145,12 +147,25 @@
                                 $('#version_block_show').append('<li style="border-top: solid 1px #cbcbcb; text-align: left; background-color: rgba(255, 255, 255, 0)"><div class="md-hover" id="v_markdown-row-'+(i+1).toString()+'"></div></li>');
                                 document.getElementById('v_markdown-row-'+(i+1).toString()+'').innerHTML = marked(json[(i+1).toString()]);
                             }
+                            $('#version_block_show').fadeIn(300);
                         }
                     }
                 });
             };
 
-            {{ versions_js|safe }}
+{#            {{ versions_js|safe }}#}
+
+            var branch_1 = gitgraph.branch("branch_1");
+branch_1.commit({message: " ", onClick: function(commit) { to_version = 1; $("#to_version_value").val("1"); show_version();}});
+branch_1.commit({message: " ", onClick: function(commit) { to_version = 2; $("#to_version_value").val("2"); show_version();}});
+var branch_3 = branch_1.branch("branch_2");
+branch_3.commit({message: " ", onClick: function(commit) { to_version = 3; $("#to_version_value").val("3"); show_version();}});
+branch_3.commit({message: " ", dotColor: "white", onClick: function(commit) { to_version = 7; $("#to_version_value").val("7"); show_version();}});
+branch_1.commit({message: " ", onClick: function(commit) { to_version = 4; $("#to_version_value").val("4"); show_version();}});
+var branch_2 = branch_1.branch("branch_2");
+branch_2.commit({message: " ", onClick: function(commit) { to_version = 6; $("#to_version_value").val("6"); show_version();}});
+branch_1.commit({message: " ", onClick: function(commit) { to_version = 5; $("#to_version_value").val("5"); show_version();}});
+
 
         {% endif %}
 

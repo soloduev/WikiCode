@@ -170,12 +170,15 @@
                                                                     <h4>Выбранная версия</h4>
                                                                     <div class="text-right">
                                                                         <div class="btn-group btn-group-sm">
-                                                                            <button class="btn btn-default" id="set_head_version">Сделать Head</button><div id="to_version_value" hidden></div>
-                                                                            <button class="btn btn-default">Показать</button>
-                                                                            <button class="btn btn-default">Удалить</button>
+                                                                            <button class="btn" id="set_head_version" style="display:none;">Сделать Head</button><div id="to_version_value" hidden></div>
+                                                                            <button class="btn" id="wiki-style-btn" data-toggle="modal" data-target="#modal_develop_func">Сравнить с предыдущей</button>
+                                                                            <button class="btn" id="wiki-style-btn" data-toggle="modal" data-target="#modal_develop_func">Показать</button>
+                                                                            <button class="btn" id="wiki-style-btn" data-toggle="modal" data-target="#modal_develop_func">Удалить</button>
+                                                                            <br>
+                                                                            <br>
                                                                         </div>
                                                                     </div>
-                                                                    <ul class="border" id="version_block_show">
+                                                                    <ul class="v_border" id="version_block_show">
                                                                     {% for elem in numbers %}
 {#                                                                        <li style="border-bottom: solid 1px #cbcbcb; text-align: left; background-color: #c5eac1">#}
 {#                                                                            <div class="md-hover" id="v_markdown-row-{{ elem }}"></div>#}
