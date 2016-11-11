@@ -89,7 +89,8 @@
     transition: all 0.5s ease 0s;
 }
 
-#pollSlider-button,#like-pollSlider-button, #contents-pollSlider-button {
+#pollSlider-button,#like-pollSlider-button, #contents-pollSlider-button, #up-pollSlider-button {
+    color: black;
     border: 0px solid white;
     box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
     border-radius: 0px;
@@ -103,7 +104,7 @@
     transition: all 0.5s ease 0s;
 }
 
-#pollSlider-button:hover,#like-pollSlider-button:hover, #contents-pollSlider-button:hover{
+#pollSlider-button:hover,#like-pollSlider-button:hover, #contents-pollSlider-button:hover, #up-pollSlider-button:hover{
     border: 0px solid white;
     background-color: #ffffff;
     box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
@@ -126,12 +127,20 @@
     top:210px;
 }
 
+#up-pollSlider-button {
+    top:400px;
+}
+
 #like-pollSlider-button:hover{
     top:150px;
 }
 
 #contents-pollSlider-button:hover{
     top:210px;
+}
+
+#up-pollSlider-button:hover{
+    top:400px;
 }
 
 #wiki-left-page{
@@ -351,3 +360,11 @@
   padding-bottom: .25rem;
   border-bottom: 1px solid rgba(34,36,38,.15);
 }
+
+#wiki-anchor:before {
+	display: block;
+	content: "";
+	height: 55px;
+	margin: -55px 0 0;
+}
+

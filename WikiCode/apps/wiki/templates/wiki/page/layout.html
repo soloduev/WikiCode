@@ -37,8 +37,8 @@
                                     <div class="container-fluid text-right">
                                         <div class="row">
                                             <div class="btn-group">
-                                                <a id="wikicode-up-right-button" class="btn"><span class="glyphicon glyphicon-thumbs-up"></span> (0)</a>
-                                                <a id="wikicode-up-right-button" class="btn"><span class="glyphicon glyphicon-import"></span> (0)</a>
+                                                <a id="wikicode-up-right-button" class="btn"><span class="glyphicon glyphicon-star"></span> (0)</a>
+                                                <a id="wikicode-up-right-button" class="btn"><span class="glyphicon glyphicon-floppy-save"></span> (0)</a>
                                                 <a id="wikicode-up-right-button" class="btn"><span class="glyphicon glyphicon-download"></span> (0)</a>
                                             </div>
                                         </div>
@@ -64,12 +64,14 @@
                                                             {% if module_dynamic_paragraphs %}
                                                                 {% for elem in numbers %}
                                                                     <li id="li-md-wikicode-{{ elem }}" class="task" data-id="{{ elem }}">
+                                                                        <a id="wiki-anchor" name="{{ elem }}"></a>
                                                                         <div class="md-hover" id="markdown-row-{{ elem }}"></div>
                                                                     </li>
                                                                 {% endfor %}
                                                             {% else %}
                                                                 {% for elem in numbers %}
                                                                     <li id="li-md-wikicode-{{ elem }}">
+                                                                        <a id="wiki-anchor" name="{{ elem }}"></a>
                                                                         <div class="md-hover" id="markdown-row-{{ elem }}"></div>
                                                                     </li>
                                                                 {% endfor %}
@@ -230,8 +232,9 @@
         </div>
     </div>
     <button class="btn-lg" id="pollSlider-button"><span class="glyphicon glyphicon-folder-close"></span> </button>
-    <button class="btn-lg" id="like-pollSlider-button"><span class="glyphicon glyphicon-thumbs-up"></span> </button>
+    <button class="btn-lg" id="like-pollSlider-button"><span class="glyphicon glyphicon-star"></span> </button>
     <button class="btn-lg" id="contents-pollSlider-button"><span class="glyphicon glyphicon-bookmark"></span> </button>
+    <a class="btn-lg" id="up-pollSlider-button" href="#top"><span class="glyphicon glyphicon-arrow-up"></span> </a>
     <div id="wiki-left-page" class="sb-slidebar sb-left sb-width-custom">
         <br><br><br><br><br>
         <label class="btn-block btn-primary text-center">КОНСПЕКТЫ {{ publication.nickname_author|upper }}</label>
