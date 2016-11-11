@@ -227,7 +227,7 @@ $("#wiki-style-btn-save-publ").click(function () {
     });
 });
 //
-// Сохранение изменений в конспекте
+// Установление head версии
 $("#set_head_version").click(function () {
     var to_version_str = $("#to_version_value").val();
     if(to_version_str  === "")
@@ -246,6 +246,9 @@ $("#set_head_version").click(function () {
             success: function(data){
                 if (data == 'ok'){
                     location.reload();
+                }
+                else if(data == 'auth'){
+                    location.href = "/login/";
                 }
                 else{
                     console.log("ERROR in page.js. Set HEAD Version.");

@@ -229,14 +229,12 @@ def save_publication(request, id):
 
 # Получение абзацев определеноой версии
 @develop_mode_id
-@login_required
 def get_version(request, id):
     return publication_view.get_get_version(request, id)
 
 
 # Установление HEAD выбранной версии конспекта
 @develop_mode_id
-@login_required
 def set_head(request, id):
     return publication_view.get_set_head(request, id)
 
