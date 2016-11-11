@@ -361,10 +361,7 @@
   border-bottom: 1px solid rgba(34,36,38,.15);
 }
 
-#wiki-anchor:before {
-	display: block;
-	content: "";
-	height: 55px;
-	margin: -55px 0 0;
+#wiki-anchor {
+	position:absolute;margin-top:-60px;
 }
 
