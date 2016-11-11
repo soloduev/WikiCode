@@ -34,7 +34,9 @@
         <div class="row">
             <div class="col-xs-12 col-sm-4 col-md-4">
                 <div class="row">
-                    <a id="a-tree-manager" href="{% url 'tree_manager' %}"><label class="text-center btn-primary btn-block">{% if other_user %}КОНСПЕКТЫ ПОЛЬЗОВАТЕЛЯ{% else %}МОИ КОНСПЕКТЫ{% endif %}</label></a>
+                    <a id="a-tree-manager" href="{% url 'tree_manager' %}"><label
+                            class="text-center btn-primary btn-block">{% if other_user %}КОНСПЕКТЫ
+                        ПОЛЬЗОВАТЕЛЯ{% else %}МОИ КОНСПЕКТЫ{% endif %}</label></a>
                 </div>
                 <div class="row">
                     {% if preview_tree == None %}
@@ -53,7 +55,8 @@
                  style="border-left: 1px solid #d5d5d5;
                  min-height: 250px;">
                 <div class="row">
-                    <label class="text-center btn-primary btn-block">{% if other_user %}ИНФОРМАЦИЯ О ПОЛЬЗОВАТЕЛЯ{% else %}МОЯ СТРАНИЦА{% endif %}</label>
+                    <label class="text-center btn-primary btn-block">{% if other_user %}ИНФОРМАЦИЯ О
+                        ПОЛЬЗОВАТЕЛЯ{% else %}МОЯ СТРАНИЦА{% endif %}</label>
                 </div>
                 <div class="row">
                     <div class="col-md-4 hidden-sm hidden-xs">
@@ -68,7 +71,8 @@
                                     <!-- Description -->
                                     <p><h4>Like!</h4></p>
                                     <div class="social">
-                                        <a  id="wiki-code-like-user" class="[ social-icon facebook ] animate"><span class="fa fa-thumbs-o-up"></span></a>
+                                        <a id="wiki-code-like-user" class="[ social-icon facebook ] animate"><span
+                                                class="fa fa-thumbs-o-up"></span></a>
                                     </div>
                                 </div>
                             </div>
@@ -109,19 +113,23 @@
                     <div class="row" style="border-top: 1px solid #d5d5d5;">
                         <br>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                            <a href="{% url 'colleagues' %}" class="btn btn-block" id="wiki-style-btn">Коллеги <i class="fa fa-users"></i> (0)</a>
+                            <a href="{% url 'colleagues' %}" class="btn btn-block" id="wiki-style-btn">Коллеги <i
+                                    class="fa fa-users"></i> (0)</a>
                             <br>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                            <a href="{% url 'notifications' %}" class="btn btn-block" id="wiki-style-btn">Уведомления <i class="fa fa-comments-o"></i> (0)</a>
+                            <a href="{% url 'notifications' %}" class="btn btn-block" id="wiki-style-btn">Уведомления <i
+                                    class="fa fa-comments-o"></i> (0)</a>
                             <br>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                            <a href="{% url 'tree_manager' %}" class="btn btn-block" id="wiki-style-btn">Мои конспекты <i class="glyphicon glyphicon-folder-close"></i></a>
+                            <a href="{% url 'tree_manager' %}" class="btn btn-block" id="wiki-style-btn">Мои конспекты
+                                <i class="glyphicon glyphicon-folder-close"></i></a>
                             <br>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                            <a href="{% url 'settings' %}" class="btn btn-block" id="wiki-style-btn">Мои настройки <i class="glyphicon glyphicon-cog"></i></a>
+                            <a href="{% url 'settings' %}" class="btn btn-block" id="wiki-style-btn">Мои настройки <i
+                                    class="glyphicon glyphicon-cog"></i></a>
                             <br>
                         </div>
                     </div>
@@ -130,11 +138,8 @@
                     <div class="row" style="border-top: 1px solid #d5d5d5;">
                         <br>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                            <a class="btn btn-block" id="wiki-style-btn-user-add-colleague">Добавить в коллеги <i class="fa fa-user-plus"></i></a>
-                            <br>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                            <a class="btn btn-block" id="wiki-style-btn-write-message" >Написать письмо <i class="fa fa-envelope"></i></a>
+                            <a class="btn btn-block" id="wiki-style-btn-user-add-colleague">Добавить в коллеги <i
+                                    class="fa fa-user-plus"></i></a>
                             <br>
                         </div>
                     </div>
@@ -142,28 +147,26 @@
                 <div class="row">
                     <div class="tabbable-panel">
                         <div class="tabbable-line">
-                            <ul class="nav nav-tabs ">
+                            <ul class="nav nav-tabs">
                                 <li class="active"><a href="#tab_default_1" data-toggle="tab">Превью конспект </a></li>
                                 <li><a href="#tab_default_2" data-toggle="tab">Лучший конспект</a></li>
                                 <li><a href="#tab_default_3" data-toggle="tab">Последний конспект </a></li>
+                                <li><a href="#tab_default_4" data-toggle="tab">Подписки </a></li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tab_default_1">
                                     <div class="container-fluid">
                                         <div class="row">
-                                            <div class="col-md-8 col-xs-8">
-                                                <h4 class="text-left" id="wiki-code-preview-title">Title this publication</h4>
+                                            <div class="col-md-12 col-xs-12">
+                                                <h3 class="text-left" id="wiki-code-preview-title">Title this
+                                                    publication</h3>
                                             </div>
-                                            <div class="col-md-4 col-xs-4 text-right">
-
-                                                <a id="wiki-style-btn-read-preview-publ" class="btn text-center btn-block">
-                                                    Читать
-                                                </a>
+                                            <div class="col-md-12 col-xs-12">
+                                                <div id="wiki-code-prewiew-publ">
+                                                    <!--Здесь должен располагаться сгенерированный превью-конспект-->
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div id="wiki-code-prewiew-publ">
-                                        <!--Здесь должен располагаться сгенерированный превью-конспект-->
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="tab_default_2">
@@ -173,7 +176,9 @@
                                                 <h4 class="text-left" style="display: none;">Title this publication</h4>
                                             </div>
                                             <div class="col-md-4 col-xs-4 text-right">
-                                                <button id="wiki-style-btn" class="btn text-center btn-block" style="display: none;">Читать</button>
+                                                <button id="wiki-style-btn" class="btn text-center btn-block"
+                                                        style="display: none;">Читать
+                                                </button>
                                             </div>
 
                                         </div>
@@ -181,7 +186,9 @@
                                     <p></p>
                                     <h4>Здесь будет располагаться Ваш лучший конспект.</h4>
                                     <p></p>
-                                    <h4>На данный момент, у Вас не создано ни одного конспекта! <a href="{% url 'create' %}">Создайте</a> Ваш первый конспект, прямо сейчас!</h4>
+                                    <h4>На данный момент, у Вас не создано ни одного конспекта! <a
+                                            href="{% url 'create' %}">Создайте</a> Ваш первый конспект, прямо сейчас!
+                                    </h4>
                                 </div>
                                 <div class="tab-pane" id="tab_default_3">
                                     <div class="container-fluid">
@@ -190,14 +197,24 @@
                                                 <h4 class="text-left" style="display: none;">Title this publication</h4>
                                             </div>
                                             <div class="col-md-4 col-xs-4 text-right">
-                                                <button id="wiki-style-btn" class="btn text-center btn-block" style="display: none;">Читать</button>
+                                                <button id="wiki-style-btn" class="btn text-center btn-block"
+                                                        style="display: none;">Читать
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                     <p></p>
                                     <h4>Здесь будет располагаться Ваш последний конспект.</h4>
                                     <p></p>
-                                    <h4>На данный момент, у Вас не создано ни одного конспекта! <a href="{% url 'create' %}">Создайте</a> Ваш первый конспект, прямо сейчас!</h4>
+                                    <h4>На данный момент, у Вас не создано ни одного конспекта! <a
+                                            href="{% url 'create' %}">Создайте</a> Ваш первый конспект, прямо сейчас!
+                                    </h4>
+                                </div>
+                                <div class="tab-pane" id="tab_default_4">
+                                    <p></p>
+                                    <h4>Здесь будут располагаться все подписки пользователя</h4>
+                                    <p></p>
+                                    <h4>Курсы, в которых участвует пользователь или документация, которую сохранил</h4>
                                 </div>
                             </div>
                         </div>
@@ -208,22 +225,22 @@
     </div>
 
     {% load staticfiles %}
-    <link rel="stylesheet" href="{% static 'wiki/highlight/styles/github.css'%}">
-    <script type="text/javascript" src="{% static 'wiki/highlight/highlight.pack.js'%}"></script>
+    <link rel="stylesheet" href="{% static 'wiki/highlight/styles/github.css' %}">
+    <script type="text/javascript" src="{% static 'wiki/highlight/highlight.pack.js' %}"></script>
     <script>hljs.initHighlightingOnLoad();</script>
 {% endblock %}
 
 {% block add_script %}
     {% load staticfiles %}
     <link href={% static "wiki/wiki_styles/user.css" %} type="text/css" rel="stylesheet">
-    <script type="text/javascript" src="{% static 'wiki/wiki_scripts/user.js'%}"></script>
+    <script type="text/javascript" src="{% static 'wiki/wiki_scripts/user.js' %}"></script>
     <script>
         $(init);
         {% if prewiew_publ_text %}
             document.getElementById('wiki-code-prewiew-publ').innerHTML = marked("{{ prewiew_publ_text|escapejs }}");
             $("#wiki-code-preview-title").text("{{ prewiew_publ_title|escapejs }}");
             $("#wiki-style-btn-read-preview-publ").show();
-            $("#wiki-style-btn-read-preview-publ").attr("href","/page/{{ prewiew_publ_id|escapejs }}");
+            $("#wiki-style-btn-read-preview-publ").attr("href", "/page/{{ prewiew_publ_id|escapejs }}");
         {% else %}
             document.getElementById('wiki-code-prewiew-publ').innerHTML = "<h4>Пользователь не указал свой preview конспект</h4>";
             $("#wiki-code-preview-title").text("");
