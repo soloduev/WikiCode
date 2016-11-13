@@ -155,8 +155,10 @@
 
            {{ versions_js|safe }}
 
-
         {% endif %}
+
+
+        document.getElementById('contents-publication').innerHTML = marked("{{ contents|escapejs }}");
 
     </script>
 {% endblock %}

@@ -164,6 +164,11 @@ def get_page(request, id):
             publication.read += 1
             publication.save()
 
+        # Генерируем оглавление для конспекта
+        contents = wm.generate_contents(paragraphs)
+
+        print(contents)
+
         context = {
             "publication": publication,
             "paragraphs": paragraphs,
@@ -177,7 +182,8 @@ def get_page(request, id):
             "main_comments": wiki_comments.to_html(),
             "main_comments_count": wiki_comments.get_count(),
             "module_versions": wiki_settings.MODULE_VERSIONS,
-            "versions_js": versions_js
+            "versions_js": versions_js,
+            "contents": contents
         }
 
         return render(request, 'wiki/page/page.html', context)
