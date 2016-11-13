@@ -18,7 +18,7 @@
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# WikiMarkdown version 0.3
+# WikiMarkdown version 0.4
 # Класс для разбивки Markdown текста на логические абзацы
 # Возможности:
 # Может разбивать
@@ -141,6 +141,30 @@ class WikiMarkdown(object):
 
 
         return paragraphs
+
+    def generate_contents(self, paragraphs: []):
+        """ Генерирует оглавление для конспекта. Необходимо передать отдельные параграфы конпекта в иде списка. """
+        result_contents = ""
+        cur_lvl = 1
+
+        for paragraph in paragraphs:
+
+            if len(paragraph["text"]) > 4:
+                if paragraph["text"][0:2] == '# ' and paragraph["text"][-3:] == " #\n":
+                    result_contents += str(cur_lvl) + ". [" + paragraph["text"][2:-2] + "](/page/3/#1)\n"
+                    cur_lvl+=1
+            if len(paragraph["text"]) > 6:
+                if paragraph["text"][0:3] == '## ' and paragraph["text"][-4:] == " ##\n":
+                    result_contents += "    - [" + paragraph["text"][3:-3] + "](/page/3/#2)\n"
+            if len(paragraph["text"]) > 9:
+                if paragraph["text"][0:4] == '### ' and paragraph["text"][-5:] == " ###\n":
+                    result_contents += "     - [" + paragraph["text"][4:-4] + "](/page/3/#3)\n"
+
+        if result_contents == "":
+            return "### Заголовки в конспекте не были определены. ###\n### Оглавление не сгенерировано ###"
+
+        return result_contents
+
 
     def print_paragraphs(self, paragraphs: []):
         for line in paragraphs:
