@@ -27,13 +27,23 @@ from .auth import get_user_id
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
-def get_index(request):
+def get_index(request, notify=None):
+    """ Рендерит начальную страницу сайта.
+    Может принимать notify(сообщение, которое можно вывести после отображения страницы):
+    notify:
+        {
+            'type': 'error|info',
+            'text': 'any text',
+        }
+    """
 
+    if notify is None:
+        notify = {'type': 'msg', 'text': ''}
     all_publications = Publication.objects.filter()
 
     # Срезаем публикации, если их больше того количества, которое хотим вывести
     if len(all_publications) > wiki_settings.COUNT_LAST_PUBL_SHOW:
-        position = len(all_publications)-wiki_settings.COUNT_LAST_PUBL_SHOW
+        position = len(all_publications) - wiki_settings.COUNT_LAST_PUBL_SHOW
         all_publications = all_publications[position:]
 
     # Делаем реверс публикаций
@@ -55,14 +65,12 @@ def get_index(request):
     except EmptyPage:
         publications = paginator.page(paginator.num_pages)
 
-    notify = "Добро пожаловать!\n\n\nЕсли Вы здесь в первый раз,\nможете ознакомиться с платформой"
-
     context = {
-            "all_publications": all_publications,
-            "publications":publications,
-            "user_data": check_auth(request),
-            "user_id": get_user_id(request),
-            "notify": notify
+        "all_publications": all_publications,
+        "publications": publications,
+        "user_data": check_auth(request),
+        "user_id": get_user_id(request),
+        "notify": notify
     }
 
     return render(request, 'wiki/index.html', context)

@@ -30,6 +30,7 @@ from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.models import User as WikiUser
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
+from WikiCode.apps.wiki.src.views.index_view import get_index
 from .auth import check_auth, get_user_id
 
 
@@ -188,13 +189,16 @@ def get_login_user(request):
     if user is not None:
         if user.is_active:
             login(request, user)
+            return get_index(request, notify={'text': 'Авторизация прошла успешно.',
+                                              'type': 'info'})
         else:
             print(">>>>>>>>>>>>>> WIKI ERROR: disabled account")
+            return get_index(request)
 
     else:
         print(">>>>>>>>>>>>>> WIKI ERROR: invalid login")
 
-    return HttpResponseRedirect("/")
+    return get_index(request, notify={'text': 'Вы ввели не верный логин или пароль!\n\n\nПовторите снова.', 'type': 'error'})
 
 
 def get_logout_user(request):
