@@ -55,12 +55,14 @@ def get_index(request):
     except EmptyPage:
         publications = paginator.page(paginator.num_pages)
 
+    notify = "Добро пожаловать!\n\n\nЕсли Вы здесь в первый раз,\nможете ознакомиться с платформой"
 
     context = {
             "all_publications": all_publications,
             "publications":publications,
             "user_data": check_auth(request),
             "user_id": get_user_id(request),
+            "notify": notify
     }
 
     return render(request, 'wiki/index.html', context)

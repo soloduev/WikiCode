@@ -37,7 +37,8 @@
                 <div class="container text-center">
                     <div class="row">
                         <span>
-                            <a class="text-center" href="{% url 'index' %}" style="color: #2b669a;"><i class="fa fa-university fa-5x"><label style="font-family: Courier;">WikiCode</label></i></a>
+                            <a class="text-center" href="{% url 'index' %}" style="color: #2b669a;"><i
+                                    class="fa fa-university fa-5x"><label style="font-family: Courier;">WikiCode</label></i></a>
                         </span>
                     </div>
                 </div>
@@ -65,7 +66,8 @@
                     <div class="tabbable-panel">
                         <div class="tabbable-line">
                             <ul class="nav nav-tabs ">
-                                <li class="active"><a href="#tab_default_1" data-toggle="tab">Последние конспекты </a></li>
+                                <li class="active"><a href="#tab_default_1" data-toggle="tab">Последние конспекты </a>
+                                </li>
                                 <li><a href="#tab_default_2" data-toggle="tab">Лучшие Конспекты</a></li>
                                 <li><a href="#tab_default_3" data-toggle="tab">Теги </a></li>
                                 <li><a href="#tab_default_4" data-toggle="tab">Авторы </a></li>
@@ -73,22 +75,35 @@
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tab_default_1">
-                                    {% for publ in publications%}
+                                    {% for publ in publications %}
                                         <!-- Start publication-->
                                         <div class="row">
                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                                 <div class="box">
                                                     <div class="info">
-                                                        <a style="text-decoration: none; cursor: pointer;" href="/page/{{ publ.id_publication }}/"><h4 class="text-left">{{ publ.title }}</h4></a>
-                                                        <div style="cursor: pointer;" id="publ-tags" class="tag-list"></div>
+                                                        <a style="text-decoration: none; cursor: pointer;"
+                                                           href="/page/{{ publ.id_publication }}/"><h4
+                                                                class="text-left">{{ publ.title }}</h4></a>
+                                                        <div style="cursor: pointer;" id="publ-tags"
+                                                             class="tag-list"></div>
                                                         <br>
                                                         <p>{{ publ.description }}</p>
                                                         <div class="btn-group">
-                                                            <button id="reads_publ" href="" class="btn btn-default"><span class="glyphicon glyphicon-eye-open"></span> {{ publ.read }}</button>
-                                                            <button id="imports_publ" href="" class="btn btn-default"><span class="glyphicon glyphicon-import"></span> 0</button>
-                                                            <button id="likes_publ" href="" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-up"></span> 0</button>
-                                                            <a id="author_publ" href="/user/{{ publ.id_author }}" class="btn btn-default"><span class="glyphicon glyphicon-user"></span> {{ publ.nickname_author }}</a>
-                                                            <a id="read_publ" href="/page/{{ publ.id_publication }}/" class="btn btn-default">Читать</a>
+                                                            <button id="reads_publ" href="" class="btn btn-default">
+                                                                <span class="glyphicon glyphicon-eye-open"></span> {{ publ.read }}
+                                                            </button>
+                                                            <button id="imports_publ" href="" class="btn btn-default">
+                                                                <span class="glyphicon glyphicon-import"></span> 0
+                                                            </button>
+                                                            <button id="likes_publ" href="" class="btn btn-default">
+                                                                <span class="glyphicon glyphicon-thumbs-up"></span> 0
+                                                            </button>
+                                                            <a id="author_publ" href="/user/{{ publ.id_author }}"
+                                                               class="btn btn-default"><span
+                                                                    class="glyphicon glyphicon-user"></span> {{ publ.nickname_author }}
+                                                            </a>
+                                                            <a id="read_publ" href="/page/{{ publ.id_publication }}/"
+                                                               class="btn btn-default">Читать</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -107,7 +122,8 @@
                                 </div>
                                 <div class="tab-pane" id="tab_default_4">
                                     <p></p>
-                                    <h4>Позже, здесь будут перечислены все авторы конспектов сайта, а также поиск чисто по авторам</h4>
+                                    <h4>Позже, здесь будут перечислены все авторы конспектов сайта, а также поиск чисто
+                                        по авторам</h4>
                                 </div>
                                 <div class="tab-pane" id="tab_default_5">
                                     <p></p>
@@ -125,12 +141,14 @@
             <br>
             <div class="col-xs-6">
                 {% if publications.has_previous %}
-                    <a href="?page={{ publications.previous_page_number }}" class="btn btn-link" style="text-decoration: none;"><i class="glyphicon glyphicon-menu-left"></i> Предыдущие</a>
+                    <a href="?page={{ publications.previous_page_number }}" class="btn btn-link"
+                       style="text-decoration: none;"><i class="glyphicon glyphicon-menu-left"></i> Предыдущие</a>
                 {% endif %}
             </div>
             <div class="col-xs-6 text-right">
                 {% if publications.has_next %}
-                    <a href="?page={{ publications.next_page_number }}" class="btn btn-link" style="text-decoration: none;">Следующие <i class="glyphicon glyphicon-menu-right" sty></i></a>
+                    <a href="?page={{ publications.next_page_number }}" class="btn btn-link"
+                       style="text-decoration: none;">Следующие <i class="glyphicon glyphicon-menu-right" sty></i></a>
                 {% endif %}
             </div>
         </div>
@@ -141,11 +159,19 @@
     {% load staticfiles %}
     <link href={% static "wiki/wiki_styles/index.css" %} type="text/css" rel="stylesheet">
     <script>
-        $(function() {
+        $(function () {
             $('#publ-tags').tags({
                 readOnly: true,
-                tagData:["boilerplate", "tags"],
+                tagData: ["boilerplate", "tags"],
             });
         });
+
+        /* Отображение обычного уведомления */
+        $.notify("{{ notify|escapejs }}",
+                    {
+                        position: "right bottom",
+                        className: "info",
+                        autoHideDelay: 8000,
+                    });
     </script>
 {% endblock %}
