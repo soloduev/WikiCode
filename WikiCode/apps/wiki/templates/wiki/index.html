@@ -84,9 +84,10 @@
                                                         <a style="text-decoration: none; cursor: pointer;"
                                                            href="/page/{{ publ.id_publication }}/"><h4
                                                                 class="text-left">{{ publ.title }}</h4></a>
-                                                        <div style="cursor: pointer;" id="publ-tags"
-                                                             class="tag-list"></div>
-                                                        <br>
+                                                        <div class="publ-tags text-left">
+                                                            <span class="wiki-tag">С++</span>
+                                                            <span class="wiki-tag">Java</span>
+                                                        </div>
                                                         <p>{{ publ.description }}</p>
                                                         <div class="btn-group">
                                                             <button id="reads_publ" href="" class="btn btn-default">
@@ -159,13 +160,6 @@
     {% load staticfiles %}
     <link href={% static "wiki/wiki_styles/index.css" %} type="text/css" rel="stylesheet">
     <script>
-        $(function () {
-            $('#publ-tags').tags({
-                readOnly: true,
-                tagData: ["boilerplate", "tags"],
-            });
-        });
-
         /* Отображение обычного уведомления */
         $.notify("{{ notify.text|escapejs }}",
                     {
