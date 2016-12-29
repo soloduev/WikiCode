@@ -242,7 +242,21 @@ def get_create_page(request):
                 tree_path=form["folder"],
                 read=0,
                 main_comments=wiki_comments.get_xml_str(),
-                versions=archive)
+                versions=archive,
+                is_public=request.POST.get("access-opt", False),
+                is_dynamic_paragraphs=request.POST.get("dynamic-opt", False),
+                is_general_comments=request.POST.get("main-comments-opt", False),
+                is_contents=request.POST.get("contents-opt", False),
+                is_protected_edit=request.POST.get("private-edit-opt", False),
+                is_files=request.POST.get("files-opt", False),
+                is_links=request.POST.get("links-opt", False),
+                is_versions=request.POST.get("versions-opt", False),
+                is_show_author=request.POST.get("show-author-opt", False),
+                is_loading=request.POST.get("loading-opt", False),
+                is_saving=request.POST.get("saving-opt", False),
+                is_starring=request.POST.get("rating-opt", False),
+                is_file_tree=request.POST.get("file-tree-opt", False)
+            )
 
         # Загружаем дерево пользователя
         wft = WikiFileTree()

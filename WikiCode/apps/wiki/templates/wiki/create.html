@@ -45,7 +45,7 @@
                                 <h3>Папка</h3>
                                 <div class="row">
                                     <div class="col-xs-10">
-                                        <input readonly value="{{ path }}" required id="lt-markdown-folder" name="folder" type="text" class="form-control btn-block" placeholder="Укажите путь к папке..." style="height: 30px; font-family: Courier; border-radius: 0px;"/>
+                                        <input value="{{ path }}" required id="lt-markdown-folder" name="folder" type="text" class="form-control btn-block" placeholder="Укажите путь к папке..." style="height: 30px; font-family: Courier; border-radius: 0px;"/>
                                     </div>
                                     <div class="col-xs-2">
                                         <button id="lt-markdown-set-path" type="button" class="btn btn-default btn-block" style="height: 30px; border-radius: 0px;"><i class="fa fa-folder-open-o">...</i></button>
@@ -181,67 +181,67 @@
                         <div class="row">
                             <div class="row switch-block">
                                 <div class="col-xs-12">
-                                    <span><input type="checkbox" id="access-switch" checked value="checked"><label class="options-label">Публичный</label></span>
+                                    <span><input type="checkbox" id="access-switch" name="access-opt" checked value="checked"><label class="options-label">Публичный</label></span>
                                 </div>
                                 <br>
                                 <br>
                                 <div class="col-xs-12">
-                                    <span><input type="checkbox" id="dynamic-switch" checked value="checked"><label class="options-label">Динамические параграфы</label></span>
+                                    <span><input type="checkbox" id="dynamic-switch" name="dynamic-opt" checked value="checked"><label class="options-label">Динамические параграфы</label></span>
                                 </div>
                                 <br>
                                 <br>
                                 <div class="col-xs-12">
-                                    <span><input type="checkbox" id="main-comments-switch" checked value="checked"><label class="options-label">Общие комментарии</label></span>
+                                    <span><input type="checkbox" id="main-comments-switch" name="main-comments-opt" checked value="checked"><label class="options-label">Общие комментарии</label></span>
                                 </div>
                                 <br>
                                 <br>
                                 <div class="col-xs-12">
-                                    <span><input type="checkbox" id="private-edit-switch" checked value="checked"><label class="options-label">Защищенное редактирование</label></span>
+                                    <span><input type="checkbox" id="private-edit-switch" name="private-edit-opt" checked value="checked"><label class="options-label">Защищенное редактирование</label></span>
                                 </div>
                                 <br>
                                 <br>
                                 <div class="col-xs-12">
-                                    <span><input type="checkbox" id="contents-switch" checked value="checked"><label class="options-label">Оглавление</label></span>
+                                    <span><input type="checkbox" id="contents-switch" name="contents-opt" checked value="checked"><label class="options-label">Оглавление</label></span>
                                 </div>
                                 <br>
                                 <br>
                                 <div class="col-xs-12">
-                                    <span><input type="checkbox" id="files-switch" checked value="checked"><label class="options-label">Файлы</label></span>
+                                    <span><input type="checkbox" id="files-switch" name="files-opt" checked value="checked"><label class="options-label">Файлы</label></span>
                                 </div>
                                 <br>
                                 <br>
                                 <div class="col-xs-12">
-                                    <span><input type="checkbox" id="links-switch" checked value="checked"><label class="options-label">Ссылки</label></span>
+                                    <span><input type="checkbox" id="links-switch" name="links-opt" checked value="checked"><label class="options-label">Ссылки</label></span>
                                 </div>
                                 <br>
                                 <br>
                                 <div class="col-xs-12">
-                                    <span><input type="checkbox" id="versions-switch" checked value="checked"><label class="options-label">Версии</label></span>
+                                    <span><input type="checkbox" id="versions-switch" name="versions-opt" checked value="checked"><label class="options-label">Версии</label></span>
                                 </div>
                                 <br>
                                 <br>
                                 <div class="col-xs-12">
-                                    <span><input type="checkbox" id="show-author-switch" checked value="checked"><label class="options-label">Отображать автора</label></span>
+                                    <span><input type="checkbox" id="show-author-switch" name="show-author-opt"  checked value="checked"><label class="options-label">Отображать автора</label></span>
                                 </div>
                                 <br>
                                 <br>
                                 <div class="col-xs-12">
-                                    <span><input type="checkbox" id="loading-switch" checked value="checked"><label class="options-label">Загружаемый</label></span>
+                                    <span><input type="checkbox" id="loading-switch" name="loading-opt"  checked value="checked"><label class="options-label">Загружаемый</label></span>
                                 </div>
                                 <br>
                                 <br>
                                 <div class="col-xs-12">
-                                    <span><input type="checkbox" id="saving-switch" checked value="checked"><label class="options-label">Сохраняемый</label></span>
+                                    <span><input type="checkbox" id="saving-switch" name="saving-opt"  checked value="checked"><label class="options-label">Сохраняемый</label></span>
                                 </div>
                                 <br>
                                 <br>
                                 <div class="col-xs-12">
-                                    <span><input type="checkbox" id="rating-switch" checked value="checked"><label class="options-label">Учет рейтинга</label></span>
+                                    <span><input type="checkbox" id="rating-switch" name="rating-opt"  checked value="checked"><label class="options-label">Учет рейтинга</label></span>
                                 </div>
                                 <br>
                                 <br>
                                 <div class="col-xs-12">
-                                    <span><input type="checkbox" id="file-tree-switch" checked value="checked"><label class="options-label">Конспекты автора</label></span>
+                                    <span><input type="checkbox" id="file-tree-switch" name="file-tree-opt"  checked value="checked"><label class="options-label">Конспекты автора</label></span>
                                 </div>
                             </div>
                         </div>
