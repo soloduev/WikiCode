@@ -8,6 +8,7 @@
     <link href={% static "wiki/wiki_styles/page.css" %} type="text/css" rel="stylesheet">
     <link href={% static "wiki/slidebars/styles/slidebars.min.css" %} type="text/css" rel="stylesheet">
     <link href={% static "wiki/gitgraphs/gitgraph.css" %} type="text/css" rel="stylesheet">
+    <script src={% static "wiki/auto_resize/autoResize.js" %}></script>
     <script src={% static "wiki/wiki_scripts/page.js" %}></script>
     <script src={% static "wiki/gitgraphs/gitgraph.js" %}></script>
 
@@ -46,6 +47,7 @@
             // Для версий
             document.getElementById('v_markdown-row-{{ p.index|escapejs }}').innerHTML = marked(md_text[{{ p.index|escapejs }}]);
         {% endfor %}
+
 
 
         // Если активирован модуль динамических комментариев, то выполняем их обработку

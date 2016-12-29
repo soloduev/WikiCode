@@ -59,15 +59,6 @@ $("#jstree")
     });
 }) (jQuery);
 
-//То что касается тегов
-$(function() {
-    $('#publ-tags').tags({
-        readOnly: true,
-        tagData:["c++", "beginning"],
-    });
-});
-
-
 // ---------------------------------------------------------- //
 // ---------------------POST запросы------------------------- //
 // ---------------------------------------------------------- //
@@ -124,6 +115,10 @@ $("#edit_paragraph_wiki_tree_context").on("click", function () {
             '</textarea>');
     //Делаем так, чтобы мы могли нажимать таб у любого текст ареа тега
     var textareas = document.getElementsByTagName('textarea');
+
+    // Делаем так, чтобы все textarea могли автоматически изменять свой размер в зависимости от их содержимого
+    $(function() { $('textarea').autoResize(); });
+
     var count = textareas.length;
     for(var i=0;i<count;i++){
         textareas[i].onkeydown = function(e){
