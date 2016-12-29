@@ -44,3 +44,18 @@ $("#wiki-style-btn-delete-publ").click(function () {
         }
     });
 });
+
+// Работа с настройками конспекта
+$('#access-switch').switchable();
+$('#dynamic-switch').switchable();
+$('#main-comments-switch').switchable();
+$('#private-edit-switch').switchable();
+$('#contents-switch').switchable();
+$('#files-switch').switchable();
+$('#links-switch').switchable();
+$('#versions-switch').switchable();
+$('#show-author-switch').switchable();
+$('#loading-switch').switchable();
+$('#saving-switch').switchable();
+$('#rating-switch').switchable();
+$('#file-tree-switch').switchable();
