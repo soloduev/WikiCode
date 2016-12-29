@@ -71,3 +71,8 @@ $('#contents-switch').switchable();
 $('#files-switch').switchable();
 $('#links-switch').switchable();
 $('#versions-switch').switchable();
+$('#show-author-switch').switchable();
+$('#loading-switch').switchable();
+$('#saving-switch').switchable();
+$('#rating-switch').switchable();
+$('#file-tree-switch').switchable();
