@@ -75,10 +75,10 @@
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tab_default_1">
-                                    {% for publ in publications %}
-                                        <!-- Start publication-->
-                                        <div class="row">
-                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="row">
+                                        {% for publ in publications %}
+                                            <!-- Start publication-->
+                                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                                                 <div class="box">
                                                     <div class="info">
                                                         <a style="text-decoration: none; cursor: pointer;"
@@ -109,9 +109,10 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <!--End publication-->
-                                    {% endfor %}
+                                            <!--End publication-->
+                                        {% endfor %}
+                                    </div>
+
                                 </div>
                                 <div class="tab-pane" id="tab_default_2">
                                     <p></p>
@@ -143,13 +144,13 @@
             <div class="col-xs-6">
                 {% if publications.has_previous %}
                     <a href="?page={{ publications.previous_page_number }}" class="btn btn-link"
-                       style="text-decoration: none;"><i class="glyphicon glyphicon-menu-left"></i> Предыдущие</a>
+                       style="text-decoration: none;"><b><i class="glyphicon glyphicon-menu-left"></i> Предыдущие</b></a>
                 {% endif %}
             </div>
             <div class="col-xs-6 text-right">
                 {% if publications.has_next %}
                     <a href="?page={{ publications.next_page_number }}" class="btn btn-link"
-                       style="text-decoration: none;">Следующие <i class="glyphicon glyphicon-menu-right" sty></i></a>
+                       style="text-decoration: none;"><b>Следующие <i class="glyphicon glyphicon-menu-right" sty></i></b></a>
                 {% endif %}
             </div>
         </div>
@@ -162,10 +163,10 @@
     <script>
         /* Отображение обычного уведомления */
         $.notify("{{ notify.text|escapejs }}",
-                    {
-                        position: "right bottom",
-                        className: "{{ notify.type|escapejs }}",
-                        autoHideDelay: 8000
-                    });
+                {
+                    position: "right bottom",
+                    className: "{{ notify.type|escapejs }}",
+                    autoHideDelay: 8000
+                });
     </script>
 {% endblock %}
