@@ -50,6 +50,20 @@ class Publication(models.Model):
     read = models.BigIntegerField()
     main_comments = models.TextField()
     versions = models.BinaryField(blank=True)
+    # Все настройки конспекта
+    is_public = models.BooleanField()
+    is_dynamic_paragraphs = models.BooleanField()
+    is_general_comments = models.BooleanField()
+    is_contents = models.BooleanField()
+    is_protected_edit = models.BooleanField()
+    is_files = models.BooleanField()
+    is_links = models.BooleanField()
+    is_versions = models.BooleanField()
+    is_show_author = models.BooleanField()
+    is_loading = models.BooleanField()
+    is_saving = models.BooleanField()
+    is_starring = models.BooleanField()
+    is_file_tree = models.BooleanField()
 
     def __str__(self):
         return str(self.id_publication)
