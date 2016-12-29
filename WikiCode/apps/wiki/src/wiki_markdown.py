@@ -18,7 +18,7 @@
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# WikiMarkdown version 0.4
+# WikiMarkdown version 0.5
 # Класс для разбивки Markdown текста на логические абзацы
 # Возможности:
 # Может разбивать
@@ -146,19 +146,20 @@ class WikiMarkdown(object):
         """ Генерирует оглавление для конспекта. Необходимо передать отдельные параграфы конпекта в иде списка. """
         result_contents = ""
         cur_lvl = 1
+        num_paragraph = 1
 
         for paragraph in paragraphs:
-
             if len(paragraph["text"]) > 4:
                 if paragraph["text"][0:2] == '# ' and paragraph["text"].rstrip(" \n\r\t")[-2:] == " #":
-                    result_contents += str(cur_lvl) + ". [" + paragraph["text"].rstrip(" \n\r\t")[2:-2] + "](/page/5/#1)\n"
+                    result_contents += str(cur_lvl) + ". [" + paragraph["text"].rstrip(" \n\r\t")[2:-2] + "](/page/5/#"+str(num_paragraph)+")\n"
                     cur_lvl+=1
             if len(paragraph["text"]) > 6:
                 if paragraph["text"][0:3] == '## ' and paragraph["text"].rstrip(" \n\r\t")[-3:] == " ##":
-                    result_contents += "    - [" + paragraph["text"].rstrip(" \n\r\t")[3:-3] + "](/page/5/#2)\n"
+                    result_contents += "    - [" + paragraph["text"].rstrip(" \n\r\t")[3:-3] + "](/page/5/#"+str(num_paragraph)+")\n"
             if len(paragraph["text"]) > 9:
                 if paragraph["text"][0:4] == '### ' and paragraph["text"].rstrip(" \n\r\t")[-4:] == " ###":
-                    result_contents += "     - [" + paragraph["text"].rstrip(" \n\r\t")[4:-4] + "](/page/5/#3)\n"
+                    result_contents += "     - [" + paragraph["text"].rstrip(" \n\r\t")[4:-4] + "](/page/5/#"+str(num_paragraph)+")\n"
+            num_paragraph += 1
 
         if result_contents == "":
             return "### Заголовки в конспекте не были определены. ###\n### Оглавление не сгенерировано ###"
