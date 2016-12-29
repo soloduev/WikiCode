@@ -27,31 +27,47 @@
                             <div class="row">
                                 <br>
                                 <div class="col-md-6 col-xs-12">
-                                    <div class="container-fluid text-left">
-                                        <div class="row">
-                                            <a id="wikicode-name-author" href="/user/{{ publication.id_author }}" class="btn"><span class="glyphicon glyphicon-user"></span>{{ publication.nickname_author }}</a>
+                                    {% if publication.is_show_author %}
+                                        <div class="container-fluid text-left">
+                                            <div class="row">
+                                                <a id="wikicode-name-author" href="/user/{{ publication.id_author }}" class="btn"><span class="glyphicon glyphicon-user"></span>{{ publication.nickname_author }}</a>
+                                            </div>
                                         </div>
-                                    </div>
+                                    {% endif %}
                                 </div>
-                                <div class="col-md-6 col-xs-12">
-                                    <div class="container-fluid text-right">
-                                        <div class="row">
-                                            <div class="btn-group">
-                                                <a id="wikicode-up-right-button" class="btn"><span class="glyphicon glyphicon-star"></span> (0)</a>
-                                                <a id="wikicode-up-right-button" class="btn"><span class="glyphicon glyphicon-floppy-save"></span> (0)</a>
-                                                <a id="wikicode-up-right-button" class="btn"><span class="glyphicon glyphicon-download"></span> (0)</a>
+                                {% if publication.is_starring or publication.is_saving or publication.is_loading %}
+                                    <div class="col-md-6 col-xs-12">
+                                        <div class="container-fluid text-right">
+                                            <div class="row">
+                                                <div class="btn-group">
+                                                    {% if publication.is_starring %}
+                                                        <a id="wikicode-up-right-button" class="btn"><span class="glyphicon glyphicon-star"></span> (0)</a>
+                                                    {% endif %}
+                                                    {% if publication.is_saving %}
+                                                        <a id="wikicode-up-right-button" class="btn"><span class="glyphicon glyphicon-floppy-save"></span> (0)</a>
+                                                    {% endif %}
+                                                    {% if publication.is_loading %}
+                                                        <a id="wikicode-up-right-button" class="btn"><span class="glyphicon glyphicon-download"></span> (0)</a>
+                                                    {% endif %}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <hr>
+                                    <hr>
+                                {% endif %}
                                 <div class="tabbable-panel" style="border-bottom: 0px solid #000000; border-top: 0px solid black;">
                                     <div class="tabbable-pills">
                                         <ul class="nav nav-tabs" style="border-bottom: none;">
                                             <li class="active"><a href="#tab_default_1" data-toggle="tab" id="wiki-publ-tab-1">Конспект </a></li>
-                                            <li><a href="#tab_default_4" data-toggle="tab" id="wiki-publ-tab-3">Файлы </a></li>
-                                            <li><a href="#tab_default_5" data-toggle="tab" id="wiki-publ-tab-4">Ссылки </a></li>
-                                            <li><a href="#tab_default_6" data-toggle="tab" id="wiki-publ-tab-5">Версии </a></li>
+                                            {% if publication.is_files %}
+                                                <li><a href="#tab_default_4" data-toggle="tab" id="wiki-publ-tab-3">Файлы </a></li>
+                                            {% endif %}
+                                            {% if publication.is_links %}
+                                                <li><a href="#tab_default_5" data-toggle="tab" id="wiki-publ-tab-4">Ссылки </a></li>
+                                            {% endif %}
+                                            {% if publication.is_versions %}
+                                                <li><a href="#tab_default_6" data-toggle="tab" id="wiki-publ-tab-5">Версии </a></li>
+                                            {% endif %}
                                             <li><a href="#tab_default_7" data-toggle="tab" id="wiki-publ-tab-6">Управление </a></li>
                                         </ul>
                                         <div class="tab-content">
@@ -78,7 +94,7 @@
                                                         </ul>
                                                     </div>
                                                 </div>
-                                                {% if module_main_comments %}
+                                                {% if module_main_comments and publication.is_general_comments %}
                                                     <div class="col-xs-12" id="show-comment-btn">
                                                         <div class="row text-center">
                                                             <br>
@@ -133,68 +149,74 @@
                                                     </div>
                                                 {% endif %}
                                             </div>
-                                            <div class="tab-pane" id="tab_default_4">
-                                                <div class="col-xs-12 col-sm-12 col-md-12"
-                                                     style="border: 1px solid #d5d5d5;">
-                                                    <div class="row text-center">
-                                                        <br><h4>В будущем, здесь будут располагаться прикрепленные файлы.</h4><br>
-                                                        <h4>Работа идет, следите за разработкой на github!</h4>
-                                                        <br><br><br>
+                                            {% if publication.is_files %}
+                                                <div class="tab-pane" id="tab_default_4">
+                                                    <div class="col-xs-12 col-sm-12 col-md-12"
+                                                         style="border: 1px solid #d5d5d5;">
+                                                        <div class="row text-center">
+                                                            <br><h4>В будущем, здесь будут располагаться прикрепленные файлы.</h4><br>
+                                                            <h4>Работа идет, следите за разработкой на github!</h4>
+                                                            <br><br><br>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="tab-pane" id="tab_default_5">
-                                                <div class="col-xs-12 col-sm-12 col-md-12"
-                                                     style="border: 1px solid #d5d5d5;">
-                                                    <div class="row text-center">
-                                                        <br>
-                                                        <h4>В будущем, здесь будут перечислены найденные ссылки в конспекте</h4>
-                                                        <br>
-                                                        <h4>Работа идет, следите за разработкой на github!</h4>
-                                                        <br><br><br>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-pane" id="tab_default_6">
-                                                <div class="col-xs-12 col-sm-12 col-md-12"
-                                                     style="border: 1px solid #d5d5d5;">
-                                                    <div class="container-fluid">
+                                            {% endif %}
+                                            {% if publication.is_links %}
+                                                <div class="tab-pane" id="tab_default_5">
+                                                    <div class="col-xs-12 col-sm-12 col-md-12"
+                                                         style="border: 1px solid #d5d5d5;">
                                                         <div class="row text-center">
                                                             <br>
-                                                            <div class="col-xs-6 col-sm-3">
-                                                                <canvas id="gitGraph"></canvas>
-                                                            </div>
-                                                            <div class="col-xs-6 col-sm-9" style=" box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);">
-                                                                <div class="row">
-                                                                    <h4>Выбранная версия</h4>
-                                                                    <div class="text-right">
-                                                                        <div class="btn-group btn-group-sm">
-                                                                            <button class="btn" id="set_head_version" style="display:none;">Сделать Head</button><div id="to_version_value" hidden></div>
-                                                                            <button class="btn" id="wiki-style-btn" data-toggle="modal" data-target="#modal_develop_func">Сравнить с предыдущей</button>
-                                                                            <button class="btn" id="wiki-style-btn" data-toggle="modal" data-target="#modal_develop_func">Показать</button>
-                                                                            <button class="btn" id="wiki-style-btn" data-toggle="modal" data-target="#modal_develop_func">Удалить</button>
-                                                                            <br>
-                                                                            <br>
-                                                                        </div>
-                                                                    </div>
-                                                                    <ul class="v_border" id="version_block_show">
-                                                                        {% for elem in numbers %}
-                                                                            {#                                                                        <li style="border-bottom: solid 1px #cbcbcb; text-align: left; background-color: #c5eac1">#}
-                                                                            {#                                                                            <div class="md-hover" id="v_markdown-row-{{ elem }}"></div>#}
-                                                                            {#                                                                        </li>#}
-                                                                            {#                                                                        <li style="border-bottom: solid 1px #cbcbcb; text-align: left; background-color: #ead0cf">#}
-                                                                            {#                                                                            <div class="md-hover" id="v_markdown-row-{{ elem }}"></div>#}
-                                                                            {#                                                                        </li>#}
-                                                                            <li style="border-top: solid 1px #cbcbcb; text-align: left; background-color: rgba(255, 255, 255, 0)"><div class="md-hover" id="v_markdown-row-{{ elem }}"></div></li>
-                                                                        {% endfor %}
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
+                                                            <h4>В будущем, здесь будут перечислены найденные ссылки в конспекте</h4>
+                                                            <br>
+                                                            <h4>Работа идет, следите за разработкой на github!</h4>
+                                                            <br><br><br>
                                                         </div>
-                                                        <br>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            {% endif %}
+                                            {% if publication.is_versions %}
+                                                <div class="tab-pane" id="tab_default_6">
+                                                    <div class="col-xs-12 col-sm-12 col-md-12"
+                                                         style="border: 1px solid #d5d5d5;">
+                                                        <div class="container-fluid">
+                                                            <div class="row text-center">
+                                                                <br>
+                                                                <div class="col-xs-6 col-sm-3">
+                                                                    <canvas id="gitGraph"></canvas>
+                                                                </div>
+                                                                <div class="col-xs-6 col-sm-9" style=" box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);">
+                                                                    <div class="row">
+                                                                        <h4>Выбранная версия</h4>
+                                                                        <div class="text-right">
+                                                                            <div class="btn-group btn-group-sm">
+                                                                                <button class="btn" id="set_head_version" style="display:none;">Сделать Head</button><div id="to_version_value" hidden></div>
+                                                                                <button class="btn" id="wiki-style-btn" data-toggle="modal" data-target="#modal_develop_func">Сравнить с предыдущей</button>
+                                                                                <button class="btn" id="wiki-style-btn" data-toggle="modal" data-target="#modal_develop_func">Показать</button>
+                                                                                <button class="btn" id="wiki-style-btn" data-toggle="modal" data-target="#modal_develop_func">Удалить</button>
+                                                                                <br>
+                                                                                <br>
+                                                                            </div>
+                                                                        </div>
+                                                                        <ul class="v_border" id="version_block_show">
+                                                                            {% for elem in numbers %}
+                                                                                {#                                                                        <li style="border-bottom: solid 1px #cbcbcb; text-align: left; background-color: #c5eac1">#}
+                                                                                {#                                                                            <div class="md-hover" id="v_markdown-row-{{ elem }}"></div>#}
+                                                                                {#                                                                        </li>#}
+                                                                                {#                                                                        <li style="border-bottom: solid 1px #cbcbcb; text-align: left; background-color: #ead0cf">#}
+                                                                                {#                                                                            <div class="md-hover" id="v_markdown-row-{{ elem }}"></div>#}
+                                                                                {#                                                                        </li>#}
+                                                                                <li style="border-top: solid 1px #cbcbcb; text-align: left; background-color: rgba(255, 255, 255, 0)"><div class="md-hover" id="v_markdown-row-{{ elem }}"></div></li>
+                                                                            {% endfor %}
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
                                             <div class="tab-pane" id="tab_default_7">
                                                 <div class="col-xs-12" style="border: 1px solid #d5d5d5;height: 500px;">
                                                     <div class="col-md-5 col-sm-5 col-xs-12">
@@ -231,85 +253,105 @@
             </div>
         </div>
     </div>
-    <button class="btn-lg" id="pollSlider-button"><span class="glyphicon glyphicon-folder-close"></span> </button>
-    <button class="btn-lg" id="like-pollSlider-button"><span class="glyphicon glyphicon-star"></span> </button>
-    <button class="btn-lg" id="contents-pollSlider-button"><span class="glyphicon glyphicon-bookmark"></span> </button>
+
+    {% if publication.is_file_tree %}
+        <button class="btn-lg" id="pollSlider-button"><span class="glyphicon glyphicon-folder-close"></span> </button>
+    {% endif %}
+    {% if publication.is_starring %}
+        <button class="btn-lg" id="like-pollSlider-button"><span class="glyphicon glyphicon-star"></span> </button>
+    {% endif %}
+    {% if publication.is_contents %}
+        <button class="btn-lg" id="contents-pollSlider-button"><span class="glyphicon glyphicon-bookmark"></span> </button>
+    {% endif %}
+
     <a class="btn-lg" id="up-pollSlider-button" href="#top"><span class="glyphicon glyphicon-arrow-up"></span> </a>
-    <div id="wiki-left-page" class="sb-slidebar sb-left sb-width-custom">
-        <br><br><br><br><br>
-        <div id="left-slidebar-publications">
-            <label class="btn-block btn-primary text-center">КОНСПЕКТЫ {{ publication.nickname_author|upper }}</label>
-            {% if preview_tree == "NONE" %}
-                <div class="col-xs-12 text-center">
-                    <label>Дерево отсутствует</label>
+
+    {% if publication.is_file_tree or publication.is_contents %}
+        <div id="wiki-left-page" class="sb-slidebar sb-left sb-width-custom">
+            <br><br><br><br><br>
+            {% if publication.is_file_tree %}
+                <div id="left-slidebar-publications">
+                    <label class="btn-block btn-primary text-center">КОНСПЕКТЫ {{ publication.nickname_author|upper }}</label>
+                    {% if preview_tree == "NONE" %}
+                        <div class="col-xs-12 text-center">
+                            <label>Дерево отсутствует</label>
+                        </div>
+                    {% else %}
+                        <ul id="tree2">
+                            <!--Здесь должен располагаться сгенерированный html preview дерева-->
+                            {{ preview_tree|safe }}
+                        </ul>
+                    {% endif %}
                 </div>
-            {% else %}
-                <ul id="tree2">
-                    <!--Здесь должен располагаться сгенерированный html preview дерева-->
-                    {{ preview_tree|safe }}
-                </ul>
+            {% endif %}
+            {% if publication.is_contents %}
+                <div id="left-slidebar-contents">
+                    <label class="btn-block btn-primary text-center">ОГЛАВЛЕНИЕ</label>
+                    <div class="row" id="contents-publication"></div>
+                </div>
             {% endif %}
         </div>
-        <div id="left-slidebar-contents">
-            <label class="btn-block btn-primary text-center">ОГЛАВЛЕНИЕ</label>
-            <div class="row" id="contents-publication"></div>
-        </div>
-
-    </div>
+    {% endif %}
 
     {% if module_dynamic_paragraphs %}
         <!--Контекстное меню для абзацев-->
         <nav id="context-menu" class="context-menu">
             <ul class="context-menu__items">
-                <li id="lt-context-menu-1" class="context-menu__item"><a id="comment_paragraph_wiki_tree_context" data-toggle="modal" data-target="#modal_dynamic_comment" class="context-menu__link" data-action="Comment" style="text-decoration: none;"><i class="fa fa-comment"></i> Комментировать</a></li>
+                {% if publication.is_dynamic_paragraphs %}
+                    <li id="lt-context-menu-1" class="context-menu__item"><a id="comment_paragraph_wiki_tree_context" data-toggle="modal" data-target="#modal_dynamic_comment" class="context-menu__link" data-action="Comment" style="text-decoration: none;"><i class="fa fa-comment"></i> Комментировать</a></li>
+                {% endif %}
                 <li id="lt-context-menu-2" class="context-menu__item"><a id="edit_paragraph_wiki_tree_context" class="context-menu__link" data-action="Edit" style="text-decoration: none;"><i class="fa  fa-pencil-square-o"></i> Редактировать</a></li>
                 <li id="lt-context-menu-3" class="context-menu__item"><a id="error_paragraph_wiki_tree_context" data-toggle="modal" data-target="#modal_develop_func" class="context-menu__link" data-action="Error" style="text-decoration: none;"><i class="fa fa-exclamation-triangle"></i> Указать на ошибку</a></li>
                 <li id="lt-context-menu-4" class="context-menu__item"><a id="copy_paragraph_wiki_tree_context" data-toggle="modal" data-target="#modal_develop_func" class="context-menu__link" data-action="Copy" style="text-decoration: none;"><i class="fa fa-clone"></i> Копировать</a></li>
             </ul>
         </nav>
+
         <!--Выбранный номер параграфа. Заполняется в скрипте отвечающим за контекстное меню-->
         <input hidden value="" id="selected_number_paragraph">
+
         <!--Модальное окно для динамического комментирования абзаца-->
-        <div class="modal fade" id="modal_dynamic_comment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel">Комментирование параграфа</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="" id="md-dynamic-paragraph-show"></div>
-                        <hr>
-                        <h4>Комментарии:</h4>
-                        <!-- Сюда должны вставляться комментарии -->
-                        <div id="dynamic-comments-div"></div>
-                        {% if user_data == "None" %}
+        {% if publication.is_dynamic_paragraphs %}
+            <div class="modal fade" id="modal_dynamic_comment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">Комментирование параграфа</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="" id="md-dynamic-paragraph-show"></div>
                             <hr>
-                            <div class="row">
-                                <div class="col-xs-12 text-center">
-                                    <span style="font-size: 12px; color: rgba(82, 82, 82, 0.44)">Войдите или зарегистрируйтесь, чтобы оставить комментарий</span>
+                            <h4>Комментарии:</h4>
+                            <!-- Сюда должны вставляться комментарии -->
+                            <div id="dynamic-comments-div"></div>
+                            {% if user_data == "None" %}
+                                <hr>
+                                <div class="row">
+                                    <div class="col-xs-12 text-center">
+                                        <span style="font-size: 12px; color: rgba(82, 82, 82, 0.44)">Войдите или зарегистрируйтесь, чтобы оставить комментарий</span>
+                                    </div>
                                 </div>
-                            </div>
-                        {% else %}
-                            <hr>
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <textarea type="text" rows="2" class="form-control btn-block" id="wiki-dynamic-comment-field" name="" placeholder="Ваш комментарий..." autofocus style="border-radius: 0px; resize: none;"></textarea>
-                                    <br>
+                            {% else %}
+                                <hr>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <textarea type="text" rows="2" class="form-control btn-block" id="wiki-dynamic-comment-field" name="" placeholder="Ваш комментарий..." autofocus style="border-radius: 0px; resize: none;"></textarea>
+                                        <br>
+                                    </div>
+                                    <div class="col-xs-8"></div>
+                                    <div class="col-xs-4">
+                                        <button type="button" id="wiki-btn-send-dynamic-comment" class="btn btn-block" name="">Отправить</button>
+                                    </div>
                                 </div>
-                                <div class="col-xs-8"></div>
-                                <div class="col-xs-4">
-                                    <button type="button" id="wiki-btn-send-dynamic-comment" class="btn btn-block" name="">Отправить</button>
-                                </div>
-                            </div>
-                        {% endif %}
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        {% endif %}
     {% endif %}
 
-    {% if module_main_comments %}
+    {% if module_main_comments and publication.is_general_comments %}
         <!--Выбранный id пользователя, которому идет ответ. Заполняется в главном скрипте для этой страницы -->
         <input hidden value="" id="reply_id_user">
         <!--Модальное окно для общего комментирования-->
