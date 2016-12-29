@@ -150,15 +150,15 @@ class WikiMarkdown(object):
         for paragraph in paragraphs:
 
             if len(paragraph["text"]) > 4:
-                if paragraph["text"][0:2] == '# ' and paragraph["text"][-3:] == " #\n":
-                    result_contents += str(cur_lvl) + ". [" + paragraph["text"][2:-2] + "](/page/3/#1)\n"
+                if paragraph["text"][0:2] == '# ' and paragraph["text"].rstrip(" \n\r\t")[-2:] == " #":
+                    result_contents += str(cur_lvl) + ". [" + paragraph["text"].rstrip(" \n\r\t")[2:-2] + "](/page/5/#1)\n"
                     cur_lvl+=1
             if len(paragraph["text"]) > 6:
-                if paragraph["text"][0:3] == '## ' and paragraph["text"][-4:] == " ##\n":
-                    result_contents += "    - [" + paragraph["text"][3:-3] + "](/page/3/#2)\n"
+                if paragraph["text"][0:3] == '## ' and paragraph["text"].rstrip(" \n\r\t")[-3:] == " ##":
+                    result_contents += "    - [" + paragraph["text"].rstrip(" \n\r\t")[3:-3] + "](/page/5/#2)\n"
             if len(paragraph["text"]) > 9:
-                if paragraph["text"][0:4] == '### ' and paragraph["text"][-5:] == " ###\n":
-                    result_contents += "     - [" + paragraph["text"][4:-4] + "](/page/3/#3)\n"
+                if paragraph["text"][0:4] == '### ' and paragraph["text"].rstrip(" \n\r\t")[-4:] == " ###":
+                    result_contents += "     - [" + paragraph["text"].rstrip(" \n\r\t")[4:-4] + "](/page/5/#3)\n"
 
         if result_contents == "":
             return "### Заголовки в конспекте не были определены. ###\n### Оглавление не сгенерировано ###"
@@ -244,25 +244,28 @@ class WikiMarkdown(object):
     def __is_start_end_lists(self, line: str) -> bool:
         """Проверяет, начало это блока списка или конец"""
         length_line = len(line)
-        if line.find(".") == 1:
-            if str(type(int(line[0]))) == "<class 'int'>":
-                return True
-        if line.find(".") == 2:
-            if str(type(int(line[0]))) == "<class 'int'>" and str(type(int(line[1]))) == "<class 'int'>":
-                return True
-        if line.find(".") == 3:
-            if str(type(int(line[0]))) == "<class 'int'>" and str(type(int(line[1]))) == "<class 'int'>" and str(type(int(line[2]))) == "<class 'int'>":
-                return True
+        try:
+            if line.find(".") == 1:
+                if str(type(int(line[0]))) == "<class 'int'>":
+                    return True
+            if line.find(".") == 2:
+                if str(type(int(line[0]))) == "<class 'int'>" and str(type(int(line[1]))) == "<class 'int'>":
+                    return True
+            if line.find(".") == 3:
+                if str(type(int(line[0]))) == "<class 'int'>" and str(type(int(line[1]))) == "<class 'int'>" and str(type(int(line[2]))) == "<class 'int'>":
+                    return True
 
-        if length_line >= 2:
-            if line[0] == "*" and line[1] == " ":
-                return True
-            elif line[0] == "-" and line[1] == " ":
-                return True
-            elif line[0] == " " and line[1] == "*":
-                return True
-            elif line[0] == " " and line[1] == "-":
-                return True
-            else:
-                return False
+            if length_line >= 2:
+                if line[0] == "*" and line[1] == " ":
+                    return True
+                elif line[0] == "-" and line[1] == " ":
+                    return True
+                elif line[0] == " " and line[1] == "*":
+                    return True
+                elif line[0] == " " and line[1] == "-":
+                    return True
+                else:
+                    return False
+        except ValueError:
+            return False
 

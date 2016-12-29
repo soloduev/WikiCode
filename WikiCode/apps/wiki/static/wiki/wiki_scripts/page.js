@@ -55,6 +55,13 @@ $("#jstree")
         var mySlidebars = new $.slidebars();
         $('#pollSlider-button').on('click', function() {
             mySlidebars.slidebars.open('left');
+            $("#left-slidebar-publications").show();
+            $("#left-slidebar-contents").hide();
+        });
+        $('#contents-pollSlider-button').on('click', function() {
+            mySlidebars.slidebars.open('left');
+            $("#left-slidebar-contents").show();
+            $("#left-slidebar-publications").hide();
         });
     });
 }) (jQuery);
@@ -96,6 +103,7 @@ $("#wiki-btn-send-dynamic-comment").click(function () {
     });
 });
 
+
 //Динамическое редактирование
 $("#edit_paragraph_wiki_tree_context").on("click", function () {
 
@@ -113,12 +121,12 @@ $("#edit_paragraph_wiki_tree_context").on("click", function () {
             '">' +
             selectText +
             '</textarea>');
-    //Делаем так, чтобы мы могли нажимать таб у любого текст ареа тега
-    var textareas = document.getElementsByTagName('textarea');
 
     // Делаем так, чтобы все textarea могли автоматически изменять свой размер в зависимости от их содержимого
     $(function() { $('textarea').autoResize(); });
 
+    //Делаем так, чтобы мы могли нажимать таб у любого текст ареа тега
+    var textareas = document.getElementsByTagName('textarea');
     var count = textareas.length;
     for(var i=0;i<count;i++){
         textareas[i].onkeydown = function(e){

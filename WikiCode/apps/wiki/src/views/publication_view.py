@@ -167,8 +167,6 @@ def get_page(request, id):
         # Генерируем оглавление для конспекта
         contents = wm.generate_contents(paragraphs)
 
-        print(contents)
-
         context = {
             "publication": publication,
             "paragraphs": paragraphs,

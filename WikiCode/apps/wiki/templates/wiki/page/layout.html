@@ -137,8 +137,8 @@
                                             <div class="tab-pane" id="tab_default_3">
                                                 <div class="col-xs-12 col-sm-12 col-md-12"
                                                      style="border: 1px solid #d5d5d5;">
-                                                    <div class="row" id="contents-publication">
-                                                    </div>
+                                                    {#                                                    <div class="row" id="contents-publication">#}
+                                                    {#                                                    </div>#}
                                                 </div>
                                             </div>
                                             <div class="tab-pane" id="tab_default_4">
@@ -180,15 +180,15 @@
                                                                         </div>
                                                                     </div>
                                                                     <ul class="v_border" id="version_block_show">
-                                                                    {% for elem in numbers %}
-{#                                                                        <li style="border-bottom: solid 1px #cbcbcb; text-align: left; background-color: #c5eac1">#}
-{#                                                                            <div class="md-hover" id="v_markdown-row-{{ elem }}"></div>#}
-{#                                                                        </li>#}
-{#                                                                        <li style="border-bottom: solid 1px #cbcbcb; text-align: left; background-color: #ead0cf">#}
-{#                                                                            <div class="md-hover" id="v_markdown-row-{{ elem }}"></div>#}
-{#                                                                        </li>#}
-                                                                        <li style="border-top: solid 1px #cbcbcb; text-align: left; background-color: rgba(255, 255, 255, 0)"><div class="md-hover" id="v_markdown-row-{{ elem }}"></div></li>
-                                                                    {% endfor %}
+                                                                        {% for elem in numbers %}
+                                                                            {#                                                                        <li style="border-bottom: solid 1px #cbcbcb; text-align: left; background-color: #c5eac1">#}
+                                                                            {#                                                                            <div class="md-hover" id="v_markdown-row-{{ elem }}"></div>#}
+                                                                            {#                                                                        </li>#}
+                                                                            {#                                                                        <li style="border-bottom: solid 1px #cbcbcb; text-align: left; background-color: #ead0cf">#}
+                                                                            {#                                                                            <div class="md-hover" id="v_markdown-row-{{ elem }}"></div>#}
+                                                                            {#                                                                        </li>#}
+                                                                            <li style="border-top: solid 1px #cbcbcb; text-align: left; background-color: rgba(255, 255, 255, 0)"><div class="md-hover" id="v_markdown-row-{{ elem }}"></div></li>
+                                                                        {% endfor %}
                                                                     </ul>
                                                                 </div>
                                                             </div>
@@ -236,17 +236,24 @@
     <a class="btn-lg" id="up-pollSlider-button" href="#top"><span class="glyphicon glyphicon-arrow-up"></span> </a>
     <div id="wiki-left-page" class="sb-slidebar sb-left sb-width-custom">
         <br><br><br><br><br>
-        <label class="btn-block btn-primary text-center">КОНСПЕКТЫ {{ publication.nickname_author|upper }}</label>
-        {% if preview_tree == "NONE" %}
-            <div class="col-xs-12 text-center">
-                <label>Дерево отсутствует</label>
-            </div>
-        {% else %}
-            <ul id="tree2">
-                <!--Здесь должен располагаться сгенерированный html preview дерева-->
-                {{ preview_tree|safe }}
-            </ul>
-        {% endif %}
+        <div id="left-slidebar-publications">
+            <label class="btn-block btn-primary text-center">КОНСПЕКТЫ {{ publication.nickname_author|upper }}</label>
+            {% if preview_tree == "NONE" %}
+                <div class="col-xs-12 text-center">
+                    <label>Дерево отсутствует</label>
+                </div>
+            {% else %}
+                <ul id="tree2">
+                    <!--Здесь должен располагаться сгенерированный html preview дерева-->
+                    {{ preview_tree|safe }}
+                </ul>
+            {% endif %}
+        </div>
+        <div id="left-slidebar-contents">
+            <label class="btn-block btn-primary text-center">ОГЛАВЛЕНИЕ</label>
+            <div class="row" id="contents-publication"></div>
+        </div>
+
     </div>
 
     {% if module_dynamic_paragraphs %}
