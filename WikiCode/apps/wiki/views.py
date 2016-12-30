@@ -110,6 +110,13 @@ def create_page(request):
     return publication_view.get_create_page(request)
 
 
+# Отображение конспекта в режиме презентации
+@develop_mode_id
+@login_required
+def presentation(request, id):
+    return publication_view.get_presentation(request, id)
+
+
 # Запрос страницы управления деревом конспектов(tree_manager.html)
 @develop_mode
 @login_required

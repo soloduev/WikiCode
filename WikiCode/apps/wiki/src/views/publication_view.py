@@ -287,6 +287,20 @@ def get_create_page(request):
         return HttpResponse(total)
 
 
+def get_presentation(request, id):
+    # Получаем данные формы
+    try:
+        publication = Publication.objects.get(id_publication=id)
+        # Составляем страницу презентации конспекта
+        first_part = '<!DOCTYPE html><html><title>' + publication.title + '</title><xmp theme="' + publication.theme.lower() + '" style="display:none;">'
+        second_part = publication.text
+        third_part = '</xmp><script src="http://strapdownjs.com/v/0.2/strapdown.js"></script></html>'
+        total = first_part + second_part + third_part
+        return HttpResponse(total)
+    except Publication.DoesNotExist:
+        return get_error_page(request, ["This is publication not found!"])
+
+
 def get_publ_manager(request, id, notify=None):
     """Запускает страницу управления конспектом
     Может принимать notify(сообщение, которое можно вывести после отображения страницы):

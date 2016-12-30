@@ -233,7 +233,10 @@
                                                     <div class="col-md-5 col-sm-5 col-xs-12">
                                                         <br>
                                                         <div class="row">
-                                                            <button class="btn btn-block" id="wiki-style-btn" data-toggle="modal" data-target="#modal_develop_func">Перейти в режим презентации</button>
+                                                            <form action="{% url 'presentation' publication.id_publication %}" method="post">
+                                                                {% csrf_token %}
+                                                                <button type="submit" class="btn btn-block" id="wiki-style-btn">Перейти в режим презентации</button>
+                                                            </form>
                                                         </div>
                                                         <br>
                                                         <div class="row">
