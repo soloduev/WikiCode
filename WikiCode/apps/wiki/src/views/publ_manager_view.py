@@ -80,3 +80,37 @@ def get_save_main_publ_manager(request, id):
         except Publication.DoesNotExist:
             return get_error_page(request,
                                   ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
+
+
+def get_save_opt_publ_manager(request, id):
+    if request.method == "POST":
+        try:
+            # Получаем конспект, которым хотим управлять
+            publication = Publication.objects.get(id_publication=id)
+
+            current_id = get_user_id(request)
+            if current_id == publication.id_author:
+                publication.is_public = request.POST.get("access-opt", False)
+                publication.is_dynamic_paragraphs = request.POST.get("dynamic-opt", False)
+                publication.is_general_comments = request.POST.get("main-comments-opt", False)
+                publication.is_contents = request.POST.get("contents-opt", False)
+                publication.is_protected_edit = request.POST.get("private-edit-opt", False)
+                publication.is_files = request.POST.get("files-opt", False)
+                publication.is_links = request.POST.get("links-opt", False)
+                publication.is_versions = request.POST.get("versions-opt", False)
+                publication.is_show_author = request.POST.get("show-author-opt", False)
+                publication.is_loading = request.POST.get("loading-opt", False)
+                publication.is_saving = request.POST.get("saving-opt", False)
+                publication.is_starring = request.POST.get("rating-opt", False)
+                publication.is_file_tree = request.POST.get("file-tree-opt", False)
+                publication.save()
+                return get_publ_manager(request,
+                                        id,
+                                        notify={'type': 'info',
+                                                'text': 'Все настройки конспекта успешно изменены!\n\n\n'})
+            else:
+                return get_error_page(request, ["У Вас нет доступа к этому конспекту, чтобы управлять им!",
+                                                "Вы не являетесь редактором конспекта page/" + str(id) + "/"])
+        except Publication.DoesNotExist:
+            return get_error_page(request,
+                                  ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])

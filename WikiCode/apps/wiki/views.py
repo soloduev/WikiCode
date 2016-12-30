@@ -192,7 +192,11 @@ def delete_publ_in_tree(request):
 
 @develop_mode_id
 def save_main_publ_manager(request, id):
-    return publ_manager_view.get_save_main_publ_manager(request, id)
+    return publ_manager_view.get_save_main_publ_manager(request, id)\
+
+@develop_mode_id
+def save_opt_publ_manager(request, id):
+    return publ_manager_view.get_save_opt_publ_manager(request, id)
 
 
 @develop_mode
