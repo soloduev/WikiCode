@@ -54,54 +54,57 @@
                         <!-- Tab panes -->
                         <div class="tab-content">
                             <div class="tab-pane active" id="tab-lest-id1">
-                                <div class="row">
-                                    <div class="col-xs-5">
-                                        <h4>Заголовок конспекта</h4>
+                                <form action="{% url 'save_main_publ_manager' publication.id_publication %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-xs-5">
+                                            <h4>Заголовок конспекта</h4>
+                                        </div>
+                                        <div class="col-xs-7">
+                                            <input name="title_publication" class="form-control btn-block" style="border-radius: 0px;font-family: Courier;" value="{{ publication.title }}">
+                                        </div>
                                     </div>
-                                    <div class="col-xs-7">
-                                        <input class="form-control btn-block" style="border-radius: 0px;font-family: Courier;" value="{{ publication.title }}">
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-xs-5">
+                                            <h4>Описание конспекта</h4>
+                                        </div>
+                                        <div class="col-xs-7">
+                                            <textarea name="desription_publication" class="form-control btn-block" style="border-radius: 0px; resize: none; font-family: Courier;" rows="3" >{{ publication.description }}</textarea>
+                                        </div>
                                     </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-xs-5">
-                                        <h4>Описание конспекта</h4>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-xs-5">
+                                            <h4>Путь к конспекту</h4>
+                                            <a class="btn-link" style="text-decoration: none;">Изменить путь</a>
+                                        </div>
+                                        <div class="col-xs-7">
+                                            <input name="path_publication" disabled class="form-control btn-block" style="border-radius: 0px;font-family: Courier;" value="{{ tree_path }}">
+                                        </div>
                                     </div>
-                                    <div class="col-xs-7">
-                                        <textarea class="form-control btn-block" style="border-radius: 0px; resize: none; font-family: Courier;" rows="3" >{{ publication.description }}</textarea>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-xs-5">
+                                            <h4>Markdown текст</h4>
+                                            <p><a class="btn-link" style="text-decoration: none;">Редактировать конспект</a></p>
+                                            <p><a class="btn-link" style="text-decoration: none;">Редактировать в редакторе StackEdit</a></p>
+                                            <p><a class="btn-link" style="text-decoration: none;">Справка по Markdown</a></p>
+                                        </div>
+                                        <div class="col-xs-7">
+                                            <textarea disabled class="form-control btn-block" style="overflow: hidden; border-radius: 0px; resize: none; font-family: Courier;"rows="12" >{{ publication.text }}</textarea>
+                                        </div>
                                     </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-xs-5">
-                                        <h4>Путь к конспекту</h4>
-                                        <a class="btn-link" style="text-decoration: none;">Изменить путь</a>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-xs-5">
+                                        </div>
+                                        <div class="col-xs-7">
+                                            <button type="submit" id="wiki-style-btn" class="btn btn-block">Сохранить изменения</button>
+                                        </div>
                                     </div>
-                                    <div class="col-xs-7">
-                                        <input disabled class="form-control btn-block" style="border-radius: 0px;font-family: Courier;" value="{{ tree_path }}">
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-xs-5">
-                                        <h4>Markdown текст</h4>
-                                        <p><a class="btn-link" style="text-decoration: none;">Редактировать конспект</a></p>
-                                        <p><a class="btn-link" style="text-decoration: none;">Редактировать в редакторе StackEdit</a></p>
-                                        <p><a class="btn-link" style="text-decoration: none;">Справка по Markdown</a></p>
-                                    </div>
-                                    <div class="col-xs-7">
-                                        <textarea disabled class="form-control btn-block" style="overflow: hidden; border-radius: 0px; resize: none; font-family: Courier;"rows="12" >{{ publication.text }}</textarea>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-xs-5">
-                                    </div>
-                                    <div class="col-xs-7">
-                                        <button id="wiki-style-btn" class="btn btn-block">Сохранить изменения</button>
-                                    </div>
-                                </div>
-                                <br>
+                                    <br>
+                                </form>
                             </div>
                             <div class="tab-pane" id="tab-lest-id3">
                                 <!-- Здесь должны располагаться настройки отображения функционала динамического конспекта -->
@@ -293,4 +296,13 @@
     <link href={% static "wiki/wiki_styles/publ_manager.css" %} type="text/css" rel="stylesheet">
     <link href={% static "wiki/bootstrapfiles/css/bootsrtap-vertical.css" %} type="text/css" rel="stylesheet">
     <link href={% static "wiki/switchable/switchable.css" %} type="text/css" rel="stylesheet">
+    <script>
+        /* Отображение обычного уведомления */
+        $.notify("{{ notify.text|escapejs }}",
+                {
+                    position: "right bottom",
+                    className: "{{ notify.type|escapejs }}",
+                    autoHideDelay: 8000
+                });
+    </script>
 {% endblock %}

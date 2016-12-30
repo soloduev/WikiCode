@@ -30,9 +30,6 @@ from WikiCode.apps.wiki.src.views.publication_view import get_publ_manager
 def get_save_access(request, id):
     if request.method == "POST":
         try:
-            # Получаем пользователя
-            user_data = check_auth(request)
-
             # Получаем конспект, которым хотим управлять
             publication = Publication.objects.get(id_publication=id)
 
@@ -50,3 +47,36 @@ def get_save_access(request, id):
             return get_error_page(request,
                                   ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
 
+
+def get_save_main_publ_manager(request, id):
+    if request.method == "POST":
+        try:
+            # Получаем конспект, которым хотим управлять
+            publication = Publication.objects.get(id_publication=id)
+
+            current_id = get_user_id(request)
+            if current_id == publication.id_author:
+                # Получаем данные с формы
+                new_title = request.POST.get("title_publication")
+                new_description = request.POST.get("desription_publication")
+                new_path = request.POST.get("path_publication")  # TODO: Необходимо реализовать сохранение нового пути
+
+                if new_title.strip(" \r\n\t") and new_description.strip(" \r\n\t"):
+                    publication.title = new_title
+                    publication.description = new_description
+                    publication.save()
+                    return get_publ_manager(request,
+                                            id,
+                                            notify={'type': 'info',
+                                                    'text': 'Заголовок и описание конспекта успешно изменены!\n\n\n'})
+
+                return get_publ_manager(request,
+                                        id,
+                                        notify={'type': 'error',
+                                                'text': 'Заголовок и описание изменить не удалось!\n\n\n'})
+            else:
+                return get_error_page(request, ["У Вас нет доступа к этому конспекту, чтобы управлять им!",
+                                                "Вы не являетесь редактором конспекта page/" + str(id) + "/"])
+        except Publication.DoesNotExist:
+            return get_error_page(request,
+                                  ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])

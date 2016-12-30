@@ -287,8 +287,18 @@ def get_create_page(request):
         return HttpResponse(total)
 
 
-def get_publ_manager(request, id):
-    """Запускает страницу управления конспектом"""
+def get_publ_manager(request, id, notify=None):
+    """Запускает страницу управления конспектом
+    Может принимать notify(сообщение, которое можно вывести после отображения страницы):
+    notify:
+        {
+            'type': 'error|info',
+            'text': 'any text',
+        }
+    """
+
+    if notify is None:
+        notify = {'type': 'msg', 'text': ''}
 
     try:
         # Получаем пользователя
@@ -305,8 +315,9 @@ def get_publ_manager(request, id):
             context = {
                 "user_data": user_data,
                 "user_id": current_id,
-                "publication":_publication,
-                "tree_path":_publication.tree_path
+                "publication": _publication,
+                "tree_path": _publication.tree_path,
+                "notify": notify
             }
             return render(request, 'wiki/publ_manager.html', context)
         else:

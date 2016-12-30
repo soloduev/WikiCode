@@ -55,6 +55,7 @@ urlpatterns = [
 
     # События на странице управления конспектом
     url(r'^publ_manager/delete_publ_in_tree/$', views.delete_publ_in_tree, name='delete_publ_in_tree'),
+    url(r'^publ_manager/(?P<id>[0-9]+)/save_main_publ_manager/$', views.save_main_publ_manager, name='save_main_publ_manager'),
 
     # События на странице конспекта
     url(r'^page/(?P<id>[0-9]+)/add_dynamic_comment/$', views.add_dynamic_comment, name='add_dynamic_comment'),
