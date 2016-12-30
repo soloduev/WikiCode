@@ -77,6 +77,8 @@ urlpatterns = [
 
     # События на странице настроек пользователя
     url(r'^settings/check_password/$', views.check_password, name='check_password'),
+    url(r'^settings/check_nickname/$', views.check_nickname, name='check_nickname'),
     url(r'^settings/repassword_user/$', views.repassword_user, name='repassword_user'),
+    url(r'^settings/renickname_user/$', views.renickname_user, name='renickname_user'),
 
 ]

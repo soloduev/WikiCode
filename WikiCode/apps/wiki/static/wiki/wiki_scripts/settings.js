@@ -37,8 +37,8 @@ function validate_repassword_form(){
     {
         is_submit = false;
 
-        // Теперь выполняем гет запросы на существование никнейма и почты
-        // Отправляем ajax запрос на сервер c целью узнать, правильный ли пароль ввел текущий пользоаватель
+        // Теперь выполняем гет запросы на существование никнейма
+        // Отправляем ajax запрос на сервер c целью узнать, правильный ли никнейм ввел текущий пользоаватель
         $.ajax({
             type: "GET",
             url: "check_password/",
@@ -73,6 +73,50 @@ function validate_repassword_form(){
             alert("Пароль должен состоять только из букв латинского алфавита и цифр. Его длина должна находиться в диапазоне от 6 до 16 символов.");
         }
 
+        return false;
+    }
+}
+
+// Здесь, по мимо встроенной валидации форм, проводим валидацию с помощью js.
+// Если все успешно, возвращаем true, иначе, если не успешно, указываем поле которое не верно, а затем возвращаем false.
+function validate_renickname_form() {
+    console.log("a");
+    // Получаем все данные с полей формы
+    old_nickname = $("#old_nickname_input").val();
+    nickname = $("#user_nickname_input").val();
+    repeat_nickname = $("#user_nickname_repeat_input").val();
+
+    // Если все ок, двигаемся дальше
+    if(nickname === repeat_nickname)
+    {
+        is_submit = false;
+
+        // Теперь выполняем гет запросы на существование никнейма
+        // Отправляем ajax запрос на сервер c целью узнать, правильный ли никнейм ввел текущий пользоаватель
+        $.ajax({
+            type: "GET",
+            url: "check_nickname/",
+            data: {
+                'nickname': ""+old_nickname,
+            },
+            dataType: "text",
+            cache: false,
+            success: function (data) {
+                if (data == 'ok') {
+                    is_submit = true;
+                }
+                else {
+                    alert("Вы ввели не правильный старый никнейм!");
+                }
+            },
+            async: false
+        });
+
+        return is_submit;
+    }
+    else
+    {
+        alert("Никнеймы должны совпадать");
         return false;
     }
 }

@@ -63,7 +63,7 @@
                         <input class="form-control" disabled="true" style="border-radius: 0px;" value="{{ user.nickname }}">
                     </div>
                     <div class="col-xs-2 col-sm-2 col-md-2">
-                        <a id="wiki-style-btn" class="btn btn-block" style="border-radius: 0px;"><i class="fa fa-edit"></i></a>
+                        <a id="wiki-style-btn" class="btn btn-block" style="border-radius: 0px;" data-toggle="modal" data-target="#modal_edit_nickname"><i class="fa fa-edit"></i></a>
                     </div>
                 </div>
                 <div class="row">
@@ -223,6 +223,37 @@
             </div>
         </div>
     </div>
+
+    <!-- Модальное окно изменения никнейма пользователя-->
+    <div class="modal fade" id="modal_edit_nickname" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Изменение никнейма:</h4>
+                </div>
+                <form action="{% url 'renickname_user' %}" method="post" onsubmit="return validate_renickname_form();">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <label>Введите старый никнейм</label>
+                        <input id="old_nickname_input" type="text" name="user_nickname" placeholder="Старый никнейм" class="form-control btn-block"  required style="border-radius: 0px;height: 30px; width: 250px;">
+                        <br>
+                        <label>Введите новый никнейм</label>
+                        <input id="user_nickname_input" type="text" name="user_new_nickname" placeholder="Новый никнейм" class="form-control btn-block"  required style="border-radius: 0px;height: 30px; width: 250px;">
+                        <br>
+                        <label>Введите новый никнейм снова</label>
+                        <input id="user_nickname_repeat_input" type="text" name="user_nickname_repeat" placeholder="Повторите новый никнейм" class="form-control btn-block"  required style="border-radius: 0px;height: 30px; width: 250px;">
+                        <br>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="wiki-style-btn" type="submit" class="btn">Изменить никнейм</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
 {% endblock %}
 
 {% block add_script %}

@@ -158,12 +158,22 @@ def check_email(request):
 
 @develop_mode
 def check_password(request):
-    return settings_view.get_check_password(request)
+    return settings_view.get_check_password(request)\
+
+
+@develop_mode
+def check_nickname(request):
+    return settings_view.get_check_nickname(request)
 
 
 @develop_mode
 def repassword_user(request):
-    return settings_view.get_repassword_user(request)
+    return settings_view.get_repassword_user(request)\
+
+
+@develop_mode
+def renickname_user(request):
+    return settings_view.get_renickname_user(request)
 
 
 @develop_mode

@@ -20,7 +20,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
-from WikiCode.apps.wiki.models import User, Publication
+from WikiCode.apps.wiki.models import User, Publication, Viewing, BugReport
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
 from .auth import check_auth, get_user_id
@@ -77,6 +77,24 @@ def get_check_password(request):
         return HttpResponse('no', content_type='text/html')
 
 
+def get_check_nickname(request):
+    """Ajax представление. Проверка на соответствие nickname текущего пользователя"""
+    if request.method == "GET":
+        id = get_user_id(request)
+        try:
+            cur_user = User.objects.get(id_user=id)
+            # Проверяем старый никнейм на корректность
+            # Если старый никнейм корректен, оповещаем об этом
+            if cur_user.nickname == request.GET['nickname']:
+                return HttpResponse('ok', content_type='text/html')
+            else:
+                return HttpResponse('no', content_type='text/html')
+        except User.DoesNotExist:
+            return HttpResponse('no', content_type='text/html')
+    else:
+        return HttpResponse('no', content_type='text/html')
+
+
 def get_repassword_user(request):
     """Ajax представление. Изменение пароля пользователя."""
     if request.method == "POST":
@@ -98,6 +116,65 @@ def get_repassword_user(request):
                 return HttpResponseRedirect("/")
             else:
                 get_error_page(request, ["Sorry passwords incorrect!"])
+        except User.DoesNotExist:
+            get_error_page(request, ["User is not found!"])
+    else:
+        return HttpResponse('no', content_type='text/html')
+
+
+def get_renickname_user(request):
+    """Ajax представление. Изменение никнейма пользователя."""
+    if request.method == "POST":
+        id = get_user_id(request)
+        try:
+            # Получаем данные формы
+            form = request.POST
+            cur_user = User.objects.get(id_user=id)
+            # Проверяем старый никнейм на корректность
+            # Если старый пароль корректен, проверяем на равенство новый паролей
+            if cur_user.nickname == form['user_nickname']:
+                new_nickname = form['user_new_nickname']
+                new_nickname_repeat = form['user_nickname_repeat']
+                if new_nickname == new_nickname_repeat:
+                    cur_user.nickname = new_nickname
+
+                    # TODO: Также, при изменении nickname, необходимо везде его поменять в БД.
+                    # TODO: Данный участок кода необходимо будет оптимизировать в будущем.
+                    # TODO: Желательно будет реализовать отдельный модуль, который будет поддерживать целостность БД
+
+                    # Меняем все публикации, где был указан его никнейм
+                    try:
+                        publications = Publication.objects.filter(id_author=cur_user.id_user)
+                        for publ in publications:
+                            publ.nickname_author = new_nickname
+                            publ.save()
+                    except Publication.DoesNotExist:
+                        pass
+                    # Меняем все просмотры, где был указан его никнейм
+                    try:
+                        viewings = Viewing.objects.filter(id_user=cur_user.id_user)
+                        for view in viewings:
+                            view.nickname = new_nickname
+                            view.save()
+                    except Viewing.DoesNotExist:
+                        pass
+                    # Меняем все баг-репорты, где был указан его никнейм
+                    try:
+                        bug_reports = BugReport.objects.filter(id_author=cur_user.id_user)
+                        for bug_report in bug_reports:
+                            bug_report.nickname_author = new_nickname
+                            bug_report.save()
+                    except BugReport.DoesNotExist:
+                        pass
+
+                    cur_user.save()
+
+                    # TODO: Информировать пользователя о том, чтобы он перезашел на платформу,так как он изменил свой никнейм
+                    return HttpResponseRedirect("/")
+                else:
+                    get_error_page(request, ["Извините, но введенныя Вами новая пара никнеймов не совпадает!"])
+            else:
+                get_error_page(request, ["Извините, но Ваш старый пароль не корректен!"])
         except User.DoesNotExist:
             get_error_page(request, ["User is not found!"])
     else:
