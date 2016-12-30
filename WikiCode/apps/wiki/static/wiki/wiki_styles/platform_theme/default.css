@@ -18,9 +18,15 @@
 */
 
 /*
-Code snippet by maridlcrmn for Bootsnipp.com
-Follow me on Twitter @maridlcrmn
+    ГЛАВНЫЙ, СТАНДАРТНЫЙ, ЕДИНЫЙ ФАЙЛ ВСЕХ СТИЛЕЙ для всей платформы
+
+    НАЗВАНИЕ ТЕМЫ ОФОРМЛЕНИЯ: DEFAULT.
+    ЦВЕТ: Сине-голубой, белый цвет.
+
+    АВТОР: Игорь Солодуев Алексеевич
 */
+
+/* ВЕРХНЯЯ ЧАСТЬ ПЛАТФОРМЫ. ЦВЕТ БРЕНДА НА ГЛАВНОЙ СТРАНИЦЕ*/
 
 #wikicode-theme-brand
 {
@@ -56,8 +62,6 @@ Follow me on Twitter @maridlcrmn
 #nav-bar-button3 { font-size: 12px; }
 #nav-bar-button5 { font-size: 12px;  }
 
-
-
 #nav-bar-button1:hover {  color: rgb(2, 150, 231); font-weight: bold; }
 #nav-bar-button2:hover {  color: rgb(2, 150, 231); font-weight: bold; }
 #nav-bar-button3:hover {  color: rgb(2, 150, 231); font-weight: bold; }
@@ -69,6 +73,8 @@ Follow me on Twitter @maridlcrmn
     color: #bebebe;
     font-style: italic;
 }
+
+/* НИЖНИЕ ИКОНКИ БРЕНДОВ СОЦИАЛЬНЫХ СЕТЕЙ И ДРУГИХ САЙТОВ */
 
 .social:hover {
      -webkit-transform: scale(1.1);
@@ -90,8 +96,6 @@ Follow me on Twitter @maridlcrmn
     Multicoloured Hover Variations
 */
 
-
-
  #social-fb:hover {
      color: #3B5998;
  }
@@ -105,7 +109,7 @@ Follow me on Twitter @maridlcrmn
      color: #f39c12;
  }
 
- .tree, .tree ul {
+  .tree, .tree ul {
     margin:0;
     padding:0;
     list-style:none
@@ -317,7 +321,7 @@ Follow me on Twitter @maridlcrmn
 	}
 
 
-    /* Tabs panel */
+/* Tabs panel */
 .tabbable-panel {
   border:1px solid #eee;
   padding: 10px;
@@ -579,4 +583,561 @@ Follow me on Twitter @maridlcrmn
 }
 
 
+/* MAIN STYLES */
 
+#wiki-style-btnwiki-style-btn,
+#wiki-style-btn-add-bug{
+    background-color: #286090;
+    border-radius: 0px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    color: #fff;
+    transition: all 0.5s ease 0s;
+    width: 200px;
+}
+
+#wiki-style-btn-index:hover,
+#wiki-style-btn-add-bug:hover{
+    background-color: #4da6d9;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
+    color: #fff;
+    transition: all 0.5s ease 0s;
+    width: 200px;
+}
+
+/* index.html */
+
+#main-block{
+    border-left: 1px solid #d5d5d5;
+    border-right: 1px solid #d5d5d5;
+    min-height:500px;
+    border-bottom: 1px solid #d5d5d5;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    transition: all 0.5s ease 0s;
+}
+
+.wiki-tag{
+    font-size: 8pt;
+    padding: 2px;
+    border-radius: 5px;
+    border: solid #0a6aa1 1px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    transition: all 0.5s ease 0s;
+}
+
+.wiki-tag:hover{
+    cursor: pointer;
+    background-color: #0a6aa1;
+    color: white;
+    transition: all 0.5s ease 0s;
+}
+
+/* about.html */
+
+#sub-block{
+    border-left: 1px solid #d5d5d5;
+    border-right: 1px solid #d5d5d5;
+    min-height:150px;
+    border-bottom: 1px solid #d5d5d5;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    transition: all 0.5s ease 0s;
+}
+
+#donate-block{
+    border-left: 1px solid #d5d5d5;
+    border-right: 1px solid #d5d5d5;
+    min-height:500px;
+    border-bottom: 1px solid #d5d5d5;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    transition: all 0.5s ease 0s;
+}
+
+.wikicode-panel-accordion
+{
+    background-color: #e6e6e6;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    border-radius: 0px;
+    transition: all 0.5s ease 0s;
+}
+.wikicode-panel-accordion:hover
+{
+    background-color: rgb(44, 124, 197);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.40), 0 2px 10px 0 rgba(0, 0, 0, 0.40);
+    border-radius: 0px;
+    transition: all 0.5s ease 0s;
+}
+
+/* user.html */
+
+#a-tree-manager
+{
+    color: white;
+    text-decoration: none;
+}
+
+#wiki-style-btn-delete-publ,
+#wiki-style-btn-add-editor,
+#wiki-style-btn-send-main-comment,
+#wiki-btn-send-dynamic-comment,
+#wiki-btn-send-main-comment,
+#wiki-style-btn-save-publ,
+#set_head_version,
+#send,
+#lt-markdown-h1,
+#lt-markdown-h2,
+#lt-markdown-h3,
+#lt-markdown-h4,
+#lt-markdown-h5,
+#lt-markdown-bold,
+#lt-markdown-italic,
+#lt-markdown-ol,
+#lt-markdown-ul,
+#lt-markdown-code,
+#lt-markdown-line,
+#lt-markdown-quote,
+#lt-markdown-link,
+#lt-markdown-img,
+#lt-markdown-choose-theme,
+#form-input,
+#wiki-style-btn-user,
+#wiki-style-btn-read-preview-publ,
+#wiki-style-btn-user-add-colleague,
+#wiki-send-message,
+#wiki-style-btn-write-message,
+#wiki-style-btn,
+.wiki-style-btn{
+    background-color: #024f81;
+    border-radius: 0px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    color: #fff;
+    transition: all 0.5s ease 0s;
+}
+
+#wiki-style-btn-delete-publ:hover,
+#wiki-style-btn-add-editor:hover,
+#wiki-style-btn-send-main-comment:hover,
+#wiki-btn-send-dynamic-comment:hover,
+#wiki-btn-send-main-comment:hover,
+#wiki-style-btn-save-publ:hover,
+#set_head_version:hover,
+#send:hover,
+#lt-markdown-h1:hover,
+#lt-markdown-h2:hover,
+#lt-markdown-h3:hover,
+#lt-markdown-h4:hover,
+#lt-markdown-h5:hover,
+#lt-markdown-bold:hover,
+#lt-markdown-italic:hover,
+#lt-markdown-ol:hover,
+#lt-markdown-ul:hover,
+#lt-markdown-code:hover,
+#lt-markdown-line:hover,
+#lt-markdown-quote:hover,
+#lt-markdown-link:hover,
+#lt-markdown-img:hover,
+#lt-markdown-choose-theme:hover,
+#form-input:hover,
+#wiki-style-btn-user:hover,
+#wiki-style-btn-read-preview-publ:hover,
+#wiki-style-btn-write-message:hover,
+#wiki-send-message:hover,
+#wiki-style-btn-user-add-colleague:hover,
+#wiki-style-btn:hover,
+.wiki-style-btn:hover{
+    background-color: #4da6d9;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
+    color: #fff;
+    transition: all 0.5s ease 0s;
+}
+
+/* login.html */
+
+#reg-panel {
+    border-radius: 3px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    display: block;
+    margin-top: 30px;
+    transition: all 0.5s ease 0s;
+}
+
+#wiki_sign_up{
+    background-color: #024f81;
+    border-radius: 0px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    color: #fff;
+    transition: all 0.5s ease 0s;
+}
+
+#wiki_sign_up:hover{
+    background-color: #4da6d9;
+    border-radius: 0px;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
+    color: #fff;
+    transition: all 0.5s ease 0s;
+}
+
+/* create.html */
+
+#options-block{
+    border-left: 1px solid #d5d5d5;
+    border-right: 1px solid #d5d5d5;
+    border-bottom: 1px solid #d5d5d5;
+    min-height: 715px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.0), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    transition: all 0.5s ease 0s;
+}
+
+.options-label
+{
+    margin-top: 4px;
+}
+
+#switch-block
+{
+    margin-left: 7px;
+}
+
+/* page.html */
+
+#wikicode-up-right-button
+{
+    background-color: #ffffff;
+    border-radius: 0px;
+    border-color: #ffffff;
+    color: #000000;
+    transition: all 0.5s ease 0s;
+}
+
+#wikicode-up-right-button:hover
+{
+    background-color: #ffffff;
+    border-radius: 0px;
+    border-color: #ffffff;
+    color: #49c5ec;
+    transition: all 0.5s ease 0s;
+}
+
+#wikicode-name-author
+{
+    background-color: #ffffff;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
+    border-radius: 0px;
+    border-color: #ffffff;
+    color: #000000;
+    height:40px;
+    transition: all 0.5s ease 0s;
+}
+#wikicode-name-author:hover
+{
+    background-color: #ffffff;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
+    border-radius: 0px;
+    color: #49c5ec;
+    height:40px;
+    transition: all 0.5s ease 0s;
+}
+
+#pollSlider-button,#like-pollSlider-button, #contents-pollSlider-button, #up-pollSlider-button {
+    color: black;
+    border: 0px solid white;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
+    border-radius: 0px;
+    position:fixed;
+    width:42px;
+    height:42px;
+    left:-15px;
+    background: rgba(255,255,255,1);
+    top:89px;
+    z-index: 100;
+    transition: all 0.5s ease 0s;
+}
+
+#pollSlider-button:hover,#like-pollSlider-button:hover, #contents-pollSlider-button:hover, #up-pollSlider-button:hover{
+    border: 0px solid white;
+    background-color: #ffffff;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
+    border-radius: 0px;
+    position:fixed;
+    width:80px;
+    height:42px;
+    left:-10px;
+    color: #2f89c1;
+    top:89px;
+    z-index: 100;
+    transition: all 0.5s ease 0s;
+}
+
+#like-pollSlider-button{
+    top:150px;
+}
+
+#contents-pollSlider-button {
+    top:210px;
+}
+
+#up-pollSlider-button {
+    top:400px;
+}
+
+#like-pollSlider-button:hover{
+    top:150px;
+}
+
+#contents-pollSlider-button:hover{
+    top:210px;
+}
+
+#up-pollSlider-button:hover{
+    top:400px;
+}
+
+#wiki-left-page{
+    background-color: white;
+    z-index: 1000;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.70), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    transition: all 0.5s ease 0s;
+}
+
+#contents-publication{
+    font-size: 11pt;
+}
+#contents-publication ol {
+    padding-left:4px; /* Удаляем  установленное по умолчанию левое поле*/
+    margin-left: 10px;
+}
+#contents-publication ol li {
+    position: relative; /* Создаем контекст для позиционирования элементов */
+    margin: 0 0 0px 2em; /* Даем каждому элементу списка отступ слева, что бы освободить пространство для нумерации */
+    padding: 2px 10px 2px 2px;
+    list-style:disc; /* Отменяем нумерацию установленную по умолчанию */
+    color: #0a6aa1;
+    margin-left: 5px;
+}
+
+
+/*Все что касайтеся динамического конспекта*/
+
+.border,
+.v_border{
+    list-style: none;
+    padding: 0;
+}
+.border li .md-hover{
+    padding: 3px 20px;
+    border-right: 3px solid #c9c9c9;
+}
+
+.v_border li .md-hover{
+    padding: 3px 20px;
+}
+
+#dynamic-paragraph
+{
+    resize: none;
+    border-radius: 0px;
+    font-family: Courier;
+    border: none;
+    box-shadow: none;
+    padding: 3px 20px;
+    border-right: 3px solid #c9c9c9;
+    font-size: 14px;
+    overflow:  hidden;
+}
+
+
+/* context menu */
+
+.context-menu {
+    display: none;
+    position: absolute;
+    z-index: 10;
+    padding: 12px 0;
+    width: 240px;
+    background-color: #fff;
+    border: solid 1px #dfdfdf;
+    box-shadow: 1px 1px 2px #cfcfcf;
+}
+
+.context-menu--active {
+    display: block;
+}
+
+.context-menu__items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.context-menu__item {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.context-menu__item:last-child {
+    margin-bottom: 0;
+}
+
+.context-menu__link {
+    display: block;
+    padding: 4px 12px;
+    color: #0066aa;
+    text-decoration: none;
+}
+
+.context-menu__link:hover {
+    color: #fff;
+    background-color: #0066aa;
+}
+
+
+/* dynamic comments */
+
+.dynamic-comment-block
+{
+    border-left: 1px solid #d5d5d5;
+    border-right: 1px solid #d5d5d5;
+    border-bottom: 1px solid #d5d5d5;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    padding: 5px;
+    transition: all 0.5s ease 0s;
+    margin-top: 5px;
+}
+
+.dynamic-comment-block:hover{
+    background-color: rgba(193, 193, 193, 0.44);
+    transition: all 0.5s ease 0s;
+}
+
+#md-dynamic-paragraph-show{
+    border: 1px solid #bebebe;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: rgba(228, 228, 228, 0.44);
+    transition: all 0.5s ease 0s;
+}
+
+#md-dynamic-paragraph-show:hover{
+    border: 1px solid #8f8f8f;
+    background-color: rgba(120, 120, 120, 0.27);
+    transition: all 0.5s ease 0s;
+}
+
+/* Main comments */
+
+#btn-hide-comment,
+#btn-show-comment {
+    color: #8d8d8d;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.5s ease 0s;
+}
+
+#main-comments-block{
+    transition: all 0.5s ease 0s;
+}
+
+.main-comment-author {
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.5s ease 0s;
+
+}
+
+.main-comment-author:hover{
+    text-decoration: none;
+    transition: all 0.5s ease 0s;
+    cursor: pointer;
+}
+#btn-hide-comment:hover,
+#btn-show-comment:hover {
+    color: #0275bd;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.5s ease 0s;
+}
+
+.date-comment{
+    font-size: 12px;
+}
+
+.media-body .author {
+    display: inline-block;
+    font-size: 14px;
+    color: #026aae;
+    font-weight: 700;
+}
+
+.media-left{
+    border-left: solid 2px rgba(183, 183, 183, 0.48);
+}
+
+.media-left:hover{
+    border-left: solid 2px rgba(2, 136, 214, 0.89);
+}
+
+.media-body .author:hover {
+    display: inline-block;
+    font-size: 14px;
+    color: #023e68;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.media-body .metadata {
+    display: inline-block;
+    margin-left: .5rem;
+    color: #777;
+    font-size: 1rem;
+}
+.footer-comment {
+    color: #777;
+}
+.vote.plus:hover {
+    color: green;
+}
+.vote.minus:hover {
+    color: red;
+}
+.vote {
+    cursor: pointer;
+}
+.comment-reply a {
+    color: rgba(2, 117, 184, 0.48);
+}
+.comment-reply a:hover, .comment-reply a:focus {
+    color: #0275bd;
+    text-decoration: none;
+    cursor: pointer;
+}
+.devide {
+    padding: 0px 4px;
+    font-size: 0.9em;
+}
+.media-text {
+    margin-bottom: 0.25rem;
+}
+.title-comments {
+    font-size: 1.4rem;
+    font-weight: bold;
+    line-height: 1.5rem;
+    color: rgba(0,0,0,.87);
+    margin-bottom: 1rem;
+    padding-bottom: .25rem;
+    border-bottom: 1px solid rgba(34,36,38,.15);
+}
+
+#wiki-anchor {
+    position:absolute;margin-top:-60px;
+}
+
+/* develop_mode.html */
+
+#secret-btn
+{
+    cursor: default;
+    text-decoration: none;
+    color: #479a56;
+}
+
+#secret-btn:hover{
+    cursor: default;
+}

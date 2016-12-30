@@ -258,7 +258,6 @@
 
 {% block add_script %}
     {% load staticfiles %}
-    <link href={% static "wiki/wiki_styles/about.css" %} type="text/css" rel="stylesheet">
     <script>
         document.getElementById('about-wikicode').innerHTML =
                 marked('{{ about_wikicode|escapejs }}');

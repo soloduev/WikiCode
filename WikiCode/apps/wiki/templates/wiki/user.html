@@ -113,22 +113,22 @@
                     <div class="row" style="border-top: 1px solid #d5d5d5;">
                         <br>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                            <a href="{% url 'colleagues' %}" class="btn btn-block" id="wiki-style-btn">Коллеги <i
+                            <a href="{% url 'colleagues' %}" class="btn btn-block" id="wiki-style-btn-user">Коллеги <i
                                     class="fa fa-users"></i> (0)</a>
                             <br>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                            <a href="{% url 'notifications' %}" class="btn btn-block" id="wiki-style-btn">Уведомления <i
+                            <a href="{% url 'notifications' %}" class="btn btn-block" id="wiki-style-btn-user">Уведомления <i
                                     class="fa fa-comments-o"></i> (0)</a>
                             <br>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                            <a href="{% url 'tree_manager' %}" class="btn btn-block" id="wiki-style-btn">Мои конспекты
+                            <a href="{% url 'tree_manager' %}" class="btn btn-block" id="wiki-style-btn-user">Мои конспекты
                                 <i class="glyphicon glyphicon-folder-close"></i></a>
                             <br>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                            <a href="{% url 'settings' %}" class="btn btn-block" id="wiki-style-btn">Мои настройки <i
+                            <a href="{% url 'settings' %}" class="btn btn-block" id="wiki-style-btn-user">Мои настройки <i
                                     class="glyphicon glyphicon-cog"></i></a>
                             <br>
                         </div>
@@ -176,7 +176,7 @@
                                                 <h4 class="text-left" style="display: none;">Title this publication</h4>
                                             </div>
                                             <div class="col-md-4 col-xs-4 text-right">
-                                                <button id="wiki-style-btn" class="btn text-center btn-block"
+                                                <button id="wiki-style-btn-user" class="btn text-center btn-block"
                                                         style="display: none;">Читать
                                                 </button>
                                             </div>
@@ -197,7 +197,7 @@
                                                 <h4 class="text-left" style="display: none;">Title this publication</h4>
                                             </div>
                                             <div class="col-md-4 col-xs-4 text-right">
-                                                <button id="wiki-style-btn" class="btn text-center btn-block"
+                                                <button id="wiki-style-btn-user" class="btn text-center btn-block"
                                                         style="display: none;">Читать
                                                 </button>
                                             </div>
@@ -232,7 +232,6 @@
 
 {% block add_script %}
     {% load staticfiles %}
-    <link href={% static "wiki/wiki_styles/user.css" %} type="text/css" rel="stylesheet">
     <script type="text/javascript" src="{% static 'wiki/wiki_scripts/user.js' %}"></script>
     <script>
         $(init);

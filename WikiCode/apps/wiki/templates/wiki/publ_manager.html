@@ -294,11 +294,8 @@
 
 {% block add_script %}
     {% load staticfiles %}
-    <script src={% static "wiki/switchable/switchable.min.js"%}></script>
     <script src={% static "wiki/wiki_scripts/publ_manager.js"%}></script>
-    <link href={% static "wiki/wiki_styles/publ_manager.css" %} type="text/css" rel="stylesheet">
     <link href={% static "wiki/bootstrapfiles/css/bootsrtap-vertical.css" %} type="text/css" rel="stylesheet">
-    <link href={% static "wiki/switchable/switchable.css" %} type="text/css" rel="stylesheet">
     <script>
         /* Отображение обычного уведомления */
         $.notify("{{ notify.text|escapejs }}",

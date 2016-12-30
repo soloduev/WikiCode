@@ -179,7 +179,7 @@
                             <h4>Конспект</h4>
                         </div>
                         <div class="row">
-                            <div class="row switch-block">
+                            <div id="switch-block" class="row">
                                 <div class="col-xs-12">
                                     <span><input type="checkbox" id="access-switch" name="access-opt" checked value="checked"><label class="options-label">Публичный</label></span>
                                 </div>
@@ -272,10 +272,7 @@
     {% load staticfiles %}
     <!--Подключаем библиотеку для динамических файловых деревье jsTree-->
     <script src={% static "wiki/jsTree/jstree.min.js"%}></script>
-    <script src={% static "wiki/switchable/switchable.min.js"%}></script>
     <!--jsTree-->
     <link href={% static "wiki/jsTree/themes/default/style.min.css"%} rel="stylesheet" >
     <script src={% static "wiki/create_publication_scripts/actions.js" %}></script>
-    <link href={% static "wiki/wiki_styles/create.css" %} type="text/css" rel="stylesheet">
-    <link href={% static "wiki/switchable/switchable.css" %} type="text/css" rel="stylesheet">
 {% endblock %}

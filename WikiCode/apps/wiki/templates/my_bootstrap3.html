@@ -34,7 +34,8 @@
     {% if 'javascript_in_head'|bootstrap_setting %}{% bootstrap_javascript jquery=True %}{% endif %}
     {% block bootstrap3_extra_head %}{% endblock %}
     {% load staticfiles %}
-    <link href={% static "wiki/style.css" %} type="text/css" rel="stylesheet">
+    <link href={% static "wiki/wiki_styles/platform_theme/default.css" %} type="text/css" rel="stylesheet">
+    <link href={% static "wiki/switchable/switchable.css" %} type="text/css" rel="stylesheet">
     <link href={% static "wiki/fontawesome/css/font-awesome.css" %} type="text/css" rel="stylesheet">
     <link href={% static "wiki/bootstrapfiles/css/bootstrap.css" %} type="text/css" rel="stylesheet">
     <link href={% static "wiki/vtip/css/vtip.css"%} rel="stylesheet" type="text/css">
@@ -50,5 +51,6 @@
 <script src={% static "wiki/marked/marked.js" %}></script>
 <script src={% static "wiki/vtip/vtip.js" %}></script>
 <script src={% static "wiki/notify/notify.js" %}></script>
+<script src={% static "wiki/switchable/switchable.min.js"%}></script>
 {% block add_script %}{% endblock %}
 </html>

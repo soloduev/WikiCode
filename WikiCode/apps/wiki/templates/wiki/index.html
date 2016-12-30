@@ -159,7 +159,6 @@
 
 {% block add_script %}
     {% load staticfiles %}
-    <link href={% static "wiki/wiki_styles/index.css" %} type="text/css" rel="stylesheet">
     <script>
         /* Отображение обычного уведомления */
         $.notify("{{ notify.text|escapejs }}",

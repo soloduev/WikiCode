@@ -59,13 +59,13 @@
                     <div id="panel_inputs" class="col-md-12">
                         <div class="btn-group">
                             <br>
-                            <button type="button" id="add_colleagues" class="btn wiki-style-header-btns">Добавить коллегу <span
+                            <button type="button" id="add_colleagues" class="btn wiki-style-btn">Добавить коллегу <span
                                     class="glyphicon glyphicon-plus"></span></button>
 
-                            <button type="button" id="find_colleagues" class="btn wiki-style-header-btns">Найти коллегу <span
+                            <button type="button" id="find_colleagues" class="btn wiki-style-btn">Найти коллегу <span
                                     class="glyphicon glyphicon-search"></span></button>
 
-                            <button type="button" id="wiki-help-colleagues" class="btn wiki-style-header-btns"><span
+                            <button type="button" id="wiki-help-colleagues" class="btn wiki-style-btn"><span
                                     class="glyphicon glyphicon-question-sign"></span></button>
                         </div>
                     </div>
@@ -82,7 +82,6 @@
 
 {% block add_script %}
     {% load staticfiles %}
-    <link href={% static "wiki/wiki_styles/colleagues.css" %} type="text/css" rel="stylesheet">
     <script src={% static "wiki/wiki_scripts/colleagues.js" %}></script>
     <script>
 
