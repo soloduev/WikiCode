@@ -101,6 +101,7 @@ $("#add_folder_in_wiki_tree").click(function () {
         else
         {
             $("#div_folder_name_input").attr("style", "");
+            $("html, body").animate({ scrollTop: 0 }, "slow");
             $("#panel_inputs").attr("style", "display: none;");
             adding_folder_to = selected_file_in_tree;
         }
@@ -114,6 +115,7 @@ $("#add_folder_in_wiki_tree_context").click(function () {
     {
 
         $("#div_folder_name_input").attr("style", "");
+        $("html, body").animate({ scrollTop: 0 }, "slow");
         $("#panel_inputs").attr("style", "display: none;");
         adding_folder_to = selected_file_in_tree
 
@@ -124,6 +126,7 @@ $("#add_folder_in_wiki_tree_context").click(function () {
 $("#add_global_folder_in_wiki_tree").click(function () {
 
     $("#div_folder_name_input_for_global").attr("style", "");
+    $("html, body").animate({ scrollTop: 0 }, "slow");
     $("#panel_inputs").attr("style", "display: none;");
 });
 
@@ -154,6 +157,7 @@ $("#delete_folder_in_wiki_tree_context").click(function () {
                 success: function(data){
                     if (data == 'ok'){
                         $("#div_accept_delete_elem").attr("style", "");
+                        $("html, body").animate({ scrollTop: 0 }, "slow");
                         $("#panel_inputs").attr("style", "display: none;");
                         var str = ''+selected_file_in_tree;
                         var arr = str.split(":");
@@ -266,6 +270,7 @@ $("#del-element-in-tree").click(function () {
                 success: function(data){
                     if (data == 'ok'){
                         $("#div_accept_delete_elem").attr("style", "");
+                        $("html, body").animate({ scrollTop: 0 }, "slow");
                         $("#panel_inputs").attr("style", "display: none;");
                         var str = ''+selected_file_in_tree;
                         var arr = str.split(":");
@@ -344,6 +349,7 @@ $("#rename_publ_in_wiki_tree_context").click(function () {
     if(selected_file_in_tree !== "NONE_SELECT") {
         if (('' + selected_file_in_tree).indexOf("publ:") != -1) {
             $("#div_rename_publ_input").attr("style", "");
+            $("html, body").animate({ scrollTop: 0 }, "slow");
             $("#panel_inputs").attr("style", "display: none;");
             adding_folder_to = selected_file_in_tree
         }
@@ -405,6 +411,7 @@ $("#rename_folder_in_wiki_tree_context").click(function () {
         else {
             var name_folder = ('' + selected_file_in_tree).split(":")[0];
             $("#div_rename_folder_input").attr("style", "");
+            $("html, body").animate({ scrollTop: 0 }, "slow");
             $("#panel_inputs").attr("style", "display: none;");
             adding_folder_to = selected_file_in_tree;
         }
