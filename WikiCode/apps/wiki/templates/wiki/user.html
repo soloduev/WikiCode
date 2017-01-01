@@ -140,12 +140,8 @@
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
                             {% if not is_colleague %}
                                 {% if not is_send_colleague %}
-                                    <form action="{% url 'send_request_colleagues' user.id_user %}" method="post">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn btn-block" id="wiki-style-btn-user-add-colleague">Добавить в коллеги <i
-                                                class="fa fa-user-plus"></i></button>
-                                        <br>
-                                    </form>
+                                    <button data-toggle="modal" data-target="#modal_add_colleague" class="btn btn-block" id="wiki-style-btn-user-add-colleague">Добавить в коллеги <i class="fa fa-user-plus"></i></button>
+                                    <br>
                                 {% else %}
                                     <span><b>Вы отправили заявку на добавление в коллеги.</b></span>
                                     <br><br>
@@ -233,6 +229,31 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для добавления коллеги -->
+    <div class="modal fade" id="modal_add_colleague" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Добавление в коллеги</h4>
+                </div>
+                <form action="{% url 'send_request_colleagues' user.id_user %}" method="post">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <h4>Отправляя заявку на добавление в коллеги, Вы можете оставить сообщение.</h4>
+                        <textarea type="text" name="colleague_extra_text" class="form-control btn-block" placeholder="Введите описание..." style="height: 100px; font-family: Courier; resize: none; border-radius: 0px;"></textarea>
+                        <br>
+                        <h4>Пользователь станет Вашим коллегой, после того, как подтвердит Вашу заявку.</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="wiki-style-btn" class="btn">Отправить заявку</button>
+                        <button type="button" id="wiki-style-btn" class="btn" data-dismiss="modal">Отмена</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

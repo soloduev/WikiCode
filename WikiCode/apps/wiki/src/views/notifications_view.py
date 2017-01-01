@@ -110,7 +110,7 @@ def get_send_request_colleagues(request, id):
             html_text = WikiNotify.generate_add_colleague(author_nickname=current_user.nickname,
                                                           author_email=current_user.email,
                                                           author_id=current_user.id_user,
-                                                          author_text="")
+                                                          author_text=request.POST.get("colleague_extra_text"))
 
             new_notify = Notification(id_notification=Notification.objects.count() + 1,
                                       title="Заявка в коллеги",
