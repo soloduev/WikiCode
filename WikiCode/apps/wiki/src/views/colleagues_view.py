@@ -25,7 +25,18 @@ from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
 from .auth import check_auth, get_user_id
 
 
-def get_colleagues(request):
+def get_colleagues(request, notify=None):
+    """ Возвращает страницу списка коллег пользователя.
+    Может принимать notify(сообщение, которое можно вывести после отображения страницы):
+    notify:
+        {
+            'type': 'error|info',
+            'text': 'any text',
+        }
+    """
+    if notify is None:
+        notify = {'type': 'msg', 'text': ''}
+
     user_data = check_auth(request)
     try:
         user = User.objects.get(email=user_data)
@@ -56,7 +67,8 @@ def get_colleagues(request):
             "user_data": user_data,
             "user_id": user_id,
             "preview_tree": wft.to_html_preview(),
-            "colleagues": colleagues
+            "colleagues": colleagues,
+            "notify": notify
         }
 
         return render(request, 'wiki/colleagues.html', context)
@@ -101,3 +113,26 @@ def get_add_colleague(request, id):
                                                                          'text': 'Пользователь был успешно добавлен в коллеги.\n\n\n'})
     except User.DoesNotExist:
         return get_error_page(request, ["Sorry, user is not defined!"])
+
+
+def get_delete_colleague(request):
+    if request.method == "POST":
+        try:
+            cur_user = User.objects.get(id_user=get_user_id(request))
+            del_user_id = User.objects.get(id_user=request.POST.get("delete_colleague_id"))
+
+            try:
+                collegue = Colleague.objects.get(id_user=cur_user.id_user, id_colleague=del_user_id.id_user)
+                collegue_reverse = Colleague.objects.get(id_user=del_user_id.id_user, id_colleague=cur_user.id_user)
+                collegue.delete()
+                collegue_reverse.delete()
+
+                return get_colleagues(request, notify={'type': 'info', 'text': 'Пользователь был успешно убран из Вашего списка коллег.\n\n'})
+
+            except Colleague.DoesNotExist:
+                return get_colleagues(request, notify={'type': 'error', 'text': 'Извините, но этот коллега уже был удален из вашего списка.\n\n'})
+
+        except User.DoesNotExist:
+            return get_error_page(request, ["Sorry, user is not defined!"])
+    else:
+        return get_error_page(request, ["Извините, но удалить этого пользователя из Вашего списка коллег, пока невозможно. Приносим свои извинения."])

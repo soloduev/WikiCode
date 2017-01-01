@@ -293,3 +293,10 @@ def add_colleague(request, id):
 @login_required
 def notification_read(request):
     return notifications_view.get_notification_read(request)
+
+
+# Удаление пользователя из списка коллег
+@develop_mode
+@login_required
+def delete_colleague(request):
+    return colleagues_view.get_delete_colleague(request)

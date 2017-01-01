@@ -28,7 +28,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def get_index(request, notify=None):
-    """ Рендерит начальную страницу сайта.
+    """ Возвращает начальную страницу сайта.
     Может принимать notify(сообщение, которое можно вывести после отображения страницы):
     notify:
         {

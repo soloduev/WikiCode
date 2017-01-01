@@ -74,6 +74,8 @@ urlpatterns = [
     url(r'^login_developer/$', views.login_developer, name='login_developer'),
 
     # События на странице коллег
+    url(r'^colleagues/delete_colleague/$', views.delete_colleague, name='delete_colleague'),
+
 
     # Событие на странице уведомлений
     url(r'^notifications/add_colleague/(?P<id>[0-9]+)$', views.add_colleague, name='add_colleague'),

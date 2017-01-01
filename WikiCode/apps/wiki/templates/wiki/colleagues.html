@@ -79,8 +79,35 @@
                                     <a href="/user/{{ colleague.id_colleague }}" id="wiki-colleague-name">{{ colleague.nickname|upper }}</a>
                                 </div>
                                 <div class="col-xs-2 text-right">
-                                    <span><i class="fa fa-remove wiki-remove-colleague"></i></span>
+                                    <span><a style="text-decoration: none; color: black;" data-toggle="modal" data-target="#modal_delete_colleague_{{ colleague.id_colleague }}"><i class="fa fa-remove wiki-remove-colleague"></i></a></span>
                                 </div>
+                                <!-- Модальное окно указывающее, что элмент находится в разработке -->
+                                <div class="modal fade" id="modal_delete_colleague_{{ colleague.id_colleague }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                <h4 class="modal-title" id="myModalLabel"><b>Подвердите удаление</b></h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h4>Вы действительно хотите убрать из списка своих коллег <b>{{ colleague.nickname|upper }} ?</b></h4>
+                                                <br>
+                                                <h4>Обратите внимание, что после удаления этого пользователя из своих коллег, его текущий доступ ко всем Вашим конспектам <b>не</b> удалится.</h4>
+                                                <br>
+                                                <h4>Вы уверены?</h4>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <form action="{% url 'delete_colleague' %}" method="post">
+                                                    {% csrf_token %}
+                                                    <input hidden type="number" name="delete_colleague_id" value="{{ colleague.id_colleague }}">
+                                                    <button type="submit" id="wiki-style-btn" type="button" class="btn">Да</button>
+                                                    <button type="button" id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Нет</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         {% endfor %}
                     </div>
@@ -95,6 +122,12 @@
     {% load staticfiles %}
     <script src={% static "wiki/wiki_scripts/colleagues.js" %}></script>
     <script>
-
+        /* Отображение обычного уведомления */
+        $.notify("{{ notify.text|escapejs }}",
+                {
+                    position: "right bottom",
+                    className: "{{ notify.type|escapejs }}",
+                    autoHideDelay: 8000
+                });
     </script>
 {% endblock %}
