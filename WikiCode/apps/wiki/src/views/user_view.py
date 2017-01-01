@@ -26,6 +26,7 @@ from django.views.decorators.csrf import csrf_protect
 
 from WikiCode.apps.wiki.models import Publication
 from WikiCode.apps.wiki.models import Statistics
+from WikiCode.apps.wiki.models import Colleague
 from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.models import User as WikiUser
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
@@ -89,6 +90,15 @@ def get_user(request, id, notify=None):
             wft = WikiFileTree()
             wft.load_tree(other_user.file_tree)
 
+            # Узнаем, не является ли он коллегой
+            is_colleague = False
+            try:
+                Colleague.objects.get(id_user=get_user_id(request),
+                                      id_colleague=other_user.id_user)
+                is_colleague = True
+            except Colleague.DoesNotExist:
+                pass
+
             # Получаем текст превью публикации
             try:
                 preview_publ = Publication.objects.get(id_publication=other_user.preview_publ_id)
@@ -109,6 +119,7 @@ def get_user(request, id, notify=None):
                 "prewiew_publ_title": prewiew_publ_title,
                 "prewiew_publ_id": prewiew_publ_id,
                 "other_user": True,
+                "is_colleague": is_colleague,
                 "notify": notify
             }
 

@@ -138,12 +138,17 @@
                     <div class="row" style="border-top: 1px solid #d5d5d5;">
                         <br>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                            <form action="{% url 'send_request_colleagues' user.id_user %}" method="post">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-block" id="wiki-style-btn-user-add-colleague">Добавить в коллеги <i
-                                        class="fa fa-user-plus"></i></button>
-                                <br>
-                            </form>
+                            {% if not is_colleague %}
+                                <form action="{% url 'send_request_colleagues' user.id_user %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-block" id="wiki-style-btn-user-add-colleague">Добавить в коллеги <i
+                                            class="fa fa-user-plus"></i></button>
+                                    <br>
+                                </form>
+                            {% else %}
+                                <span>Статус: <b>Ваш коллега</b></span>
+                                <br><br>
+                            {% endif %}
                         </div>
                     </div>
                 {% endif %}
