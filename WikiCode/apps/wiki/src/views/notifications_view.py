@@ -153,3 +153,21 @@ def get_notification_read(request):
             return HttpResponse('no', content_type='text/html')
     else:
         return HttpResponse('no', content_type='text/html')
+
+
+def delete_notification(request):
+    """ Удаление уведомления """
+    if request.method == "POST":
+        try:
+            notification = Notification.objects.get(id_notification=request.POST.get("delete_notification_id"))
+            notification.delete()
+
+            return get_notifications(request, notify={'type': 'info',
+                                                      'text': 'Уведомление было успешно удалено.\n\n'})
+
+        except Notification.DoesNotExist:
+            return get_notifications(request, notify={'type': 'error',
+                                                      'text': 'Извините, но это уведомление уже было удалено.\n\n'})
+    else:
+        return get_error_page(request, [
+            "Извините, но удалить это уведомление пока невозможно. Приносим свои извинения."])

@@ -300,3 +300,10 @@ def notification_read(request):
 @login_required
 def delete_colleague(request):
     return colleagues_view.get_delete_colleague(request)
+
+
+# Удаление уведомления
+@develop_mode
+@login_required
+def delete_notification(request):
+    return notifications_view.delete_notification(request)

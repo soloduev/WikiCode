@@ -68,8 +68,8 @@
                                 <div class="col-xs-3">{{ notification.title }}</div>
                                 <div class="col-xs-3">{{ notification.sender_nickname }}</div>
                                 <div class="col-xs-3 text-right">{{ notification.date }}</div>
-                                <div class="col-xs-3 text-right"><i class="fa fa-remove wiki-notify-remove"></i></div>
                             </div>
+                                <div class="col-xs-3 text-right"><a style="text-decoration: none; color: black;" data-toggle="modal" data-target="#modal_delete_notification_{{ notification.id_notify }}"><i class="fa fa-remove wiki-notify-remove"></i></a></div>
                             <div class="modal fade" id="modal_notify_{{ notification.id_notify }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -97,6 +97,27 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="modal fade" id="modal_delete_notification_{{ notification.id_notify }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                <h4 class="modal-title" id="myModalLabel"><b>Подвердите удаление</b></h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h4>Вы действительно хотите удалить данное уведомление? После удаления, восстановление невозможно.</h4>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <form action="{% url 'delete_notification' %}" method="post">
+                                                    {% csrf_token %}
+                                                    <input hidden type="number" name="delete_notification_id" value="{{ notification.id_notify }}">
+                                                    <button type="submit" id="wiki-style-btn" type="button" class="btn">Да</button>
+                                                    <button type="button" id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Нет</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             <script>
                                 //Отдельный запрос на просмотр конспекта
                                 var div = document.getElementById("div_notify_{{ notification.id_notify }}");

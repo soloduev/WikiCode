@@ -80,6 +80,7 @@ urlpatterns = [
     # Событие на странице уведомлений
     url(r'^notifications/add_colleague/(?P<id>[0-9]+)$', views.add_colleague, name='add_colleague'),
     url(r'^notifications/notification_read/$', views.notification_read, name='notification_read'),
+    url(r'^notifications/delete_notification/$', views.delete_notification, name='delete_notification'),
 
     # События на странице настроек пользователя
     url(r'^settings/check_password/$', views.check_password, name='check_password'),
