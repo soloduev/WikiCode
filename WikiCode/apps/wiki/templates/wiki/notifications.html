@@ -64,7 +64,7 @@
                     </div>
                     {% for notification in notifications %}
                         <div class="row wiki-notify-block">
-                            <div data-toggle="modal" data-target="#modal_notify_{{ notification.id_notify }}">
+                            <div id="div_notify_{{ notification.id_notify }}" data-toggle="modal" data-target="#modal_notify_{{ notification.id_notify }}" {% if notification.is_read %} style="opacity: 0.6;" {% endif %}>
                                 <div class="col-xs-3">{{ notification.title }}</div>
                                 <div class="col-xs-3">{{ notification.sender_nickname }}</div>
                                 <div class="col-xs-3 text-right">{{ notification.date }}</div>
@@ -97,7 +97,14 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <script>
+                                //Отдельный запрос на просмотр конспекта
+                                var div = document.getElementById("div_notify_{{ notification.id_notify }}");
+                                div.onclick = function(e) {
+                                    $.ajax({type: "POST", url: "notification_read/", data:{ 'id_notification':{{ notification.id_notify }} },
+                                        dataType: "text", cache: false, success: function(data){ if (data == 'ok'){ $("#div_notify_{{ notification.id_notify }}").css("opacity", "0.6");  }}});
+                                };
+                            </script>
                         </div>
                     {% endfor %}
                 </div>

@@ -18,6 +18,7 @@
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
 import datetime
 
+from django.http import HttpResponse
 from django.shortcuts import render
 
 from WikiCode.apps.wiki.models import User, Notification
@@ -49,7 +50,6 @@ def get_notifications(request, notify=None):
         try:
             all_notifications = Notification.objects.filter(id_addressee=user.id_user)
             notifications = []
-            total_notifies = 1
             for notification in reversed(all_notifications):
                 try:
                     sender = User.objects.get(id_user=notification.id_sender)
@@ -62,10 +62,9 @@ def get_notifications(request, notify=None):
                         "date": notification.date,
                         "html_text": notification.html_text,
                         "sender_nickname": sender.nickname,
-                        "id_notify": str(total_notifies),
+                        "id_notify": notification.id_notification,
                         "type": notification.type
                     })
-                    total_notifies += 1
                 except User.DoesNotExist:
                     pass
         except Notification.DoesNotExist:
@@ -122,3 +121,25 @@ def get_send_request_colleagues(request, id):
             return get_error_page(request, ["User mot found!"])
     else:
         return get_error_page(request, ["Sorry, could not send the request to add the college for technical reasons!"])
+
+
+def get_notification_read(request):
+    """Ajax представление. Отправка информации, что уведомление было прочитано"""
+
+    if request.method == "POST":
+        id_notification = request.POST.get('id_notification')
+
+        try:
+            notification = Notification.objects.get(id_notification=id_notification)
+
+            if notification.is_read:
+                return HttpResponse('no', content_type='text/html')
+            else:
+                notification.is_read = True
+                notification.save()
+                return HttpResponse('ok', content_type='text/html')
+
+        except Notification.DoesNotExist:
+            return HttpResponse('no', content_type='text/html')
+    else:
+        return HttpResponse('no', content_type='text/html')

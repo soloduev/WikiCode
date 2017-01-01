@@ -286,3 +286,10 @@ def send_request_colleagues(request, id):
 @login_required
 def add_colleague(request, id):
     return colleagues_view.get_add_colleague(request, id)
+
+
+# Ajax POST запрос, что уведомление было прочитано
+@develop_mode
+@login_required
+def notification_read(request):
+    return notifications_view.get_notification_read(request)
