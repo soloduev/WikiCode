@@ -114,12 +114,12 @@
                         <br>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
                             <a href="{% url 'colleagues' %}" class="btn btn-block" id="wiki-style-btn-user">Коллеги <i
-                                    class="fa fa-users"></i> (0)</a>
+                                    class="fa fa-users"></i> ({{ total_colleagues }})</a>
                             <br>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
                             <a href="{% url 'notifications' %}" class="btn btn-block" id="wiki-style-btn-user">Уведомления <i
-                                    class="fa fa-comments-o"></i> (0)</a>
+                                    class="fa fa-comments-o"></i> ({{ new_notifications }})</a>
                             <br>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">

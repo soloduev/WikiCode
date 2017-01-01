@@ -27,6 +27,7 @@ from django.views.decorators.csrf import csrf_protect
 from WikiCode.apps.wiki.models import Publication
 from WikiCode.apps.wiki.models import Statistics
 from WikiCode.apps.wiki.models import Colleague
+from WikiCode.apps.wiki.models import Notification
 from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.models import User as WikiUser
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
@@ -78,6 +79,8 @@ def get_user(request, id, notify=None):
                     "prewiew_publ_title":prewiew_publ_title,
                     "prewiew_publ_id":prewiew_publ_id,
                     "other_user": False,
+                    "new_notifications": Notification.objects.filter(id_addressee=user.id_user, is_read=False).count(),
+                    "total_colleagues": Colleague.objects.filter(id_user=user.id_user).count(),
                     "notify": notify
                 }
 
