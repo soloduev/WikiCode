@@ -16,6 +16,7 @@
 #
 #   You should have received a copy of the GNU Affero General Public License
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
+import datetime
 
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login
@@ -31,6 +32,7 @@ from WikiCode.apps.wiki.models import Notification
 from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.models import User as WikiUser
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
+from WikiCode.apps.wiki.src.modules.notify_generator.wiki_notify import WikiNotify
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
 from WikiCode.apps.wiki.src.views.index_view import get_index
 from .auth import check_auth, get_user_id
@@ -194,6 +196,22 @@ def get_create_user(request):
             else:
                 print(">>>>>>>>>>>>>> WIKI ERROR: invalid login")
 
+            # Получаем текущую дату
+            date = str(datetime.datetime.now())
+            date = date[:len(date) - 7]
+
+            # Отправляем готовое уведомление пользователю от системы
+            total_notifications = stat.total_notification
+            stat.total_notification += 1
+            hello_notification = Notification(id_notification=total_notifications,
+                                              id_sender=-1,
+                                              title="Добро пожаловать!",
+                                              id_addressee=total_reg_users,
+                                              date=date,
+                                              type='wiki_code',
+                                              is_read=False,
+                                              html_text=WikiNotify.generate_hello_user())
+            hello_notification.save()
 
             # Сохранение всех изменений в БД
             new_wiki_user.save()

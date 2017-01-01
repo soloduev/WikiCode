@@ -52,7 +52,13 @@ def get_notifications(request, notify=None):
             notifications = []
             for notification in reversed(all_notifications):
                 try:
-                    sender = User.objects.get(id_user=notification.id_sender)
+
+                    if notification.type == 'wiki_code':
+                        sender = "WikiCode"
+                    else:
+                        sender_user = User.objects.get(id_user=notification.id_sender)
+                        sender = sender_user.nickname
+
                     notifications.append({
                         "id_notification": notification.id_notification,
                         "title": notification.title,
@@ -61,7 +67,7 @@ def get_notifications(request, notify=None):
                         "is_read": notification.is_read,
                         "date": notification.date,
                         "html_text": notification.html_text,
-                        "sender_nickname": sender.nickname,
+                        "sender_nickname": sender,
                         "id_notify": notification.id_notification,
                         "type": notification.type
                     })
