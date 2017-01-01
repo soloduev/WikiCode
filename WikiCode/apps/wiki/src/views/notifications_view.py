@@ -21,7 +21,7 @@ import datetime
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from WikiCode.apps.wiki.models import User, Notification
+from WikiCode.apps.wiki.models import User, Notification, Statistics
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
 from WikiCode.apps.wiki.src.modules.notify_generator.wiki_notify import WikiNotify
@@ -112,7 +112,12 @@ def get_send_request_colleagues(request, id):
                                                           author_id=current_user.id_user,
                                                           author_text=request.POST.get("colleague_extra_text"))
 
-            new_notify = Notification(id_notification=Notification.objects.count() + 1,
+            stat = Statistics.objects.get(id_statistics="1")
+            total_notifications = stat.total_notification
+            stat.total_notification += 1
+            stat.save()
+
+            new_notify = Notification(id_notification=total_notifications + 1,
                                       title="Заявка в коллеги",
                                       type="add_colleague",
                                       id_sender=current_user.id_user,

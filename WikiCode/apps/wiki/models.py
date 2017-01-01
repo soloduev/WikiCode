@@ -129,6 +129,7 @@ class Statistics(models.Model):
     publications_create = models.BigIntegerField()
     total_comments = models.BigIntegerField()   # Всего создано комментариев
     total_folders = models.BigIntegerField()    # Всего создано папок
+    total_notification = models.BigIntegerField() # Всего создано уведомлений
 
     def __str__(self):
         return str(self.id_statistics)
