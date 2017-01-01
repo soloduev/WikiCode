@@ -73,14 +73,16 @@
                 <br>
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="wiki-colleague-block">
-                            <div class="col-xs-10 text-left">
-                                <a id="wiki-colleague-name">Some nickname</a>
+                        {% for colleague in colleagues %}
+                            <div class="wiki-colleague-block">
+                                <div class="col-xs-10 text-left">
+                                    <a href="/user/{{ colleague.id_colleague }}" id="wiki-colleague-name">{{ colleague.nickname|upper }}</a>
+                                </div>
+                                <div class="col-xs-2 text-right">
+                                    <span><i class="fa fa-remove wiki-remove-colleague"></i></span>
+                                </div>
                             </div>
-                            <div class="col-xs-2 text-right">
-                                <span><i class="fa fa-remove wiki-remove-colleague"></i></span>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>

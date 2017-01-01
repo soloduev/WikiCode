@@ -32,11 +32,31 @@ def get_colleagues(request):
         wft = WikiFileTree()
         wft.load_tree(user.file_tree)
 
+        # Получаем все коллег пользователя
+        colleagues = []
+        try:
+            all_colleagues = Colleague.objects.filter(id_user=user.id_user)
+
+            for colleague in reversed(all_colleagues):
+                try:
+                    colleague_user = User.objects.get(id_user=colleague.id_colleague)
+                    colleagues.append({
+                        "id_user": colleague.id_user,
+                        "id_colleague": colleague.id_colleague,
+                        "nickname": colleague_user.nickname
+                    })
+                except User.DoesNotExist:
+                    pass
+
+        except Colleague.DoesNotExist:
+            pass
+
         user_id = get_user_id(request)
         context = {
             "user_data": user_data,
             "user_id": user_id,
-            "preview_tree": wft.to_html_preview()
+            "preview_tree": wft.to_html_preview(),
+            "colleagues": colleagues
         }
 
         return render(request, 'wiki/colleagues.html', context)
