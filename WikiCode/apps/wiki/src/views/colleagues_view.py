@@ -18,8 +18,9 @@
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
 from django.shortcuts import render
 
-from WikiCode.apps.wiki.models import User
+from WikiCode.apps.wiki.models import User, Colleague
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
+from WikiCode.apps.wiki.src.views import notifications_view
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
 from .auth import check_auth, get_user_id
 
@@ -40,4 +41,34 @@ def get_colleagues(request):
 
         return render(request, 'wiki/colleagues.html', context)
     except User.DoesNotExist:
-        return get_error_page(request, ["Sorry, user is not defined!", "Page not found: 'user/" + str(id) + "/'"])
+        return get_error_page(request, ["Sorry, user is not defined!"])
+
+
+def get_add_colleague(request, id):
+    user_data = check_auth(request)
+    try:
+        cur_user = User.objects.get(email=user_data)
+        add_user = User.objects.get(id_user=int(id))
+
+        try:
+            Colleague.objects.get(id_user=cur_user.id_user)
+
+            return notifications_view.get_notifications(request,
+                                                        notify={'type': 'error',
+                                                                'text': 'Данный пользователь у вас уже в коллегах\n\n\n'})
+
+        except Colleague.DoesNotExist:
+
+            new_colleague = Colleague(id_user=cur_user.id_user,
+                                      id_colleague=add_user.id_user)
+
+            new_colleague_reverse = Colleague(id_user=add_user.id_user,
+                                              id_colleague=cur_user.id_user)
+
+            new_colleague.save()
+            new_colleague_reverse.save()
+
+            return notifications_view.get_notifications(request, notify={'type': 'info',
+                                                                         'text': 'Пользователь был успешно добавлен в коллеги.\n\n\n'})
+    except User.DoesNotExist:
+        return get_error_page(request, ["Sorry, user is not defined!"])

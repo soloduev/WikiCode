@@ -34,7 +34,17 @@ from WikiCode.apps.wiki.src.views.index_view import get_index
 from .auth import check_auth, get_user_id
 
 
-def get_user(request, id):
+def get_user(request, id, notify=None):
+    """ Возвращает страницу пользователя.
+        Может принимать notify(сообщение, которое можно вывести после отображения страницы):
+        notify:
+            {
+                'type': 'error|info',
+                'text': 'any text',
+            }
+    """
+    if notify is None:
+        notify = {'type': 'msg', 'text': ''}
 
     user_data = check_auth(request)
     try:
@@ -66,7 +76,8 @@ def get_user(request, id):
                     "prewiew_publ_text":preview_publ_text,
                     "prewiew_publ_title":prewiew_publ_title,
                     "prewiew_publ_id":prewiew_publ_id,
-                    "other_user": False
+                    "other_user": False,
+                    "notify": notify
                 }
 
                 return render(request, 'wiki/user.html', context)
@@ -98,6 +109,7 @@ def get_user(request, id):
                 "prewiew_publ_title": prewiew_publ_title,
                 "prewiew_publ_id": prewiew_publ_id,
                 "other_user": True,
+                "notify": notify
             }
 
             return render(request, 'wiki/user.html', context)

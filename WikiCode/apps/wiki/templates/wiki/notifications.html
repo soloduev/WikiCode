@@ -56,12 +56,54 @@
                     <label class="text-center btn-primary btn-block">МОИ УВЕДОМЛЕНИЯ</label>
                 </div>
                 <div class="container-fluid">
+                    <div class="row wiki-notify-block-title">
+                        <div class="col-xs-3">Заголовок</div>
+                        <div class="col-xs-3">От:</div>
+                        <div class="col-xs-3"></div>
+                        <div class="col-xs-3"></div>
+                    </div>
+                    {% for notification in notifications %}
+                        <div class="row wiki-notify-block">
+                            <div data-toggle="modal" data-target="#modal_notify_{{ notification.id_notify }}">
+                                <div class="col-xs-3">{{ notification.title }}</div>
+                                <div class="col-xs-3">{{ notification.sender_nickname }}</div>
+                                <div class="col-xs-3 text-right">{{ notification.date }}</div>
+                                <div class="col-xs-3 text-right"><i class="fa fa-remove wiki-notify-remove"></i></div>
+                            </div>
+                            <div class="modal fade" id="modal_notify_{{ notification.id_notify }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        {% if notification.type == 'add_colleague' %}
+                                            <form action="{% url 'add_colleague' notification.id_sender %}" method="post">
+                                            {% csrf_token %}
+                                        {% endif %}
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title" id="modal_notify_title">{{ notification.title }}</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="container-fluid">
+                                                <div class="row">
+                                                    {{ notification.html_text|safe }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
+                                        </div>
+                                        {% if notification.type != 'simple' %}
+                                            </form>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
 
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
     </div>
-
 
 {% endblock %}
 
@@ -69,6 +111,12 @@
     {% load staticfiles %}
     <script src={% static "wiki/wiki_scripts/notifications.js" %}></script>
     <script>
-
+        /* Отображение обычного уведомления */
+        $.notify("{{ notify.text|escapejs }}",
+                {
+                    position: "right bottom",
+                    className: "{{ notify.type|escapejs }}",
+                    autoHideDelay: 8000
+                });
     </script>
 {% endblock %}

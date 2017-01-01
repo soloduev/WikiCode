@@ -69,10 +69,10 @@
                                 </div>
                                 <div class="[ info-card-detail ]">
                                     <!-- Description -->
-                                    <p><h4>Like!</h4></p>
+                                    <p><h4>Star!</h4></p>
                                     <div class="social">
                                         <a id="wiki-code-like-user" class="[ social-icon facebook ] animate"><span
-                                                class="fa fa-thumbs-o-up"></span></a>
+                                                class="fa fa-star"></span></a>
                                     </div>
                                 </div>
                             </div>
@@ -138,9 +138,12 @@
                     <div class="row" style="border-top: 1px solid #d5d5d5;">
                         <br>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                            <a class="btn btn-block" id="wiki-style-btn-user-add-colleague">Добавить в коллеги <i
-                                    class="fa fa-user-plus"></i></a>
-                            <br>
+                            <form action="{% url 'send_request_colleagues' user.id_user %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-block" id="wiki-style-btn-user-add-colleague">Добавить в коллеги <i
+                                        class="fa fa-user-plus"></i></button>
+                                <br>
+                            </form>
                         </div>
                     </div>
                 {% endif %}
@@ -245,5 +248,13 @@
             $("#wiki-code-preview-title").text("");
             $("#wiki-style-btn-read-preview-publ").hide();
         {% endif %}
+
+        /* Отображение обычного уведомления */
+        $.notify("{{ notify.text|escapejs }}",
+                {
+                    position: "right bottom",
+                    className: "{{ notify.type|escapejs }}",
+                    autoHideDelay: 8000
+                });
     </script>
 {% endblock %}

@@ -68,6 +68,7 @@ urlpatterns = [
 
 
     # События на странице пользователя
+    url(r'^user/(?P<id>[0-9]+)/send_request_colleagues/$', views.send_request_colleagues, name='send_request_colleagues'),
 
     # Событие, если сайт находится на ремонте
     url(r'^login_developer/$', views.login_developer, name='login_developer'),
@@ -75,6 +76,7 @@ urlpatterns = [
     # События на странице коллег
 
     # Событие на странице уведомлений
+    url(r'^notifications/add_colleague/(?P<id>[0-9]+)$', views.add_colleague, name='add_colleague'),
 
     # События на странице настроек пользователя
     url(r'^settings/check_password/$', views.check_password, name='check_password'),

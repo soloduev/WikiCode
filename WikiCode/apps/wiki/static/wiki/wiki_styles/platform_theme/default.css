@@ -1141,3 +1141,42 @@
 #secret-btn:hover{
     cursor: default;
 }
+
+/* colleagues.html */
+/* notifications.html */
+
+.wiki-notify-block,
+.wiki-colleague-block {
+    min-height: 24px;
+    padding-top: 2px;
+    margin-bottom: 3px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    transition: all 0.5s ease 0s;
+}
+
+.wiki-notify-block:hover,
+.wiki-colleague-block:hover {
+    background-color: #f2f2f2;
+    transition: all 0.5s ease 0s;
+}
+
+.wiki-notify-block-title {
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+#wiki-colleague-name {
+    font-size: 12pt;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.wiki-notify-remove:hover,
+.wiki-remove-colleague:hover {
+    color: #0a6aa1;
+    transition: all 0.5s ease 0s;
+}
+
+.wiki-notify-area {
+    margin: 10px;
+}

@@ -272,3 +272,17 @@ def login_developer(request):
 @login_required
 def send_bug(request):
     return error_view.get_send_bug(request)
+
+
+# Отправка уведомления на заявку на добавления в коллеги
+@develop_mode_id
+@login_required
+def send_request_colleagues(request, id):
+    return notifications_view.get_send_request_colleagues(request, id)
+
+
+# Добавление пользователя в коллеги
+@develop_mode_id
+@login_required
+def add_colleague(request, id):
+    return colleagues_view.get_add_colleague(request, id)
