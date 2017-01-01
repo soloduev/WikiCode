@@ -54,6 +54,7 @@ def get_notifications(request, notify=None):
                 try:
                     sender = User.objects.get(id_user=notification.id_sender)
                     notifications.append({
+                        "id_notification": notification.id_notification,
                         "title": notification.title,
                         "id_sender": notification.id_sender,
                         "id_addressee": notification.id_addressee,
@@ -102,7 +103,8 @@ def get_send_request_colleagues(request, id):
                                                           author_id=current_user.id_user,
                                                           author_text="")
 
-            new_notify = Notification(title="Заявка в коллеги",
+            new_notify = Notification(id_notification=Notification.objects.count() + 1,
+                                      title="Заявка в коллеги",
                                       type="add_colleague",
                                       id_sender=current_user.id_user,
                                       id_addressee=send_user.id_user,
@@ -114,8 +116,8 @@ def get_send_request_colleagues(request, id):
 
             return user_view.get_user(request,
                                       id,
-                                      notify={'type':'info',
-                                              'text':'Заявка на добавление в коллеги успешно отправлена.\n\n'})
+                                      notify={'type': 'info',
+                                              'text': 'Заявка на добавление в коллеги успешно отправлена.\n\n'})
         except User.DoesNotExist:
             return get_error_page(request, ["User mot found!"])
     else:
