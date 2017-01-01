@@ -164,7 +164,7 @@ class Colleague(models.Model):
 class Notification(models.Model):
     id_notification = models.BigIntegerField()
     title = models.CharField(max_length=50)
-    type = models.CharField(max_length=10)
+    type = models.CharField(max_length=20)
     id_sender = models.BigIntegerField()
     id_addressee = models.BigIntegerField()
     is_read = models.BooleanField()
