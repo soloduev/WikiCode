@@ -27,6 +27,8 @@ from .models import BugReport
 from .models import DynamicComment
 from .models import Comment
 from .models import Folder
+from .models import Colleague
+from .models import Notification
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User as DjangoUser
 
@@ -54,3 +56,5 @@ admin.site.register(BugReport)
 admin.site.register(DynamicComment)
 admin.site.register(Comment)
 admin.site.register(Folder)
+admin.site.register(Colleague)
+admin.site.register(Notification)

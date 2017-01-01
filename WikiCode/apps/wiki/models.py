@@ -153,5 +153,22 @@ class BugReport(models.Model):
         return str(self.date)
 
 
+class Colleague(models.Model):
+    id_user = models.BigIntegerField()
+    id_colleague = models.BigIntegerField()
+
+    def __str__(self):
+        return str(self.id_user) + "_" + str(self.id_colleague)
 
 
+class Notification(models.Model):
+    title = models.CharField(max_length=50)
+    type = models.CharField(max_length=10)
+    id_sender = models.BigIntegerField()
+    id_addressee = models.BigIntegerField()
+    is_read = models.BooleanField()
+    date = models.CharField(max_length=50)
+    html_text = models.TextField()
+
+    def __str__(self):
+        return str(self.title) + "; " + str(self.id_sender) + "; " + str(self.id_addressee) + "; " + str(self.date)
