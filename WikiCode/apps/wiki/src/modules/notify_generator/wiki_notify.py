@@ -24,7 +24,7 @@ class WikiNotify:
     def generate_add_colleague(author_nickname, author_email, author_id, author_text):
         """ Генерирует html уведомления для добавления пользователя в коллеги """
         result_html = "<div class=\"text-left\">"
-        result_html += "<span><b>Пользователь:</b> <a href='/page/" + str(author_id) + "'/>"
+        result_html += "<span><b>Пользователь:</b> <a href='/user/" + str(author_id) + "'/>"
         result_html += str(author_nickname) + "</a> | " + str(author_email) + "</span>"
         result_html += "<br>"
         result_html += "<span>Просит Вас добавить его в коллеги.</span>"
