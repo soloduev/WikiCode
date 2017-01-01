@@ -18,7 +18,7 @@
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
 from django.shortcuts import render
 
-from WikiCode.apps.wiki.models import User, Colleague
+from WikiCode.apps.wiki.models import User, Colleague, Notification
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
 from WikiCode.apps.wiki.src.views import notifications_view
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
@@ -84,6 +84,15 @@ def get_add_colleague(request, id):
 
             new_colleague_reverse = Colleague(id_user=add_user.id_user,
                                               id_colleague=cur_user.id_user)
+
+            # Когда мы добавляем коллегу, удаляем заявки, если они есть у пользователей
+            Notification.objects.filter(id_addressee=cur_user.id_user,
+                                        id_sender=add_user.id_user,
+                                        type="add_colleague").delete()
+
+            Notification.objects.filter(id_addressee=add_user.id_user,
+                                        id_sender=cur_user.id_user,
+                                        type="add_colleague").delete()
 
             new_colleague.save()
             new_colleague_reverse.save()

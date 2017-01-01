@@ -102,6 +102,14 @@ def get_user(request, id, notify=None):
             except Colleague.DoesNotExist:
                 pass
 
+            # Узнаем, не отправляли ли мы ему уже заявку в коллеги
+            is_send_colleague = False
+            if Notification.objects.filter(id_addressee=other_user.id_user,
+                                           id_sender=get_user_id(request),
+                                           type="add_colleague").count() != 0:
+                is_send_colleague = True
+
+
             # Получаем текст превью публикации
             try:
                 preview_publ = Publication.objects.get(id_publication=other_user.preview_publ_id)
@@ -123,6 +131,7 @@ def get_user(request, id, notify=None):
                 "prewiew_publ_id": prewiew_publ_id,
                 "other_user": True,
                 "is_colleague": is_colleague,
+                "is_send_colleague": is_send_colleague,
                 "notify": notify
             }
 

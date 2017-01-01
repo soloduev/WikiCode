@@ -92,9 +92,19 @@ def get_send_request_colleagues(request, id):
             current_user = User.objects.get(id_user=get_user_id(request))
             send_user = User.objects.get(id_user=id)
 
+            # Проверяем, не отправляли ли мы уже заявку этому пользователю:
+            if Notification.objects.filter(id_addressee=send_user.id_user,
+                                           id_sender=current_user.id_user,
+                                           type="add_colleague").count() != 0:
+                return user_view.get_user(request,
+                                          id,
+                                          notify={'type': 'error',
+                                                  'text': 'Заявка уже отправлена\n\n'})
+
             # Получаем текущую дату
             date = str(datetime.datetime.now())
             date = date[:len(date) - 7]
+
 
             # Генериуем html уведомления
             html_text = WikiNotify.generate_add_colleague(author_nickname=current_user.nickname,
