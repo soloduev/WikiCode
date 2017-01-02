@@ -39,14 +39,16 @@ def get_index(request, notify=None):
 
     if notify is None:
         notify = {'type': 'msg', 'text': ''}
-    all_publications = Publication.objects.filter()
 
-    # Срезаем публикации, если их больше того количества, которое хотим вывести
+    # Получаем только публичные конспекты
+    all_publications = Publication.objects.filter(is_public=True)
+
+    # Срезаем конспекты, если их больше того количества, которое хотим вывести
     if len(all_publications) > wiki_settings.COUNT_LAST_PUBL_SHOW:
         position = len(all_publications) - wiki_settings.COUNT_LAST_PUBL_SHOW
         all_publications = all_publications[position:]
 
-    # Делаем реверс публикаций
+    # Делаем реверс конспектов
     reverse_publications = []
 
     for publ in reversed(all_publications):
