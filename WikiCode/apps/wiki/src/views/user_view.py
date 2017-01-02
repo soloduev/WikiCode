@@ -126,7 +126,7 @@ def get_user(request, id, notify=None):
             context = {
                 "user_data": user_data,
                 "user_id": get_user_id(request),
-                "preview_tree": wft.to_html_preview(),
+                "preview_tree": wft.to_html_preview(only_public=True),
                 "user":other_user,
                 "prewiew_publ_text": preview_publ_text,
                 "prewiew_publ_title": prewiew_publ_title,

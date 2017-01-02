@@ -103,7 +103,10 @@ def get_page(request, id):
 
             wft = WikiFileTree()
             wft.load_tree(author_user.file_tree)
-            html_preview_tree = wft.to_html_preview()
+            if author_user.id_user == cur_user_id:
+                html_preview_tree = wft.to_html_preview()
+            else:
+                html_preview_tree = wft.to_html_preview(only_public=True)
         except User.DoesNotExist:
             print("Автора не существует")
 

@@ -489,8 +489,9 @@ class WikiFileTree():
             return ""
 
     # Variant 1
-    def to_html_preview(self) -> str:
-        """Возвращает html превью дерева"""
+    def to_html_preview(self, only_public=False) -> str:
+        """Возвращает html превью дерева.
+        С доп. параметром only_public - вернет html только с публичными конспектами """
         if self.__xml_tree is not None:
             # Узнаем количество папок в дереве
             if not self.get_num_root_folders():
@@ -502,7 +503,7 @@ class WikiFileTree():
             root = ET.Element("root")
             for folder in folders:
                 # Вызываем рекурсивный метод обработки папки
-                self.__append_folder(folder, root)
+                self.__append_folder(folder, root, only_public)
 
             # Форматируем xml в строку
             result_str = self.__format_xml(ET.tostring(root))
@@ -604,7 +605,7 @@ class WikiFileTree():
         return str
 
     # Variant 1
-    def __append_folder(self, folder, root):
+    def __append_folder(self, folder, root, only_public=False):
         """Добавляет папку в нод"""
         li = ET.Element("li")
         li_href = ET.Element("a")
@@ -620,6 +621,8 @@ class WikiFileTree():
             self.__append_folder(child_folder, ul)
         publications = folder.findall("./publication")
         for publication in publications:
+            if only_public and str(publication.get('access')) != "public":
+                continue
             publ_li = ET.Element('li')
             publ_li.text = publication.get('name')
             publ_href = ET.Element('a')
