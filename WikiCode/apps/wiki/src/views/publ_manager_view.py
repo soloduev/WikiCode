@@ -154,10 +154,27 @@ def get_add_white_user(request, id):
                 wp = WikiPermissions()
                 wp.load_permissions(publication.permissions)
                 white_users = wp.get_white_list()
+                black_users = wp.get_black_list()
+
+                # Проверяем пользователя на его наличие в белом списке
                 is_find = False
                 for user in white_users:
                     if str(find_user.id_user) == str(user["id"]):
                         is_find = True
+
+                # Проверяем пользователя на его наличие в черном списке
+                is_find_black = False
+                for user in black_users:
+                    if str(find_user.id_user) == str(user["id"]):
+                        is_find_black = True
+
+                if is_find_black:
+                    return get_publ_manager(request,
+                                            id,
+                                            notify={'type': 'error',
+                                                    'text': 'Данный пользователь уже находится у Вас в черном списке.\n'
+                                                            'Удалите его из черного списка, если хотите назначить его '
+                                                            'редактором\n\n'})
 
                 if not is_find:
                     wp.add_to_white_list(find_user.id_user, find_user.nickname, "editor", "Редактор")
@@ -256,10 +273,27 @@ def get_add_black_user(request, id):
                 wp = WikiPermissions()
                 wp.load_permissions(publication.permissions)
                 black_users = wp.get_black_list()
+                white_users = wp.get_white_list()
+
                 is_find = False
                 for user in black_users:
                     if str(find_user.id_user) == str(user["id"]):
                         is_find = True
+
+                # Проверяем пользователя на его наличие в белом списке
+                is_find_white = False
+                for user in white_users:
+                    if str(find_user.id_user) == str(user["id"]):
+                        is_find_white = True
+
+                if is_find_white:
+                    return get_publ_manager(request,
+                                            id,
+                                            notify={'type': 'error',
+                                                    'text': 'Данный пользователь является редактором '
+                                                            'Вашего конспекта.\n'
+                                                            'Удалите его из списка редакторов, если хотите добавить его'
+                                                            ' в черный список\n\n'})
 
                 if not is_find:
                     wp.add_to_black_list(find_user.id_user, find_user.nickname, "ban", "Бан")
