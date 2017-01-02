@@ -23,7 +23,7 @@ from WikiCode.apps.wiki.src.modules.wiki_permissions import config
 
 class WikiPermissions():
     """
-       :VERSION: 0.8
+       :VERSION: 0.9
        Класс для работы со списками доступа у конспекта.
        Список доступа педставляет из себя структуированный xml файл.
        Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -78,7 +78,11 @@ class WikiPermissions():
 
     def get_xml_str(self) -> str:
         """Возвращает xml строку текущего списка доступа"""
-        return self.__format_xml(self.__xml_permissions)
+        result_str = self.__format_xml(self.__xml_permissions)
+        result_str = result_str.replace('\n', '')
+        result_str = result_str.replace('\t', '')
+        result_str = result_str.replace('>', '>\n')
+        return result_str
 
     # WORK WITH LIST
 
