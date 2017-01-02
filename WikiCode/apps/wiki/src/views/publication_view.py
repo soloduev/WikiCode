@@ -85,6 +85,28 @@ def get_page(request, id):
         except User.DoesNotExist:
             return get_error_page(request, ["Не удалось загрузить юзера. Его уже не существует!"])
 
+        # Проверяем доступ пользователя к конспекту
+        wp = WikiPermissions()
+        wp.load_permissions(publication.permissions)
+        black_list = wp.get_black_list()
+        white_list = wp.get_white_list()
+
+        # Проверяем, не находится ли пользователь в черном списке
+        for black_user in black_list:
+            if str(cur_user_id) == str(black_user["id"]):
+                return get_error_page(request, ["У Вас нет прав доступа к этому конспекту."])
+
+        # Проверяем, не находится ли пользователь в списке редакторов
+        is_editor = False
+        for white_user in white_list:
+            if str(cur_user_id) == str(white_user["id"]):
+                is_editor = True
+                break
+
+        # Если конспект приватный и пользователь не является редактором конспекта, то блокируем ему доступ
+        if not publication.is_public and not is_editor and publication.id_author != cur_user_id:
+            return get_error_page(request, ["У Вас нет прав доступа к этому конспекту."])
+
         # Разбиваем весь текст на абзацы
         md_text = publication.text
         wm = WikiMarkdown()
