@@ -25,16 +25,16 @@
 $("#jstree")
 // listen for event
     .on('changed.jstree', function (e, data) {
-        var full_path = ''+data.selected;
+        var full_path = '' + data.selected;
         var arr = full_path.split(':');
         $("#save-publ-path-folder").val(arr[0]);
     })
     // create the instance
     .jstree({
 
-        "types" : {
-            "folder" : {
-                "icon" : "glyphicon glyphicon-folder-open"
+        "types": {
+            "folder": {
+                "icon": "glyphicon glyphicon-folder-open"
             },
             "publ": {
                 "icon": "glyphicon glyphicon-list-alt"
@@ -47,24 +47,24 @@ $("#jstree")
             },
         },
 
-        "plugins" : [ "wholerow", "types" ]
+        "plugins": ["wholerow", "types"]
     });
 
-(function($) {
-    $(document).ready(function() {
+(function ($) {
+    $(document).ready(function () {
         var mySlidebars = new $.slidebars();
-        $('#pollSlider-button').on('click', function() {
+        $('#pollSlider-button').on('click', function () {
             mySlidebars.slidebars.open('left');
             $("#left-slidebar-publications").show();
             $("#left-slidebar-contents").hide();
         });
-        $('#contents-pollSlider-button').on('click', function() {
+        $('#contents-pollSlider-button').on('click', function () {
             mySlidebars.slidebars.open('left');
             $("#left-slidebar-contents").show();
             $("#left-slidebar-publications").hide();
         });
     });
-}) (jQuery);
+})(jQuery);
 
 // ---------------------------------------------------------- //
 // ---------------------POST запросы------------------------- //
@@ -84,19 +84,19 @@ $("#wiki-btn-send-dynamic-comment").click(function () {
     $.ajax({
         type: "POST",
         url: "add_dynamic_comment/",
-        data:{
-            'dynamic_comment':dynamic_comment,
-            'num_paragraph':num_paragraph
+        data: {
+            'dynamic_comment': dynamic_comment,
+            'num_paragraph': num_paragraph
         },
         dataType: "text",
         cache: false,
-        success: function(data){
-            if (data == 'ok'){
+        success: function (data) {
+            if (data == 'ok') {
                 // Чисто с точки зрения фронтенда, добавляем этот комментарий, чтобы не делать дополнительный гет запрос.
                 // Либо сделать гет запрос)
                 location.reload();
             }
-            else{
+            else {
                 console.log("ERROR in page.js");
             }
         }
@@ -107,65 +107,68 @@ $("#wiki-btn-send-dynamic-comment").click(function () {
 //Динамическое редактирование
 $("#edit_paragraph_wiki_tree_context").on("click", function () {
 
-    isEdit = true; var selected_num_paragraph = parseInt($("#selected_number_paragraph").val());
+    isEdit = true;
+    var selected_num_paragraph = parseInt($("#selected_number_paragraph").val());
     //Получаем все необходимые данные с абазаца
-    var height = $('#li-md-wikicode-'+selected_num_paragraph+'').css('height');
+    var height = $('#li-md-wikicode-' + selected_num_paragraph + '').css('height');
     selectText = md_text[parseInt(selected_num_paragraph)];
 
     //Заменяем элемент списка на input
-    $("#markdown-row-"+selected_num_paragraph+"")
+    $("#markdown-row-" + selected_num_paragraph + "")
         .replaceWith(
             '<textarea  class="form-control dyn-par" id="dynamic-paragraph"' +
             'onKeyUp="selectChange()"' +
-            'style="height:'+height+';' +
+            'style="height:' + height + ';' +
             '">' +
             selectText +
             '</textarea>');
 
     // Делаем так, чтобы все textarea могли автоматически изменять свой размер в зависимости от их содержимого
-    $(function() { $('textarea').autoResize(); });
+    $(function () {
+        $('textarea').autoResize();
+    });
 
     //Делаем так, чтобы мы могли нажимать таб у любого текст ареа тега
     var textareas = document.getElementsByTagName('textarea');
     var count = textareas.length;
-    for(var i=0;i<count;i++){
-        textareas[i].onkeydown = function(e){
-            if(e.keyCode==9 || e.which==9){
+    for (var i = 0; i < count; i++) {
+        textareas[i].onkeydown = function (e) {
+            if (e.keyCode == 9 || e.which == 9) {
                 e.preventDefault();
                 var s = this.selectionStart;
-                this.value = this.value.substring(0,this.selectionStart) + "\t" + this.value.substring(this.selectionEnd);
-                this.selectionEnd = s+1;
+                this.value = this.value.substring(0, this.selectionStart) + "\t" + this.value.substring(this.selectionEnd);
+                this.selectionEnd = s + 1;
             }
         }
     }
     $(".dyn-par").focus();
 
     //Устанвливаем курсор в конец строки
-    var input = document.getElementById ("dynamic-paragraph");
-    input.selectionStart = input.value.length-1;
+    var input = document.getElementById("dynamic-paragraph");
+    input.selectionStart = input.value.length - 1;
 
 
     //Как только теряем фокус:
     $("#dynamic-paragraph").blur(function (e) {
 
         //Применяем все и возвращаем все обратно
-        var new_md_text =  $("#dynamic-paragraph").val();
+        var new_md_text = $("#dynamic-paragraph").val();
         $("#dynamic-paragraph").replaceWith(
-            '<div class="md-hover" id="markdown-row-'+selected_num_paragraph+'"></div>'
+            '<div class="md-hover" id="markdown-row-' + selected_num_paragraph + '"></div>'
         );
-        document.getElementById('markdown-row-'+selected_num_paragraph).innerHTML = marked(new_md_text);
+        document.getElementById('markdown-row-' + selected_num_paragraph).innerHTML = marked(new_md_text);
         md_text[parseInt(selected_num_paragraph)] = new_md_text;
         isEdit = false;
     });
 });
 
 // Событие клика кнопки "ответить на комментарий". Устанавливает id, на какой комментарий необходимо ответить
-$('.main-comment-reply').click(function(eventObject){
-    $("#reply_id_user").val(''+this.getAttribute('id_comment'));
+$('.main-comment-reply').click(function (eventObject) {
+    $("#reply_id_user").val('' + this.getAttribute('id_comment'));
 });
 
 // Событие клика кнопки "оставить комментарий". Устанавливает id, на какой комментарий необходимо ответить -1.
-$('#wiki-style-btn-send-main-comment').click(function(eventObject){
+$('#wiki-style-btn-send-main-comment').click(function (eventObject) {
     $("#reply_id_user").val('-1');
 });
 
@@ -177,23 +180,23 @@ $("#wiki-btn-send-main-comment").click(function () {
 
     // Получаем id того пользователя, которому произошел ответ
     var reply_author_id = $("#reply_id_user").val();
-    
+
     $.ajax({
         type: "POST",
         url: "add_main_comment/",
-        data:{
+        data: {
             'main_comment': main_comment,
             'reply_author_id': reply_author_id,
         },
         dataType: "text",
         cache: false,
-        success: function(data){
-            if (data == 'ok'){
+        success: function (data) {
+            if (data == 'ok') {
                 // Чисто с точки зрения фронтенда, добавляем этот комментарий, чтобы не делать дополнительный гет запрос.
                 // Либо сделать гет запрос))
                 location.reload();
             }
-            else{
+            else {
                 console.log("ERROR in page.js. Add_main_comment()");
             }
         }
@@ -216,14 +219,14 @@ $("#wiki-style-btn-save-publ").click(function () {
         data: myMap,
         dataType: "text",
         cache: false,
-        success: function(data){
-            if (data == 'eq'){
+        success: function (data) {
+            if (data == 'eq') {
                 //location.reload();
             }
-            else if(data == 'not_eq'){
+            else if (data == 'not_eq') {
                 location.reload();
             }
-            else{
+            else {
                 console.log("ERROR in page.js. Save publ");
             }
         }
@@ -233,11 +236,9 @@ $("#wiki-style-btn-save-publ").click(function () {
 // Установление head версии
 $("#set_head_version").click(function () {
     var to_version_str = $("#to_version_value").val();
-    if(to_version_str  === "")
-    {
+    if (to_version_str === "") {
     }
-    else
-    {
+    else {
         $.ajax({
             type: "POST",
             url: "set_head/",
@@ -246,18 +247,24 @@ $("#set_head_version").click(function () {
             },
             dataType: "text",
             cache: false,
-            success: function(data){
-                if (data == 'ok'){
+            success: function (data) {
+                if (data == 'ok') {
                     location.reload();
                 }
-                else if(data == 'auth'){
+                else if (data == 'auth') {
                     location.href = "/login/";
                 }
-                else{
+                else {
                     console.log("ERROR in page.js. Set HEAD Version.");
                 }
             }
         });
     }
 
+});
+
+//Просмотр папок, для определения той, в которой хотим сохранить конспект
+$("#set-path-folder-save").click(function () {
+    console.log("Ss");
+    $("#div-choose-folder-save").fadeIn(500);
 });
