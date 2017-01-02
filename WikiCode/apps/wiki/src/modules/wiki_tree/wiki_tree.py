@@ -626,7 +626,10 @@ class WikiFileTree():
             publ_href.set('href', '/page/' + str(publication.get('id')))
             publ_href.set('class', 'btn btn-xs btn-link')
             publ_span = ET.Element('span')
-            publ_span.set('class', 'glyphicon glyphicon-share-alt')
+            if str(publication.get('access')) == "public":
+                publ_span.set('class', 'glyphicon glyphicon-share-alt')
+            elif str(publication.get('access')) == "private":
+                publ_span.set('class', 'glyphicon glyphicon-lock')
             publ_href.append(publ_span)
             publ_li.append(publ_href)
             ul.append(publ_li)
@@ -655,7 +658,10 @@ class WikiFileTree():
             publ_li.set('class', 'task')
             publ_li.set('data-id', 'publ:' + publication.get('id'))
             publ_li.set('id', 'publ:' + publication.get('id'))
-            publ_li.set('data-jstree', '{ "type" : "publ" }')
+            if publication.get('access') == "public":
+                publ_li.set('data-jstree', '{ "type" : "publ" }')
+            elif publication.get('access') == "private":
+                publ_li.set('data-jstree', '{ "type" : "private" }')
             publ_li.text = publication.get('name')
             ul.append(publ_li)
 

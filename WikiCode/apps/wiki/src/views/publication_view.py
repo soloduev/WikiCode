@@ -265,7 +265,7 @@ def get_create_page(request):
         # Добавляем этот конспект в папку
         wft.create_publication(id=newid,
                                name=form["title"],
-                               access="public",
+                               access="public" if request.POST.get("access-opt", False) else "private",
                                type="personal",
                                id_folder=form['folder'].split(':')[1])  # new version
 

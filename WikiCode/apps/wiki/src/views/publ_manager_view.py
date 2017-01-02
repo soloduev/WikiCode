@@ -21,6 +21,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 
 from WikiCode.apps.wiki.models import Publication, User
+from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
 from WikiCode.apps.wiki.src.views.auth import check_auth, get_user_id
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
 from WikiCode.apps.wiki.models import User as WikiUser
@@ -103,7 +104,18 @@ def get_save_opt_publ_manager(request, id):
                 publication.is_saving = request.POST.get("saving-opt", False)
                 publication.is_starring = request.POST.get("rating-opt", False)
                 publication.is_file_tree = request.POST.get("file-tree-opt", False)
+
+                cur_user = User.objects.get(id_user=current_id)
+
+                wft = WikiFileTree()
+                wft.load_tree(cur_user.file_tree)
+                wft.reaccess_publication(publication.id_publication, "public" if request.POST.get("access-opt", False) else "private")
+
+                cur_user.file_tree = wft.get_xml_str()
+
+                cur_user.save()
                 publication.save()
+
                 return get_publ_manager(request,
                                         id,
                                         notify={'type': 'info',
@@ -114,3 +126,7 @@ def get_save_opt_publ_manager(request, id):
         except Publication.DoesNotExist:
             return get_error_page(request,
                                   ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
+
+        except User.DoesNotExist:
+            return get_error_page(request,
+                                  ["User not found!"])
