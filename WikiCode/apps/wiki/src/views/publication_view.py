@@ -335,10 +335,11 @@ def get_publ_manager(request, id, notify=None):
         current_id = get_user_id(request)
         if current_id == _publication.id_author:
 
-            # Получаем список редакторов конспекта
+            # Получаем список редакторов конспекта, а также черный список
             wp = WikiPermissions()
             wp.load_permissions(_publication.permissions)
             white_list = wp.get_white_list()
+            black_list = wp.get_black_list()
 
             context = {
                 "user_data": user_data,
@@ -346,6 +347,7 @@ def get_publ_manager(request, id, notify=None):
                 "publication": _publication,
                 "tree_path": _publication.tree_path,
                 "white_list": white_list,
+                "black_list": black_list,
                 "notify": notify
             }
             return render(request, 'wiki/publ_manager.html', context)

@@ -242,6 +242,47 @@ def get_add_black_user(request, id):
             # Получаем конспект, которым хотим управлять
             publication = Publication.objects.get(id_publication=id)
 
+            black_user = request.POST.get("add_black_user")
+
+            try:
+                find_user = User.objects.get(nickname=black_user)
+
+                if find_user.id_user == get_user_id(request):
+                    return get_publ_manager(request,
+                                            id,
+                                            notify={'type': 'error',
+                                                    'text': 'Вы не можете себя добавить в черный список.\n\n\n'})
+
+                wp = WikiPermissions()
+                wp.load_permissions(publication.permissions)
+                black_users = wp.get_black_list()
+                is_find = False
+                for user in black_users:
+                    if str(find_user.id_user) == str(user["id"]):
+                        is_find = True
+
+                if not is_find:
+                    wp.add_to_black_list(find_user.id_user, find_user.nickname, "ban", "Бан")
+                    publication.permissions = wp.get_xml_str()
+                    publication.save()
+
+                    return get_publ_manager(request,
+                                            id,
+                                            notify={'type': 'info',
+                                                    'text': 'Пользователь добавлен в черный список.\n\n\n'})
+                else:
+                    return get_publ_manager(request,
+                                            id,
+                                            notify={'type': 'error',
+                                                    'text': 'Данный пользователь уже добавлен в черный список.\n\n\n'})
+
+            except User.DoesNotExist:
+                return get_publ_manager(request,
+                                        id,
+                                        notify={'type': 'error',
+                                                'text': 'Пользователя с таким nickname не существует.\n'
+                                                        'Пользователь не добавлен в черный список.\n\n'})
+
         except Publication.DoesNotExist:
             return get_error_page(request,
                                   ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
@@ -252,6 +293,45 @@ def get_del_black_user(request, id):
         try:
             # Получаем конспект, которым хотим управлять
             publication = Publication.objects.get(id_publication=id)
+
+            del_user_nickname = request.POST.get("publ_black_user")
+
+            if not del_user_nickname:
+                return get_publ_manager(request,
+                                        id,
+                                        notify={'type': 'error',
+                                                'text': 'Вы не указали удаляемого пользователя.\n\n\n'})
+
+            try:
+                find_user = User.objects.get(nickname=del_user_nickname)
+
+                wp = WikiPermissions()
+                wp.load_permissions(publication.permissions)
+                black_users = wp.get_black_list()
+                is_find = False
+                for user in black_users:
+                    if str(find_user.id_user) == str(user["id"]):
+                        is_find = True
+
+                if is_find:
+                    wp.remove_from_black_list(find_user.id_user)
+                    publication.permissions = wp.get_xml_str()
+                    publication.save()
+
+                    return get_publ_manager(request,
+                                            id,
+                                            notify={'type': 'info',
+                                                    'text': 'Пользователь успешно удален из черного списка.\n\n\n'})
+                else:
+                    return get_publ_manager(request,
+                                            id,
+                                            notify={'type': 'error',
+                                                    'text': 'Пользователь уже удален из черного списка.\n\n\n'})
+            except User.DoesNotExist:
+                return get_publ_manager(request,
+                                        id,
+                                        notify={'type': 'error',
+                                                'text': 'Удаляемого пользователя не существует.\n\n\n'})
 
         except Publication.DoesNotExist:
             return get_error_page(request,

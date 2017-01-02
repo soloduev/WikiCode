@@ -216,11 +216,16 @@
                                         <h4>Черный список</h4>
                                     </div>
                                     <div class="col-xs-7 text-right">
-                                        <select class="form-control btn-block" style="border-radius: 0px;font-family: Courier;" name="publ_black_list">
-
-                                        </select>
-                                        <button type="button" class="btn btn-block btn-default" style="border-radius: 0px;">Добавить пользователя</button>
-                                        <button type="button" class="btn btn-block btn-default" style="border-radius: 0px;">Убрать выбранного</button>
+                                        <form action="{% url 'del_black_user' publication.id_publication %}" method="post">
+                                            {% csrf_token %}
+                                            <select title="Черный список" class="form-control btn-block" style="border-radius: 0px;font-family: Courier;" name="publ_black_user">
+                                                {% for black_user in black_list %}
+                                                    <option>{{ black_user.user_name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <button type="button" class="btn btn-block btn-default" data-toggle="modal" data-target="#modal_add_black_user" style="border-radius: 0px;">Добавить пользователя</button>
+                                            <button type="submit" class="btn btn-block btn-default" style="border-radius: 0px;">Убрать выбранного</button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -293,6 +298,32 @@
                     </div>
                     <div class="modal-footer">
                         <button id="wiki-style-btn" type="submit" class="btn">Добавить</button>
+                        <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно добавления пользователя в черный список -->
+    <div class="modal fade" id="modal_add_black_user" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{% url 'add_black_user' publication.id_publication %}" method="post">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Добавление пользователя в черный список</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4>Добавляя пользователя в черный список вы полностью перекрываете ему доступ к конспекту. Он не сможет просматривать конспект, оставлять к нему комментарии, редактировать конспект.</h4>
+                        <br>
+                        <h4>Укажите nickname пользователя, которого хотите блокировать:</h4>
+                        <input required name="add_black_user" type="text" class="form-control btn-block" placeholder="Введите nickname..." style="height: 30px; font-family: Courier; border-radius: 0px;"/>
+                        <br>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="wiki-style-btn" type="submit" class="btn">Блокировать</button>
                         <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
                     </div>
                 </form>
