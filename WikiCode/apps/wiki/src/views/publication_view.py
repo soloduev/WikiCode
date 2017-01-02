@@ -30,6 +30,7 @@ from WikiCode.apps.wiki.settings import wiki_settings
 from WikiCode.apps.wiki.src.modules.wiki_comments.wiki_comments import WikiComments
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
 from WikiCode.apps.wiki.src.modules.wiki_versions.wiki_versions import WikiVersions
+from WikiCode.apps.wiki.src.modules.wiki_permissions.wiki_permissions import WikiPermissions
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
 from WikiCode.apps.wiki.src.wiki_markdown import WikiMarkdown
 from .auth import check_auth, get_user_id
@@ -233,6 +234,10 @@ def get_create_page(request):
                                           seq=list(paragraphs))
             archive = wiki_versions.get_archive()
 
+            # Создаем уровни доступа к конспекту
+            wp = WikiPermissions()
+            wp.create_permissions(id=newid, id_creator=user.id_user)
+
             new_publication = Publication(
                 id_publication=newid,
                 id_author=user.id_user,
@@ -246,6 +251,7 @@ def get_create_page(request):
                 read=0,
                 main_comments=wiki_comments.get_xml_str(),
                 versions=archive,
+                permissions=wp.get_xml_str(),
                 is_public=request.POST.get("access-opt", False),
                 is_dynamic_paragraphs=request.POST.get("dynamic-opt", False),
                 is_general_comments=request.POST.get("main-comments-opt", False),

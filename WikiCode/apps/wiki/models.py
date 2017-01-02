@@ -50,6 +50,7 @@ class Publication(models.Model):
     read = models.BigIntegerField()
     main_comments = models.TextField()
     versions = models.BinaryField(blank=True)
+    permissions = models.TextField()
     # Все настройки конспекта
     is_public = models.BooleanField()
     is_dynamic_paragraphs = models.BooleanField()
