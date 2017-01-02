@@ -194,25 +194,15 @@
                             <div class="tab-pane" id="tab-lest-id4">
                                 <div class="row">
                                     <div class="col-xs-5">
-                                        <h4>Уровень доступа</h4>
-                                    </div>
-                                    <div class="col-xs-7 text-right">
-                                        <select class="form-control btn-block" style="border-radius: 0px;font-family: Courier;" name="level_access">
-                                            <option>Приватный</option>
-                                            <option>Публичный</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <br><hr>
-                                <div class="row">
-                                    <div class="col-xs-5">
                                         <h4>Редакторы</h4>
                                     </div>
                                     <div class="col-xs-7 text-right">
                                         <select  id="select-list-editors" class="form-control btn-block" style="border-radius: 0px;font-family: Courier;" name="publ_editors">
+                                            {% for white_user in white_list %}
+                                                <option>{{ white_user.user_name }}</option>
+                                            {% endfor %}
                                         </select>
-                                        <button type="button" class="btn btn-block btn-default" style="border-radius: 0px;">Назначить нового</button>
+                                        <button type="button" class="btn btn-block btn-default" data-toggle="modal" data-target="#modal_add_white_user" style="border-radius: 0px;">Назначить нового</button>
                                         <button id="remove-select-editor" type="button" class="btn btn-block btn-default" style="border-radius: 0px;">Убрать выбранного</button>
                                     </div>
                                 </div>
@@ -230,15 +220,6 @@
                                         <button type="button" class="btn btn-block btn-default" style="border-radius: 0px;">Убрать выбранного</button>
                                     </div>
                                 </div>
-                                <br><hr>
-                                <div class="row">
-                                    <div class="col-xs-5">
-                                    </div>
-                                    <div class="col-xs-7">
-                                        <button type="submit" id="wiki-style-btn" class="btn btn-block">Сохранить изменения</button>
-                                    </div>
-                                </div>
-                                <br>
                             </div>
                             <div class="tab-pane" id="tab-lest-id6">
                                 <h4>Все файлы:</h4>
@@ -286,6 +267,32 @@
                     <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
                     <button id="wiki-style-btn-delete-publ"type="button" class="btn">Да, я хочу его удалить</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно добавления нового редактора конспекта -->
+    <div class="modal fade" id="modal_add_white_user" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{% url 'add_white_user' publication.id_publication %}" method="post">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Добавление нового редактора конспекта</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4>Добавляя нового редактора, вы даете ему полный доступ на изменение конспекта. Но этот пользователь не сможет зайти в панель управления конспектом.</h4>
+                        <br>
+                        <h4>Укажите nickname пользователя, которого хотите добавить:</h4>
+                        <input required name="add_white_user" type="text" class="form-control btn-block" placeholder="Введите nickname..." style="height: 30px; font-family: Courier; border-radius: 0px;"/>
+                        <br>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="wiki-style-btn" type="submit" class="btn">Добавить</button>
+                        <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

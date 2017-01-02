@@ -57,6 +57,10 @@ urlpatterns = [
     url(r'^publ_manager/delete_publ_in_tree/$', views.delete_publ_in_tree, name='delete_publ_in_tree'),
     url(r'^publ_manager/(?P<id>[0-9]+)/save_main_publ_manager/$', views.save_main_publ_manager, name='save_main_publ_manager'),
     url(r'^publ_manager/(?P<id>[0-9]+)/save_opt_publ_manager/$', views.save_opt_publ_manager, name='save_opt_publ_manager'),
+    url(r'^publ_manager/(?P<id>[0-9]+)/add_white_user/$', views.add_white_user, name='add_white_user'),
+    url(r'^publ_manager/(?P<id>[0-9]+)/del_white_user/$', views.del_white_user, name='del_white_user'),
+    url(r'^publ_manager/(?P<id>[0-9]+)/add_black_user/$', views.add_black_user, name='add_black_user'),
+    url(r'^publ_manager/(?P<id>[0-9]+)/del_black_user/$', views.del_black_user, name='del_black_user'),
 
     # События на странице конспекта
     url(r'^page/(?P<id>[0-9]+)/add_dynamic_comment/$', views.add_dynamic_comment, name='add_dynamic_comment'),

@@ -22,6 +22,7 @@ from django.views.decorators.csrf import csrf_protect
 
 from WikiCode.apps.wiki.models import Publication, User
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
+from WikiCode.apps.wiki.src.modules.wiki_permissions.wiki_permissions import WikiPermissions
 from WikiCode.apps.wiki.src.views.auth import check_auth, get_user_id
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
 from WikiCode.apps.wiki.models import User as WikiUser
@@ -130,3 +131,89 @@ def get_save_opt_publ_manager(request, id):
         except User.DoesNotExist:
             return get_error_page(request,
                                   ["User not found!"])
+
+
+def get_add_white_user(request, id):
+    if request.method == "POST":
+        try:
+            # Получаем конспект, которым хотим управлять
+            publication = Publication.objects.get(id_publication=id)
+
+            white_user = request.POST.get("add_white_user")
+
+            try:
+                find_user = User.objects.get(nickname=white_user)
+
+                if find_user.id_user == get_user_id(request):
+                    return get_publ_manager(request,
+                                            id,
+                                            notify={'type': 'error',
+                                                    'text': 'Вы и так являетесь автором конспекта.\n'
+                                                            'Вы не можете назначить себя редактором.\n\n'})
+
+                wp = WikiPermissions()
+                wp.load_permissions(publication.permissions)
+                white_users = wp.get_white_list()
+                is_find = False
+                for user in white_users:
+                    if str(find_user.id_user) == str(user["id"]):
+                        is_find = True
+
+                if not is_find:
+                    wp.add_to_white_list(find_user.id_user, find_user.nickname, "editor", "Редактор")
+                    publication.permissions = wp.get_xml_str()
+                    publication.save()
+
+                    return get_publ_manager(request,
+                                        id,
+                                        notify={'type': 'info',
+                                                'text': 'Назначен новый редактор конспекта.\n\n\n'})
+                else:
+                    return get_publ_manager(request,
+                                        id,
+                                        notify={'type': 'error',
+                                                'text': 'Данный пользователь уже назначен редактором.\n\n\n'})
+
+            except User.DoesNotExist:
+                return get_publ_manager(request,
+                                        id,
+                                        notify={'type': 'error',
+                                                'text': 'Пользователя с таким nickname не существует.\n'
+                                                        'Новый редактор не назначен.\n\n'})
+
+        except Publication.DoesNotExist:
+            return get_error_page(request,
+                                  ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
+
+
+def get_del_white_user(request, id):
+    if request.method == "POST":
+        try:
+            # Получаем конспект, которым хотим управлять
+            publication = Publication.objects.get(id_publication=id)
+
+        except Publication.DoesNotExist:
+            return get_error_page(request,
+                                  ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
+
+
+def get_add_black_user(request, id):
+    if request.method == "POST":
+        try:
+            # Получаем конспект, которым хотим управлять
+            publication = Publication.objects.get(id_publication=id)
+
+        except Publication.DoesNotExist:
+            return get_error_page(request,
+                                  ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
+
+
+def get_del_black_user(request, id):
+    if request.method == "POST":
+        try:
+            # Получаем конспект, которым хотим управлять
+            publication = Publication.objects.get(id_publication=id)
+
+        except Publication.DoesNotExist:
+            return get_error_page(request,
+                                  ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])

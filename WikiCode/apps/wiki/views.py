@@ -307,3 +307,31 @@ def delete_colleague(request):
 @login_required
 def delete_notification(request):
     return notifications_view.delete_notification(request)
+
+
+# Добавление редактора к конспекту
+@develop_mode_id
+@login_required
+def add_white_user(request, id):
+    return publ_manager_view.get_add_white_user(request, id)
+
+
+# Удаление редактора конспекта
+@develop_mode_id
+@login_required
+def del_white_user(request, id):
+    return publ_manager_view.get_del_white_user(request, id)
+
+
+# Добавление пользователя в черный список
+@develop_mode_id
+@login_required
+def add_black_user(request, id):
+    return publ_manager_view.get_add_black_user(request, id)
+
+
+# Удаление пользователя из черного списка
+@develop_mode_id
+@login_required
+def del_black_user(request, id):
+    return publ_manager_view.get_del_black_user(request, id)
