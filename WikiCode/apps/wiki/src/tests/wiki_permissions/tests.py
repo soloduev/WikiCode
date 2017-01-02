@@ -19,7 +19,7 @@
 
 # ТЕСТИРОВАНИЕ ФУНКЦИОНАЛА WIKIPERMISSIONS
 
-from WikiCode.apps.wiki.src.future.wiki_permissions import wiki_permissions as wp_test
+from WikiCode.apps.wiki.src.modules.wiki_permissions import wiki_permissions as wp_test
 
 # Version:       0.007
 # Total Tests:   10

@@ -19,8 +19,7 @@
 
 import xml.etree.ElementTree as ET
 from xml.dom.minidom import parseString
-from WikiCode.apps.wiki.src.future.wiki_permissions import config as CONFIG
-
+from WikiCode.apps.wiki.src.modules.wiki_permissions import config
 
 class WikiPermissions():
     """
@@ -91,7 +90,7 @@ class WikiPermissions():
             white_list = root.find('./white_list')
 
             # Валидация доступа
-            if permission not in CONFIG.params["WHITE_PERMS"]:
+            if permission not in config.params["WHITE_PERMS"]:
                 return False
 
             # Создаем нового пользователя
@@ -113,7 +112,7 @@ class WikiPermissions():
             black_list = root.find('./black_list')
 
             # Валидация доступа
-            if permission not in CONFIG.params["BLACK_PERMS"]:
+            if permission not in config.params["BLACK_PERMS"]:
                 return False
 
             # Создаем нового пользователя
