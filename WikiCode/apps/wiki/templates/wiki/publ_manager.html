@@ -197,13 +197,16 @@
                                         <h4>Редакторы</h4>
                                     </div>
                                     <div class="col-xs-7 text-right">
-                                        <select  id="select-list-editors" class="form-control btn-block" style="border-radius: 0px;font-family: Courier;" name="publ_editors">
-                                            {% for white_user in white_list %}
-                                                <option>{{ white_user.user_name }}</option>
-                                            {% endfor %}
-                                        </select>
-                                        <button type="button" class="btn btn-block btn-default" data-toggle="modal" data-target="#modal_add_white_user" style="border-radius: 0px;">Назначить нового</button>
-                                        <button id="remove-select-editor" type="button" class="btn btn-block btn-default" style="border-radius: 0px;">Убрать выбранного</button>
+                                        <form action="{% url 'del_white_user' publication.id_publication %}" method="post">
+                                            {% csrf_token %}
+                                            <select title="Список редакторов" id="select-list-editors" class="form-control btn-block" style="border-radius: 0px;font-family: Courier;" name="publ_editor">
+                                                {% for white_user in white_list %}
+                                                    <option>{{ white_user.user_name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <button type="button" class="btn btn-block btn-default" data-toggle="modal" data-target="#modal_add_white_user" style="border-radius: 0px;">Назначить нового</button>
+                                            <button type="submit" class="btn btn-block btn-default" style="border-radius: 0px;">Убрать выбранного</button>
+                                        </form>
                                     </div>
                                 </div>
 

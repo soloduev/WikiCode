@@ -192,6 +192,45 @@ def get_del_white_user(request, id):
             # Получаем конспект, которым хотим управлять
             publication = Publication.objects.get(id_publication=id)
 
+            del_user_nickname = request.POST.get("publ_editor")
+
+            if not del_user_nickname:
+                return get_publ_manager(request,
+                                        id,
+                                        notify={'type': 'error',
+                                                'text': 'Вы не указали удаляемого пользователя.\n\n\n'})
+
+            try:
+                find_user = User.objects.get(nickname=del_user_nickname)
+
+                wp = WikiPermissions()
+                wp.load_permissions(publication.permissions)
+                white_users = wp.get_white_list()
+                is_find = False
+                for user in white_users:
+                    if str(find_user.id_user) == str(user["id"]):
+                        is_find = True
+
+                if is_find:
+                    wp.remove_from_white_list(find_user.id_user)
+                    publication.permissions = wp.get_xml_str()
+                    publication.save()
+
+                    return get_publ_manager(request,
+                                            id,
+                                            notify={'type': 'info',
+                                                    'text': 'Пользователь успешно удален из списка редакторов.\n\n\n'})
+                else:
+                    return get_publ_manager(request,
+                                            id,
+                                            notify={'type': 'error',
+                                                    'text': 'Пользователь уже удален из списка редакторов\n\n\n'})
+            except User.DoesNotExist:
+                return get_publ_manager(request,
+                                        id,
+                                        notify={'type': 'error',
+                                                'text': 'Удаляемого пользователя не существует.\n\n\n'})
+
         except Publication.DoesNotExist:
             return get_error_page(request,
                                   ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
