@@ -107,6 +107,14 @@ def get_page(request, id):
         if not publication.is_public and not is_editor and publication.id_author != cur_user_id:
             return get_error_page(request, ["У Вас нет прав доступа к этому конспекту."])
 
+        # Смотрим, может ли пользователь редактировать конспект.
+        # Если конспект не защищен от редактирования или пользователь является редактором/автором конспекта, то конспект
+        # редактируемый
+        if not publication.is_protected_edit or is_editor or publication.id_author == cur_user_id:
+            is_editable = True
+        else:
+            is_editable = False
+
         # Разбиваем весь текст на абзацы
         md_text = publication.text
         wm = WikiMarkdown()
@@ -207,7 +215,8 @@ def get_page(request, id):
             "main_comments_count": wiki_comments.get_count(),
             "module_versions": wiki_settings.MODULE_VERSIONS,
             "versions_js": versions_js,
-            "contents": contents
+            "contents": contents,
+            "is_editable": is_editable
         }
 
         return render(request, 'wiki/page/page.html', context)
