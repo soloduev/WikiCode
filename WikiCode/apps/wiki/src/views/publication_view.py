@@ -723,6 +723,10 @@ def get_save_page(request, id):
                         # Проверяем, существует ли такая папка:
                         Folder.objects.get(id_folder=id_folder)
 
+                        # Проверяем, сохранил ли пользователь у себя уже этот конспект
+                        if wft.is_publication(publication.id_publication):
+                            return get_page(request, id, notify={'type': 'error', 'text': 'Вы уже сохранили этот конспект у себя в дереве.'})
+
                         # Если такая папка существует сохраняем в нее этот конспект
                         wft.create_publication(id=publication.id_publication,
                                                name=publication.title,
