@@ -26,8 +26,7 @@ $("#jstree")
 // listen for event
     .on('changed.jstree', function (e, data) {
         var full_path = '' + data.selected;
-        var arr = full_path.split(':');
-        $("#save-publ-path-folder").val(arr[0]);
+        $("#save-publ-path-folder").val(full_path);
     })
     // create the instance
     .jstree({
@@ -265,6 +264,9 @@ $("#set_head_version").click(function () {
 
 //Просмотр папок, для определения той, в которой хотим сохранить конспект
 $("#set-path-folder-save").click(function () {
-    console.log("Ss");
     $("#div-choose-folder-save").fadeIn(500);
+});
+
+$("#close-choose-folder-path").click(function () {
+    $("#div-choose-folder-save").fadeOut(500);
 });

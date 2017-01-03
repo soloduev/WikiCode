@@ -201,6 +201,18 @@ def get_page(request, id):
         # Генерируем оглавление для конспекта
         contents = wm.generate_contents(paragraphs)
 
+        # Получаем файловое дерево пользователя, для сохранения конспекта
+        try:
+            if cur_user_id != -1:
+                cur_user = User.objects.get(id_user=cur_user_id)
+                wft = WikiFileTree()
+                wft.load_tree(cur_user.file_tree)
+                dynamic_tree = wft.to_html_dynamic_folders()
+            else:
+                dynamic_tree = None
+        except User.DoesNotExist:
+            return get_error_page(request, ["Пользователя не сущесвует"])
+
         context = {
             "publication": publication,
             "paragraphs": paragraphs,
@@ -208,6 +220,7 @@ def get_page(request, id):
             "user_data": check_auth(request),
             "user_id": cur_user_id,
             "preview_tree": html_preview_tree,
+            "dynamic_tree": dynamic_tree,
             "module_dynamic_paragraphs": wiki_settings.MODULE_DYNAMIC_PARAGRAPHS,
             "dynamic_comments": dynamic_comments,
             "module_main_comments": wiki_settings.MODULE_MAIN_COMMENTS,

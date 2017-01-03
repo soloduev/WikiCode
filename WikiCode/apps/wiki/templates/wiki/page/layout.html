@@ -496,44 +496,60 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-xs-12">
-                            <h5>Укажите путь к папке, в которую хотите сохранить этот конспект</h5>
-                            <h5>При сохранении конспекта ему автоматически присваивается звезда</h5>
-                            <br>
-                        </div>
-                        <div class="col-xs-10">
-                            <input required id="lt-markdown-folder" name="save_folder" type="text"
-                                   class="form-control btn-block" placeholder="Укажите путь к папке..."
-                                   style="height: 30px; font-family: Courier; border-radius: 0px;"/>
-                        </div>
-                        <div class="col-xs-2">
-                            <button id="set-path-folder-save" type="button" class="btn btn-default btn-block"
-                                    style="height: 30px; border-radius: 0px;"><i class="fa fa-folder-open-o">...</i>
-                            </button>
-                        </div>
-                        <div id="div-choose-folder-save"
-                             style="display: none;border: 1px solid #ececec;background-color: #ffffff;box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.70), 0 2px 10px 0 rgba(0, 0, 0, 0.12);">
-                            <div class="row">
-                                <div class="col-xs-12  text-right">
-                                    <a id="lt-markdown-close-choose" type="button" class="btn btn-default"
-                                       style="height: 30px; border: 0px solid white;border-radius: 0px;"><i
-                                            class="fa fa-remove"></i></a>
+                        {% if publication.id_author == user_id %}
+                            <div class="col-xs-12 text-center">
+                                <h4>Вы являетесь автором данного конспекта, поэтому не можете его сохранить</h4>
+                            </div>
+                        {% elif user_id != -1 %}
+                            <div class="col-xs-12">
+                                <h5>Укажите путь к папке, в которую хотите сохранить этот конспект</h5>
+                                <h5>При сохранении конспекта ему автоматически присваивается звезда</h5>
+                                <br>
+                            </div>
+                            <div class="col-xs-10">
+                                <input required id="save-publ-path-folder" name="save_folder" type="text"
+                                       class="form-control btn-block" placeholder="Укажите путь к папке..."
+                                       style="height: 30px; font-family: Courier; border-radius: 0px;"/>
+                            </div>
+                            <div class="col-xs-2">
+                                <button id="set-path-folder-save" type="button" class="btn btn-default btn-block"
+                                        style="height: 30px; border-radius: 0px;"><i class="fa fa-folder-open-o">...</i>
+                                </button>
+                            </div>
+                            <div class="col-xs-12">
+                                <div id="div-choose-folder-save"
+                                     style="display: none;border: 1px solid #ececec;background-color: #ffffff;box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.70), 0 2px 10px 0 rgba(0, 0, 0, 0.12);">
+                                    <div class="row">
+                                        <div class="col-xs-12  text-right">
+                                            <a id="close-choose-folder-path" type="button" class="btn btn-default"
+                                               style="height: 30px; border: 0px solid white;border-radius: 0px;"><i
+                                                    class="fa fa-remove"></i></a>
+                                        </div>
+                                        <div class="col-xs-12"></div>
+                                    </div>
+                                    <div id="jstree">
+                                        <ul>
+                                            <!--Здесь должен располагаться сгенерированный html код, для динамического дерева с одними папками-->
+                                            {{ dynamic_tree|safe }}
+                                        </ul>
+                                    </div>
+                                    <hr>
                                 </div>
-                                <div class="col-xs-12"></div>
                             </div>
-                            <div id="jstree">
-                                <ul>
-                                    <!--Здесь должен располагаться сгенерированный html код, для динамического дерева с одними папками-->
-                                    {{ dynamic_tree|safe }}
-                                </ul>
+                            <br>
+                            <div class="col-xs-12 text-right">
+                                <br>
+                                <br>
+                                <button type="button" id="wiki-style-btn" class="btn" name="">Сохранить</button>
                             </div>
-                            <hr>
-                        </div>
-                        <div class="col-xs-12 text-right">
-                            <br>
-                            <br>
-                            <button type="button" id="wiki-style-btn" class="btn" name="">Сохранить</button>
-                        </div>
+                        {% else %}
+                            <div class="col-xs-12 text-center">
+                                <h4>Войдите в систему, для выполнения данного действия</h4>
+                                <br>
+                                <h4><a href="/login/">Войти</a></h4>
+                                <h4><a href="/registration/">Зарегистрироваться</a></h4>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
