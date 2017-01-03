@@ -25,7 +25,7 @@ from WikiCode.apps.wiki.src.modules.wiki_tree.config import params as CONFIG
 
 class WikiFileTree():
     """
-    :VERSION: 0.28
+    :VERSION: 0.29
     Класс для работы с файловым деревом на платформе WIKICODE.
     Файловое дерево педставляет из себя структуированный xml файл.
     Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -36,7 +36,7 @@ class WikiFileTree():
     """
 
     def __init__(self):
-        self.__xml_tree = None    # Сама XML строка
+        self.__xml_tree = None  # Сама XML строка
 
     # ---------------
     # Public methods:
@@ -50,7 +50,7 @@ class WikiFileTree():
             self.__xml_tree = xml_str
         else:
             self.__xml_tree = None
-        # Узнаем id дерева(оно совпадает с id пользователя владеющего этим деревом)
+            # Узнаем id дерева(оно совпадает с id пользователя владеющего этим деревом)
 
     def create_tree(self, id: int) -> bool:
         """Создает пустое дерево. Чтобы создать дерево, достаточно указать его id"""
@@ -58,7 +58,7 @@ class WikiFileTree():
             # Создаем новый корневой элемент
             wft_root = ET.Element('wiki_tree')
             # Задаем ему id
-            wft_root.set('id',str(id))
+            wft_root.set('id', str(id))
             # Переводим xml в строку
             self.__xml_tree = ET.tostring(wft_root)
             return True
@@ -100,7 +100,8 @@ class WikiFileTree():
     # WORK WITH FOLDERS
 
 
-    def create_folder(self, id: int, name: str, access: str, type: str, style: str, view: str, id_folder: int = -1) -> bool:
+    def create_folder(self, id: int, name: str, access: str, type: str, style: str, view: str,
+                      id_folder: int = -1) -> bool:
         """Создание новой папки"""
         if self.__xml_tree:
             # Получаем корневой элемент текущего дерева
@@ -110,15 +111,15 @@ class WikiFileTree():
             new_folder = ET.Element('folder')
 
             # Проверяем параметры на валидность
-            if not self.__check_name(name): return False        # Праверяем имя на валидность
+            if not self.__check_name(name): return False  # Праверяем имя на валидность
             # Проверяем наличие папки с таким же именем
             # some code here ... (Пока думаю, делать ли это)
             # Проверяем, не отрицательный ли id
             if not self.__check_id(id): return False
-            if not self.__check_access(access): return False    # Проверяем, правильное ли значение доступа задается папке
-            if not self.__check_type(type): return False        # Проверяем, правильный ли тип задается папке
-            if not self.__check_style(style): return False      # Проверяем, правильный ли стиль задается папке
-            if not self.__check_view(view): return False        # Проверяем, правильный ли вид задается папке
+            if not self.__check_access(access): return False  # Проверяем, правильное ли значение доступа задается папке
+            if not self.__check_type(type): return False  # Проверяем, правильный ли тип задается папке
+            if not self.__check_style(style): return False  # Проверяем, правильный ли стиль задается папке
+            if not self.__check_view(view): return False  # Проверяем, правильный ли вид задается папке
 
             # Создаем параметры новой папки
             # Создавая новое имя папки, очищаем его от пробелов в начале и в конце
@@ -140,7 +141,7 @@ class WikiFileTree():
                     if folder.get('id') == str(id_folder):
                         # Проверяем родительский доступ в папке:
                         if folder.get('access') == 'private':
-                            new_folder.set('access','private')
+                            new_folder.set('access', 'private')
                         folder.append(new_folder)
                         break
 
@@ -156,9 +157,9 @@ class WikiFileTree():
         if self.__xml_tree is not None:
             # Получаем корневой элемент текущего дерева
             root = ET.fromstring(self.__xml_tree)
-            parent = root.find('.//folder[@id="'+str(id_folder)+'"]...')
+            parent = root.find('.//folder[@id="' + str(id_folder) + '"]...')
             if parent is not None:
-                folder = parent.find('./folder[@id="'+str(id_folder)+'"]')
+                folder = parent.find('./folder[@id="' + str(id_folder) + '"]')
                 if folder is not None:
                     parent.remove(folder)
                     self.__xml_tree = ET.tostring(root)
@@ -391,7 +392,7 @@ class WikiFileTree():
                         folder = parent_2.find('./folder[@id="' + str(to_id_folder) + '"]')
                         if folder is not None:
                             if folder.get('access') == "private":
-                                publication_moved.set('access','private')
+                                publication_moved.set('access', 'private')
                             folder.append(publication_moved)
                             self.__xml_tree = ET.tostring(root)
                             return True
@@ -402,6 +403,17 @@ class WikiFileTree():
             else:
                 return False
         else:
+            return False
+
+    def is_publication(self, id_publication: int) -> bool:
+        """ Проверяет, есть ли в дереве конспект с указанным id """
+        if self.__xml_tree is not None and type(id_publication) == int:
+            # Получаем корневой элемент текущего дерева
+            root = ET.fromstring(self.__xml_tree)
+            # Проверяем на существование
+            for publication in root.iter('publication'):
+                if publication.get('id') == str(id_publication):
+                    return True
             return False
 
     # VIEWS TREE
@@ -691,13 +703,3 @@ class WikiFileTree():
         folders = folder.findall("./folder")
         for child_folder in folders:
             self.__append_dynamic_folder_without_publs(child_folder, ul)
-
-
-
-
-
-
-
-
-
-

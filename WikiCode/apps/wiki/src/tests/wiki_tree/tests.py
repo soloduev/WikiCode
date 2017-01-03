@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.modules.wiki_tree import wiki_tree as wt_test
 
-# Version:       0.023
-# Total Tests:   29
+# Version:       0.024
+# Total Tests:   30
 
 
 class WikiTreeTest(object):
@@ -715,6 +715,49 @@ class WikiTreeTest(object):
 
         test_29(self)
 
+        # -------------------------------------
+        # Проверяем функцию проверки конспекта на существование
+        def test_30(self):
+            print("WikiFileTree: " + test_30.__name__)
+            stats = set()
+
+            wft = wt_test.WikiFileTree()
+            wft.create_tree(1)
+
+            wft.create_folder(id=1, access="public", type="saved", name="new folder", style="green", view="open",
+                              id_folder=-1)
+            wft.create_publication(42, "Новый урок", "public", "personal", 1)
+            wft.create_publication(43, "Новый урок", "public", "personal", 1)
+
+            stats.add(not wft.is_publication(44))
+            stats.add(wft.is_publication(43))
+            stats.add(wft.is_publication(42))
+
+            wft.create_folder(id=2, access="private", type="saved", name="new folder", style="green", view="open",
+                              id_folder=1)
+            wft.create_publication(44, "Новый урок", "public", "personal", 2)
+            wft.create_publication(45, "Новый урок", "public", "personal", 2)
+
+            stats.add(wft.is_publication(42))
+            stats.add(wft.is_publication(44))
+
+            wft.create_folder(id=3, access="public", type="saved", name="new folder", style="green", view="open",
+                              id_folder=2)
+            wft.create_publication(46, "Новый урок", "public", "personal", 3)
+            wft.create_publication(47, "Новый урок", "public", "personal", 3)
+            wft.create_publication(48, "Новый урок", "public", "personal", 1)
+
+            stats.add(not wft.is_publication(1))
+            stats.add(wft.is_publication(46))
+            stats.add(wft.is_publication(42))
+            stats.add(wft.is_publication(43))
+            stats.add(wft.is_publication(48))
+            stats.add(not wft.is_publication(49))
+
+            if False in stats:
+                self.__add_error("30", "is_publication error!")
+
+        test_30(self)
 
 
 
