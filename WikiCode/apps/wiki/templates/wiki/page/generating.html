@@ -167,5 +167,13 @@
             document.getElementById('contents-publication').innerHTML = marked("{{ contents|escapejs }}");
         {% endif %}
 
+
+        /* Отображение обычного уведомления */
+        $.notify("{{ notify.text|escapejs }}",
+                {
+                    position: "right bottom",
+                    className: "{{ notify.type|escapejs }}",
+                    autoHideDelay: 8000
+                });
     </script>
 {% endblock %}

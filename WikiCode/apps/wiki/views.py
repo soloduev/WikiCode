@@ -335,3 +335,10 @@ def add_black_user(request, id):
 @login_required
 def del_black_user(request, id):
     return publ_manager_view.get_del_black_user(request, id)
+
+
+# Сохранение конспекта в своем дереве конспектов
+@develop_mode_id
+@login_required
+def save_page(request, id):
+    return publication_view.get_save_page(request, id)

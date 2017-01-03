@@ -69,6 +69,7 @@ urlpatterns = [
     url(r'^page/(?P<id>[0-9]+)/get_version/$', views.get_version, name='get_version'),
     url(r'^page/(?P<id>[0-9]+)/set_head/$', views.set_head, name='set_head'),
     url(r'^page/(?P<id>[0-9]+)/presentation/$', views.presentation, name='presentation'),
+    url(r'^page/(?P<id>[0-9]+)/save_page/$', views.save_page, name='save_page'),
 
 
     # События на странице пользователя

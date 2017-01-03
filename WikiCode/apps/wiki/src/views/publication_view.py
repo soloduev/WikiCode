@@ -24,7 +24,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 
-from WikiCode.apps.wiki.models import Publication, Statistics, Viewing, DynamicComment, Comment
+from WikiCode.apps.wiki.models import Publication, Statistics, Viewing, DynamicComment, Comment, Folder
 from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.settings import wiki_settings
 from WikiCode.apps.wiki.src.modules.wiki_comments.wiki_comments import WikiComments
@@ -73,7 +73,19 @@ def get_create(request):
         return render(request, 'wiki/create.html', context)
 
 
-def get_page(request, id):
+def get_page(request, id, notify=None):
+    """ Возвращает страницу конспекта.
+        Может принимать notify(сообщение, которое можно вывести после отображения страницы):
+        notify:
+            {
+                'type': 'error|info',
+                'text': 'any text',
+            }
+        """
+
+    if notify is None:
+        notify = {'type': 'msg', 'text': ''}
+
     try:
         cur_user_id = get_user_id(request)
         publication = Publication.objects.get(id_publication=id)
@@ -229,7 +241,8 @@ def get_page(request, id):
             "module_versions": wiki_settings.MODULE_VERSIONS,
             "versions_js": versions_js,
             "contents": contents,
-            "is_editable": is_editable
+            "is_editable": is_editable,
+            "notify": notify
         }
 
         return render(request, 'wiki/page/page.html', context)
@@ -676,6 +689,59 @@ def get_set_head(request, id):
                 publication.save()
 
                 return HttpResponse('ok', content_type='text/html')
+            except Publication.DoesNotExist:
+                return get_error_page(request, ["This is publication not found!",
+                                                "Page not found: publ_manager/" + str(id) + "/"])
+    else:
+        return HttpResponse('no', content_type='text/html')
+
+
+def get_save_page(request, id):
+    """ Сохранение конспекта в свое дерево конспектов """
+    if request.method == "POST":
+        # Проверяем, аутентифицирован ли пользователь
+        if get_user_id(request) == -1:
+            return HttpResponse('auth', content_type='text/html')
+        else:
+            # Если пользователь аутентифицирован то, начинаем получать все изменения
+            try:
+                # Получаем текущую публикацию
+                publication = Publication.objects.get(id_publication=id)
+                # Получаем пользователя, который собирается произвести сохранение конспекта
+                current_user = User.objects.get(id_user=get_user_id(request))
+                # Если этот пользователь не является автором данного конспекта:
+                if current_user.id_user != publication.id_author:
+                    # Получаем дерево конспектов пользователя
+                    wft = WikiFileTree()
+                    wft.load_tree(current_user.file_tree)
+                    # Получаем папку, в которую необходимо сохранить конспект
+                    save_folder = request.POST.get("save_folder")
+                    try:
+                        # Получаем id папки в которую собираемся сохранить конспект
+                        id_folder = int(save_folder.strip(" \n\r\t").split(":")[1])
+
+                        # Проверяем, существует ли такая папка:
+                        Folder.objects.get(id_folder=id_folder)
+
+                        # Если такая папка существует сохраняем в нее этот конспект
+                        wft.create_publication(id=publication.id_publication,
+                                               name=publication.title,
+                                               access="public",
+                                               type="saved",
+                                               id_folder=id_folder)
+
+                        current_user.file_tree = wft.get_xml_str()
+                        current_user.save()
+
+                        return get_page(request, id, notify={'type': 'info', 'text': 'Конспект сохранен'})
+                    except Folder.DoesNotExist:
+                        return get_error_page(request, ["Такой папки не существует"])
+                    except:
+                        return get_error_page(request, ["Передан неверный формат пути к папке"])
+
+                else:
+                    return get_error_page(request, ["Вы являетесь автором данного конспекта, "
+                                                    "Вы не можете его сохранить!"])
             except Publication.DoesNotExist:
                 return get_error_page(request, ["This is publication not found!",
                                                 "Page not found: publ_manager/" + str(id) + "/"])
