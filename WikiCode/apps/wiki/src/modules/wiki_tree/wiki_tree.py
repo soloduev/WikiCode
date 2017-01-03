@@ -25,7 +25,7 @@ from WikiCode.apps.wiki.src.modules.wiki_tree.config import params as CONFIG
 
 class WikiFileTree():
     """
-    :VERSION: 0.27
+    :VERSION: 0.28
     Класс для работы с файловым деревом на платформе WIKICODE.
     Файловое дерево педставляет из себя структуированный xml файл.
     Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -629,7 +629,10 @@ class WikiFileTree():
             publ_href.set('href', '/page/' + str(publication.get('id')))
             publ_href.set('class', 'btn btn-xs btn-link')
             publ_span = ET.Element('span')
-            if str(publication.get('access')) == "public":
+            if str(publication.get('type')) == "saved":
+                publ_span.set('class', 'glyphicon glyphicon-floppy-save wiki-tree-saved')
+                publ_li.set('class', 'wiki-tree-saved')
+            elif str(publication.get('access')) == "public":
                 publ_span.set('class', 'glyphicon glyphicon-share-alt')
             elif str(publication.get('access')) == "private":
                 publ_span.set('class', 'glyphicon glyphicon-lock')
@@ -661,7 +664,9 @@ class WikiFileTree():
             publ_li.set('class', 'task')
             publ_li.set('data-id', 'publ:' + publication.get('id'))
             publ_li.set('id', 'publ:' + publication.get('id'))
-            if publication.get('access') == "public":
+            if publication.get('type') == "saved":
+                publ_li.set('data-jstree', '{ "type" : "saved" }')
+            elif publication.get('access') == "public":
                 publ_li.set('data-jstree', '{ "type" : "publ" }')
             elif publication.get('access') == "private":
                 publ_li.set('data-jstree', '{ "type" : "private" }')

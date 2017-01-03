@@ -72,6 +72,9 @@ $("#jstree")
             "private": {
                 "icon": "glyphicon glyphicon-lock"
             },
+            "saved": {
+                "icon": "glyphicon glyphicon-floppy-save"
+            },
             "contents": {
                 "icon": "glyphicon glyphicon-bookmark"
             },

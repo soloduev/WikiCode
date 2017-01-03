@@ -109,7 +109,12 @@
      color: #f39c12;
  }
 
-  .tree, .tree ul {
+
+.tree{
+    font-size: 10pt;
+}
+
+.tree, .tree ul {
     margin:0;
     padding:0;
     list-style:none
@@ -140,13 +145,8 @@
     position:relative
 }
 
-.wiki-tree-saved li {
-    margin:0;
-    padding:0 1em;
-    line-height:2em;
-    color: rgb(153, 28, 79);
-    font-weight:700;
-    position:relative
+.wiki-tree-saved{
+    color: rgb(153, 28, 79) !important;
 }
 
 .tree ul li:before {
