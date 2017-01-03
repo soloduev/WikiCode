@@ -178,7 +178,6 @@ def get_create_user(request):
                                      nickname=form["user_nickname"],
                                      email=form["user_email"],
                                      id_user=total_reg_users,
-                                     tree="",
                                      file_tree=wft.get_xml_str(),
                                      avatar="none.jpg",
                                      name="anonymous",
