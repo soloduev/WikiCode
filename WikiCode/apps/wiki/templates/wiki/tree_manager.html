@@ -181,6 +181,31 @@
     </div>
     </div>
 
+    <!-- Модальное окно для удаления сохраненного конспекта -->
+    <div class="modal fade" id="modal_remove_saved" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{% url 'remove_saved' %}" method="post">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Удаление сохраненного конспекта</h4>
+                    </div>
+                    <div class="modal-body text-center">
+                        <br>
+                        <h4>Вы уверены, что хотите удалить этот сохраненный конспект?</h4>
+                        <br>
+                        <input type="text" hidden id="remove_saved_id_publ" name="saved_id_publ">
+                    </div>
+                    <div class="modal-footer">
+                        <button id="wiki-style-btn" type="submit" class="btn">Да</button>
+                        <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Нет</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <nav id="context-menu" class="context-menu">
         <ul class="context-menu__items">
             <li id="lt-context-menu-1" class="context-menu__item"><a id="open_publ_in_wiki_tree_context" href="#" class="context-menu__link" data-action="Open" style="text-decoration: none;"><i class="fa fa-eye"></i> Смотреть</a></li>
@@ -194,6 +219,7 @@
             <li id="lt-context-menu-9"  class="context-menu__item"><a href="#" class="context-menu__link" data-action="Move Folder" style="text-decoration: none;" data-toggle="modal" data-target="#modal_develop_func"><i class="fa fa-hand-grab-o"></i> Переместить</a></li>
             <li id="lt-context-menu-7"  class="context-menu__item"><a href="#" class="context-menu__link" data-action="Sort" style="text-decoration: none;" data-toggle="modal" data-target="#modal_develop_func"><i class="fa fa-sort"></i> Сортировать конспекты</a></li>
             <li id="lt-context-menu-8"  class="context-menu__item"><a id="delete_folder_in_wiki_tree_context" href="#" class="context-menu__link" data-action="Delete Folder" style="text-decoration: none;"><i class="fa fa-times"></i> Удалить папку</a></li>
+            <li id="lt-context-menu-10"  class="context-menu__item"><a id="remove_saved_in_wiki_tree_context" href="#" class="context-menu__link" data-action="Remove Saved" style="text-decoration: none;"><i class="fa fa-times"></i> Убрать</a></li>
         </ul>
     </nav>
 {% endblock %}
@@ -207,5 +233,14 @@
     <script src={% static "wiki/tree_manager_scripts/actions.js"%}></script>
     <script src={% static "wiki/tree_context_menu/script.js"%}></script>
     <link href={% static "wiki/tree_context_menu/style.css" %} type="text/css" rel="stylesheet">
+    <script>
+        /* Отображение обычного уведомления */
+        $.notify("{{ notify.text|escapejs }}",
+                {
+                    position: "right bottom",
+                    className: "{{ notify.type|escapejs }}",
+                    autoHideDelay: 8000
+                });
+    </script>
 {% endblock %}
 

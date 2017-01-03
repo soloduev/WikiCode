@@ -342,3 +342,10 @@ def del_black_user(request, id):
 @login_required
 def save_page(request, id):
     return publication_view.get_save_page(request, id)
+
+
+# Удаление сохраненного конспекта
+@develop_mode
+@login_required
+def remove_saved(request):
+    return tree_view.get_remove_saved(request)

@@ -423,6 +423,21 @@ $("#rename_folder_in_wiki_tree_context").click(function () {
     }
 });
 
+$("#remove_saved_in_wiki_tree_context").click(function () {
+     if(selected_file_in_tree !== "NONE_SELECT")
+    {
+        if((''+selected_file_in_tree).indexOf(".publ") != -1)
+        {
+
+        }
+        else {
+            var publ_id = ('' + selected_file_in_tree).split(":")[1];
+            $('#remove_saved_id_publ').val(publ_id)
+            $('#modal_remove_saved').modal('show');
+        }
+    }
+});
+
 //Отмена переименовывания папки
 $("#cancel_rename_folder_in_wiki_tree").click(function () {
     $("#div_rename_folder_input").attr("style", "display: none;");

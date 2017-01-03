@@ -672,7 +672,10 @@ class WikiFileTree():
         publications = folder.findall("./publication")
         for publication in publications:
             publ_li = ET.Element('li')
-            publ_li.set('type_elem', 'publ')
+            if publication.get('type') == "saved":
+                publ_li.set('type_elem', 'saved')
+            else:
+                publ_li.set('type_elem', 'publ')
             publ_li.set('class', 'task')
             publ_li.set('data-id', 'publ:' + publication.get('id'))
             publ_li.set('id', 'publ:' + publication.get('id'))

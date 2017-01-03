@@ -25,10 +25,23 @@ from django.views.decorators.csrf import csrf_protect
 
 from WikiCode.apps.wiki.models import User, Publication, Statistics, Folder
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
+from WikiCode.apps.wiki.src.views.error_view import get_error_page
 from .auth import check_auth, get_user_id
 
 
-def get_tree_manager(request):
+def get_tree_manager(request, notify=None):
+    """ Возвращает начальную страницу сайта.
+        Может принимать notify(сообщение, которое можно вывести после отображения страницы):
+        notify:
+            {
+                'type': 'error|info',
+                'text': 'any text',
+            }
+        """
+
+    if notify is None:
+        notify = {'type': 'msg', 'text': ''}
+
     user_data = check_auth(request)
     try:
         user = User.objects.get(email=user_data)
@@ -40,7 +53,8 @@ def get_tree_manager(request):
             "user_data": user_data,
             "user_id": get_user_id(request),
             "preview_tree": wft.to_html_preview(),
-            "dynamic_tree": wft.to_html_dynamic()
+            "dynamic_tree": wft.to_html_dynamic(),
+            "notify": notify,
         }
 
         return render(request, 'wiki/tree_manager.html', context)
@@ -322,3 +336,34 @@ def get_set_preview_publ_in_tree(request):
 
     else:
         return HttpResponse('no', content_type='text/html')
+
+
+def get_remove_saved(request):
+    if request.method == "POST":
+
+        # Получаем конспект, который хотим удалить
+        try:
+            saved_id = int(request.POST.get("saved_id_publ"))
+
+            # Получаем текущего пользователя
+            cur_user = User.objects.get(id_user=get_user_id(request))
+
+            # Получаем файловое дерево пользователя
+            wft = WikiFileTree()
+            wft.load_tree(cur_user.file_tree)
+            if not wft.is_publication(saved_id):
+                return get_tree_manager(request, notify={'type': 'error', 'text': 'Данного конспекта не существует, '
+                                                                                  'либо он уже удален.'})
+
+            wft.delete_publication(saved_id)
+
+            cur_user.file_tree = wft.get_xml_str()
+            cur_user.save()
+
+            return get_tree_manager(request, notify={'type': 'info', 'text': 'Конспект успешно удален из сохраненных.'})
+        except User.DoesNotExist:
+            return get_error_page(request, ["User not found"])
+        except:
+            return get_tree_manager(request, notify={'type': 'error', 'text': 'Не удалось удалить конспект.'})
+    else:
+        return get_tree_manager(request, notify={'type': 'error', 'text': 'Не удалось удалить конспект.'})
