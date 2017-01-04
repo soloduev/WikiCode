@@ -448,6 +448,38 @@
                     </div>
                 </div>
             </div>
+
+            <!--Выбранный id пользователя, которому идет ответ. Заполняется в главном скрипте для этой страницы -->
+            <input hidden value="" id="reply_comment_id_dynamic">
+            <!--Модальное окно для ответа на динамический комментарий -->
+            <div class="modal fade" id="modal_dynamic_comment_reply" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">Ответить</h4>
+                        </div>
+                        <div class="modal-body">
+                            <h4>Введите текст комментария:</h4>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                <textarea type="text" rows="8" class="form-control btn-block"
+                                          id="wiki-dynamic-comment-field-reply" name="" placeholder="Ваш комментарий..."
+                                          autofocus style="border-radius: 0px; resize: none;"></textarea>
+                                    <br>
+                                </div>
+                                <div class="col-xs-8"></div>
+                                <div class="col-xs-4">
+                                    <button type="button" id="wiki-btn-send-dynamic-comment-reply" class="btn btn-block" name="">
+                                        Ответить
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         {% endif %}
     {% endif %}
 

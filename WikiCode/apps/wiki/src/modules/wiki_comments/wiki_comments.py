@@ -320,7 +320,7 @@ class WikiComments():
     # ------------------------------------------------
     # Variant 1 --------------------------------------
     # ------------------------------------------------
-    def to_html(self) -> str:
+    def to_html(self, is_dynamic=False) -> str:
         """Конвертурует в html фронтенд для комментариев."""
         if self.__xml_comments:
             # Получаем корневой элемент текущих комментариев
@@ -333,7 +333,7 @@ class WikiComments():
                 new_li = ET.Element('li')
                 new_li.set('class', 'media')
                 root_ul.append(new_li)
-                self.__append_html_comment(comment, new_li)
+                self.__append_html_comment(comment, new_li, is_dynamic)
             # Преобразуем xml в отформатировнную строчку
             result_str = self.__format_xml(ET.tostring(root_ul))
             # Обрабатываем пути к аватаркам
@@ -350,7 +350,7 @@ class WikiComments():
     # ------------------------------------------------
     # Variant 1 --------------------------------------
     # ------------------------------------------------
-    def __append_html_comment(self, comment, new_div):
+    def __append_html_comment(self, comment, new_div, is_dynamic):
         """ Генерация html для варианта 1"""
         media_left = ET.Element('div')
         media_left.set('class', 'media-left')
@@ -411,9 +411,14 @@ class WikiComments():
         span_comment_reply = ET.Element('span')
         span_comment_reply.set('class', 'comment-reply')
         href_reply = ET.Element('a')
-        href_reply.set('class', 'reply main-comment-reply')
-        href_reply.set('data-toggle', 'modal')
-        href_reply.set('data-target', '#modal_main_comment')
+        if not is_dynamic:
+            href_reply.set('class', 'reply main-comment-reply')
+            href_reply.set('data-toggle', 'modal')
+            href_reply.set('data-target', '#modal_main_comment')
+        else:
+            href_reply.set('class', 'reply dynamic-comment-reply')
+            href_reply.set('data-toggle', 'modal')
+            href_reply.set('data-target', '#modal_dynamic_comment_reply')
         href_reply.set('id_comment', comment.get('id'))
         href_reply.text = 'ответить'
         span_comment_reply.append(href_reply)
@@ -429,7 +434,7 @@ class WikiComments():
             new_child_div = ET.Element('div')
             new_child_div.set('class', 'media')
             media_body.append(new_child_div)
-            self.__append_html_comment(child_comment, new_child_div)
+            self.__append_html_comment(child_comment, new_child_div, is_dynamic)
 
     def __format_xml(self, xml_str):
         """Выравнивание xml строки"""

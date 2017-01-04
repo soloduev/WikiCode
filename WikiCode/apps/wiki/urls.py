@@ -65,6 +65,7 @@ urlpatterns = [
 
     # События на странице конспекта
     url(r'^page/(?P<id>[0-9]+)/add_dynamic_comment/$', views.add_dynamic_comment, name='add_dynamic_comment'),
+    url(r'^page/(?P<id>[0-9]+)/reply_dynamic_comment/$', views.reply_dynamic_comment, name='reply_dynamic_comment'),
     url(r'^page/(?P<id>[0-9]+)/add_main_comment/$', views.add_main_comment, name='add_main_comment'),
     url(r'^page/(?P<id>[0-9]+)/save_publication/$', views.save_publication, name='save_publication'),
     url(r'^page/(?P<id>[0-9]+)/get_version/$', views.get_version, name='get_version'),

@@ -674,6 +674,7 @@
     text-decoration: none;
 }
 
+#wiki-btn-send-dynamic-comment-reply,
 #wiki-style-btn-delete-publ,
 #wiki-style-btn-add-editor,
 #wiki-style-btn-send-main-comment,
@@ -712,6 +713,7 @@
     transition: all 0.5s ease 0s;
 }
 
+#wiki-btn-send-dynamic-comment-reply:hover,
 #wiki-style-btn-delete-publ:hover,
 #wiki-style-btn-add-editor:hover,
 #wiki-style-btn-send-main-comment:hover,

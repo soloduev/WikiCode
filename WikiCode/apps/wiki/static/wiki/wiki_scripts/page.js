@@ -166,9 +166,48 @@ $('.main-comment-reply').click(function (eventObject) {
     $("#reply_id_user").val('' + this.getAttribute('id_comment'));
 });
 
+// Событие клика кнопки "ответить на динамический комментарий". Устанавливает id, на какой комментарий необходимо ответить
+$('body').on('click', '.dynamic-comment-reply', function(eventObject) {
+    $("#reply_comment_id_dynamic").val('' + this.getAttribute('id_comment'));
+});
+
 // Событие клика кнопки "оставить комментарий". Устанавливает id, на какой комментарий необходимо ответить -1.
 $('#wiki-style-btn-send-main-comment').click(function (eventObject) {
     $("#reply_id_user").val('-1');
+});
+
+// Отправление ответа на динамический комментарий
+$("#wiki-btn-send-dynamic-comment-reply").click(function () {
+    // Получаем сообщение которое необходимо отправить
+    var comment = $("#wiki-dynamic-comment-field-reply").val();
+
+    // Получаем id того комментария, которому произошел ответ
+    var reply_comment_id = $("#reply_comment_id_dynamic").val();
+
+    // Получаем номер параграфа в котором пользователь хочет оставить комментарий
+    var num_paragraph = $("#selected_number_paragraph").val();
+
+    $.ajax({
+        type: "POST",
+        url: "reply_dynamic_comment/",
+        data: {
+            'comment': comment,
+            'reply_comment_id': reply_comment_id,
+            'num_paragraph': num_paragraph
+        },
+        dataType: "text",
+        cache: false,
+        success: function (data) {
+            if (data == 'ok') {
+                // Чисто с точки зрения фронтенда, добавляем этот комментарий, чтобы не делать дополнительный гет запрос.
+                // Либо сделать гет запрос))
+                location.reload();
+            }
+            else {
+                console.log("ERROR in page.js. reply_dynamic_comment()");
+            }
+        }
+    });
 });
 
 // Отправление общего комментария
@@ -177,7 +216,7 @@ $("#wiki-btn-send-main-comment").click(function () {
     // Получаем сообщение которое необходимо отправить
     var main_comment = $("#wiki-main-comment-field").val();
 
-    // Получаем id того пользователя, которому произошел ответ
+    // Получаем id того комментария, которому произошел ответ
     var reply_author_id = $("#reply_id_user").val();
 
     $.ajax({

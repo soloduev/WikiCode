@@ -237,6 +237,14 @@ def set_preview_publ_in_tree(request):
 def add_dynamic_comment(request, id):
     return publication_view.get_add_dynamic_comment(request, id)
 
+
+# Добавление динамического комментария к конспекту
+@develop_mode_id
+@login_required
+def reply_dynamic_comment(request, id):
+    return publication_view.get_reply_dynamic_comment(request, id)
+
+
 # Добавление общего комментария к конспекту
 @develop_mode_id
 @login_required
