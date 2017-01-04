@@ -29,6 +29,7 @@ from .models import Comment
 from .models import Folder
 from .models import Colleague
 from .models import Notification
+from .models import Starring
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User as DjangoUser
 
@@ -51,6 +52,7 @@ admin.site.register(DjangoUser, UserAdmin)
 admin.site.register(Publication)
 admin.site.register(Statistics)
 admin.site.register(Viewing)
+admin.site.register(Starring)
 admin.site.register(Developer)
 admin.site.register(BugReport)
 admin.site.register(DynamicParagraph)

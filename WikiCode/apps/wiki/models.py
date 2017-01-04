@@ -94,6 +94,17 @@ class Viewing(models.Model):
                    " publ:" + str(self.id_publ))
 
 
+# Указывает кто поставил звезду и когда
+class Starring(models.Model):
+    id_user = models.BigIntegerField()
+    id_publ = models.BigIntegerField()
+    date = models.CharField(max_length=100)
+
+    def __str__(self):
+        return str("user:" + str(self.id_user) +
+                   " publ:" + str(self.id_publ))
+
+
 # Модель любого комментария
 class Comment(models.Model):
     id_comment = models.BigIntegerField()
