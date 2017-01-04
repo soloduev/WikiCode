@@ -298,6 +298,8 @@ def get_create_page(request):
                 html_page=ready_page,
                 tree_path=form["folder"],
                 read=0,
+                stars=0,
+                saves=0,
                 main_comments=wiki_comments.get_xml_str(),
                 versions=archive,
                 permissions=wp.get_xml_str(),

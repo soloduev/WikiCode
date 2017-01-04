@@ -47,6 +47,8 @@ class Publication(models.Model):
     html_page = models.TextField()
     tree_path = models.TextField()
     read = models.BigIntegerField()
+    stars = models.BigIntegerField()
+    saves = models.BigIntegerField()
     main_comments = models.TextField()
     versions = models.BinaryField(blank=True)
     permissions = models.TextField()
