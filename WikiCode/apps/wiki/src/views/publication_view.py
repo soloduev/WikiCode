@@ -20,9 +20,10 @@
 
 import datetime, json
 
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, StreamingHttpResponse
 from django.shortcuts import render
-from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
+from django.utils.encoding import smart_str
 
 from WikiCode.apps.wiki.models import Publication, Statistics, Viewing, DynamicParagraph, Comment, Folder, Starring
 from WikiCode.apps.wiki.models import User
@@ -898,3 +899,28 @@ def get_add_star_publication(request, id):
                                                 "Page not found: publ_manager/" + str(id) + "/"])
     else:
         return HttpResponse('no', content_type='text/html')
+
+@csrf_exempt
+def get_load_md(request, id):
+    """ Загрузка конспекта в формате markdown """
+    if request.method == "POST":
+        # Проверяем, аутентифицирован ли пользователь
+        if get_user_id(request) == -1:
+            return HttpResponse('auth', content_type='text/html; charset=utf8')
+        else:
+            # Если пользователь аутентифицирован то, начинаем получать все изменения
+            try:
+                # Получаем текущую публикацию
+                publication = Publication.objects.get(id_publication=id)
+
+                response = StreamingHttpResponse(publication.text)
+                response['Content-Type'] = 'text/plain; charset=utf8'
+                return response
+
+            except User.DoesNotExist:
+                return get_error_page(request, ["User not found."])
+            except Publication.DoesNotExist:
+                return get_error_page(request, ["This is publication not found!",
+                                                "Page not found: publ_manager/" + str(id) + "/"])
+    else:
+        return get_error_page(request, ["По техническим причинам, вы пока не можете скачать этот конспект."])

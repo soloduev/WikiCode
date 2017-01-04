@@ -366,3 +366,13 @@ def add_star_publication(request, id):
     return publication_view.get_add_star_publication(request, id)
 
 
+# Загрузка конспекта в формате markdown
+@develop_mode_id
+@login_required
+def load_md(request, id):
+    return publication_view.get_load_md(request, id)
+
+
+
+
+
