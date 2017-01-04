@@ -44,8 +44,8 @@
                                             <div class="row">
                                                 <div class="btn-group">
                                                     {% if publication.is_starring %}
-                                                        <a id="wikicode-up-right-button" class="btn"><span
-                                                                class="glyphicon glyphicon-star"></span> (0)</a>
+                                                        <a id="wikicode-set-star-publ" class="btn"><span
+                                                                class="glyphicon {% if is_star %}glyphicon-star{% else %}glyphicon-star-empty{% endif %}"></span> ({{ publication.stars }})</a>
                                                     {% endif %}
                                                     {% if publication.is_saving %}
                                                         <a id="wikicode-up-right-button" class="btn" data-toggle="modal"
@@ -329,7 +329,7 @@
         <button class="btn-lg" id="pollSlider-button"><span class="glyphicon glyphicon-folder-close"></span></button>
     {% endif %}
     {% if publication.is_starring %}
-        <button class="btn-lg" id="like-pollSlider-button"><span class="glyphicon glyphicon-star"></span></button>
+        <button class="btn-lg" id="like-pollSlider-button"><span class="glyphicon {% if is_star %}glyphicon-star{% else %}glyphicon-star-empty{% endif %}"></span></button>
     {% endif %}
     {% if publication.is_contents %}
         <button class="btn-lg" id="contents-pollSlider-button"><span class="glyphicon glyphicon-bookmark"></span>

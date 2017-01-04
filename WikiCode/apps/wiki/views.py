@@ -357,3 +357,12 @@ def save_page(request, id):
 @login_required
 def remove_saved(request):
     return tree_view.get_remove_saved(request)
+
+
+# Добавление или удаление звезды конспекту
+@develop_mode_id
+@login_required
+def add_star_publication(request, id):
+    return publication_view.get_add_star_publication(request, id)
+
+

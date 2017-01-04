@@ -24,7 +24,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 
-from WikiCode.apps.wiki.models import Publication, Statistics, Viewing, DynamicParagraph, Comment, Folder
+from WikiCode.apps.wiki.models import Publication, Statistics, Viewing, DynamicParagraph, Comment, Folder, Starring
 from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.settings import wiki_settings
 from WikiCode.apps.wiki.src.modules.wiki_comments.wiki_comments import WikiComments
@@ -217,6 +217,13 @@ def get_page(request, id, notify=None):
         except User.DoesNotExist:
             return get_error_page(request, ["Пользователя не сущесвует"])
 
+        # Узнаем, ставил ли звезду, этот пользователь, этому конспекту
+        try:
+            starring = Starring.objects.get(id_user=cur_user_id, id_publ=publication.id_publication)
+            is_star = True
+        except Starring.DoesNotExist:
+            is_star = False
+
         context = {
             "publication": publication,
             "paragraphs": paragraphs,
@@ -234,6 +241,7 @@ def get_page(request, id, notify=None):
             "versions_js": versions_js,
             "contents": contents,
             "is_editable": is_editable,
+            "is_star": is_star,
             "notify": notify
         }
 
@@ -832,6 +840,56 @@ def get_save_page(request, id):
                 else:
                     return get_error_page(request, ["Вы являетесь автором данного конспекта, "
                                                     "Вы не можете его сохранить!"])
+            except Publication.DoesNotExist:
+                return get_error_page(request, ["This is publication not found!",
+                                                "Page not found: publ_manager/" + str(id) + "/"])
+    else:
+        return HttpResponse('no', content_type='text/html')
+
+
+def get_add_star_publication(request, id):
+    """ Добавление или удаление звезды у конспекта """
+    if request.method == "POST":
+        # Проверяем, аутентифицирован ли пользователь
+        if get_user_id(request) == -1:
+            return HttpResponse('auth', content_type='text/html')
+        else:
+            # Если пользователь аутентифицирован то, начинаем получать все изменения
+            try:
+                # Получаем текущую публикацию
+                publication = Publication.objects.get(id_publication=id)
+                # Получаем пользователя, который собирается добавить или убрать звезду
+                current_user = User.objects.get(id_user=get_user_id(request))
+                # Проверяем, ставил ли он уже звезду или нет
+                try:
+                    starring = Starring.objects.get(id_user=current_user.id_user, id_publ=publication.id_publication)
+
+                    # Если звезда уже существует у этого пользователя, удаляем ее:
+                    publication.stars -= 1
+                    starring.delete()
+                    publication.save()
+
+                    return HttpResponse('ok', content_type='text/html')
+
+                except Starring.DoesNotExist:
+                    # Если пользователь, еще на ставил лайк, ставим
+
+                    # Получаем текущую дату
+                    date = str(datetime.datetime.now())
+                    date = date[:len(date) - 7]
+
+                    new_star = Starring(id_user=current_user.id_user,
+                                        id_publ=publication.id_publication,
+                                        date=date)
+
+                    publication.stars += 1
+                    new_star.save()
+                    publication.save()
+
+                    return HttpResponse('ok', content_type='text/html')
+
+            except User.DoesNotExist:
+                return get_error_page(request, ["User not found."])
             except Publication.DoesNotExist:
                 return get_error_page(request, ["This is publication not found!",
                                                 "Page not found: publ_manager/" + str(id) + "/"])

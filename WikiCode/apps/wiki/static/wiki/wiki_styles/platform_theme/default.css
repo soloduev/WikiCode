@@ -800,6 +800,7 @@
 
 /* page.html */
 
+#wikicode-set-star-publ,
 #wikicode-up-right-button
 {
     background-color: #ffffff;
@@ -809,6 +810,7 @@
     transition: all 0.5s ease 0s;
 }
 
+#wikicode-set-star-publ:hover,
 #wikicode-up-right-button:hover
 {
     background-color: #ffffff;

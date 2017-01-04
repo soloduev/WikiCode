@@ -309,3 +309,39 @@ $("#set-path-folder-save").click(function () {
 $("#close-choose-folder-path").click(function () {
     $("#div-choose-folder-save").fadeOut(500);
 });
+
+// Ajax-post запрос на установление звезды
+$("#wikicode-set-star-publ").click(function () {
+    $.ajax({
+        type: "POST",
+        url: "add_star_publication/",
+        dataType: "text",
+        cache: false,
+        success: function (data) {
+            if (data == 'ok') {
+                location.reload();
+            }
+            else {
+                console.log("ERROR in page.js. Set HEAD Version.");
+            }
+        }
+    });
+});
+
+// Ajax-post запрос на установление звезды
+$("#like-pollSlider-button").click(function () {
+    $.ajax({
+        type: "POST",
+        url: "add_star_publication/",
+        dataType: "text",
+        cache: false,
+        success: function (data) {
+            if (data == 'ok') {
+                location.reload();
+            }
+            else {
+                console.log("ERROR in page.js. Set HEAD Version.");
+            }
+        }
+    });
+});
