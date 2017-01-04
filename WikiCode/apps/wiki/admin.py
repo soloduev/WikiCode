@@ -24,7 +24,7 @@ from .models import Statistics
 from .models import Viewing
 from .models import Developer
 from .models import BugReport
-from .models import DynamicComment
+from .models import DynamicParagraph
 from .models import Comment
 from .models import Folder
 from .models import Colleague
@@ -53,7 +53,7 @@ admin.site.register(Statistics)
 admin.site.register(Viewing)
 admin.site.register(Developer)
 admin.site.register(BugReport)
-admin.site.register(DynamicComment)
+admin.site.register(DynamicParagraph)
 admin.site.register(Comment)
 admin.site.register(Folder)
 admin.site.register(Colleague)

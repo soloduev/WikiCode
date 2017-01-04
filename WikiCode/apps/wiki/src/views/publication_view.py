@@ -24,7 +24,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 
-from WikiCode.apps.wiki.models import Publication, Statistics, Viewing, DynamicComment, Comment, Folder
+from WikiCode.apps.wiki.models import Publication, Statistics, Viewing, DynamicParagraph, Comment, Folder
 from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.settings import wiki_settings
 from WikiCode.apps.wiki.src.modules.wiki_comments.wiki_comments import WikiComments
@@ -153,27 +153,27 @@ def get_page(request, id, notify=None):
         except User.DoesNotExist:
             print("Автора не существует")
 
-        # Загружаем все динамические комментарии в этой публикации
-        if wiki_settings.MODULE_DYNAMIC_PARAGRAPHS:
-            arr_dynamic_comments = DynamicComment.objects.filter(publication=publication)
-            dynamic_comments = []
-            # Далее, к составляем расширенный массив, с именем автора
-            for comment in arr_dynamic_comments:
-                try:
-                    name_author = User.objects.get(id_user=comment.id_author)
-                    name_author = name_author.nickname
-                except User.DoesNotExist:
-                    name_author = "Undefined"
-                dynamic_comments.append({
-                    "publication": comment.publication,
-                    "paragraph": comment.paragraph,
-                    "position": comment.position,
-                    "id_author": comment.id_author,
-                    "text": comment.text,
-                    "rating": comment.rating,
-                    "date": comment.date,
-                    "name_author": name_author
-                })
+        # # Загружаем все динамические комментарии в этой публикации
+        # if wiki_settings.MODULE_DYNAMIC_PARAGRAPHS:
+        #     arr_dynamic_comments = DynamicComment.objects.filter(publication=publication)
+        #     dynamic_comments = []
+        #     # Далее, к составляем расширенный массив, с именем автора
+        #     for comment in arr_dynamic_comments:
+        #         try:
+        #             name_author = User.objects.get(id_user=comment.id_author)
+        #             name_author = name_author.nickname
+        #         except User.DoesNotExist:
+        #             name_author = "Undefined"
+        #         dynamic_comments.append({
+        #             "publication": comment.publication,
+        #             "paragraph": comment.paragraph,
+        #             "position": comment.position,
+        #             "id_author": comment.id_author,
+        #             "text": comment.text,
+        #             "rating": comment.rating,
+        #             "date": comment.date,
+        #             "name_author": name_author
+        #         })
 
 
         else:
@@ -437,28 +437,28 @@ def get_add_dynamic_comment(request, id):
                 num_paragraph = request.POST.get('num_paragraph')
 
                 # Получаем все комментарии данного параграфа
-                dynamic_comments = DynamicComment.objects.filter(publication=publication, paragraph=num_paragraph)
+                # dynamic_comments = DynamicComment.objects.filter(publication=publication, paragraph=num_paragraph)
 
                 # Получаем текущую дату
                 date = str(datetime.datetime.now())
                 date = date[:len(date) - 7]
 
-                # Получаем текущую позицию комментария в текущем абзаце
-                if not dynamic_comments:
-                    position = 0
-                else:
-                    position = dynamic_comments[len(dynamic_comments)-1].position + 1
+                # # Получаем текущую позицию комментария в текущем абзаце
+                # if not dynamic_comments:
+                #     position = 0
+                # else:
+                #     position = dynamic_comments[len(dynamic_comments)-1].position + 1
 
-                # Создаем динамический комментарий
-                new_dynamic_comment = DynamicComment(publication=publication,
-                                                     paragraph=num_paragraph,
-                                                     position=position,
-                                                     id_author=get_user_id(request),
-                                                     text=dynamic_comment,
-                                                     rating=0,
-                                                     date=date)
+                # # Создаем динамический комментарий
+                # new_dynamic_comment = DynamicComment(publication=publication,
+                #                                      paragraph=num_paragraph,
+                #                                      position=position,
+                #                                      id_author=get_user_id(request),
+                #                                      text=dynamic_comment,
+                #                                      rating=0,
+                #                                      date=date)
 
-                new_dynamic_comment.save()
+                # new_dynamic_comment.save()
 
                 return HttpResponse('ok', content_type='text/html')
 
