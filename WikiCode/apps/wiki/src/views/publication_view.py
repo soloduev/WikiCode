@@ -828,8 +828,11 @@ def get_save_page(request, id):
                                                type="saved",
                                                id_folder=id_folder)
 
+                        publication.saves += 1
+                        publication.stars += 1
                         current_user.file_tree = wft.get_xml_str()
                         current_user.save()
+                        publication.save()
 
                         return get_page(request, id, notify={'type': 'info', 'text': 'Конспект сохранен'})
                     except Folder.DoesNotExist:

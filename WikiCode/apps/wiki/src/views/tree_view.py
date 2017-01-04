@@ -345,6 +345,8 @@ def get_remove_saved(request):
         try:
             saved_id = int(request.POST.get("saved_id_publ"))
 
+            publication = Publication.objects.get(id_publication=saved_id)
+
             # Получаем текущего пользователя
             cur_user = User.objects.get(id_user=get_user_id(request))
 
@@ -356,13 +358,17 @@ def get_remove_saved(request):
                                                                                   'либо он уже удален.'})
 
             wft.delete_publication(saved_id)
-
+            publication.saves -= 1
+            publication.stars -= 1
             cur_user.file_tree = wft.get_xml_str()
             cur_user.save()
+            publication.save()
 
             return get_tree_manager(request, notify={'type': 'info', 'text': 'Конспект успешно удален из сохраненных.'})
         except User.DoesNotExist:
             return get_error_page(request, ["User not found"])
+        except Publication.DoesNotExist:
+            return get_error_page(request, ["Publication not found"])
         except:
             return get_tree_manager(request, notify={'type': 'error', 'text': 'Не удалось удалить конспект.'})
     else:
