@@ -120,7 +120,7 @@
             var myTemplate = new GitGraph.Template( myTemplateConfig );
             var gitgraph = new GitGraph( {template: myTemplate} );
             var to_version;
-            
+
             function show_version() {
                 $("#set_head_version").show('slow');
                 $.ajax({
@@ -154,14 +154,13 @@
                 });
             };
 
-           {{ versions_js|safe }}
+            {{ versions_js|safe }}
 
         {% endif %}
 
         {% if publication.is_contents %}
             document.getElementById('contents-publication').innerHTML = marked("{{ contents|escapejs }}");
         {% endif %}
-
 
         /* Отображение обычного уведомления */
         $.notify("{{ notify.text|escapejs }}",

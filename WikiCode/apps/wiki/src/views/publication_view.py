@@ -208,7 +208,7 @@ def get_page(request, id, notify=None):
             publication.save()
 
         # Генерируем оглавление для конспекта
-        contents = wm.generate_contents(paragraphs)
+        contents = wm.generate_contents(paragraphs, publication.id_publication)
 
         # Получаем файловое дерево пользователя, для сохранения конспекта
         try:

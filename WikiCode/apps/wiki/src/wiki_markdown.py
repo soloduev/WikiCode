@@ -142,8 +142,9 @@ class WikiMarkdown(object):
 
         return paragraphs
 
-    def generate_contents(self, paragraphs: []):
-        """ Генерирует оглавление для конспекта. Необходимо передать отдельные параграфы конпекта в иде списка. """
+    def generate_contents(self, paragraphs: [], id_publ: int):
+        """ Генерирует оглавление для конспекта. Необходимо передать отдельные параграфы конпекта в виде списка.
+        А также, передать id конспекта."""
         result_contents = ""
         cur_lvl = 1
         num_paragraph = 1
@@ -151,18 +152,18 @@ class WikiMarkdown(object):
         for paragraph in paragraphs:
             if len(paragraph["text"]) > 4:
                 if paragraph["text"][0:2] == '# ' and paragraph["text"].rstrip(" \n\r\t")[-2:] == " #":
-                    result_contents += str(cur_lvl) + ". [" + paragraph["text"].rstrip(" \n\r\t")[2:-2] + "](/page/5/#"+str(num_paragraph)+")\n"
+                    result_contents += str(cur_lvl) + ". [" + paragraph["text"].rstrip(" \n\r\t")[2:-2] + "](/page/"+str(id_publ)+"/#"+str(num_paragraph)+")\n"
                     cur_lvl+=1
             if len(paragraph["text"]) > 6:
                 if paragraph["text"][0:3] == '## ' and paragraph["text"].rstrip(" \n\r\t")[-3:] == " ##":
-                    result_contents += "    - [" + paragraph["text"].rstrip(" \n\r\t")[3:-3] + "](/page/5/#"+str(num_paragraph)+")\n"
+                    result_contents += "    - [" + paragraph["text"].rstrip(" \n\r\t")[3:-3] + "](/page/"+str(id_publ)+"/#"+str(num_paragraph)+")\n"
             if len(paragraph["text"]) > 9:
                 if paragraph["text"][0:4] == '### ' and paragraph["text"].rstrip(" \n\r\t")[-4:] == " ###":
-                    result_contents += "     - [" + paragraph["text"].rstrip(" \n\r\t")[4:-4] + "](/page/5/#"+str(num_paragraph)+")\n"
+                    result_contents += "     - [" + paragraph["text"].rstrip(" \n\r\t")[4:-4] + "](/page/"+str(id_publ)+"/#"+str(num_paragraph)+")\n"
             num_paragraph += 1
 
         if result_contents == "":
-            return "### Заголовки в конспекте не были определены. ###\n### Оглавление не сгенерировано ###"
+            return "<h4>Заголовки в конспекте не были определены.</h4><h4>Оглавление не сгенерировано.</h4>"
 
         return result_contents
 
