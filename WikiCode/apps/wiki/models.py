@@ -41,7 +41,7 @@ class Publication(models.Model):
     id_author = models.BigIntegerField()
     nickname_author = models.CharField(max_length=100)
     title = models.CharField(max_length=200)
-    description = models.TextField(max_length=500)
+    description = models.TextField(max_length=500, blank=True)
     text = models.TextField()
     theme = models.CharField(max_length=50)
     html_page = models.TextField()
