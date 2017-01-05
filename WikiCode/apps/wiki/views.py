@@ -380,6 +380,13 @@ def get_path_to_folder(request):
     return publication_view.get_get_path_to_folder(request)
 
 
+# Перемещение конспекта
+@develop_mode
+@login_required
+def move_publication(request):
+    return tree_view.get_move_publication(request)
+
+
 
 
 

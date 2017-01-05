@@ -53,6 +53,8 @@ urlpatterns = [
     url(r'^tree_manager/rename_folder_in_tree/$', views.rename_folder_in_tree, name='rename_folder_in_tree'),
     url(r'^tree_manager/set_preview_publ_in_tree/$', views.set_preview_publ_in_tree, name='set_preview_publ_in_tree'),
     url(r'^tree_manager/remove_saved/$', views.remove_saved, name='remove_saved'),
+    url(r'^tree_manager/get_path_to_folder/$', views.get_path_to_folder, name='get_path_to_folder_move'),
+    url(r'^tree_manager/move_publication/$', views.move_publication, name='move_publication'),
 
     # События на странице управления конспектом
     url(r'^publ_manager/delete_publ_in_tree/$', views.delete_publ_in_tree, name='delete_publ_in_tree'),

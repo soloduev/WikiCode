@@ -19,8 +19,9 @@
 
 import datetime
 
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.core.urlresolvers import reverse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_protect
 
 from WikiCode.apps.wiki.models import User, Publication, Statistics, Folder
@@ -30,7 +31,7 @@ from .auth import check_auth, get_user_id
 
 
 def get_tree_manager(request, notify=None):
-    """ Возвращает начальную страницу сайта.
+    """ Возвращает страницу управления файловым деревом пользователя.
         Может принимать notify(сообщение, которое можно вывести после отображения страницы):
         notify:
             {
@@ -46,14 +47,15 @@ def get_tree_manager(request, notify=None):
     try:
         user = User.objects.get(email=user_data)
 
-        wft = WikiFileTree()            # new version
-        wft.load_tree(user.file_tree)   # new version
+        wft = WikiFileTree()
+        wft.load_tree(user.file_tree)
 
         context = {
             "user_data": user_data,
             "user_id": get_user_id(request),
             "preview_tree": wft.to_html_preview(),
             "dynamic_tree": wft.to_html_dynamic(),
+            "dynamic_tree_folders": wft.to_html_dynamic_folders(),
             "notify": notify,
         }
 
@@ -373,3 +375,36 @@ def get_remove_saved(request):
             return get_tree_manager(request, notify={'type': 'error', 'text': 'Не удалось удалить конспект.'})
     else:
         return get_tree_manager(request, notify={'type': 'error', 'text': 'Не удалось удалить конспект.'})
+
+
+def get_move_publication(request):
+    if request.method == "POST":
+
+        try:
+
+            # Получаем конспект, который хотим переместить
+            moved_id = int(request.POST.get("current-pubication-id"))
+
+            # Получаем папку, в которую хотим переместить конспект
+            to_folder_id = int(request.POST.get("move-publ-path-folder").split(":")[1])
+
+            # Получаем текущего пользователя
+            cur_user = User.objects.get(id_user=get_user_id(request))
+
+            # Получаем файловое дерево пользователя
+            wft = WikiFileTree()
+            wft.load_tree(cur_user.file_tree)
+            if not wft.is_publication(moved_id):
+                return get_tree_manager(request, notify={'type': 'error', 'text': 'Данного конспекта не существует, '
+                                                                                  'либо он уже удален.'})
+            wft.move_publication(moved_id, to_folder_id)
+            cur_user.file_tree = wft.get_xml_str()
+            cur_user.save()
+
+            return get_tree_manager(request, notify={'type': 'info', 'text': 'Конспект успешно перемещен.'})
+        except User.DoesNotExist:
+            return get_error_page(request, ["User not found"])
+        except:
+            return get_tree_manager(request, notify={'type': 'error', 'text': 'Не удалось переместить конспект.'})
+    else:
+        return get_tree_manager(request, notify={'type': 'error', 'text': 'Не удалось переместить конспект.'})

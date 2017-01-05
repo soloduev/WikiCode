@@ -184,6 +184,9 @@ class WikiFileTree():
                     return True
             return False
 
+    # TODO: Логика приватности папок на платформе пока не используется.
+    # TODO: При изменении доступа папки, должен меняться доступ и всех конспектов.
+    # TODO: А это значит, что метод должен возвращать id измененных конспектов. И так далее, в подобных методах.
     def reaccess_folder(self, id_folder: int, new_access: str) -> bool:
         """Изменение доступа папки"""
         if self.__xml_tree is not None and type(new_access) == str:
@@ -200,6 +203,7 @@ class WikiFileTree():
 
                     else:
                         # Если меняем доступ у папки на приватный, меняем все подпапки на приватные
+                        # TODO: А также, нужно поменять конспекты
                         if new_access == 'private':
                             for sub_folder in folder.iter('folder'):
                                 sub_folder.set('access', 'private')
@@ -250,7 +254,8 @@ class WikiFileTree():
                     return True
             return False
 
-    # ВАЖНО! При перемещении папки, помимо, ее перемещения, необходимо еще наследовать доступ, если например публичная папка попала в приватную
+    # TODO: ВАЖНО! При перемещении папки, помимо, ее перемещения, необходимо еще наследовать доступ,
+    # TODO: если например публичная папка попала в приватную.
     def move_folder(self, id: int, to_id: int) -> bool:
         """Перемещение папки"""
         pass

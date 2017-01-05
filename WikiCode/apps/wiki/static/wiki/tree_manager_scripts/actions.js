@@ -511,3 +511,64 @@ $("#set_preview_publ_in_wiki_tree_context").click(function () {
         }
     }
 });
+
+
+$("#jstree_fodlers")
+// listen for event
+    .on('changed.jstree', function (e, data) {
+        var full_path = ''+data.selected;
+        $("#move-publ-path-folder-input").val(full_path);
+        
+        $.ajax({
+            type: "GET",
+            url: "get_path_to_folder/",
+            data:{
+                'id_folder': (''+full_path).split(":")[1],
+            },
+            dataType: "text",
+            cache: false,
+            success: function(data){
+                if (data != 'no'){
+                    $("#move-publ-path-folder-show").val(data);
+                }
+                else{
+                    console.log("Не удалось получить полный путь к папке!");
+                }
+            }
+        });
+    })
+    // create the instance
+    .jstree({
+
+        "types" : {
+            "folder" : {
+                "icon" : "glyphicon glyphicon-folder-open"
+            },
+            "publ": {
+                "icon": "glyphicon glyphicon-list-alt"
+            },
+            "contents": {
+                "icon": "glyphicon glyphicon-bookmark"
+            },
+            "test": {
+                "icon": "glyphicon glyphicon-check"
+            },
+        },
+
+        "plugins" : [ "wholerow", "types" ]
+    });
+
+//Просмотр папок, для определения той, в которой хотим сохранить конспект
+$("#set-path-folder-move").click(function () {
+    var id_elem = (''+selected_file_in_tree).split(':')[1];
+    $("#current-pubication-id-input").val(id_elem);
+    $("#div-choose-folder-move").fadeIn(500);
+});
+
+$("#close-choose-folder-path-move").click(function () {
+    $("#div-choose-folder-move").fadeOut(500);
+});
+
+$('#move-publ-path-folder-show').keydown(function(e){
+  e.preventDefault()
+});
