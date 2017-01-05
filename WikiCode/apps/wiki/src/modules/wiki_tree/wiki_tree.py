@@ -19,13 +19,15 @@
 
 import xml.etree.ElementTree as ET
 from xml.dom.minidom import parseString
+from lxml import etree
+
 
 from WikiCode.apps.wiki.src.modules.wiki_tree.config import params as CONFIG
 
 
 class WikiFileTree():
     """
-    :VERSION: 0.29
+    :VERSION: 0.30
     Класс для работы с файловым деревом на платформе WIKICODE.
     Файловое дерево педставляет из себя структуированный xml файл.
     Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -422,6 +424,26 @@ class WikiFileTree():
         """Выводит в консоль xml всего дерева"""
         if self.__xml_tree is not None:
             print(self.__format_xml(self.__xml_tree))
+
+    def get_path_folder(self, id_folder: int) -> str:
+        """ Возвращает красивый путь к папке. Принимает id папки. Если такой папки нет, возвращает None. """
+        if self.__xml_tree is not None and type(id_folder) == int:
+            # Получаем корневой элемент текущего дерева
+            root = etree.fromstring(self.__xml_tree)
+
+            for e in root.iter():
+                if str(e.tag) == "folder" and str(e.get('id')) == str(id_folder):
+                    result = e.get('name') + "/"
+                    while True:
+                        try:
+                            tag = e.getparent().tag
+                            result = e.getparent().get('name') + "/" + result
+                            e = e.getparent()
+                        except:
+                            break
+                    return result
+            return None
+
 
     # TODO: Реализовать. Может, когда-нибудь пригодится для отладки
     def print_xml_folder(self, id: int) -> None:

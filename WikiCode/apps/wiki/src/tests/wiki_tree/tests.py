@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.modules.wiki_tree import wiki_tree as wt_test
 
-# Version:       0.024
-# Total Tests:   30
+# Version:       0.025
+# Total Tests:   31
 
 
 class WikiTreeTest(object):
@@ -758,6 +758,52 @@ class WikiTreeTest(object):
                 self.__add_error("30", "is_publication error!")
 
         test_30(self)
+
+        # -------------------------------------
+        # Проверяем функцию получения пути к папке
+        def test_31(self):
+            print("WikiFileTree: " + test_31.__name__)
+
+
+            wft = wt_test.WikiFileTree()
+            wft.create_tree(1)
+
+            wft.create_folder(id=1, access="public", type="saved", name="Уроки по С++", style="green", view="open",
+                              id_folder=-1)
+            wft.create_publication(42, "Новый урок", "public", "personal", 1)
+            wft.create_publication(43, "Новый урок", "public", "personal", 1)
+
+            wft.create_folder(id=2, access="private", type="saved", name="Основы", style="green", view="open",
+                              id_folder=1)
+            wft.create_publication(44, "Новый урок", "public", "personal", 2)
+            wft.create_publication(45, "Новый урок", "public", "personal", 2)
+
+            wft.create_folder(id=3, access="public", type="saved", name="Первый урок", style="green", view="open",
+                              id_folder=2)
+            wft.create_publication(46, "Новый урок", "public", "personal", 3)
+            wft.create_publication(47, "Новый урок", "public", "personal", 3)
+            wft.create_publication(48, "Новый урок", "public", "personal", 1)
+
+            wft.create_folder(id=4, access="public", type="saved", name="Уроки по Java", style="green", view="open",
+                              id_folder=-1)
+            wft.create_folder(id=5, access="public", type="saved", name="Многопоточность", style="green", view="open",
+                              id_folder=4)
+            wft.create_folder(id=6, access="public", type="saved", name="GUI", style="green", view="open",
+                              id_folder=4)
+            stats = set()
+
+            stats.add(True if wft.get_path_folder(2) == "Уроки по С++/Основы/" else False)
+            stats.add(True if wft.get_path_folder(1) == "Уроки по С++/" else False)
+            stats.add(True if wft.get_path_folder(0) is None else False)
+            stats.add(True if wft.get_path_folder(3) == "Уроки по С++/Основы/Первый урок/" else False)
+            stats.add(True if wft.get_path_folder(4) == "Уроки по Java/" else False)
+            stats.add(True if wft.get_path_folder(5) == "Уроки по Java/Многопоточность/" else False)
+            stats.add(True if wft.get_path_folder(6) == "Уроки по Java/GUI/" else False)
+
+            if False in stats:
+                self.__add_error("31", "get_path_folder error!")
+
+        test_31(self)
 
 
 
