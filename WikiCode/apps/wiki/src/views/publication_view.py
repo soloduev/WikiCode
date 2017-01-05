@@ -42,14 +42,17 @@ def get_create(request):
     try:
         # Получения id папки, в которой хотим создать конспект
         input_folder_id = ""
+        path_folder = ""
         full_path = str(request.POST.get('folder_publ'))
 
-        if full_path != "None" and full_path != "NONE":
-            input_folder_id = full_path
         user = User.objects.get(email=user_data)
 
         wft = WikiFileTree()
         wft.load_tree(user.file_tree)
+
+        if full_path != "None" and full_path != "NONE":
+            input_folder_id = full_path
+            path_folder = wft.get_path_folder(int(full_path.split(":")[1]))
 
         # Проверяем, не пустует ли его дерево:
         if wft.get_num_root_folders() == 0:
@@ -62,6 +65,7 @@ def get_create(request):
             "user_id": get_user_id(request),
             "dynamic_tree": wft.to_html_dynamic_folders(),
             "path": input_folder_id,
+            "show_path": path_folder,
             "empty_tree":empty_tree,
         }
 
@@ -924,3 +928,34 @@ def get_load_md(request, id):
                                                 "Page not found: publ_manager/" + str(id) + "/"])
     else:
         return get_error_page(request, ["По техническим причинам, вы пока не можете скачать этот конспект."])
+
+
+def get_get_path_to_folder(request):
+    """ Получение полного пути к конспекту """
+    if request.method == "GET":
+        # Проверяем, аутентифицирован ли пользователь
+        if get_user_id(request) == -1:
+            return HttpResponse('auth', content_type='text/html; charset=utf8')
+        else:
+            # Если пользователь аутентифицирован то, начинаем получать все изменения
+            try:
+                # Получаем папку, к которой необходимо получить путь
+                id_folder = int(request.GET.get('id_folder'))
+                # Получаем пользователя
+                cur_user = User.objects.get(id_user=get_user_id(request))
+
+                # Получаем путь к папке
+                wft = WikiFileTree()
+                wft.load_tree(cur_user.file_tree)
+                folder_path = wft.get_path_folder(id_folder)
+
+                if folder_path is not None:
+                    return HttpResponse(folder_path, content_type='text/html')
+                else:
+                    return HttpResponse('no', content_type='text/html')
+            except User.DoesNotExist:
+                return get_error_page(request, ["User not found."])
+            except:
+                return HttpResponse('no', content_type='text/html')
+    else:
+        return HttpResponse('no', content_type='text/html')

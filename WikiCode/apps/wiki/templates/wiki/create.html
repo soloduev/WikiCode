@@ -45,7 +45,8 @@
                                 <h3>Папка</h3>
                                 <div class="row">
                                     <div class="col-xs-10">
-                                        <input value="{{ path }}" required id="lt-markdown-folder" name="folder" type="text" class="form-control btn-block" placeholder="Укажите путь к папке..." style="height: 30px; font-family: Courier; border-radius: 0px;"/>
+                                        <input value="{{ show_path }}" required id="lt-markdown-folder-show" name="folder-path" type="text" class="form-control btn-block" placeholder="Укажите путь к папке..." style="height: 30px; font-family: Courier; border-radius: 0px;"/>
+                                        <input hidden value="{{ path }}" required id="lt-markdown-folder" name="folder" type="text"/>
                                     </div>
                                     <div class="col-xs-2">
                                         <button id="lt-markdown-set-path" type="button" class="btn btn-default btn-block" style="height: 30px; border-radius: 0px;"><i class="fa fa-folder-open-o">...</i></button>

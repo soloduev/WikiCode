@@ -373,6 +373,13 @@ def load_md(request, id):
     return publication_view.get_load_md(request, id)
 
 
+# Получение полного пути к конспекту
+@develop_mode
+@login_required
+def get_path_to_folder(request):
+    return publication_view.get_get_path_to_folder(request)
+
+
 
 
 

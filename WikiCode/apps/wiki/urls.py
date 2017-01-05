@@ -75,7 +75,6 @@ urlpatterns = [
     url(r'^page/(?P<id>[0-9]+)/add_star_publication/$', views.add_star_publication, name='add_star_publication'),
     url(r'^page/(?P<id>[0-9]+)/load_md/$', views.load_md, name='load_md'),
 
-
     # События на странице пользователя
     url(r'^user/(?P<id>[0-9]+)/send_request_colleagues/$', views.send_request_colleagues, name='send_request_colleagues'),
 
@@ -96,5 +95,9 @@ urlpatterns = [
     url(r'^settings/check_nickname/$', views.check_nickname, name='check_nickname'),
     url(r'^settings/repassword_user/$', views.repassword_user, name='repassword_user'),
     url(r'^settings/renickname_user/$', views.renickname_user, name='renickname_user'),
+
+    # События на странице создания конспекта
+    url(r'^create/get_path_to_folder/$', views.get_path_to_folder, name='get_path_to_folder'),
+
 
 ]
