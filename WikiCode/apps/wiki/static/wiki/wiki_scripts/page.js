@@ -27,6 +27,26 @@ $("#jstree")
     .on('changed.jstree', function (e, data) {
         var full_path = '' + data.selected;
         $("#save-publ-path-folder").val(full_path);
+
+        $.ajax({
+            type: "GET",
+            url: "get_path_to_folder/",
+            data:{
+                'id_folder': (''+full_path).split(":")[1],
+            },
+            dataType: "text",
+            cache: false,
+            success: function(data){
+                if (data != 'no'){
+                    $("#save-publ-path-folder-show").val(data);
+                }
+                else{
+                    console.log("Не удалось получить полный путь к папке!");
+                }
+            }
+        });
+
+
     })
     // create the instance
     .jstree({
@@ -344,4 +364,8 @@ $("#like-pollSlider-button").click(function () {
             }
         }
     });
+});
+
+$('#save-publ-path-folder-show').keydown(function(e){
+  e.preventDefault()
 });

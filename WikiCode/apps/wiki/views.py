@@ -380,6 +380,13 @@ def get_path_to_folder(request):
     return publication_view.get_get_path_to_folder(request)
 
 
+# Получение полного пути к конспекту
+@develop_mode_id
+@login_required
+def get_path_to_folder_id(request, id):
+    return publication_view.get_get_path_to_folder(request)
+
+
 # Перемещение конспекта
 @develop_mode
 @login_required
