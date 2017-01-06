@@ -89,7 +89,7 @@
                         <input class="form-control" disabled="true" style="border-radius: 0px;" value="{{ user.name }}">
                     </div>
                     <div class="col-xs-2 col-sm-2 col-md-2">
-                        <a id="wiki-style-btn" class="btn btn-block" style="border-radius: 0px;"><i class="fa fa-edit"></i></a>
+                        <a id="wiki-style-btn" class="btn btn-block" data-toggle="modal" data-target="#modal_edit_username" style="border-radius: 0px;"><i class="fa fa-edit"></i></a>
                     </div>
                 </div>
                 <div class="row">
@@ -247,6 +247,32 @@
                     </div>
                     <div class="modal-footer">
                         <button id="wiki-style-btn" type="submit" class="btn">Изменить никнейм</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно изменения имени пользователя -->
+    <div class="modal fade" id="modal_edit_username" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Изменение имени:</h4>
+                </div>
+                <form action="{% url 'rename_user' %}" method="post" onsubmit="return validate_rename_form();">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <label>Введите Ваше новое имя</label>
+                        <input id="user_name_input" type="text" name="user_new_name" placeholder="Новое имя" class="form-control btn-block"  required style="border-radius: 0px;height: 30px; width: 250px;">
+                        <br>
+                        <label>Введите Ваше новое имя снова</label>
+                        <input id="user_name_repeat_input" type="text" name="user_name_repeat" placeholder="Повторите новое имя" class="form-control btn-block"  required style="border-radius: 0px;height: 30px; width: 250px;">
+                        <br>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="wiki-style-btn" type="submit" class="btn">Изменить имя</button>
                     </div>
                 </form>
             </div>

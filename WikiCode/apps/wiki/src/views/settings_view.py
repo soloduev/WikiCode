@@ -130,8 +130,7 @@ def get_renickname_user(request):
             # Получаем данные формы
             form = request.POST
             cur_user = User.objects.get(id_user=id)
-            # Проверяем старый никнейм на корректность
-            # Если старый пароль корректен, проверяем на равенство новый паролей
+
             if cur_user.nickname == form['user_nickname']:
                 new_nickname = form['user_new_nickname']
                 new_nickname_repeat = form['user_nickname_repeat']
@@ -175,6 +174,32 @@ def get_renickname_user(request):
                     get_error_page(request, ["Извините, но введенныя Вами новая пара никнеймов не совпадает!"])
             else:
                 get_error_page(request, ["Извините, но Ваш старый пароль не корректен!"])
+        except User.DoesNotExist:
+            get_error_page(request, ["User is not found!"])
+    else:
+        return HttpResponse('no', content_type='text/html')
+
+
+def get_rename_user(request):
+    """Ajax представление. Изменение имени пользователя."""
+    if request.method == "POST":
+        id = get_user_id(request)
+        try:
+            # Получаем данные формы
+            form = request.POST
+            cur_user = User.objects.get(id_user=id)
+
+            new_name = form['user_new_name']
+            new_name_repeat = form['user_name_repeat']
+
+            if new_name == new_name_repeat:
+
+                cur_user.name = new_name
+                cur_user.save()
+
+                return HttpResponseRedirect("/")
+            else:
+                get_error_page(request, ["Извините, но введенныя Вами новая пара имен не совпадает!"])
         except User.DoesNotExist:
             get_error_page(request, ["User is not found!"])
     else:

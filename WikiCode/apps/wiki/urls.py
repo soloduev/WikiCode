@@ -98,6 +98,7 @@ urlpatterns = [
     url(r'^settings/check_nickname/$', views.check_nickname, name='check_nickname'),
     url(r'^settings/repassword_user/$', views.repassword_user, name='repassword_user'),
     url(r'^settings/renickname_user/$', views.renickname_user, name='renickname_user'),
+    url(r'^settings/rename_user/$', views.rename_user, name='rename_user'),
 
     # События на странице создания конспекта
     url(r'^create/get_path_to_folder/$', views.get_path_to_folder, name='get_path_to_folder'),

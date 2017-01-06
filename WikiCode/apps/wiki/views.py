@@ -165,7 +165,7 @@ def check_email(request):
 
 @develop_mode
 def check_password(request):
-    return settings_view.get_check_password(request)\
+    return settings_view.get_check_password(request)
 
 
 @develop_mode
@@ -175,12 +175,17 @@ def check_nickname(request):
 
 @develop_mode
 def repassword_user(request):
-    return settings_view.get_repassword_user(request)\
+    return settings_view.get_repassword_user(request)
 
 
 @develop_mode
 def renickname_user(request):
     return settings_view.get_renickname_user(request)
+
+
+@develop_mode
+def rename_user(request):
+    return settings_view.get_rename_user(request)
 
 
 @develop_mode
@@ -191,11 +196,6 @@ def add_folder_in_tree(request):
 @develop_mode
 def del_elem_in_tree(request):
     return tree_view.get_del_elem_in_tree(request)
-
-
-@develop_mode
-def del_publ_in_tree_saved(request):
-    return tree_view.get_del_publ_in_tree_saved(request)
 
 
 @develop_mode
