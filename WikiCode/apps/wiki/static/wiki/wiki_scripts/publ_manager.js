@@ -24,13 +24,13 @@
 
 //Подтверждение удаления конспекта
 $("#wiki-style-btn-delete-publ").click(function () {
-    var title_publ = $("#myModalLabelTitlePublication").val();
+    var id_publ = $("#myModalLabelTitlePublication").val();
 
     $.ajax({
         type: "POST",
         url: "delete_publ_in_tree/",
         data:{
-            'answer':title_publ,
+            'id_publ':id_publ,
         },
         dataType: "text",
         cache: false,

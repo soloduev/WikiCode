@@ -192,29 +192,21 @@ def get_delete_publ_in_tree(request):
     """Ajax представление. Удаление конспекта."""
 
     if request.method == "POST":
-        path_publ = request.POST.get('answer')
-        user_data = check_auth(request)
-        arr = path_publ.split(":")
-        id_publ = arr[1]
+        id_publ = request.POST.get('id_publ')
 
         try:
             # Получаем удаляемую публикацию
             publication = Publication.objects.get(id_publication=id_publ)
             # Получаем автора этой публикации
-            user = User.objects.get(email=user_data)
+            user = User.objects.get(id_user=get_user_id(request))
             # Получаем статистику сайта
             stat = Statistics.objects.get(id_statistics=1)
 
-            # Начинаем производить достаточно громоздкое удаление
-
-            # Получаем дерево пользователя
-
-            # Устанавливаем id пользователя
+            # Загружаем дерево пользователя
             wft = WikiFileTree()
-            # Загружаем его дерево
             wft.load_tree(user.file_tree)
             # Удаляем публикацию по указанному id
-            wft.delete_publication(int(id_publ))
+            wft.delete_publication(id_publ)
             user.file_tree = wft.get_xml_str()
 
             # Уменьшаем количество публикаций у пользователя
