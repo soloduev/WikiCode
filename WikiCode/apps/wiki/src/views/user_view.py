@@ -71,11 +71,20 @@ def get_user(request, id, notify=None):
                 prewiew_publ_title = None
                 prewiew_publ_id = None
 
+            # Получаем все последние конспекты пользователя
+            publications = Publication.objects.filter(id_author=id)
+
+            # Получаем все лучшие конспекты пользователя
+            top_publications = Publication.objects.filter(id_author=id).order_by('stars')
+
+
             if user_id != -1:
                 context = {
                     "user_data": user_data,
                     "user_id": user_id,
                     "preview_tree": wft.to_html_preview(),
+                    "publications": reversed(publications),
+                    "top_publications": reversed(top_publications),
                     "user":user,
                     "prewiew_publ_text":preview_publ_text,
                     "prewiew_publ_title":prewiew_publ_title,
@@ -123,10 +132,18 @@ def get_user(request, id, notify=None):
                 prewiew_publ_title = None
                 prewiew_publ_id = None
 
+            # Получаем все последние конспекты пользователя
+            publications = Publication.objects.filter(id_author=id, is_public=True)
+
+            # Получаем все лучшие конспекты пользователя
+            top_publications = Publication.objects.filter(id_author=id, is_public=True).order_by('stars')
+
             context = {
                 "user_data": user_data,
                 "user_id": get_user_id(request),
                 "preview_tree": wft.to_html_preview(only_public=True),
+                "publications": reversed(publications),
+                "top_publications": reversed(top_publications),
                 "user":other_user,
                 "prewiew_publ_text": preview_publ_text,
                 "prewiew_publ_title": prewiew_publ_title,

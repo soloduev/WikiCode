@@ -158,9 +158,9 @@
                         <div class="tabbable-line">
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#tab_default_1" data-toggle="tab">Превью конспект </a></li>
-                                <li><a href="#tab_default_2" data-toggle="tab">Лучший конспект</a></li>
-                                <li><a href="#tab_default_3" data-toggle="tab">Последний конспект </a></li>
-                                <li><a href="#tab_default_4" data-toggle="tab">Подписки </a></li>
+                                <li><a href="#tab_default_2" data-toggle="tab">Лучшие </a></li>
+                                <li><a href="#tab_default_3" data-toggle="tab">Последние </a></li>
+                                <li><a href="#tab_default_4" data-toggle="tab">Курсы </a></li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tab_default_1">
@@ -181,43 +181,72 @@
                                 <div class="tab-pane" id="tab_default_2">
                                     <div class="container-fluid">
                                         <div class="row">
-                                            <div class="col-md-8 col-xs-8">
-                                                <h4 class="text-left" style="display: none;">Title this publication</h4>
+                                            {% for publ in top_publications %}
+                                            <!-- Start publication-->
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                                                <div class="box">
+                                                    <div class="info">
+                                                        <a style="text-decoration: none; cursor: pointer;"
+                                                           href="/page/{{ publ.id_publication }}/"><div style="font-size: 12pt;"
+                                                                class="text-left">{{ publ.title }}</div></a>
+                                                        <div class="publ-tags text-left">
+                                                            <span class="wiki-tag">Tag1</span>
+                                                            <span class="wiki-tag">Tag2</span>
+                                                        </div>
+                                                        <p style="font-size: 10pt;">{{ publ.description }}</p>
+                                                        <div class="btn-group">
+                                                            <button id="reads_publ" href="" class="btn btn-sm btn-default">
+                                                                <span class="glyphicon glyphicon-eye-open"></span> {{ publ.read }}
+                                                            </button>
+                                                            <button id="imports_publ" href="" class="btn btn-sm btn-default">
+                                                                <span class="glyphicon glyphicon-import"></span> 0
+                                                            </button>
+                                                            <button id="likes_publ" href="" class="btn btn-sm btn-default">
+                                                                <span class="glyphicon glyphicon-star"></span> {{ publ.stars }}
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-md-4 col-xs-4 text-right">
-                                                <button id="wiki-style-btn-user" class="btn text-center btn-block"
-                                                        style="display: none;">Читать
-                                                </button>
-                                            </div>
-
+                                            <!--End publication-->
+                                        {% endfor %}
                                         </div>
                                     </div>
-                                    <p></p>
-                                    <h4>Здесь будет располагаться Ваш лучший конспект.</h4>
-                                    <p></p>
-                                    <h4>На данный момент, у Вас не создано ни одного конспекта! <a
-                                            href="{% url 'create' %}">Создайте</a> Ваш первый конспект, прямо сейчас!
-                                    </h4>
                                 </div>
                                 <div class="tab-pane" id="tab_default_3">
                                     <div class="container-fluid">
                                         <div class="row">
-                                            <div class="col-md-8 col-xs-8">
-                                                <h4 class="text-left" style="display: none;">Title this publication</h4>
+                                            {% for publ in publications %}
+                                            <!-- Start publication-->
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                                                <div class="box">
+                                                    <div class="info">
+                                                        <a style="text-decoration: none; cursor: pointer;"
+                                                           href="/page/{{ publ.id_publication }}/"><div style="font-size: 12pt;"
+                                                                class="text-left">{{ publ.title }}</div></a>
+                                                        <div class="publ-tags text-left">
+                                                            <span class="wiki-tag">Tag1</span>
+                                                            <span class="wiki-tag">Tag2</span>
+                                                        </div>
+                                                        <p style="font-size: 10pt;">{{ publ.description }}</p>
+                                                        <div class="btn-group">
+                                                            <button id="reads_publ" href="" class="btn btn-sm btn-default">
+                                                                <span class="glyphicon glyphicon-eye-open"></span> {{ publ.read }}
+                                                            </button>
+                                                            <button id="imports_publ" href="" class="btn btn-sm btn-default">
+                                                                <span class="glyphicon glyphicon-import"></span> 0
+                                                            </button>
+                                                            <button id="likes_publ" href="" class="btn btn-sm btn-default">
+                                                                <span class="glyphicon glyphicon-star"></span> {{ publ.stars }}
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-md-4 col-xs-4 text-right">
-                                                <button id="wiki-style-btn-user" class="btn text-center btn-block"
-                                                        style="display: none;">Читать
-                                                </button>
-                                            </div>
+                                            <!--End publication-->
+                                        {% endfor %}
                                         </div>
                                     </div>
-                                    <p></p>
-                                    <h4>Здесь будет располагаться Ваш последний конспект.</h4>
-                                    <p></p>
-                                    <h4>На данный момент, у Вас не создано ни одного конспекта! <a
-                                            href="{% url 'create' %}">Создайте</a> Ваш первый конспект, прямо сейчас!
-                                    </h4>
                                 </div>
                                 <div class="tab-pane" id="tab_default_4">
                                     <p></p>
