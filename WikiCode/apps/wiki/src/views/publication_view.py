@@ -405,11 +405,18 @@ def get_publ_manager(request, id, notify=None):
             white_list = wp.get_white_list()
             black_list = wp.get_black_list()
 
+            # Получаем путь к конспекту
+            cur_user = User.objects.get(id_user=current_id)
+            id_folder = int(_publication.tree_path.split(":")[1])
+            wft = WikiFileTree()
+            wft.load_tree(cur_user.file_tree)
+            path_to_folder = wft.get_path_folder(id_folder)
+
             context = {
                 "user_data": user_data,
                 "user_id": current_id,
                 "publication": _publication,
-                "tree_path": _publication.tree_path,
+                "path_to_folder": path_to_folder,
                 "white_list": white_list,
                 "black_list": black_list,
                 "notify": notify
@@ -420,6 +427,10 @@ def get_publ_manager(request, id, notify=None):
 
     except Publication.DoesNotExist:
         return get_error_page(request, ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
+    except User.DoesNotExist:
+        return get_error_page(request, ["User not found!"])
+    except:
+        return get_error_page(request, ["Ошибка перехода на страницу управления конспектом."])
 
 
 @csrf_protect
