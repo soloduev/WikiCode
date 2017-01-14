@@ -105,6 +105,15 @@ class Starring(models.Model):
                    " publ:" + str(self.id_publ))
 
 
+class CommentRating(models.Model):
+    id_user = models.BigIntegerField()
+    id_comment = models.BigIntegerField()
+
+    def __str__(self):
+        return str("user:" + str(self.id_user) +
+                   " comment:" + str(self.id_comment))
+
+
 # Модель любого комментария
 class Comment(models.Model):
     id_comment = models.BigIntegerField()
