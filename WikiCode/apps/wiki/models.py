@@ -108,6 +108,7 @@ class Starring(models.Model):
 class CommentRating(models.Model):
     id_user = models.BigIntegerField()
     id_comment = models.BigIntegerField()
+    id_user_to = models.BigIntegerField()  # id пользователя, которому поставили лайк
     type = models.CharField(max_length=4)  # up, down, none
 
     def __str__(self):
