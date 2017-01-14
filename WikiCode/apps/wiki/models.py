@@ -108,6 +108,7 @@ class Starring(models.Model):
 class CommentRating(models.Model):
     id_user = models.BigIntegerField()
     id_comment = models.BigIntegerField()
+    type = models.BooleanField()  # True is Up Rating, False is Down Rating
 
     def __str__(self):
         return str("user:" + str(self.id_user) +
