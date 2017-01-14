@@ -18,20 +18,20 @@
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import datetime, json
+import datetime
+import json
 
 from django.http import HttpResponse, HttpResponseRedirect, StreamingHttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
-from django.utils.encoding import smart_str
 
 from WikiCode.apps.wiki.models import Publication, Statistics, Viewing, DynamicParagraph, Comment, Folder, Starring
-from WikiCode.apps.wiki.models import User
+from WikiCode.apps.wiki.models import User, CommentRating
 from WikiCode.apps.wiki.settings import wiki_settings
 from WikiCode.apps.wiki.src.modules.wiki_comments.wiki_comments import WikiComments
+from WikiCode.apps.wiki.src.modules.wiki_permissions.wiki_permissions import WikiPermissions
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
 from WikiCode.apps.wiki.src.modules.wiki_versions.wiki_versions import WikiVersions
-from WikiCode.apps.wiki.src.modules.wiki_permissions.wiki_permissions import WikiPermissions
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
 from WikiCode.apps.wiki.src.wiki_markdown import WikiMarkdown
 from .auth import check_auth, get_user_id
@@ -986,17 +986,47 @@ def get_comment_rating_up(request, id):
                 cur_user = User.objects.get(id_user=get_user_id(request))
                 # Получаем id конспекта
                 publication = Publication.objects.get(id_publication=id)
+                # Получаем сам комментарий
+                cur_comment = Comment.objects.get(id_comment=id_comment)
+                # Проверяем, был ли уже установлен дизлайк или лайк
+                try:
+                    comment_rating = CommentRating.objects.get(id_user=cur_user.id_user, id_comment=id_comment)
+                except CommentRating.DoesNotExist:
+                    comment_rating = CommentRating(id_user=cur_user.id_user,
+                                                   id_user_to=cur_comment.id_author,
+                                                   id_comment=id_comment,
+                                                   type="none")
+
                 # Получаем место где лежит комментарий (main/dynamic)
                 location = request.GET.get('location')
+
+                result = "no"
+
                 if location == "main":
                     # Получаем комментарий в конспекте
                     wc = WikiComments()
                     wc.load_comments(publication.main_comments)
-                    wc.up_rating(id_comment)
+
+                    # Проверяем на "самолайк"
+                    if wc.get_user_id(id_comment) == cur_user.id_user:
+                        return HttpResponse('no', content_type='text/html')
+
+                    if comment_rating.type == "none":
+                        wc.up_rating(id_comment)
+                        comment_rating.type = "up"
+                        result = "up"
+                    elif comment_rating.type == "up":
+                        result = "none"
+                    elif comment_rating.type == "down":
+                        wc.up_rating(id_comment)
+                        comment_rating.type = "none"
+                        result = "up"
+
                     publication.main_comments = wc.get_xml_str()
                     publication.save()
+                    comment_rating.save()
 
-                    return HttpResponse('ok', content_type='text/html')
+                    return HttpResponse(result, content_type='text/html')
                 else:
                     return HttpResponse('no', content_type='text/html')
 
@@ -1004,10 +1034,11 @@ def get_comment_rating_up(request, id):
                 return get_error_page(request, ["User not found."])
             except Publication.DoesNotExist:
                 return get_error_page(request, ["Publication not found."])
-            except:
-                return HttpResponse('no', content_type='text/html')
+            except Comment.DoesNotExist:
+                return get_error_page(request, ["Comment not found."])
     else:
         return HttpResponse('no', content_type='text/html')
+
 
 def get_comment_rating_down(request, id):
     """ Повышение рейтинга у комментария """
@@ -1023,17 +1054,47 @@ def get_comment_rating_down(request, id):
                 cur_user = User.objects.get(id_user=get_user_id(request))
                 # Получаем id конспекта
                 publication = Publication.objects.get(id_publication=id)
+                # Получаем сам комментарий
+                cur_comment = Comment.objects.get(id_comment=id_comment)
+                # Проверяем, был ли уже установлен дизлайк или лайк
+                try:
+                    comment_rating = CommentRating.objects.get(id_user=cur_user.id_user, id_comment=id_comment)
+                except CommentRating.DoesNotExist:
+                    comment_rating = CommentRating(id_user=cur_user.id_user,
+                                                   id_user_to=cur_comment.id_author,
+                                                   id_comment=id_comment,
+                                                   type="none")
+
                 # Получаем место где лежит комментарий (main/dynamic)
                 location = request.GET.get('location')
+
+                result = "no"
+
                 if location == "main":
                     # Получаем комментарий в конспекте
                     wc = WikiComments()
                     wc.load_comments(publication.main_comments)
-                    wc.down_rating(id_comment)
+
+                    # Проверяем на "самодизлайк"
+                    if wc.get_user_id(id_comment) == cur_user.id_user:
+                        return HttpResponse('no', content_type='text/html')
+
+                    if comment_rating.type == "none":
+                        wc.down_rating(id_comment)
+                        comment_rating.type = "down"
+                        result = "down"
+                    elif comment_rating.type == "down":
+                        result = "none"
+                    elif comment_rating.type == "up":
+                        wc.down_rating(id_comment)
+                        comment_rating.type = "none"
+                        result = "down"
+
                     publication.main_comments = wc.get_xml_str()
                     publication.save()
+                    comment_rating.save()
 
-                    return HttpResponse('ok', content_type='text/html')
+                    return HttpResponse(result, content_type='text/html')
                 else:
                     return HttpResponse('no', content_type='text/html')
 

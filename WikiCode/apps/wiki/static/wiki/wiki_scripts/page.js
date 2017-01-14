@@ -195,11 +195,15 @@ $('body').on('click', '.comment-rating-up', function(eventObject) {
         dataType: "text",
         cache: false,
         success: function (data) {
-            if (data == 'ok') {
-                location.reload();
+            if (data == 'down') {
+                // Понижаем рейтинг
+                ($("#wiki-comment-id-"+id_comment).text((parseInt($("#wiki-comment-id-"+id_comment).text()) + 1).toString()));
+            }
+            else if(data == 'up'){
+                // Повышаем рейтинг
+                ($("#wiki-comment-id-"+id_comment).text((parseInt($("#wiki-comment-id-"+id_comment).text()) + 1).toString()));
             }
             else {
-                console.log("Don't up");
             }
         }
     });
@@ -219,22 +223,20 @@ $('body').on('click', '.comment-rating-down', function(eventObject) {
         dataType: "text",
         cache: false,
         success: function (data) {
-            if (data == 'ok') {
-                location.reload();
+            if (data == 'down') {
+                // Понижаем рейтинг
+                ($("#wiki-comment-id-"+id_comment).text((parseInt($("#wiki-comment-id-"+id_comment).text()) - 1).toString()));
+            }
+            else if(data == 'up'){
+                // Повышаем рейтинг
+                ($("#wiki-comment-id-"+id_comment).text((parseInt($("#wiki-comment-id-"+id_comment).text()) - 1).toString()));
             }
             else {
-                console.log("Don't up");
             }
         }
     });
 });
 
-// Событие клика кнопки "Понизить рейтинг комментария"
-$('body').on('click', '.comment-rating-down', function(eventObject) {
-    var id_comment = '' + this.getAttribute('id_comment');
-
-    console.log("DOWN", id_comment);
-});
 
 
 // Событие клика кнопки "ответить на комментарий". Устанавливает id, на какой комментарий необходимо ответить
