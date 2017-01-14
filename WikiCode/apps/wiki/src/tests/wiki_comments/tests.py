@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.modules.wiki_comments import wiki_comments as wc_test
 
-# Version:       0.012
-# Total Tests:   12
+# Version:       0.013
+# Total Tests:   13
 
 
 class WikiCommentsTest(object):
@@ -291,8 +291,30 @@ class WikiCommentsTest(object):
 
         test_12(self)
 
+        # -------------------------------------
+        # Проверка функции, которая возвращает id автора по id комментарию.
+        def test_13(self):
+            print("WikiComments: " + test_13.__name__)
+            wc = wc_test.WikiComments()
+            wc.create_comments(1)
 
+            wc.create_comment(1, 2, "Hello!", "Boris", "17.08.2017", False)
+            wc.create_comment(16, 4, "Hi!", "Katya", "20.08.2017", False)
+            wc.create_comment(26, 8, "How are you?", "Petya", "21.08.2017", False)
+            wc.reply(30, 30, "Borya", "hff", 1, "23.02.2010", False)
+            wc.reply(33, 30, "Borya", "hff2", 1, "23.02.2010", False)
+            wc.reply(35, 33, "Borya", "333", 33, "23.02.2010", False)
 
+            states = set()
+            states.add(wc.get_user_id(1) == 2)
+            states.add(wc.get_user_id(16) == 4)
+            states.add(wc.get_user_id(26) == 8)
+            states.add(wc.get_user_id(30) == 30)
+            states.add(wc.get_user_id(33) == 30)
+            states.add(wc.get_user_id(35) == 33)
+            states.add(wc.get_user_id(36) is None)
 
+            if False in states:
+                self.__add_error("13", "get_user_id error")
 
-
+        test_13(self)

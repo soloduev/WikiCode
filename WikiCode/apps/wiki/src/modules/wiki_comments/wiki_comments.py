@@ -25,7 +25,7 @@ from WikiCode.apps.wiki.src.modules.wiki_comments.config import params as CONFIG
 
 class WikiComments():
     """
-       :VERSION: 0.18
+       :VERSION: 0.19
        Класс для работы с комментариями на платформе WIKICODE.
        Комментарии педставляет из себя структуированный xml файл.
        Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -34,6 +34,7 @@ class WikiComments():
        Исходный код класса комментариев старается быть таким, чтобы комментарии можно было легко модернизировать и улучшать, добавляя в него новые и новые элементы.
        В файле example.xml отображен пример xml комментарев и их возможностей.
        """
+
     def __init__(self):
         self.__xml_comments = None
 
@@ -90,7 +91,7 @@ class WikiComments():
 
     # WORK WITH COMMENTS
     # TODO: Необходимо добавить валидацию полей, особенно дату
-    def create_comment(self, id_comment: int ,user_id: int, text: str, user_name: str,
+    def create_comment(self, id_comment: int, user_id: int, text: str, user_name: str,
                        date: str, is_moderator: bool) -> bool:
         """Создает новый комментарий в дереве."""
         if self.__xml_comments:
@@ -141,7 +142,6 @@ class WikiComments():
         else:
             return False
 
-
     def delete_comment(self, id_comment: int) -> bool:
         """Удаляет комментарий, указав его id."""
         if self.__xml_comments is not None:
@@ -159,7 +159,7 @@ class WikiComments():
             return False
 
     # TODO: Произвести валидацию всех аргументов
-    def reply(self, new_id:int, user_id: int, user_name: str, text: str, reply_id: int,
+    def reply(self, new_id: int, user_id: int, user_name: str, text: str, reply_id: int,
               date: str, is_moderator: bool) -> bool:
         """Ответ на существующий комментарий"""
         if self.__xml_comments:
@@ -234,7 +234,7 @@ class WikiComments():
             for comment in root.iter('comment'):
                 if comment.get('id') == str(id_comment):
                     # Меняем рейтинг
-                    comment.set('rating', str(int(comment.get('rating')) -1))
+                    comment.set('rating', str(int(comment.get('rating')) - 1))
                     # Сохраняем все
                     self.__xml_comments = ET.tostring(root)
                     return True
@@ -277,6 +277,21 @@ class WikiComments():
             return False
         else:
             return False
+
+    def get_user_id(self, id_comment: int) -> int:
+        """ Возвращает id автора комментария. Передается id комментария.
+        Возвращает None если такого комментария нет. """
+        if self.__xml_comments:
+            # Получаем корневой элемент текущих комментариев
+            root = ET.fromstring(self.__xml_comments)
+            # Получаем необходимый нам комментарий по его id
+            for comment in root.iter('comment'):
+                if comment.get('id') == str(id_comment):
+                    # Возвращаем user_id
+                    return int(comment.get('user_id'))
+            return None
+        else:
+            return None
 
     def debug_comment(self, id_comment: int) -> tuple:
         """Возвращает все параметры комментария в виде кортежа. Необходимо для тестирования."""
@@ -368,9 +383,9 @@ class WikiComments():
         media_heading = ET.Element('div')
         media_heading.set('class', 'media-heading')
         author = ET.Element('div')
-        author.set('class', 'author') #/user/2/
+        author.set('class', 'author')  # /user/2/
         author_href = ET.Element('a')
-        author_href.set('href', '/user/'+str(comment.get('user_id')))
+        author_href.set('href', '/user/' + str(comment.get('user_id')))
         author_href.text = comment.get('user_name')
         author.append(author_href)
         meta_data = ET.Element('div')
@@ -398,6 +413,7 @@ class WikiComments():
         span_plus.append(icon_plus)
         span_rating = ET.Element('span')
         span_rating.set('class', 'rating')
+        span_rating.set('id', 'wiki-comment-id-' + str(comment.get('id')))
         span_rating.text = comment.get('rating')
         span_minus = ET.Element('span')
         span_minus.set('class', 'vote minus comment-rating-down')
@@ -441,4 +457,3 @@ class WikiComments():
     def __format_xml(self, xml_str):
         """Выравнивание xml строки"""
         return parseString(xml_str).toprettyxml()
-
