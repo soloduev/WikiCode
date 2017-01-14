@@ -404,6 +404,10 @@ class WikiComments():
         footer_comment = ET.Element('div')
         footer_comment.set('class', 'footer-comment')
         span_plus = ET.Element('span')
+        if not is_dynamic:
+            span_plus.set('is_dynamic', 'false')
+        else:
+            span_plus.set('is_dynamic', 'true')
         span_plus.set('class', 'vote plus comment-rating-up')
         span_plus.set('id_comment', comment.get('id'))
         span_plus.set('title', 'Нравится')
@@ -416,6 +420,10 @@ class WikiComments():
         span_rating.set('id', 'wiki-comment-id-' + str(comment.get('id')))
         span_rating.text = comment.get('rating')
         span_minus = ET.Element('span')
+        if not is_dynamic:
+            span_minus.set('is_dynamic', 'false')
+        else:
+            span_minus.set('is_dynamic', 'true')
         span_minus.set('class', 'vote minus comment-rating-down')
         span_minus.set('id_comment', comment.get('id'))
         span_minus.set('title', 'Не нравится')

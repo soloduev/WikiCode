@@ -184,13 +184,22 @@ $("#edit_paragraph_wiki_tree_context").on("click", function () {
 // Событие клика кнопки "повысить рейтинг комментария"
 $('body').on('click', '.comment-rating-up', function(eventObject) {
     var id_comment = '' + this.getAttribute('id_comment');
+    var is_dynamic = '' + this.getAttribute('is_dynamic');
+    var location = "";
+    var selected_num_paragraph = parseInt($("#selected_number_paragraph").val());
+    if(is_dynamic == "true")
+        location = "dynamic";
+    else
+        location = "main";
+
 
     $.ajax({
         type: "GET",
         url: "comment_rating_up/",
         data: {
             'id_comment': id_comment,
-            'location': "main",
+            'location': location,
+            'selected_num_paragraph': selected_num_paragraph
         },
         dataType: "text",
         cache: false,
@@ -212,13 +221,21 @@ $('body').on('click', '.comment-rating-up', function(eventObject) {
 // Событие клика кнопки "повысить рейтинг комментария"
 $('body').on('click', '.comment-rating-down', function(eventObject) {
     var id_comment = '' + this.getAttribute('id_comment');
+    var is_dynamic = '' + this.getAttribute('is_dynamic');
+    var location = "";
+    var selected_num_paragraph = parseInt($("#selected_number_paragraph").val());
+    if(is_dynamic == "true")
+        location = "dynamic";
+    else
+        location = "main";
 
     $.ajax({
         type: "GET",
         url: "comment_rating_down/",
         data: {
             'id_comment': id_comment,
-            'location': "main",
+            'location': location,
+            'selected_num_paragraph': selected_num_paragraph
         },
         dataType: "text",
         cache: false,

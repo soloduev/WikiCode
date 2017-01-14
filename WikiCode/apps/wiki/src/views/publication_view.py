@@ -484,7 +484,14 @@ def get_add_dynamic_comment(request, id):
                 except User.DoesNotExist:
                     return get_error_page(request, ["User not found."])
 
-                # Добавляем новый комментарий
+                # Добавляем новый коммент в БД
+                new_comment = Comment(id_comment=stat.total_comments + 1,
+                                      id_author=cur_user.id_user,
+                                      id_publication=publication.id_publication,
+                                      date=date,
+                                      text=dynamic_comment)
+
+                # Добавляем новый комментарий в xml комментариев параграфа
                 wc.create_comment(id_comment=stat.total_comments + 1,
                                   user_id=cur_user.id_user,
                                   text=dynamic_comment,
@@ -497,6 +504,7 @@ def get_add_dynamic_comment(request, id):
 
                 dynamic_paragraph.save()
                 stat.save()
+                new_comment.save()
 
                 return HttpResponse('ok', content_type='text/html')
 
@@ -550,7 +558,14 @@ def get_reply_dynamic_comment(request, id):
                     # Загружаем комментарии
                     wc.load_comments(dynamic_paragraph.comments)
 
-                    # Добавляем новый комментарий
+                    # Добавляем новый коммент в БД
+                    new_comment = Comment(id_comment=stat.total_comments + 1,
+                                          id_author=cur_user.id_user,
+                                          id_publication=publication.id_publication,
+                                          date=date,
+                                          text=dynamic_comment)
+
+                    # Добавляем новый комментарий в xml комментариев параграфа
                     wc.reply(new_id=stat.total_comments + 1,
                              user_id=cur_user.id_user,
                              user_name=cur_user.nickname,
@@ -564,6 +579,7 @@ def get_reply_dynamic_comment(request, id):
 
                     dynamic_paragraph.save()
                     stat.save()
+                    new_comment.save()
 
                     return HttpResponse('ok', content_type='text/html')
 
@@ -1027,6 +1043,38 @@ def get_comment_rating_up(request, id):
                     comment_rating.save()
 
                     return HttpResponse(result, content_type='text/html')
+
+                elif location == "dynamic":
+
+                    num_paragraph = request.GET.get('selected_num_paragraph')
+                    # Ищем комментарий в динамических абзацах конспекта
+                    dynamic_comment = DynamicParagraph.objects.get(publication=publication, paragraph=num_paragraph)
+
+                    # Получаем комментарий в конспекте
+                    wc = WikiComments()
+                    wc.load_comments(dynamic_comment.comments)
+
+                    # Проверяем на "самолайк"
+                    if wc.get_user_id(id_comment) == cur_user.id_user:
+                        return HttpResponse('no', content_type='text/html')
+
+                    if comment_rating.type == "none":
+                        wc.up_rating(id_comment)
+                        comment_rating.type = "up"
+                        result = "up"
+                    elif comment_rating.type == "up":
+                        result = "none"
+                    elif comment_rating.type == "down":
+                        wc.up_rating(id_comment)
+                        comment_rating.type = "none"
+                        result = "up"
+
+                    dynamic_comment.comments = wc.get_xml_str()
+                    dynamic_comment.save()
+                    publication.save()
+                    comment_rating.save()
+
+                    return HttpResponse(result, content_type='text/html')
                 else:
                     return HttpResponse('no', content_type='text/html')
 
@@ -1095,6 +1143,38 @@ def get_comment_rating_down(request, id):
                     comment_rating.save()
 
                     return HttpResponse(result, content_type='text/html')
+
+                elif location == "dynamic":
+
+                    num_paragraph = request.GET.get('selected_num_paragraph')
+                    # Ищем комментарий в динамических абзацах конспекта
+                    dynamic_comment = DynamicParagraph.objects.get(publication=publication, paragraph=num_paragraph)
+
+                    # Получаем комментарий в конспекте
+                    wc = WikiComments()
+                    wc.load_comments(dynamic_comment.comments)
+
+                    # Проверяем на "самодизлайк"
+                    if wc.get_user_id(id_comment) == cur_user.id_user:
+                        return HttpResponse('no', content_type='text/html')
+
+                    if comment_rating.type == "none":
+                        wc.down_rating(id_comment)
+                        comment_rating.type = "down"
+                        result = "down"
+                    elif comment_rating.type == "down":
+                        result = "none"
+                    elif comment_rating.type == "up":
+                        wc.down_rating(id_comment)
+                        comment_rating.type = "none"
+                        result = "down"
+
+                    dynamic_comment.comments = wc.get_xml_str()
+                    dynamic_comment.save()
+                    publication.save()
+                    comment_rating.save()
+
+                    return HttpResponse(result, content_type='text/html')
                 else:
                     return HttpResponse('no', content_type='text/html')
 
@@ -1102,7 +1182,9 @@ def get_comment_rating_down(request, id):
                 return get_error_page(request, ["User not found."])
             except Publication.DoesNotExist:
                 return get_error_page(request, ["Publication not found."])
-            except:
-                return HttpResponse('no', content_type='text/html')
+            except DynamicParagraph.DoesNotExist:
+                return get_error_page(request, ["DynamicParagraph not found."])
+            except Comment.DoesNotExist:
+                return get_error_page(request, ["Comment not found."])
     else:
         return HttpResponse('no', content_type='text/html')
