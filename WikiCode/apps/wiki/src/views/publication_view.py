@@ -970,3 +970,78 @@ def get_get_path_to_folder(request):
                 return HttpResponse('no', content_type='text/html')
     else:
         return HttpResponse('no', content_type='text/html')
+
+
+def get_comment_rating_up(request, id):
+    """ Повышение рейтинга у комментария """
+    if request.method == "GET":
+        # Проверяем, аутентифицирован ли пользователь
+        if get_user_id(request) == -1:
+            return HttpResponse('auth', content_type='text/html; charset=utf8')
+        else:
+            try:
+                # Получаем id комментария
+                id_comment = int(request.GET.get('id_comment'))
+                # Получаем пользователя
+                cur_user = User.objects.get(id_user=get_user_id(request))
+                # Получаем id конспекта
+                publication = Publication.objects.get(id_publication=id)
+                # Получаем место где лежит комментарий (main/dynamic)
+                location = request.GET.get('location')
+                if location == "main":
+                    # Получаем комментарий в конспекте
+                    wc = WikiComments()
+                    wc.load_comments(publication.main_comments)
+                    wc.up_rating(id_comment)
+                    publication.main_comments = wc.get_xml_str()
+                    publication.save()
+
+                    return HttpResponse('ok', content_type='text/html')
+                else:
+                    return HttpResponse('no', content_type='text/html')
+
+            except User.DoesNotExist:
+                return get_error_page(request, ["User not found."])
+            except Publication.DoesNotExist:
+                return get_error_page(request, ["Publication not found."])
+            except:
+                return HttpResponse('no', content_type='text/html')
+    else:
+        return HttpResponse('no', content_type='text/html')
+
+def get_comment_rating_down(request, id):
+    """ Повышение рейтинга у комментария """
+    if request.method == "GET":
+        # Проверяем, аутентифицирован ли пользователь
+        if get_user_id(request) == -1:
+            return HttpResponse('auth', content_type='text/html; charset=utf8')
+        else:
+            try:
+                # Получаем id комментария
+                id_comment = int(request.GET.get('id_comment'))
+                # Получаем пользователя
+                cur_user = User.objects.get(id_user=get_user_id(request))
+                # Получаем id конспекта
+                publication = Publication.objects.get(id_publication=id)
+                # Получаем место где лежит комментарий (main/dynamic)
+                location = request.GET.get('location')
+                if location == "main":
+                    # Получаем комментарий в конспекте
+                    wc = WikiComments()
+                    wc.load_comments(publication.main_comments)
+                    wc.down_rating(id_comment)
+                    publication.main_comments = wc.get_xml_str()
+                    publication.save()
+
+                    return HttpResponse('ok', content_type='text/html')
+                else:
+                    return HttpResponse('no', content_type='text/html')
+
+            except User.DoesNotExist:
+                return get_error_page(request, ["User not found."])
+            except Publication.DoesNotExist:
+                return get_error_page(request, ["Publication not found."])
+            except:
+                return HttpResponse('no', content_type='text/html')
+    else:
+        return HttpResponse('no', content_type='text/html')

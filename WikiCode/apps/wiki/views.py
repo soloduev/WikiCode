@@ -387,6 +387,20 @@ def get_path_to_folder_id(request, id):
     return publication_view.get_get_path_to_folder(request)
 
 
+# Получение полного пути к конспекту
+@develop_mode_id
+@login_required
+def comment_rating_up(request, id):
+    return publication_view.get_comment_rating_up(request, id)
+
+
+# Получение полного пути к конспекту
+@develop_mode_id
+@login_required
+def comment_rating_down(request, id):
+    return publication_view.get_comment_rating_down(request, id)
+
+
 # Перемещение конспекта
 @develop_mode
 @login_required

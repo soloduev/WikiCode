@@ -181,6 +181,62 @@ $("#edit_paragraph_wiki_tree_context").on("click", function () {
     });
 });
 
+// Событие клика кнопки "повысить рейтинг комментария"
+$('body').on('click', '.comment-rating-up', function(eventObject) {
+    var id_comment = '' + this.getAttribute('id_comment');
+
+    $.ajax({
+        type: "GET",
+        url: "comment_rating_up/",
+        data: {
+            'id_comment': id_comment,
+            'location': "main",
+        },
+        dataType: "text",
+        cache: false,
+        success: function (data) {
+            if (data == 'ok') {
+                location.reload();
+            }
+            else {
+                console.log("Don't up");
+            }
+        }
+    });
+});
+
+// Событие клика кнопки "повысить рейтинг комментария"
+$('body').on('click', '.comment-rating-down', function(eventObject) {
+    var id_comment = '' + this.getAttribute('id_comment');
+
+    $.ajax({
+        type: "GET",
+        url: "comment_rating_down/",
+        data: {
+            'id_comment': id_comment,
+            'location': "main",
+        },
+        dataType: "text",
+        cache: false,
+        success: function (data) {
+            if (data == 'ok') {
+                location.reload();
+            }
+            else {
+                console.log("Don't up");
+            }
+        }
+    });
+});
+
+// Событие клика кнопки "Понизить рейтинг комментария"
+$('body').on('click', '.comment-rating-down', function(eventObject) {
+    var id_comment = '' + this.getAttribute('id_comment');
+
+    console.log("DOWN", id_comment);
+});
+
+
 // Событие клика кнопки "ответить на комментарий". Устанавливает id, на какой комментарий необходимо ответить
 $('.main-comment-reply').click(function (eventObject) {
     $("#reply_id_user").val('' + this.getAttribute('id_comment'));

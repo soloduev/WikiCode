@@ -77,6 +77,8 @@ urlpatterns = [
     url(r'^page/(?P<id>[0-9]+)/add_star_publication/$', views.add_star_publication, name='add_star_publication'),
     url(r'^page/(?P<id>[0-9]+)/load_md/$', views.load_md, name='load_md'),
     url(r'^page/(?P<id>[0-9]+)/get_path_to_folder/$', views.get_path_to_folder_id, name='get_path_to_folder_save'),
+    url(r'^page/(?P<id>[0-9]+)/comment_rating_up/$', views.comment_rating_up, name='comment_rating_up'),
+    url(r'^page/(?P<id>[0-9]+)/comment_rating_down/$', views.comment_rating_down, name='comment_rating_down'),
 
     # События на странице пользователя
     url(r'^user/(?P<id>[0-9]+)/send_request_colleagues/$', views.send_request_colleagues, name='send_request_colleagues'),
