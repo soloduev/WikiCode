@@ -51,7 +51,7 @@
                     <div class="col-md-12 col-sm-12">
                         <div class="row btn-block">
                             <div class="col-md-12 col-sm-12 col-xs-12">
-                                <h3>Программирование на С++</h3>
+                                <h3>{{ group.title }}</h3>
                             </div>
                             <div class="col-md-3 col-sm-4 col-xs-4">
                                 <span><b>Статус:</b></span><br>
@@ -64,20 +64,20 @@
                                 <span><b>Дата создания:</b></span><br>
                             </div>
                             <div class="col-md-9 col-sm-8 col-xs-8">
-                                <span><i>Регистрация открыта</i></span><br>
-                                <span><i>Добро пожаловать на мой курс по разработке на C++!</i></span><br>
-                                <span><i>Игорь Солодуев</i></span><br>
-                                <span><i>С++, Многопоточность, Сеть</i></span><br>
-                                <span><i>14</i></span><br>
-                                <span><i>22</i></span><br>
-                                <span><i>76</i></span><br>
-                                <span><i>13.03.2017</i></span><br><br>
+                                <span><i>{{ group.title }}</i></span><br>
+                                <span><i>{{ group.status }}</i></span><br>
+                                <span><i>{{ author_nickname }}</i></span><br>
+                                <span><i>{{ tags }}</i></span><br>
+                                <span><i>{{ total_publs }}</i></span><br>
+                                <span><i>{{ total_members }}</i></span><br>
+                                <span><i>{{ group.rating }}</i></span><br>
+                                <span><i>{{ group.date }}</i></span><br><br>
                             </div>
                             <hr>
                         </div>
                     </div>
                 </div>
-                {% if not other_user %}
+                {% if is_author %}
                     <div class="row" style="border-top: 1px solid #d5d5d5;">
                         <br>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
@@ -89,10 +89,16 @@
                 {% else %}
                     <div class="row" style="border-top: 1px solid #d5d5d5;">
                         <br>
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-left">
-                            <span>Ваш статус: <b>Участник</b></span>
-                            <br><br>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                            <a class="btn btn-block" id="wiki-style-btn-user">Подать заявку на участие <i
+                                    class="fa fa-magic"></i></a>
                         </div>
+                    </div>
+                    <br>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-left">
+                        <br>
+                        <span>Ваш статус: <b>Участник</b></span>
+                        <br><br>
                     </div>
                 {% endif %}
                 <div class="row">
@@ -103,6 +109,9 @@
                                 <li><a href="#tab_default_2" data-toggle="tab">Конспекты</a></li>
                                 <li><a href="#tab_default_3" data-toggle="tab">Оглавление</a></li>
                                 <li><a href="#tab_default_4" data-toggle="tab">Участники</a></li>
+                                {% if is_author %}
+                                    <li><a href="#tab_default_5" data-toggle="tab">Управление</a></li>
+                                {% endif %}
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tab_default_1">
@@ -133,6 +142,15 @@
                                         </div>
                                     </div>
                                 </div>
+                                {% if is_author %}
+                                    <div class="tab-pane" id="tab_default_5">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <h4>Управление группой</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

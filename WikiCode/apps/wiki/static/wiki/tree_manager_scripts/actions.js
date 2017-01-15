@@ -42,6 +42,7 @@ $("#jstree")
         is_user_tree = true;
         is_saved_tree = false;
         selected_file_in_tree = data.selected;
+        $("#create-group-folder-id").val(selected_file_in_tree);
         $("#choose-folder-secret").val(selected_file_in_tree);
         $("#div_folder_name_input_for_global").attr("style", "display: none;");
         $("#panel_inputs").attr("style", "");
@@ -518,7 +519,7 @@ $("#jstree_fodlers")
     .on('changed.jstree', function (e, data) {
         var full_path = ''+data.selected;
         $("#move-publ-path-folder-input").val(full_path);
-        
+
         $.ajax({
             type: "GET",
             url: "get_path_to_folder/",

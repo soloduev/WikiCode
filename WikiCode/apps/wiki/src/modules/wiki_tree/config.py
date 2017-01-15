@@ -34,7 +34,7 @@ params = {
 
     # Возможные варианты типов папки
     # Folder Types Values
-    "FTV": {"personal", "saved"},
+    "FTV": {"personal", "saved", "group", "doc", "course", "org"},
 
     # Возможные варианты стилей папки
     # Folder Styles Values
