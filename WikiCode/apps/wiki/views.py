@@ -21,6 +21,7 @@
 from WikiCode.apps.wiki.src.views import index_view
 from WikiCode.apps.wiki.src.views import about_view
 from WikiCode.apps.wiki.src.views import publication_view
+from WikiCode.apps.wiki.src.views import group_view
 from WikiCode.apps.wiki.src.views import settings_view
 from WikiCode.apps.wiki.src.views import user_view
 from WikiCode.apps.wiki.src.views import registration_view
@@ -57,6 +58,12 @@ def create(request):
 @develop_mode_id
 def page(request, id):
     return publication_view.get_page(request, id)
+
+
+# Запрос страницы отдельного конспекта(page.html)
+@develop_mode_id
+def group(request, id):
+    return group_view.get_group(request, id)
 
 
 # Запрос страницы настроек зарегестрированного пользователя(settings.html)

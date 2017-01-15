@@ -1,0 +1,182 @@
+<!--
+    Copyright (C) 2016-2017 Igor Soloduev <diahorver@gmail.com>
+
+    This file is part of WikiCode.
+
+    WikiCode is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    WikiCode is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
+-->
+{% extends 'main.html' %}
+{% load bootstrap3 %}
+{% block page_name %}
+    <div class="container" style="margin-top: 50px;">
+        <div class="row">
+            <br>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <div id="main-block" class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-4 col-md-4">
+                <div class="row">
+                    <a id="a-tree-manager"><label
+                            class="text-center btn-primary btn-block">КОНСПЕКТЫ КУРСА</label></a>
+                </div>
+                <div class="row">
+                    <br><br><br><br>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-8 col-md-8"
+                 style="border-left: 1px solid #d5d5d5;
+                 min-height: 250px;">
+                <div class="row">
+                    <label class="text-center btn-primary btn-block">ИНФОРМАЦИЯ О КУРСЕ</label>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="row btn-block">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <h3>Программирование на С++</h3>
+                            </div>
+                            <div class="col-md-3 col-sm-4 col-xs-4">
+                                <h4><b>Статус:</b></h4>
+                                <h4><b>Описание:</b></h4>
+                                <h4><b>Автор:</b></h4>
+                                <h4><b>Теги:</b></h4>
+                                <h4><b>Конспектов:</b></h4>
+                                <h4><b>Участников:</b></h4>
+                                <h4><b>Рейтинг:</b></h4>
+                                <h4><b>Дата создания:</b></h4>
+                            </div>
+                            <div class="col-md-9 col-sm-8 col-xs-8">
+                                <h4><i>Регистрация открыта</i></h4>
+                                <h4><i>Добро пожаловать на мой курс по разработке на C++!</i></h4>
+                                <h4><i>Игорь Солодуев</i></h4>
+                                <h4><i>С++, Многопоточность, Сеть</i></h4>
+                                <h4><i>14</i></h4>
+                                <h4><i>22</i></h4>
+                                <h4><i>76</i></h4>
+                                <h4><i>13.03.2017</i></h4>
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+                {% if not other_user %}
+                    <div class="row" style="border-top: 1px solid #d5d5d5;">
+                        <br>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+                            <a class="btn btn-block" id="wiki-style-btn-user">Управление <i
+                                    class="fa fa-magic"></i></a>
+                            <br>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="row" style="border-top: 1px solid #d5d5d5;">
+                        <br>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-left">
+                            <span>Ваш статус: <b>Участник</b></span>
+                            <br><br>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="row">
+                    <div class="tabbable-panel">
+                        <div class="tabbable-line">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#tab_default_1" data-toggle="tab">Превью</a></li>
+                                <li><a href="#tab_default_2" data-toggle="tab">Конспекты</a></li>
+                                <li><a href="#tab_default_3" data-toggle="tab">Оглавление</a></li>
+                                <li><a href="#tab_default_4" data-toggle="tab">Ссылки</a></li>
+                                <li><a href="#tab_default_5" data-toggle="tab">Участники</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tab_default_1">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <h4>Здесь будет превью конспект группы.</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tab_default_2">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <h4>Здесь будут все последние конспекты группы</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tab_default_3">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <h4>Здесь будут все оглавления</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tab_default_4">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <h4>Здесь будут все ссылки</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tab_default_5">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <h4>Здесь будут все участники группы</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'wiki/highlight/styles/github.css' %}">
+    <script type="text/javascript" src="{% static 'wiki/highlight/highlight.pack.js' %}"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+{% endblock %}
+
+{% block add_script %}
+    {% load staticfiles %}
+    <script type="text/javascript" src="{% static 'wiki/wiki_scripts/group.js' %}"></script>
+    <script>
+        $(init);
+        {#        {% if prewiew_publ_text %}#}
+        {#            document.getElementById('wiki-code-prewiew-publ').innerHTML = marked("{{ prewiew_publ_text|escapejs }}");#}
+        {#            $("#wiki-code-preview-title").text("{{ prewiew_publ_title|escapejs }}");#}
+        {#            $("#wiki-style-btn-read-preview-publ").show();#}
+        {#            $("#wiki-style-btn-read-preview-publ").attr("href", "/page/{{ prewiew_publ_id|escapejs }}");#}
+        {#        {% else %}#}
+        {#            document.getElementById('wiki-code-prewiew-publ').innerHTML = "<h4>Пользователь не указал свой preview конспект</h4>";#}
+        {#            $("#wiki-code-preview-title").text("");#}
+        {#            $("#wiki-style-btn-read-preview-publ").hide();#}
+        {#        {% endif %}#}
+
+        /* Отображение обычного уведомления */
+        $.notify("{{ notify.text|escapejs }}",
+                {
+                    position: "right bottom",
+                    className: "{{ notify.type|escapejs }}",
+                    autoHideDelay: 8000
+                });
+    </script>
+{% endblock %}
