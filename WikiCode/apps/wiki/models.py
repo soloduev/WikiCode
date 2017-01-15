@@ -143,12 +143,17 @@ class Folder(models.Model):
 class Group(models.Model):
     id_group = models.BigIntegerField()
     id_author = models.BigIntegerField()
+    title = models.CharField(max_length=100)
+    status = models.TextField()
     type = models.CharField(max_length=50)  # Тип группы: Group, Course, Documentation, Organisation
     description = models.CharField(max_length=1500)
     members = models.TextField()    # Модуль тот же, что и permissions
     date_create = models.CharField(max_length=100)
     rating = models.BigIntegerField()
     tags = models.TextField()   # Модуль тегов который надо сделать
+
+    def __str__(self):
+        return str(self.id_group)
 
 
 # Модель в единственном экземпляре, для хранения статистики
