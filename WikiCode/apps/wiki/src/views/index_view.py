@@ -42,23 +42,10 @@ def get_index(request, notify=None):
 
     # Получаем только публичные конспекты
     all_publications = Publication.objects.filter(is_public=True)
-
-    # Срезаем конспекты, если их больше того количества, которое хотим вывести
-    if len(all_publications) > wiki_settings.COUNT_LAST_PUBL_SHOW:
-        position = len(all_publications) - wiki_settings.COUNT_LAST_PUBL_SHOW
-        all_publications = all_publications[position:]
-
-    # Делаем реверс конспектов
-    reverse_publications = []
-
-    for publ in reversed(all_publications):
-        reverse_publications.append(publ)
-
-    all_publications = reverse_publications
-
-    groups = Group.objects.all()
-
     paginator = Paginator(all_publications, 10)
+
+    # Получаем все группы
+    groups = Group.objects.all()
 
     page = request.GET.get('page')
 
@@ -71,7 +58,7 @@ def get_index(request, notify=None):
 
     context = {
         "all_publications": all_publications,
-        "publications": publications,
+        "publications": reversed(publications),
         "user_data": check_auth(request),
         "user_id": get_user_id(request),
         "groups": reversed(groups),
