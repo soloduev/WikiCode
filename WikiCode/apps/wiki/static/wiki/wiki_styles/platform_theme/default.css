@@ -555,6 +555,25 @@
     transition: all 0.5s ease 0s;
 }
 
+.box-wiki-group a
+{
+    color: #d99151;
+}
+
+.box-wiki-group a:hover
+{
+    color: #b6683d;
+}
+
+.box-wiki-group .wiki-tag
+{
+    border-color: #d99151;
+}
+
+.box-wiki-group .wiki-tag:hover
+{
+    background-color: #b6683d;
+}
 
 .box-wiki-course
 {
@@ -600,6 +619,49 @@
     transition: all 0.5s ease 0s;
 }
 
+.box-wiki-org
+{
+    border-radius: 0px;
+    border-left: 3px solid #dcdcdc;
+    padding: 10px 25px;
+    margin-bottom: 10px;
+    text-align: right;
+    display: block;
+    transition: all 0.5s ease 0s;
+    opacity: 0.8;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+.box-wiki-org a
+{
+    color: #3f46e1;
+}
+
+.box-wiki-org a:hover
+{
+    color: #7c95e1;
+}
+
+.box-wiki-org .wiki-tag
+{
+    border-color: #3f46e1;
+}
+
+.box-wiki-org .wiki-tag:hover
+{
+    background-color: #7c95e1;
+}
+
+.box-wiki-org:hover
+{
+    border-left: 3px solid #3f46e1;
+    padding: 10px 25px;
+    text-align: right;
+    display: block;
+    opacity: 1;
+    box-shadow: 0 6px 15px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    transition: all 0.5s ease 0s;
+}
 
 .info h4 {
     font-size: 26px;

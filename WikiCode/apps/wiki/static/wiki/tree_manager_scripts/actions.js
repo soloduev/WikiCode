@@ -83,10 +83,10 @@ $("#jstree")
                 "icon": "glyphicon glyphicon-check"
             },
             "group": {
-                "icon": "glyphicons glyphicon-group"
+                "icon": "glyphicon glyphicon-th"
             },
             "org": {
-                "icon": "glyphicons glyphicon-briefcase"
+                "icon": "glyphicon glyphicon-globe"
             },
             "course": {
                 "icon": "glyphicon glyphicon-education"
