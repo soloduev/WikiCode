@@ -94,7 +94,7 @@ def get_user(request, id, notify=None):
                     "other_user": False,
                     "new_notifications": Notification.objects.filter(id_addressee=user.id_user, is_read=False).count(),
                     "total_colleagues": Colleague.objects.filter(id_user=user.id_user).count(),
-                    "groups": groups,
+                    "groups": reversed(groups),
                     "notify": notify
                 }
 
@@ -157,7 +157,7 @@ def get_user(request, id, notify=None):
                 "other_user": True,
                 "is_colleague": is_colleague,
                 "is_send_colleague": is_send_colleague,
-                "groups": groups,
+                "groups": reversed(groups),
                 "notify": notify
             }
 

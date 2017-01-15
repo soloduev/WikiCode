@@ -20,7 +20,7 @@
 
 from django.shortcuts import render
 
-from WikiCode.apps.wiki.models import Publication
+from WikiCode.apps.wiki.models import Publication, Group
 from WikiCode.apps.wiki.settings import wiki_settings
 from .auth import check_auth
 from .auth import get_user_id
@@ -56,6 +56,8 @@ def get_index(request, notify=None):
 
     all_publications = reverse_publications
 
+    groups = Group.objects.all()
+
     paginator = Paginator(all_publications, 10)
 
     page = request.GET.get('page')
@@ -72,7 +74,8 @@ def get_index(request, notify=None):
         "publications": publications,
         "user_data": check_auth(request),
         "user_id": get_user_id(request),
-        "notify": notify
+        "groups": reversed(groups),
+        "notify": notify,
     }
 
     return render(request, 'wiki/index.html', context)
