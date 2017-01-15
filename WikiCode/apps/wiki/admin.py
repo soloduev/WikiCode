@@ -20,6 +20,7 @@
 from django.contrib import admin
 from .models import User
 from .models import Publication
+from .models import Group
 from .models import Statistics
 from .models import Viewing
 from .models import Developer
@@ -51,6 +52,7 @@ admin.site.unregister(DjangoUser)
 admin.site.register(DjangoUser, UserAdmin)
 
 admin.site.register(Publication)
+admin.site.register(Group)
 admin.site.register(Statistics)
 admin.site.register(Viewing)
 admin.site.register(Starring)
