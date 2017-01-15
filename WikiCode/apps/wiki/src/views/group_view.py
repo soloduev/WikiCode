@@ -47,7 +47,10 @@ def get_group(request, id, notify=None):
         # Получаем автора группы
         author = User.objects.get(id_user=group.id_author)
         # Получаем превью дерево группы
-
+        wft = WikiFileTree()
+        wft.load_tree(author.file_tree)
+        preview_tree = wft.to_html_preview_concrete_folder(id)
+        print("tree:", preview_tree)
         # Получаем все теги группы
 
         # Получаем всех участников группы
@@ -70,6 +73,7 @@ def get_group(request, id, notify=None):
                 "tags": "",
                 "total_publs": 0,
                 "total_members": 0,
+                "preview_tree": preview_tree
             }
 
             return render(request, 'wiki/group.html', context)
@@ -86,6 +90,7 @@ def get_group(request, id, notify=None):
                 "tags": "",
                 "total_publs": 0,
                 "total_members": 0,
+                "preview_tree": preview_tree
             }
 
             return render(request, 'wiki/group.html', context)

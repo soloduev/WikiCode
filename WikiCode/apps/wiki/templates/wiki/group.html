@@ -38,7 +38,16 @@
                             class="text-center btn-primary btn-block">КОНСПЕКТЫ КУРСА</label></a>
                 </div>
                 <div class="row">
-                    <br><br><br><br>
+                    {% if preview_tree == None %}
+                        <div class="col-xs-12 text-center">
+                            <label>Конспекты группы отсутствуют</label>
+                        </div>
+                    {% else %}
+                        <ul id="tree2">
+                            <!--Здесь должен располагаться сгенерированный html preview дерева-->
+                            {{ preview_tree|safe }}
+                        </ul>
+                    {% endif %}
                 </div>
             </div>
             <div class="col-xs-12 col-sm-8 col-md-8"
