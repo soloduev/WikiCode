@@ -50,7 +50,6 @@ def get_group(request, id, notify=None):
         wft = WikiFileTree()
         wft.load_tree(author.file_tree)
         preview_tree = wft.to_html_preview_concrete_folder(id)
-        print("tree:", preview_tree)
         # Получаем все теги группы
 
         # Получаем всех участников группы

@@ -82,6 +82,18 @@ $("#jstree")
             "test": {
                 "icon": "glyphicon glyphicon-check"
             },
+            "group": {
+                "icon": "glyphicons glyphicon-group"
+            },
+            "org": {
+                "icon": "glyphicons glyphicon-briefcase"
+            },
+            "course": {
+                "icon": "glyphicon glyphicon-education"
+            },
+            "doc": {
+                "icon": "glyphicon glyphicon-book"
+            },
         },
 
 
@@ -339,6 +351,15 @@ $("#open_publ_in_wiki_tree_context").click(function () {
     var id = ''+arr[1];
     location.href = '/page/'+id;
 });
+
+//Открыть группу. Действие их контекстного меню
+$("#show_wiki_group").click(function () {
+    var tree_path_str = ''+selected_file_in_tree;
+    var arr = tree_path_str.split(':');
+    var id = ''+arr[1];
+    location.href = '/group/'+id;
+});
+
 
 //Открыть настройки конспекта(панель управления конспектом) из контекстного меню
 $("#open_settings_publ_in_wiki_tree_context").click(function () {

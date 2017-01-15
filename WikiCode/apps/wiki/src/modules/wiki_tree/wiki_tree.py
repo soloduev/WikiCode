@@ -734,11 +734,23 @@ class WikiFileTree():
     def __append_dynamic_folder(self, folder, root):
         """Добавляет папку в нод"""
         li = ET.Element("li")
-        li.set('type_elem', 'folder')
+        if folder.get('type') != "personal" and folder.get('type') != "saved":
+            li.set('type_elem', 'group')
+        else:
+            li.set('type_elem', 'folder')
         li.set('class', 'task')
         li.set('data-id', 'folder:' + folder.get('id'))
         li.set('id', 'folder:' + folder.get('id'))
-        li.set('data-jstree', '{ "type" : "folder" }')
+        if folder.get('type') == "group":
+            li.set('data-jstree', '{ "type" : "group" }')
+        elif folder.get('type') == "doc":
+            li.set('data-jstree', '{ "type" : "doc" }')
+        elif folder.get('type') == "course":
+            li.set('data-jstree', '{ "type" : "course" }')
+        elif folder.get('type') == "org":
+            li.set('data-jstree', '{ "type" : "org" }')
+        else:
+            li.set('data-jstree', '{ "type" : "folder" }')
         li.text = folder.get('name')
         ul = ET.Element("ul")
         ul.text = " "

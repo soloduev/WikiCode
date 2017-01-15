@@ -160,6 +160,7 @@
           $("#lt-context-menu-8").attr("style", "display: none;");
           $("#lt-context-menu-9").attr("style", "display: none;");
           $("#lt-context-menu-10").attr("style", "display: none;");
+          $("#lt-context-menu-4-1").attr("style", "display: none;");
         }
         else if(type_elem == "folder"){
             //Это папка
@@ -170,6 +171,7 @@
             $("#lt-context-menu-1").attr("style", "display: none;");
             $("#lt-context-menu-6-1").attr("style", "display: none;");
             $("#lt-context-menu-10").attr("style", "display: none;");
+            $("#lt-context-menu-4-1").attr("style", "display: none;");
             //Показываем нужные
             $("#lt-context-menu-4").attr("style", "");
             $("#lt-context-menu-5").attr("style", "");
@@ -177,6 +179,25 @@
             $("#lt-context-menu-6").attr("style", "");
             $("#lt-context-menu-7").attr("style", "");
             $("#lt-context-menu-8").attr("style", "");
+            $("#lt-context-menu-9").attr("style", "");
+        }
+        else if(type_elem == "group"){
+            //Это группа
+            //Скрываем не нужные опции контекстного меню
+            $("#lt-context-menu-3").attr("style", "display: none;");
+            $("#lt-context-menu-3-0").attr("style", "display: none;");
+            $("#lt-context-menu-3-1").attr("style", "display: none;");
+            $("#lt-context-menu-1").attr("style", "display: none;");
+            $("#lt-context-menu-5-5").attr("style", "display: none;");
+            $("#lt-context-menu-6-1").attr("style", "display: none;");
+            $("#lt-context-menu-10").attr("style", "display: none;");
+            $("#lt-context-menu-8").attr("style", "display: none;");
+            //Показываем нужные
+            $("#lt-context-menu-4-1").attr("style", "");
+            $("#lt-context-menu-4").attr("style", "");
+            $("#lt-context-menu-5").attr("style", "");
+            $("#lt-context-menu-6").attr("style", "");
+            $("#lt-context-menu-7").attr("style", "");
             $("#lt-context-menu-9").attr("style", "");
         }
         else if(type_elem == "saved") {
@@ -188,6 +209,7 @@
           //Скрываем не нужные опции контекстного меню
           $("#lt-context-menu-3").attr("style", "display: none;");
           $("#lt-context-menu-3-1").attr("style", "display: none;");
+          $("#lt-context-menu-4-1").attr("style", "display: none;");
           $("#lt-context-menu-4").attr("style", "display: none;");
           $("#lt-context-menu-5").attr("style", "display: none;");
           $("#lt-context-menu-6").attr("style", "display: none;");
