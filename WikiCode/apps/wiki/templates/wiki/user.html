@@ -160,7 +160,7 @@
                                 <li class="active"><a href="#tab_default_1" data-toggle="tab">Превью конспект </a></li>
                                 <li><a href="#tab_default_2" data-toggle="tab">Лучшие </a></li>
                                 <li><a href="#tab_default_3" data-toggle="tab">Последние </a></li>
-                                <li><a href="#tab_default_4" data-toggle="tab">Курсы </a></li>
+                                <li><a href="#tab_default_4" data-toggle="tab">Группы </a></li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tab_default_1">
@@ -249,10 +249,33 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="tab_default_4">
-                                    <p></p>
-                                    <h4>Здесь будут располагаться все подписки пользователя</h4>
-                                    <p></p>
-                                    <h4>Курсы, в которых участвует пользователь или документация, которую сохранил</h4>
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            {% for group in groups %}
+                                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                                <div {% if group.type == "Группа" %}class="box-wiki-group"
+                                                     {% elif group.type == "Курс" %}class="box-wiki-course"
+                                                     {% else %}class="box"{% endif %}>
+                                                    <div class="info">
+                                                        <a style="text-decoration: none; cursor: pointer;"
+                                                           href="/group/{{ group.id_group }}/"><div style="font-size: 12pt;"
+                                                                class="text-left"><span class="glyphicon glyphicon-education"></span> {{ group.title }}</div></a>
+                                                        <div class="publ-tags text-left">
+                                                            <span class="wiki-tag">Tag1</span>
+                                                            <span class="wiki-tag">Tag2</span>
+                                                        </div>
+                                                        <p style="font-size: 10pt;">{{ group.description }}</p>
+                                                        <div class="btn-group">
+                                                            <button id="likes_publ" href="" class="btn btn-sm btn-default">
+                                                                <span class="glyphicon glyphicon-star"></span> {{ group.rating }}
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

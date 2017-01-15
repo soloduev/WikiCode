@@ -25,7 +25,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 
-from WikiCode.apps.wiki.models import Publication
+from WikiCode.apps.wiki.models import Publication, Group
 from WikiCode.apps.wiki.models import Statistics
 from WikiCode.apps.wiki.models import Colleague
 from WikiCode.apps.wiki.models import Notification
@@ -77,6 +77,8 @@ def get_user(request, id, notify=None):
             # Получаем все лучшие конспекты пользователя
             top_publications = Publication.objects.filter(id_author=id).order_by('stars')
 
+            # Получаем все группы пользователя
+            groups = Group.objects.filter(id_author=id)
 
             if user_id != -1:
                 context = {
@@ -92,6 +94,7 @@ def get_user(request, id, notify=None):
                     "other_user": False,
                     "new_notifications": Notification.objects.filter(id_addressee=user.id_user, is_read=False).count(),
                     "total_colleagues": Colleague.objects.filter(id_user=user.id_user).count(),
+                    "groups": groups,
                     "notify": notify
                 }
 
@@ -138,6 +141,9 @@ def get_user(request, id, notify=None):
             # Получаем все лучшие конспекты пользователя
             top_publications = Publication.objects.filter(id_author=id, is_public=True).order_by('stars')
 
+            # Получаем все группы пользователя
+            groups = Group.objects.filter(id_author=id)
+
             context = {
                 "user_data": user_data,
                 "user_id": get_user_id(request),
@@ -151,6 +157,7 @@ def get_user(request, id, notify=None):
                 "other_user": True,
                 "is_colleague": is_colleague,
                 "is_send_colleague": is_send_colleague,
+                "groups": groups,
                 "notify": notify
             }
 
