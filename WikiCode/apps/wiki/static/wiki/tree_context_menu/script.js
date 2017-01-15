@@ -154,6 +154,7 @@
           //Скрываем не нужные опции контекстного меню
           $("#lt-context-menu-4").attr("style", "display: none;");
           $("#lt-context-menu-5").attr("style", "display: none;");
+          $("#lt-context-menu-5-5").attr("style", "display: none;");
           $("#lt-context-menu-6").attr("style", "display: none;");
           $("#lt-context-menu-7").attr("style", "display: none;");
           $("#lt-context-menu-8").attr("style", "display: none;");
@@ -172,6 +173,7 @@
             //Показываем нужные
             $("#lt-context-menu-4").attr("style", "");
             $("#lt-context-menu-5").attr("style", "");
+            $("#lt-context-menu-5-5").attr("style", "");
             $("#lt-context-menu-6").attr("style", "");
             $("#lt-context-menu-7").attr("style", "");
             $("#lt-context-menu-8").attr("style", "");
