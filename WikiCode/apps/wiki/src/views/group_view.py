@@ -54,3 +54,12 @@ def get_group(request, id, notify=None):
         }
 
         return render(request, 'wiki/group.html', context)
+
+
+def create_group(request):
+
+    context = {
+
+    }
+
+    return render(request, 'wiki/group.html', context)

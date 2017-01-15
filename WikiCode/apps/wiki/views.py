@@ -415,6 +415,13 @@ def move_publication(request):
     return tree_view.get_move_publication(request)
 
 
+# Перемещение конспекта
+@develop_mode
+@login_required
+def create_group(request):
+    return group_view.create_group(request)
+
+
 
 
 
