@@ -75,7 +75,7 @@
                             <div class="col-md-9 col-sm-8 col-xs-8">
                                 <span><i>{{ group.title }}</i></span><br>
                                 <span><i>{{ group.status }}</i></span><br>
-                                <span><i>{{ author_nickname }}</i></span><br>
+                                <span><i><a href="/user/{{ group.id_author }}/" style="text-decoration: none;">{{ author_nickname }}</a></i></span><br>
                                 <span><i>{{ tags }}</i></span><br>
                                 <span><i>{{ total_publs }}</i></span><br>
                                 <span><i>{{ total_members }}</i></span><br>
@@ -87,14 +87,7 @@
                     </div>
                 </div>
                 {% if is_author %}
-                    <div class="row" style="border-top: 1px solid #d5d5d5;">
-                        <br>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                            <a class="btn btn-block" id="wiki-style-btn-user">Управление <i
-                                    class="fa fa-magic"></i></a>
-                            <br>
-                        </div>
-                    </div>
+
                 {% else %}
                     <div class="row" style="border-top: 1px solid #d5d5d5;">
                         <br>
