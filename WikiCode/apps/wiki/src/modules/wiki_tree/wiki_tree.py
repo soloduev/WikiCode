@@ -27,7 +27,7 @@ from WikiCode.apps.wiki.src.modules.wiki_tree.config import params as CONFIG
 
 class WikiFileTree():
     """
-    :VERSION: 0.30
+    :VERSION: 0.31
     Класс для работы с файловым деревом на платформе WIKICODE.
     Файловое дерево педставляет из себя структуированный xml файл.
     Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -555,6 +555,57 @@ class WikiFileTree():
             return result_str
         else:
             return None
+
+    # Variant 1
+    def to_html_preview_concrete_folder(self, id_folder: int, only_public=False) -> str:
+        """Возвращает html превью не всего дерева, а конкретной папки.
+        Необходимо для генерации html дерева для групп.
+        С доп. параметром only_public - вернет html только с публичными конспектами """
+        if self.__xml_tree is not None:
+            # Узнаем количество папок в дереве
+            if not self.get_num_root_folders():
+                return None
+            # Получаем корневой элемент текущего дерева
+            root = ET.fromstring(self.__xml_tree)
+            # Получаем необходимую папку и проходим по ней
+            folders = root.findall('.//folder[@id="'+ str(id_folder) +'"]')
+            root = ET.Element("root")
+            for folder in folders:
+                # Вызываем рекурсивный метод обработки папки
+                self.__append_folder(folder, root, only_public)
+
+            # Форматируем xml в строку
+            result_str = self.__format_xml(ET.tostring(root))
+            # Убираем xml decloration
+            result_str = result_str.replace('<?xml version="1.0" ?>\n', '')
+            # Убираем корневой вспомагательный элемент
+            result_str = result_str.replace('<root>\n', '')
+            result_str = result_str.replace('</root>\n', '')
+
+            # И перед возвратом, убираем 3 первые и последние строки для того чтобы не отображать саму папку.
+            # Если там меньше 5 строк, возвращаем None
+            if result_str.count('\n') <= 5:
+                return None
+
+            count_br = 0
+            for i in range(0, len(result_str)):
+                if result_str[i] == '\n':
+                    count_br += 1
+                if count_br == 3:
+                    result_str = result_str[i:len(result_str)]
+                    break
+            count_br = 0
+            for i in range(0, len(result_str)):
+                if result_str[len(result_str) - i - 1] == '\n':
+                    count_br += 1
+                if count_br == 3:
+                    result_str = result_str[0:len(result_str) - i - 1]
+                    break
+
+            return result_str
+        else:
+            return None
+
 
     # WORK WITH ELEMENTS
 
