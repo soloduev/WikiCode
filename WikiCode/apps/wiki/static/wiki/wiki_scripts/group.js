@@ -16,3 +16,16 @@
  You should have received a copy of the GNU Affero General Public License
  along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+
+// Работа с настройками конспекта
+$('#show-status-group').switchable();
+$('#show-description-group').switchable();
+$('#show-tags-group').switchable();
+$('#show-total-publs-group').switchable();
+$('#show-total-members-group').switchable();
+$('#show-rating-group').switchable();
+$('#show-date-group').switchable();
+$('#show-conents-group').switchable();
+$('#show-preview-tree-group').switchable();
+$('#show-members-group').switchable();
