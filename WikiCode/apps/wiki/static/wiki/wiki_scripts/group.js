@@ -17,7 +17,6 @@
  along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 // Работа с настройками конспекта
 $('#show-status-group').switchable();
 $('#show-description-group').switchable();

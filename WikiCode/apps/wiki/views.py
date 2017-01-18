@@ -422,6 +422,12 @@ def create_group(request):
     return group_view.create_group(request)
 
 
+# Сохранение основных настроек группы
+@develop_mode_id
+@login_required
+def save_group(request, id):
+    return group_view.get_save_group(request, id)
+
 
 
 

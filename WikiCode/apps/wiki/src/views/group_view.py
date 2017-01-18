@@ -111,7 +111,6 @@ def create_group(request):
         else:
             try:
                 # Получаем все значения с формы
-
                 title_group = request.POST.get("title-group")
                 type_group = request.POST.get("type-group")
                 description_group = request.POST.get("description-group")
@@ -178,3 +177,29 @@ def create_group(request):
                 return get_error_page(request, ["User not found!"])
     else:
         return get_error_page(request, ["Error in create_group."])
+
+
+
+def get_save_group(request, id):
+    """ Сохранение настроек группы """
+    if request.method == "POST":
+        # Проверяем, аутентифицирован ли пользователь
+        if get_user_id(request) == -1:
+            return HttpResponse('no', content_type='text/html')
+        else:
+            try:
+                # Получаем все значения с формы
+                title_group = request.POST.get("title-group")
+                type_group = request.POST.get("type-group")
+                description_group = request.POST.get("description-group")
+                permission_group = request.POST.get("permission-group")
+                status_group = request.POST.get("status-group")
+                # preview_publ_id = int(request.POST.get("preview-publ-group").split(":")[1])
+
+                print(title_group, type_group, description_group, permission_group, status_group)
+
+                return get_group(request, id)
+            except:
+                get_error_page(request, ["Error in save_group."])
+    else:
+        return get_error_page(request, ["Error in save_group."])
