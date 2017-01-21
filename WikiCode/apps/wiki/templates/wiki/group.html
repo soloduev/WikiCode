@@ -127,7 +127,11 @@
                                 <div class="tab-pane active" id="tab_default_1">
                                     <div class="container-fluid">
                                         <div class="row">
-                                            <h4>Здесь будет превью конспект группы.</h4>
+                                            <div class="col-md-12 col-xs-12">
+                                                <div id="wiki-code-preview-publ">
+                                                    <!--Здесь должен располагаться сгенерированный превью-конспект-->
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -196,10 +200,32 @@
                                                                                 <h4>Путь к превью конспекту группы</h4>
                                                                             </div>
                                                                             <div class="col-xs-10">
-                                                                                <input name="preview-publ-group" type="text" class="form-control btn-block" placeholder="Укажите путь к папке..." style="height: 30px; font-family: Courier; border-radius: 0px;"/>
+                                                                                <input id="preview-publ-path-show" type="text" class="form-control btn-block" value="{{ preview_publ_path }}" placeholder="Укажите путь к папке..." style="height: 30px; font-family: Courier; border-radius: 0px;"/>
+                                                                                <input hidden id="preview-publ-path" type="text" name="preview-publ-group" value="{{ preview_publ_path_value }}"/>
                                                                             </div>
                                                                             <div class="col-xs-2">
                                                                                 <button id="choose-preview-publ-btn" type="button" class="btn btn-default btn-block" style="height: 30px; border-radius: 0px;"><i class="fa fa-folder-open-o">...</i></button>
+                                                                            </div>
+                                                                            <div class="col-xs-12">
+                                                                                <div id="div-choose-preview-publ-group"
+                                                                                     style="display: none;border: 1px solid #ececec;background-color: #ffffff;box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.70), 0 2px 10px 0 rgba(0, 0, 0, 0.12);">
+                                                                                    <div class="row">
+                                                                                        <div class="col-xs-12  text-right">
+                                                                                            <a id="close-choose-preview-publ-group" type="button" class="btn btn-default"
+                                                                                               style="height: 30px; border: 0px solid white;border-radius: 0px;"><i
+                                                                                                    class="fa fa-remove"></i></a>
+                                                                                        </div>
+                                                                                        <div class="col-xs-12"></div>
+                                                                                    </div>
+                                                                                    <div id="jstree">
+                                                                                        <div class="text-center"><h4>Конспекты Вашей группы</h4></div>
+                                                                                        <ul>
+                                                                                            <!--Здесь должен располагаться сгенерированный html код, для динамического дерева с одними папками-->
+                                                                                            {{ dynamic_tree|safe }}
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                    <hr>
+                                                                                </div>
                                                                             </div>
                                                                             <br>
                                                                             <div class="col-xs-12 text-right">
@@ -328,20 +354,20 @@
 
 {% block add_script %}
     {% load staticfiles %}
+    <script src={% static "wiki/jsTree/jstree.min.js" %}></script>
     <script type="text/javascript" src="{% static 'wiki/wiki_scripts/group.js' %}"></script>
+    <link href={% static "wiki/jsTree/themes/default/style.min.css" %} rel="stylesheet" >
     <link href={% static "wiki/bootstrapfiles/css/bootsrtap-vertical.css" %} type="text/css" rel="stylesheet">
     <script>
         $(init);
-        {#        {% if prewiew_publ_text %}#}
-        {#            document.getElementById('wiki-code-prewiew-publ').innerHTML = marked("{{ prewiew_publ_text|escapejs }}");#}
-        {#            $("#wiki-code-preview-title").text("{{ prewiew_publ_title|escapejs }}");#}
-        {#            $("#wiki-style-btn-read-preview-publ").show();#}
-        {#            $("#wiki-style-btn-read-preview-publ").attr("href", "/page/{{ prewiew_publ_id|escapejs }}");#}
-        {#        {% else %}#}
-        {#            document.getElementById('wiki-code-prewiew-publ').innerHTML = "<h4>Пользователь не указал свой preview конспект</h4>";#}
-        {#            $("#wiki-code-preview-title").text("");#}
-        {#            $("#wiki-style-btn-read-preview-publ").hide();#}
-        {#        {% endif %}#}
+                {% if preview_publ_text %}
+                    document.getElementById('wiki-code-preview-publ').innerHTML = marked("{{ preview_publ_text|escapejs }}");
+                    $("#wiki-style-btn-read-preview-publ").show();
+                    $("#wiki-style-btn-read-preview-publ").attr("href", "/page/{{ preview_publ_id|escapejs }}");
+                {% else %}
+                    document.getElementById('wiki-code-preview-publ').innerHTML = "<h4>В группе не указан превью конспект</h4>";
+                    $("#wiki-style-btn-read-preview-publ").hide();
+                {% endif %}
 
         /* Отображение обычного уведомления */
         $.notify("{{ notify.text|escapejs }}",

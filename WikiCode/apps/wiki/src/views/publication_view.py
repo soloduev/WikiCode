@@ -958,7 +958,7 @@ def get_load_md(request, id):
 
 
 def get_get_path_to_folder(request):
-    """ Получение полного пути к конспекту """
+    """ Получение полного пути к папке """
     if request.method == "GET":
         # Проверяем, аутентифицирован ли пользователь
         if get_user_id(request) == -1:
@@ -978,6 +978,37 @@ def get_get_path_to_folder(request):
 
                 if folder_path is not None:
                     return HttpResponse(folder_path, content_type='text/html')
+                else:
+                    return HttpResponse('no', content_type='text/html')
+            except User.DoesNotExist:
+                return get_error_page(request, ["User not found."])
+            except:
+                return HttpResponse('no', content_type='text/html')
+    else:
+        return HttpResponse('no', content_type='text/html')
+
+
+def get_get_path_to_publ(request, id):
+    """ Получение полного пути к конспекту """
+    if request.method == "GET":
+        # Проверяем, аутентифицирован ли пользователь
+        if get_user_id(request) == -1:
+            return HttpResponse('auth', content_type='text/html; charset=utf8')
+        else:
+            # Если пользователь аутентифицирован то, начинаем получать все изменения
+            try:
+                # Получаем конспект, к которой необходимо получить путь
+                id_publ = int(request.GET.get('id_publ'))
+                # Получаем пользователя
+                cur_user = User.objects.get(id_user=get_user_id(request))
+
+                # Получаем путь к конспекту
+                wft = WikiFileTree()
+                wft.load_tree(cur_user.file_tree)
+                publ_path = wft.get_path_publ(id_publ)
+
+                if publ_path is not None:
+                    return HttpResponse(publ_path, content_type='text/html')
                 else:
                     return HttpResponse('no', content_type='text/html')
             except User.DoesNotExist:

@@ -19,8 +19,8 @@
 import datetime
 
 from django.http import HttpResponse
-from django.shortcuts import render
-from WikiCode.apps.wiki.models import Group, User
+from django.shortcuts import render, redirect
+from WikiCode.apps.wiki.models import Group, User, Publication
 from WikiCode.apps.wiki.src.modules.wiki_permissions.wiki_permissions import WikiPermissions
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
 from WikiCode.apps.wiki.src.views.auth import check_auth, get_user_id
@@ -50,12 +50,29 @@ def get_group(request, id, notify=None):
         wft = WikiFileTree()
         wft.load_tree(author.file_tree)
         preview_tree = wft.to_html_preview_concrete_folder(id)
+        # Получаем файловое дерево для выбора превью конспекта
+        dynamic_tree = wft.to_html_dynamic_concrete_folder(id)
+        # Получаем путь к превью конспекту если он есть
+        if group.preview_publ_id != -1:
+            preview_publ_path = wft.get_path_publ(group.preview_publ_id)
+            preview_publ_path_value = "publ:" + str(group.preview_publ_id)
+        else:
+            preview_publ_path = ""
+            preview_publ_path_value = ""
         # Получаем все теги группы
 
         # Получаем всех участников группы
 
         # Получаем превью конспект группы
-
+        preview_publ_text = None
+        preview_publ_id = None
+        try:
+            if group.preview_publ_id != -1:
+                preview_publ = Publication.objects.get(id_publication=group.preview_publ_id)
+                preview_publ_text = preview_publ.text
+                preview_publ_id = preview_publ.id_publication
+        except Publication.DoesNotExist:
+            pass
         # Получаем оглавление группы
 
         # Получаем список последних конспектов группы
@@ -72,7 +89,12 @@ def get_group(request, id, notify=None):
                 "tags": "",
                 "total_publs": 0,
                 "total_members": 0,
-                "preview_tree": preview_tree
+                "preview_tree": preview_tree,
+                "dynamic_tree": dynamic_tree,
+                "preview_publ_text": preview_publ_text,
+                "preview_publ_id": preview_publ_id,
+                "preview_publ_path": preview_publ_path,
+                "preview_publ_path_value": preview_publ_path_value
             }
 
             return render(request, 'wiki/group.html', context)
@@ -89,7 +111,12 @@ def get_group(request, id, notify=None):
                 "tags": "",
                 "total_publs": 0,
                 "total_members": 0,
-                "preview_tree": preview_tree
+                "preview_tree": preview_tree,
+                "dynamic_tree": dynamic_tree,
+                "preview_publ_text": preview_publ_text,
+                "preview_publ_id": preview_publ_id,
+                "preview_publ_path": preview_publ_path,
+                "preview_publ_path_value": preview_publ_path_value
             }
 
             return render(request, 'wiki/group.html', context)
@@ -194,12 +221,27 @@ def get_save_group(request, id):
                 description_group = request.POST.get("description-group")
                 permission_group = request.POST.get("permission-group")
                 status_group = request.POST.get("status-group")
-                # preview_publ_id = int(request.POST.get("preview-publ-group").split(":")[1])
+                preview_publ_id = request.POST.get("preview-publ-group")
+                if preview_publ_id:
+                    preview_publ_id = int(preview_publ_id.split(":")[1])
+                else:
+                    preview_publ_id = -1
 
-                print(title_group, type_group, description_group, permission_group, status_group)
+                # Получаем текущую группу и применяем настройки
+                cur_group = Group.objects.get(id_group=id)
 
-                return get_group(request, id)
+                cur_group.title = title_group if title_group.strip() != "" else cur_group.title
+                cur_group.type = type_group
+                cur_group.description = description_group
+                cur_group.status = status_group
+                cur_group.preview_publ_id = preview_publ_id
+
+                cur_group.save()
+
+                return redirect('/group/' + str(id) + '/')
+            except Group.DoesNotExist:
+                return get_error_page(request, ["Group is not found."])
             except:
-                get_error_page(request, ["Error in save_group."])
+                return get_error_page(request, ["Error in save_group."])
     else:
         return get_error_page(request, ["Error in save_group."])

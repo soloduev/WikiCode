@@ -151,6 +151,7 @@ class Group(models.Model):
     date_create = models.CharField(max_length=100)
     rating = models.BigIntegerField()
     tags = models.TextField()   # Модуль тегов который надо сделать
+    preview_publ_id = models.BigIntegerField(blank=True)
 
     def __str__(self):
         return str(self.id_group)

@@ -449,6 +449,26 @@ class WikiFileTree():
                     return result
             return None
 
+    def get_path_publ(self, id_publ: int) -> str:
+        """ Возвращает красивый путь к конспекту. Принимает id конспекта.
+        Если такого конспекта нет, возвращает None. """
+        if self.__xml_tree is not None and type(id_publ) == int:
+            # Получаем корневой элемент текущего дерева
+            root = etree.fromstring(self.__xml_tree)
+
+            for e in root.iter():
+                if str(e.tag) == "publication" and str(e.get('id')) == str(id_publ):
+                    result = e.get('name')
+                    while True:
+                        try:
+                            tag = e.getparent().tag
+                            result = e.getparent().get('name') + "/" + result
+                            e = e.getparent()
+                        except:
+                            break
+                    return result
+            return None
+
 
     # TODO: Реализовать. Может, когда-нибудь пригодится для отладки
     def print_xml_folder(self, id: int) -> None:
@@ -497,6 +517,51 @@ class WikiFileTree():
             # Убираем корневой вспомагательный элемент
             result_str = result_str.replace('<root>\n', '')
             result_str = result_str.replace('</root>\n', '')
+
+            return result_str
+        else:
+            return ""
+
+    # Variant 1
+    def to_html_dynamic_concrete_folder(self, id_folder: int) -> str:
+        """Возвращает html динамического дерева для конкретной папки"""
+        if self.__xml_tree is not None:
+            # Получаем корневой элемент текущего дерева
+            root = ET.fromstring(self.__xml_tree)
+            # Получаем все папки в корне и проходим по ним
+            folders = root.findall('.//folder[@id="'+ str(id_folder) +'"]')
+            root = ET.Element("root")
+            for folder in folders:
+                # Вызываем рекурсивный метод обработки папки
+                self.__append_dynamic_folder(folder, root)
+
+            # Форматируем xml в строку
+            result_str = self.__format_xml(ET.tostring(root))
+            # Убираем xml decloration
+            result_str = result_str.replace('<?xml version="1.0" ?>\n', '')
+            # Убираем корневой вспомагательный элемент
+            result_str = result_str.replace('<root>\n', '')
+            result_str = result_str.replace('</root>\n', '')
+
+            # И перед возвратом, убираем 3 первые и последние строки для того чтобы не отображать саму папку.
+            # Если там меньше 5 строк, возвращаем None
+            if result_str.count('\n') <= 5:
+                return None
+
+            count_br = 0
+            for i in range(0, len(result_str)):
+                if result_str[i] == '\n':
+                    count_br += 1
+                if count_br == 3:
+                    result_str = result_str[i:len(result_str)]
+                    break
+            count_br = 0
+            for i in range(0, len(result_str)):
+                if result_str[len(result_str) - i - 1] == '\n':
+                    count_br += 1
+                if count_br == 3:
+                    result_str = result_str[0:len(result_str) - i - 1]
+                    break
 
             return result_str
         else:
