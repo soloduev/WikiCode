@@ -227,20 +227,47 @@ def get_save_group(request, id):
                 else:
                     preview_publ_id = -1
 
+                # Получаем текущего пользователя
+                cur_user = User.objects.get(id_user=get_user_id(request))
+
+                # Загружаем файловое дерево пользователя
+                wft = WikiFileTree()
+                wft.load_tree(cur_user.file_tree)
+
                 # Получаем текущую группу и применяем настройки
                 cur_group = Group.objects.get(id_group=id)
 
                 cur_group.title = title_group if title_group.strip() != "" else cur_group.title
                 cur_group.type = type_group
+
+                # Конвертация типа папки
+                if type_group == "Группа":
+                    type_group = "group"
+                elif type_group == "Документация":
+                    type_group = "doc"
+                elif type_group == "Курс":
+                    type_group = "course"
+                elif type_group == "Организация":
+                    type_group = "org"
+
+                # Меняем тип папки
+                wft.retype_folder(id, type_group)
+
+                # Сохраняем все изменения
+                cur_user.file_tree = wft.get_xml_str()
+
                 cur_group.description = description_group
                 cur_group.status = status_group
                 cur_group.preview_publ_id = preview_publ_id
 
                 cur_group.save()
+                cur_user.save()
 
                 return redirect('/group/' + str(id) + '/')
             except Group.DoesNotExist:
                 return get_error_page(request, ["Group is not found."])
+            except User.DoesNotExist:
+                return get_error_page(request, ["User is not found."])
             except:
                 return get_error_page(request, ["Error in save_group."])
     else:
