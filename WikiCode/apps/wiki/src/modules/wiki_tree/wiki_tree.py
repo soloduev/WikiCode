@@ -27,7 +27,7 @@ from WikiCode.apps.wiki.src.modules.wiki_tree.config import params as CONFIG
 
 class WikiFileTree():
     """
-    :VERSION: 0.31
+    :VERSION: 0.32
     Класс для работы с файловым деревом на платформе WIKICODE.
     Файловое дерево педставляет из себя структуированный xml файл.
     Данный класс предоставляет удобное API, которое в зависимости от нужд пользователя, будет модернизировать его дерево.
@@ -469,31 +469,20 @@ class WikiFileTree():
                     return result
             return None
 
+    def get_publications_id(self, id_folder: int) -> []:
+        """ Возвращает список всех id конспектов, в указанной папке """
+        if self.__xml_tree is not None and type(id_folder) == int:
+            # Получаем корневой элемент текущего дерева
+            root = etree.fromstring(self.__xml_tree)
 
-    # TODO: Реализовать. Может, когда-нибудь пригодится для отладки
-    def print_xml_folder(self, id: int) -> None:
-        """Выводит xml папки"""
-        pass
-
-    # TODO: Реализовать. Может, когда-нибудь пригодится для отладки
-    def print_xml_publication(self, id: int) -> None:
-        """Выводит xml конспекта"""
-        pass
-
-    # TODO: Реализовать. Может, когда-нибудь пригодится для отладки
-    def print(self) -> None:
-        """Красиво выводит все дерево"""
-        pass
-
-    # TODO: Реализовать. Может, когда-нибудь пригодится для отладки
-    def print_folder(self, id: int) -> None:
-        """Красиво выводит всю папку"""
-        pass
-
-    # TODO: Реализовать. Может, когда-нибудь пригодится для отладки
-    def print_publication(self, id: int) -> None:
-        """Красиво выводт конспект"""
-        pass
+            for e in root.iter():
+                if str(e.tag) == "folder" and str(e.get('id')) == str(id_folder):
+                    result = []
+                    for elem in e.iter():
+                        if str(elem.tag) == "publication":
+                            result.append(int(elem.get('id')))
+                    return result
+            return []
 
     # WORK WITH CONVERTING
 

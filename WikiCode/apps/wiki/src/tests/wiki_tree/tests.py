@@ -21,8 +21,8 @@
 
 from WikiCode.apps.wiki.src.modules.wiki_tree import wiki_tree as wt_test
 
-# Version:       0.025
-# Total Tests:   32
+# Version:       0.026
+# Total Tests:   33
 
 
 class WikiTreeTest(object):
@@ -843,6 +843,52 @@ class WikiTreeTest(object):
                 self.__add_error("32", "get_path_folder error!")
 
         test_32(self)
+
+        # -------------------------------------
+        # Проверяем функцию получения списка конспектов в папке
+        def test_33(self):
+            print("WikiFileTree: " + test_33.__name__)
+
+            wft = wt_test.WikiFileTree()
+            wft.create_tree(1)
+
+            wft.create_folder(id=1, access="public", type="saved", name="Уроки по С++", style="green", view="open",
+                              id_folder=-1)
+            wft.create_publication(42, "Новый урок", "public", "personal", 1)
+            wft.create_publication(43, "Новый урок", "public", "personal", 1)
+
+            wft.create_folder(id=2, access="private", type="saved", name="Основы", style="green", view="open",
+                              id_folder=1)
+            wft.create_publication(44, "Новый урок", "public", "personal", 2)
+            wft.create_publication(45, "Новый урок", "public", "personal", 2)
+
+            wft.create_folder(id=3, access="public", type="saved", name="Первый урок", style="green", view="open",
+                              id_folder=2)
+            wft.create_publication(46, "Новый урок", "public", "personal", 3)
+            wft.create_publication(47, "Новый урок", "public", "personal", 3)
+            wft.create_publication(48, "Новый урок", "public", "personal", 1)
+
+            wft.create_folder(id=4, access="public", type="saved", name="Уроки по Java", style="green", view="open",
+                              id_folder=-1)
+            wft.create_folder(id=5, access="public", type="saved", name="Многопоточность", style="green", view="open",
+                              id_folder=4)
+            wft.create_folder(id=6, access="public", type="saved", name="GUI", style="green", view="open",
+                              id_folder=4)
+            wft.create_publication(50, "Новый урок2", "public", "personal", 4)
+
+            stats = set()
+
+            stats.add(wft.get_publications_id(1) == [42, 43, 44, 45, 46, 47, 48])
+            stats.add(wft.get_publications_id(2) == [44, 45, 46, 47])
+            stats.add(wft.get_publications_id(3) == [46, 47])
+            stats.add(wft.get_publications_id(4) == [50])
+            stats.add(wft.get_publications_id(5) == [])
+            stats.add(wft.get_publications_id(6) == [])
+
+            if False in stats:
+                self.__add_error("33", "get_publications_id error!")
+
+        test_33(self)
 
 
 
