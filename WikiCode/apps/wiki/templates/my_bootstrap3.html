@@ -39,7 +39,6 @@
     <link href={% static "wiki/fontawesome/css/font-awesome.css" %} type="text/css" rel="stylesheet">
     <link href={% static "wiki/bootstrapfiles/css/bootstrap.css" %} type="text/css" rel="stylesheet">
     <link href={% static "wiki/vtip/css/vtip.css"%} rel="stylesheet" type="text/css">
-    <meta name="mailru-domain" content="L5WJ2mKNkRGuDvkq" />
 </head>
 <body>
 {% block bootstrap3_content %}{% endblock %}
@@ -52,5 +51,7 @@
 <script src={% static "wiki/vtip/vtip.js" %}></script>
 <script src={% static "wiki/notify/notify.js" %}></script>
 <script src={% static "wiki/switchable/switchable.min.js"%}></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+<script src={% static "wiki/tags/js/tag-it.min.js" %} type="text/javascript" charset="utf-8"></script>
 {% block add_script %}{% endblock %}
 </html>

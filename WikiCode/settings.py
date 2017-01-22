@@ -154,6 +154,10 @@ USE_L10N = True
 
 USE_TZ = True
 
+BOOTSTRAP3 = {
+    'jquery_url': 'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
+}
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/

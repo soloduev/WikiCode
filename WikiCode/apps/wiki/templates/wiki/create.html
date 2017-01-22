@@ -246,6 +246,17 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row text-center">
+                            <br>
+                            <h4>Теги</h4>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <ul id="wiki-tags">
+                                </ul>
+                            </div>
+                        </div>
+                        <input hidden type="text" id="array-tags-input" name="array-tags">
                     </div>
                 </div>
                 <div class="row">
@@ -276,4 +287,24 @@
     <!--jsTree-->
     <link href={% static "wiki/jsTree/themes/default/style.min.css"%} rel="stylesheet" >
     <script src={% static "wiki/create_publication_scripts/actions.js" %}></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#wiki-tags").tagit({
+                afterTagAdded: function(event, ui) {
+                    $("#array-tags-input").val($("#wiki-tags").tagit("assignedTags").toString());
+                    console.log($("#array-tags-input").val());
+                },
+                beforeTagAdded: function(event, ui) {
+                    $("#array-tags-input").val($("#wiki-tags").tagit("assignedTags").toString());
+                    console.log($("#array-tags-input").val());
+                },
+                afterTagRemoved: function(event, ui) {
+                    $("#array-tags-input").val($("#wiki-tags").tagit("assignedTags").toString());
+                    console.log($("#array-tags-input").val());
+                },
+                placeholderText: " Добавьте тег",
+            });
+        });
+    </script>
 {% endblock %}

@@ -86,10 +86,9 @@ $('#tree3').treed({openedClass:'glyphicon-chevron-right', closedClass:'glyphicon
 //Кусок скрипта относится к странице tree_manager.html
 //-------------------------------------------------
 
-$(document).ready(function () {
-    $.getScript("http://code.jquery.com/ui/1.9.2/jquery-ui.js").done(function (script, textStatus) { $('tbody').sortable();$(".alert-info").alert('close');$(".alert-success").show(); });
-});
-
+// $(document).ready(function () {
+//     $.getScript("http://code.jquery.com/ui/1.9.2/jquery-ui.js").done(function (script, textStatus) { $('tbody').sortable();$(".alert-info").alert('close');$(".alert-success").show(); });
+// });
 
 //-------------------------------------------------
 

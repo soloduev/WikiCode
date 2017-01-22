@@ -26,7 +26,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 
 from WikiCode.apps.wiki.models import Publication, Statistics, Viewing, DynamicParagraph, Comment, Folder, Starring
-from WikiCode.apps.wiki.models import User, CommentRating
+from WikiCode.apps.wiki.models import User, CommentRating, Tag
 from WikiCode.apps.wiki.settings import wiki_settings
 from WikiCode.apps.wiki.src.modules.wiki_comments.wiki_comments import WikiComments
 from WikiCode.apps.wiki.src.modules.wiki_permissions.wiki_permissions import WikiPermissions
@@ -300,6 +300,19 @@ def get_create_page(request):
             wp = WikiPermissions()
             wp.create_permissions(id=newid, id_creator=user.id_user)
 
+            # Получаем все теги конспекта и сохраняем их
+            tags = form["array-tags"].split(",")
+            new_tags = []
+            if tags[0] != '':
+                # Проходим по всем тегам, и создаем их
+                for tag in tags:
+                    # Создаем новый тег, если его к этому конспекту не существует
+                    try:
+                        some_tag = Tag.objects.get(name=tag, type="publ", to_id=newid)
+                    except Tag.DoesNotExist:
+                        new_tag = Tag(name=tag, type="publ", to_id=newid)
+                        new_tags.append(new_tag)
+
             new_publication = Publication(
                 id_publication=newid,
                 id_author=user.id_user,
@@ -347,8 +360,17 @@ def get_create_page(request):
         # Увеличиваем количество публикаций в статистике у пользователя
         user.publications += 1
 
+        # Сохраняем все новые данные
+
+        # Новые теги
+        for tag in new_tags:
+            tag.save()
+        # Статистика
         stat.save()
+        # Конспект
         new_publication.save()
+        # Пользователь
+
         user.save()
         return HttpResponseRedirect("/")
     else:
