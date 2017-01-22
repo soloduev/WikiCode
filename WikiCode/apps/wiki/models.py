@@ -82,6 +82,16 @@ class DynamicParagraph(models.Model):
             return str(self.publication) + "_" + str(self.paragraph)
 
 
+# Модель тега, реализованная через соотношение: Название тега -> источник -> тип источника
+class Tag(models.Model):
+    name = models.CharField(max_length=100)
+    to_id = models.BigIntegerField()
+    type = models.CharField(max_length=5)  # publ, group
+
+    def __str__(self):
+        return self.name + " -> " + str(self.to_id) + " -> " + self.type
+
+
 # Модель просмотра страницы. Указывает кто просмотрел и когда
 class Viewing(models.Model):
     id_user = models.BigIntegerField()
