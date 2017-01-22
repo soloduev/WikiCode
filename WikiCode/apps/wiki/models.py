@@ -152,6 +152,18 @@ class Group(models.Model):
     rating = models.BigIntegerField()
     tags = models.TextField()   # Модуль тегов который надо сделать
     preview_publ_id = models.BigIntegerField(blank=True)
+    # Поля отображения группы
+    is_show_total_publ = models.BooleanField(default=True)
+    is_show_total_members = models.BooleanField(default=True)
+    is_show_rating = models.BooleanField(default=True)
+    is_show_date = models.BooleanField(default=True)
+    is_show_preview_tree = models.BooleanField(default=True)
+    is_show_status = models.BooleanField(default=True)
+    is_show_description = models.BooleanField(default=True)
+    is_show_tags = models.BooleanField(default=True)
+    is_show_contents = models.BooleanField(default=True)
+    is_show_members = models.BooleanField(default=True)
+    is_show_author = models.BooleanField(default=True)
 
     def __str__(self):
         return str(self.id_group)

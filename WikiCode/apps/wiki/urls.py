@@ -109,6 +109,7 @@ urlpatterns = [
     # События на странице группы
     url(r'^group/(?P<id>[0-9]+)/save_group/$', views.save_group, name='save_group'),
     url(r'^group/(?P<id>[0-9]+)/get_path_to_publ/$', views.get_path_to_publ, name='get_path_to_publ'),
+    url(r'^group/(?P<id>[0-9]+)/save_group_show/$', views.save_group_show, name='save_group_show'),
 
 ]
 

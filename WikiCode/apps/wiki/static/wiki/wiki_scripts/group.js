@@ -95,3 +95,4 @@ $('#show-date-group').switchable();
 $('#show-conents-group').switchable();
 $('#show-preview-tree-group').switchable();
 $('#show-members-group').switchable();
+$('#show-author-group').switchable();

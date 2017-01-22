@@ -172,7 +172,8 @@ def create_group(request):
                                   members=wp.get_xml_str(),
                                   date_create=date,
                                   rating=0,
-                                  tags="")
+                                  tags="",
+                                  preview_publ_id=-1)
 
                     # Получаем текущего пользователя
                     cur_user = User.objects.get(id_user=get_user_id(request))
@@ -271,3 +272,49 @@ def get_save_group(request, id):
                 return get_error_page(request, ["Error in save_group."])
     else:
         return get_error_page(request, ["Error in save_group."])
+
+
+def get_save_group_show(request, id):
+    """ Сохранение настроек отображения группы """
+    if request.method == "POST":
+        # Проверяем, аутентифицирован ли пользователь
+        if get_user_id(request) == -1:
+            return HttpResponse('no', content_type='text/html')
+        else:
+            try:
+                # Получаем все значения с формы
+                show_total_publs = request.POST.get("show-total-publs", False)
+                show_total_members = request.POST.get("show-total-members", False)
+                show_rating = request.POST.get("show-rating", False)
+                show_date = request.POST.get("show-date", False)
+                show_preview_tree = request.POST.get("show-preview-tree", False)
+                show_status = request.POST.get("show-status", False)
+                show_description = request.POST.get("show-description", False)
+                show_tags = request.POST.get("show-tags", False)
+                show_conents = request.POST.get("show-conents", False)
+                show_members = request.POST.get("show-members", False)
+                show_author = request.POST.get("show-author", False)
+
+                # Получаем текущую группу и применяем настройки
+                cur_group = Group.objects.get(id_group=id)
+                cur_group.is_show_total_members = show_total_members
+                cur_group.is_show_total_publ = show_total_publs
+                cur_group.is_show_rating = show_rating
+                cur_group.is_show_date = show_date
+                cur_group.is_show_preview_tree = show_preview_tree
+                cur_group.is_show_status = show_status
+                cur_group.is_show_description = show_description
+                cur_group.is_show_tags = show_tags
+                cur_group.is_show_contents = show_conents
+                cur_group.is_show_members = show_members
+                cur_group.is_show_author = show_author
+
+                cur_group.save()
+
+                return redirect('/group/' + str(id) + '/')
+            except Group.DoesNotExist:
+                return get_error_page(request, ["Group is not found."])
+            except:
+                return get_error_page(request, ["Error in save_group_show."])
+    else:
+        return get_error_page(request, ["Error in save_group_show."])
