@@ -60,8 +60,9 @@ def page(request, id):
     return publication_view.get_page(request, id)
 
 
-# Запрос страницы отдельного конспекта(page.html)
+# Запрос страницы отдельной группы(group.html)
 @develop_mode_id
+@login_required
 def group(request, id):
     return group_view.get_group(request, id)
 

@@ -206,7 +206,6 @@ def create_group(request):
         return get_error_page(request, ["Error in create_group."])
 
 
-
 def get_save_group(request, id):
     """ Сохранение настроек группы """
     if request.method == "POST":
