@@ -329,3 +329,13 @@ def get_save_group_show(request, id):
                 return get_error_page(request, ["Error in save_group_show."])
     else:
         return get_error_page(request, ["Error in save_group_show."])
+
+
+def get_add_member_group(request, id):
+
+    return redirect('/group/' + str(id) + '/')
+
+
+def get_add_black_user_group(request, id):
+
+    return redirect('/group/' + str(id) + '/')

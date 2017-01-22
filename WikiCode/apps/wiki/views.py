@@ -430,7 +430,7 @@ def move_publication(request):
     return tree_view.get_move_publication(request)
 
 
-# Перемещение конспекта
+# Создание группы
 @develop_mode
 @login_required
 def create_group(request):
@@ -442,6 +442,20 @@ def create_group(request):
 @login_required
 def save_group(request, id):
     return group_view.get_save_group(request, id)
+
+
+# Добавление нового участника группы
+@develop_mode_id
+@login_required
+def add_member_group(request, id):
+    return group_view.get_add_member_group(request, id)
+
+
+# Добавление пользователя в черный список группы
+@develop_mode_id
+@login_required
+def add_black_user_group(request, id):
+    return group_view.get_add_black_user_group(request, id)
 
 
 
