@@ -75,7 +75,16 @@ def get_group(request, id, notify=None):
             pass
         # Получаем оглавление группы
 
-        # Получаем список последних конспектов группы
+        # Получаем список последних id конспектов группы
+        all_publs_id = wft.get_publications_id(int(id))
+        # Получаем реальный список конспектов
+        all_publs = []
+        for id in all_publs_id:
+            try:
+                publ = Publication.objects.get(id_publication=id)
+                all_publs.append(publ)
+            except Publication.DoesNotExist:
+                pass
 
         if str(get_user_id(request)) == str(group.id_author):
             # Отрисовываем группу глазами автора
@@ -94,7 +103,8 @@ def get_group(request, id, notify=None):
                 "preview_publ_text": preview_publ_text,
                 "preview_publ_id": preview_publ_id,
                 "preview_publ_path": preview_publ_path,
-                "preview_publ_path_value": preview_publ_path_value
+                "preview_publ_path_value": preview_publ_path_value,
+                "all_publs": all_publs
             }
 
             return render(request, 'wiki/group.html', context)
@@ -116,7 +126,8 @@ def get_group(request, id, notify=None):
                 "preview_publ_text": preview_publ_text,
                 "preview_publ_id": preview_publ_id,
                 "preview_publ_path": preview_publ_path,
-                "preview_publ_path_value": preview_publ_path_value
+                "preview_publ_path_value": preview_publ_path_value,
+                "all_publs": all_publs
             }
 
             return render(request, 'wiki/group.html', context)
