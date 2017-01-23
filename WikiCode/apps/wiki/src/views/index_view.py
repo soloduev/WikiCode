@@ -20,7 +20,7 @@
 
 from django.shortcuts import render
 
-from WikiCode.apps.wiki.models import Publication, Group
+from WikiCode.apps.wiki.models import Publication, Group, Tag
 from WikiCode.apps.wiki.settings import wiki_settings
 from .auth import check_auth
 from .auth import get_user_id
@@ -70,12 +70,18 @@ def get_index(request, notify=None):
     except EmptyPage:
         publications = paginator.page(paginator.num_pages)
 
+    # Немного кода в одну строку
+    # Получаем все теги платформы и их количество в виде списка словарей: [{'name': 'TagName', 'count': 1}...]
+    tags = [{'name': tag, 'count': Tag.objects.filter(name=tag).count()}
+            for tag in set([tag.name for tag in Tag.objects.all()])]
+
     context = {
         "all_publications": all_publications,
         "publications": publications,
         "user_data": check_auth(request),
         "user_id": get_user_id(request),
         "groups": reversed(groups),
+        "tags": tags,
         "notify": notify,
     }
 

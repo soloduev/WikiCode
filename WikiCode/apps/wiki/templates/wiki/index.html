@@ -119,8 +119,28 @@
                                     <h4>Позже, здесь будут перечислены лучшие конспекты по запросу</h4>
                                 </div>
                                 <div class="tab-pane" id="tab_default_3">
-                                    <p></p>
-                                    <h4>Позже, здесь будут перечислены самые популярные теги платформы</h4>
+                                    <br>
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-xs-6 col-sm-7 col-md-8 col-lg-9 text-center">
+                                                <i>Выберите любой тег...</i>
+                                            </div>
+                                            <div class="col-xs-6 col-sm-5 col-md-4 col-lg-3">
+                                                {% for tag in tags %}
+                                                    <div class="box">
+                                                        <div class="info" style="height: 22px;">
+                                                            <div class="col-xs-6 text-left">
+                                                                <a style="text-decoration: none; cursor: pointer;">{{ tag.name }}</a>
+                                                            </div>
+                                                            <div class="col-xs-6 text-right">
+                                                                <span>({{ tag.count }})</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="tab-pane" id="tab_default_4">
                                     <p></p>
@@ -142,7 +162,7 @@
                                                                href="/group/{{ group.id_group }}/"><div style="font-size: 12pt;"
                                                                                                         class="text-left">
                                                                 {% if group.type == "Курс" %}
-                                                                   <span class="glyphicon glyphicon-education"></span>
+                                                                    <span class="glyphicon glyphicon-education"></span>
                                                                 {% elif group.type == "Группа" %}
                                                                     <span class="glyphicon glyphicon-th"></span>
                                                                 {% elif group.type == "Организация" %}
