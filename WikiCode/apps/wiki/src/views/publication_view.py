@@ -187,8 +187,7 @@ def get_page(request, id, notify=None):
         wiki_comments = WikiComments()
         wiki_comments.load_comments(publication.main_comments)
 
-        # И перед тем как перейти на страницу, добавим ей просмотр, если этот пользователь еще не смотрел
-        # Этот конспект
+        # Добавим конспекту просмотр, если этот пользователь еще не смотрел этот конспект
         try:
             viewing = Viewing.objects.get(id_user=cur_user_id, id_publ=id)
             # Просмотр стоит, ничего не добавляем
@@ -229,6 +228,12 @@ def get_page(request, id, notify=None):
         except Starring.DoesNotExist:
             is_star = False
 
+        # Получаем теги конспекта
+        try:
+            tags = Tag.objects.filter(to_id=id, type="publ")
+        except Tag.DoesNotExist:
+            tags = None
+
         context = {
             "publication": publication,
             "paragraphs": paragraphs,
@@ -247,7 +252,8 @@ def get_page(request, id, notify=None):
             "contents": contents,
             "is_editable": is_editable,
             "is_star": is_star,
-            "notify": notify
+            "tags": tags,
+            "notify": notify,
         }
 
         return render(request, 'wiki/page/page.html', context)
@@ -952,6 +958,7 @@ def get_add_star_publication(request, id):
                                                 "Page not found: publ_manager/" + str(id) + "/"])
     else:
         return HttpResponse('no', content_type='text/html')
+
 
 @csrf_exempt
 def get_load_md(request, id):
