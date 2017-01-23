@@ -23,7 +23,7 @@
 params = {
 
     # ВОЗМОЖНЫЕ ВАРИАНТЫ ДОСТУПА ДЛЯ БЕЛОГО СПИСКА
-    "WHITE_PERMS": {"editor", "watcher"},
+    "WHITE_PERMS": {"editor", "watcher", "member"},
 
     # ВОЗМОЖНЫЕ ВАРИАНТЫ ДОСТУПА ДЛЯ ЧЕРНОГО СПИСКА
     "BLACK_PERMS": {"ban"},

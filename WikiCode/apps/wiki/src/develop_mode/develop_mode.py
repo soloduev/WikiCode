@@ -41,7 +41,16 @@ def develop_mode(view):
                 # Если входит, разрешаем ему выполнять представление
                 developers = Developer.objects.get(name_developer=name_developer)
                 return view(request)
-            except Developer.DoesNotExist or User.DoesNotExist:
+            except Developer.DoesNotExist:
+                # Если НЕ входит, перенаправляем его на страницу ремонта сайта
+                user_data = check_auth(request)
+
+                context = {
+                    "user_data": user_data,
+                    "user_id": user_id,
+                }
+                return render(request, 'wiki/develop_mode.html', context)
+            except User.DoesNotExist:
                 # Если НЕ входит, перенаправляем его на страницу ремонта сайта
                 user_data = check_auth(request)
 
@@ -52,6 +61,7 @@ def develop_mode(view):
                 return render(request, 'wiki/develop_mode.html', context)
         else:
             return view(request)
+
     return wrapper
 
 
@@ -80,4 +90,5 @@ def develop_mode_id(view):
                 return render(request, 'wiki/develop_mode.html', context)
         else:
             return view(request, id)
+
     return wrapper

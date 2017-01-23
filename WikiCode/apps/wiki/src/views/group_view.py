@@ -62,6 +62,10 @@ def get_group(request, id, notify=None):
         # Получаем все теги группы
 
         # Получаем всех участников группы
+        wp = WikiPermissions()
+        wp.load_permissions(group.members)
+        white_list = wp.get_white_list()
+        black_list = wp.get_black_list()
 
         # Получаем превью конспект группы
         preview_publ_text = None
@@ -104,7 +108,10 @@ def get_group(request, id, notify=None):
                 "preview_publ_id": preview_publ_id,
                 "preview_publ_path": preview_publ_path,
                 "preview_publ_path_value": preview_publ_path_value,
-                "all_publs": all_publs
+                "all_publs": all_publs,
+                "notify":notify,
+                "white_list": white_list,
+                "black_list": black_list
             }
 
             return render(request, 'wiki/group.html', context)
@@ -127,7 +134,10 @@ def get_group(request, id, notify=None):
                 "preview_publ_id": preview_publ_id,
                 "preview_publ_path": preview_publ_path,
                 "preview_publ_path_value": preview_publ_path_value,
-                "all_publs": all_publs
+                "all_publs": all_publs,
+                "notify": notify,
+                "white_list": white_list,
+                "black_list": black_list
             }
 
             return render(request, 'wiki/group.html', context)
@@ -333,9 +343,239 @@ def get_save_group_show(request, id):
 
 def get_add_member_group(request, id):
 
-    return redirect('/group/' + str(id) + '/')
+    if request.method == "POST":
+        try:
+            # Получаем группу, которой хотим управлять
+            group = Group.objects.get(id_group=id)
+
+            white_user = request.POST.get("add_member_group")
+
+            try:
+                find_user = User.objects.get(nickname=white_user)
+
+                if find_user.id_user == get_user_id(request):
+                    return get_group(request,
+                                            id,
+                                            notify={'type': 'error',
+                                                    'text': 'Вы и так являетесь автором данной группы.\n'
+                                                            'Вы не можете назначить себя участником.\n\n'})
+
+                wp = WikiPermissions()
+                wp.load_permissions(group.members)
+                white_users = wp.get_white_list()
+                black_users = wp.get_black_list()
+
+                # Проверяем пользователя на его наличие в белом списке
+                is_find = False
+                for user in white_users:
+                    if str(find_user.id_user) == str(user["id"]):
+                        is_find = True
+
+                # Проверяем пользователя на его наличие в черном списке
+                is_find_black = False
+                for user in black_users:
+                    if str(find_user.id_user) == str(user["id"]):
+                        is_find_black = True
+
+                if is_find_black:
+                    return get_group(request,
+                                            id,
+                                            notify={'type': 'error',
+                                                    'text': 'Данный пользователь уже находится у Вас в черном списке.\n'
+                                                            'Удалите его из черного списка, если хотите назначить его '
+                                                            'участником\n\n'})
+
+                if not is_find:
+                    wp.add_to_white_list(find_user.id_user, find_user.nickname, "member", "Участник")
+                    group.members = wp.get_xml_str()
+                    group.save()
+
+                    return get_group(request,
+                                        id,
+                                        notify={'type': 'info',
+                                                'text': 'Добавлен новый участник группы.\n\n\n'})
+                else:
+                    return get_group(request,
+                                        id,
+                                        notify={'type': 'error',
+                                                'text': 'Данный пользователь уже назначен участником.\n\n\n'})
+
+            except User.DoesNotExist:
+                return get_group(request,
+                                        id,
+                                        notify={'type': 'error',
+                                                'text': 'Пользователя с таким nickname не существует.\n'
+                                                        'Новый участник не назначен.\n\n'})
+
+        except Group.DoesNotExist:
+            return get_error_page(request,
+                                  ["This is group not found!", "Group not found: group/" + str(id) + "/"])
+
+
+def get_del_member_group(request, id):
+    if request.method == "POST":
+        try:
+            # Получаем группу, которой хотим управлять
+            group = Group.objects.get(id_group=id)
+
+            del_member_nickname = request.POST.get("member-group")
+
+            if not del_member_nickname:
+                return get_group(request,
+                                        id,
+                                        notify={'type': 'error',
+                                                'text': 'Вы не указали удаляемого пользователя.\n\n\n'})
+
+            try:
+                find_user = User.objects.get(nickname=del_member_nickname)
+
+                wp = WikiPermissions()
+                wp.load_permissions(group.members)
+                white_users = wp.get_white_list()
+                is_find = False
+                for user in white_users:
+                    if str(find_user.id_user) == str(user["id"]):
+                        is_find = True
+
+                if is_find:
+                    wp.remove_from_white_list(find_user.id_user)
+                    group.members = wp.get_xml_str()
+                    group.save()
+
+                    return get_group(request,
+                                            id,
+                                            notify={'type': 'info',
+                                                    'text': 'Пользователь успешно удален из списка участников.\n\n\n'})
+                else:
+                    return get_group(request,
+                                            id,
+                                            notify={'type': 'error',
+                                                    'text': 'Пользователь уже удален из списка участников\n\n\n'})
+            except User.DoesNotExist:
+                return get_group(request,
+                                        id,
+                                        notify={'type': 'error',
+                                                'text': 'Удаляемого пользователя не существует.\n\n\n'})
+
+        except Group.DoesNotExist:
+            return get_error_page(request,
+                                  ["This is group not found!", "Group not found: group/" + str(id) + "/"])
 
 
 def get_add_black_user_group(request, id):
+    if request.method == "POST":
+        try:
+            # Получаем группу, которой хотим управлять
+            group = Group.objects.get(id_group=id)
 
-    return redirect('/group/' + str(id) + '/')
+            black_user = request.POST.get("add_black_user_group")
+
+            try:
+                find_user = User.objects.get(nickname=black_user)
+
+                if find_user.id_user == get_user_id(request):
+                    return get_group(request,
+                                            id,
+                                            notify={'type': 'error',
+                                                    'text': 'Вы не можете себя добавить в черный список.\n\n\n'})
+
+                wp = WikiPermissions()
+                wp.load_permissions(group.members)
+                black_users = wp.get_black_list()
+                white_users = wp.get_white_list()
+
+                is_find = False
+                for user in black_users:
+                    if str(find_user.id_user) == str(user["id"]):
+                        is_find = True
+
+                # Проверяем пользователя на его наличие в белом списке
+                is_find_white = False
+                for user in white_users:
+                    if str(find_user.id_user) == str(user["id"]):
+                        is_find_white = True
+
+                if is_find_white:
+                    return get_group(request,
+                                            id,
+                                            notify={'type': 'error',
+                                                    'text': 'Данный пользователь является участником '
+                                                            'Вашей группы.\n'
+                                                            'Удалите его из списка участников, если хотите добавить его'
+                                                            ' в черный список\n\n'})
+
+                if not is_find:
+                    wp.add_to_black_list(find_user.id_user, find_user.nickname, "ban", "Бан")
+                    group.members = wp.get_xml_str()
+                    group.save()
+
+                    return get_group(request,
+                                            id,
+                                            notify={'type': 'info',
+                                                    'text': 'Пользователь добавлен в черный список.\n\n\n'})
+                else:
+                    return get_group(request,
+                                            id,
+                                            notify={'type': 'error',
+                                                    'text': 'Данный пользователь уже добавлен в черный список.\n\n\n'})
+
+            except User.DoesNotExist:
+                return get_group(request,
+                                        id,
+                                        notify={'type': 'error',
+                                                'text': 'Пользователя с таким nickname не существует.\n'
+                                                        'Пользователь не добавлен в черный список.\n\n'})
+
+        except Group.DoesNotExist:
+            return get_error_page(request,
+                                  ["This is group not found!", "Group not found: group/" + str(id) + "/"])
+
+
+def get_del_black_user_group(request, id):
+    if request.method == "POST":
+        try:
+            # Получаем конспект, которым хотим управлять
+            group = Group.objects.get(id_group=id)
+
+            del_user_nickname = request.POST.get("black-list-group")
+
+            if not del_user_nickname:
+                return get_group(request,
+                                        id,
+                                        notify={'type': 'error',
+                                                'text': 'Вы не указали удаляемого пользователя.\n\n\n'})
+
+            try:
+                find_user = User.objects.get(nickname=del_user_nickname)
+
+                wp = WikiPermissions()
+                wp.load_permissions(group.members)
+                black_users = wp.get_black_list()
+                is_find = False
+                for user in black_users:
+                    if str(find_user.id_user) == str(user["id"]):
+                        is_find = True
+
+                if is_find:
+                    wp.remove_from_black_list(find_user.id_user)
+                    group.members = wp.get_xml_str()
+                    group.save()
+
+                    return get_group(request,
+                                            id,
+                                            notify={'type': 'info',
+                                                    'text': 'Пользователь успешно удален из черного списка.\n\n\n'})
+                else:
+                    return get_group(request,
+                                            id,
+                                            notify={'type': 'error',
+                                                    'text': 'Пользователь уже удален из черного списка.\n\n\n'})
+            except User.DoesNotExist:
+                return get_group(request,
+                                        id,
+                                        notify={'type': 'error',
+                                                'text': 'Удаляемого пользователя не существует.\n\n\n'})
+
+        except Group.DoesNotExist:
+            return get_group(request,
+                                  ["This is group not found!", "Group not found: group/" + str(id) + "/"])

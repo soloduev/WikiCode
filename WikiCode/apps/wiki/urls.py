@@ -111,7 +111,9 @@ urlpatterns = [
     url(r'^group/(?P<id>[0-9]+)/get_path_to_publ/$', views.get_path_to_publ, name='get_path_to_publ'),
     url(r'^group/(?P<id>[0-9]+)/save_group_show/$', views.save_group_show, name='save_group_show'),
     url(r'^group/(?P<id>[0-9]+)/add_member_group/$', views.add_member_group, name='add_member_group'),
+    url(r'^group/(?P<id>[0-9]+)/del_member_group/$', views.del_member_group, name='del_member_group'),
     url(r'^group/(?P<id>[0-9]+)/add_black_user_group/$', views.add_black_user_group, name='add_black_user_group'),
+    url(r'^group/(?P<id>[0-9]+)/del_black_user_group/$', views.del_black_user_group, name='del_black_user_group'),
 
 ]
 

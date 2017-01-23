@@ -451,11 +451,25 @@ def add_member_group(request, id):
     return group_view.get_add_member_group(request, id)
 
 
+# Удаление участника группы
+@develop_mode_id
+@login_required
+def del_member_group(request, id):
+    return group_view.get_del_member_group(request, id)
+
+
 # Добавление пользователя в черный список группы
 @develop_mode_id
 @login_required
 def add_black_user_group(request, id):
     return group_view.get_add_black_user_group(request, id)
+
+
+# Удаление пользователя из черного списка группы
+@develop_mode_id
+@login_required
+def del_black_user_group(request, id):
+    return group_view.get_del_black_user_group(request, id)
 
 
 
