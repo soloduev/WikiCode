@@ -31,6 +31,9 @@ class User(models.Model):
     publications = models.BigIntegerField()
     avatar = models.ImageField(upload_to='avatars')
     preview_publ_id = models.BigIntegerField()
+    # Моментальное уведомление
+    notify_text = models.TextField(default="", blank=True)                   # Моментальное уведомление, текст
+    notify_type = models.CharField(max_length=5, default="msg", blank=True)  # Моментальное уведомление, тип
 
     def __str__(self):
         return str(self.id_user)

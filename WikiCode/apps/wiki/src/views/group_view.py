@@ -25,6 +25,7 @@ from WikiCode.apps.wiki.src.modules.wiki_permissions.wiki_permissions import Wik
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
 from WikiCode.apps.wiki.src.views.auth import check_auth, get_user_id
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
+from WikiCode.apps.wiki.src.api import wcode
 
 
 def get_group(request, id, notify=None):
@@ -354,6 +355,8 @@ def get_add_member_group(request, id):
                 find_user = User.objects.get(nickname=white_user)
 
                 if find_user.id_user == get_user_id(request):
+                    wcode.notify.momental_notify(request, "error", 'Вы и так являетесь автором данной группы.\n'
+                                                                   'Вы не можете назначить себя участником.\n\n')
                     return get_group(request,
                                             id,
                                             notify={'type': 'error',
