@@ -472,5 +472,12 @@ def del_black_user_group(request, id):
     return group_view.get_del_black_user_group(request, id)
 
 
+# Удаление группы
+@develop_mode_id
+@login_required
+def del_group(request, id):
+    return group_view.get_del_group(request, id)
+
+
 
 

@@ -114,6 +114,7 @@ urlpatterns = [
     url(r'^group/(?P<id>[0-9]+)/del_member_group/$', views.del_member_group, name='del_member_group'),
     url(r'^group/(?P<id>[0-9]+)/add_black_user_group/$', views.add_black_user_group, name='add_black_user_group'),
     url(r'^group/(?P<id>[0-9]+)/del_black_user_group/$', views.del_black_user_group, name='del_black_user_group'),
+    url(r'^group/(?P<id>[0-9]+)/del_group/$', views.del_group, name='del_group'),
 
 ]
 

@@ -579,3 +579,40 @@ def get_del_black_user_group(request, id):
         except Group.DoesNotExist:
             return get_group(request,
                                   ["This is group not found!", "Group not found: group/" + str(id) + "/"])
+
+
+def get_del_group(request, id):
+    """ Удаление группы """
+    if request.method == "POST":
+        try:
+            # Получаем конспект, которым хотим управлять
+            group = Group.objects.get(id_group=id)
+
+            # Получаем текущего пользователя
+            cur_user = User.objects.get(id_user=get_user_id(request))
+
+            # Загружаем файловое дерево пользователя
+            wft = WikiFileTree()
+            wft.load_tree(cur_user.file_tree)
+
+            # Меняем тип папки
+            wft.retype_folder(id, "personal")
+
+            # Сохраняем папки
+            cur_user.file_tree = wft.get_xml_str()
+
+            # Удаляем группу
+            group.delete()
+            cur_user.save()
+
+            return redirect("tree_manager")
+
+        except Group.DoesNotExist:
+            return get_group(request,
+                             ["This is group not found!", "Group not found: group/" + str(id) + "/"])
+        except User.DoesNotExist:
+            return get_group(request,
+                             ["This is user not found!", "User not found: user/" + str(get_user_id(request)) + "/"])
+
+    else:
+        return redirect("tree_manager")
