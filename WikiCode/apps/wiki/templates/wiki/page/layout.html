@@ -30,11 +30,12 @@
                                     {% if publication.is_show_author %}
                                         <div class="container-fluid text-left">
                                             <div class="row">
-                                                <a id="wikicode-name-author" href="/user/{{ publication.id_author }}"
-                                                   class="btn"><span
-                                                        class="glyphicon glyphicon-user"></span>{{ publication.nickname_author }}
+                                                <a href="/user/{{ publication.id_author }}"
+                                                   class="btn btn-link" style="text-decoration: none; color: black;"><span class="glyphicon glyphicon-user"></span> {{ publication.nickname_author }}
                                                 </a>
+                                                {#                                                <span class="wiki-tag">Tag1</span><span class="wiki-tag">Tag2</span>#}
                                             </div>
+
                                         </div>
                                     {% endif %}
                                 </div>
@@ -80,7 +81,9 @@
                                                 <li><a href="#tab_default_6" data-toggle="tab" id="wiki-publ-tab-5">Версии </a>
                                                 </li>
                                             {% endif %}
-                                            <li><a href="#tab_default_7" data-toggle="tab" id="wiki-publ-tab-6">Управление </a>
+                                            <li><a href="#tab_default_8" data-toggle="tab" id="wiki-publ-tab-6">Теги </a>
+                                            </li>
+                                            <li class="pull-right"><a href="#tab_default_7" data-toggle="tab" id="wiki-publ-tab-7" style="color: black;"><span class="glyphicon glyphicon-cog"></span></a>
                                             </li>
                                         </ul>
                                         <div class="tab-content">
@@ -311,6 +314,16 @@
                                                                id="wiki-style-btn">Пожаловаться на конспект</a>
                                                         </div>
                                                         <br>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane" id="tab_default_8">
+                                                <div class="col-xs-12 col-sm-12 col-md-12"
+                                                     style="border: 1px solid #d5d5d5;">
+                                                    <div class="row text-center">
+                                                        <h4>Здесь располагаются теги конспекта!</h4>
+                                                        <br><br><br><br><br><br><br><br><br><br>
+                                                        <br><br><br><br><br><br><br><br><br><br>
                                                     </div>
                                                 </div>
                                             </div>
