@@ -23,3 +23,4 @@
 from django.shortcuts import redirect
 from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.src.views.auth import get_user_id
+from WikiCode.apps.wiki.src.views.error_view import get_error_page

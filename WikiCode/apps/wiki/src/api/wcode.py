@@ -30,3 +30,7 @@ def goto(html_page: str):
     return __djangoapi.redirect(html_page)
 
 
+def goerror(request, errors: list):
+    return __djangoapi.get_error_page(request, errors)
+
+

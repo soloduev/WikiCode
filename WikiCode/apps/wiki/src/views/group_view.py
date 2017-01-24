@@ -19,12 +19,11 @@
 import datetime
 
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from WikiCode.apps.wiki.models import Group, User, Publication
 from WikiCode.apps.wiki.src.modules.wiki_permissions.wiki_permissions import WikiPermissions
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
 from WikiCode.apps.wiki.src.views.auth import check_auth, get_user_id
-from WikiCode.apps.wiki.src.views.error_view import get_error_page
 from WikiCode.apps.wiki.src.api import wcode
 
 
@@ -132,13 +131,9 @@ def get_group(request, id):
 
             return render(request, 'wiki/group.html', context)
     except Group.DoesNotExist:
-        return get_error_page(request, ["Группы с таким id не существует!"])
+        return wcode.goerror(request, ["Группы с таким id не существует!"])
     except User.DoesNotExist:
-        context = {
-            "user_data": check_auth(request),
-            "user_id": get_user_id(request),
-        }
-        return render(request, 'wiki/create.html', context)
+        return wcode.goerror(request, ['User not find. get_group.'])
 
 
 def create_group(request):
@@ -157,13 +152,13 @@ def create_group(request):
                 folder_id_group = int(request.POST.get("create-group-folder").split(":")[1])
 
                 if not title_group or not type_group or not permission_group or not folder_id_group:
-                    return render(request, 'wiki/tree_manager.html', {})
+                    return wcode.goerror(request, ['Не указаны обязательные параметры формы.'])
 
                 # Создаем группу.
                 # Проверяем, не существует ли уже такая группы
                 try:
                     group = Group.objects.get(id_group=folder_id_group)
-                    return render(request, 'wiki/group.html', {})
+                    return wcode.goerror(request, ["Группа с таким id уже существует"])
                 except Group.DoesNotExist:
 
                     wp = WikiPermissions()
@@ -213,9 +208,9 @@ def create_group(request):
 
                     return wcode.goto('/group/' + str(folder_id_group))
             except User.DoesNotExist:
-                return get_error_page(request, ["User not found!"])
+                return wcode.goerror(request, ["User not found!"])
     else:
-        return get_error_page(request, ["Error in create_group."])
+        return wcode.goerror(request, ["Error in create_group."])
 
 
 def get_save_group(request, id):
@@ -274,15 +269,15 @@ def get_save_group(request, id):
                 cur_group.save()
                 cur_user.save()
 
-                return redirect('/group/' + str(id) + '/')
+                return wcode.goto('/group/' + str(id) + '/')
             except Group.DoesNotExist:
-                return get_error_page(request, ["Group is not found."])
+                return wcode.goerror(request, ["Group is not found."])
             except User.DoesNotExist:
-                return get_error_page(request, ["User is not found."])
+                return wcode.goerror(request, ["User is not found."])
             except:
-                return get_error_page(request, ["Error in save_group."])
+                return wcode.goerror(request, ["Error in save_group."])
     else:
-        return get_error_page(request, ["Error in save_group."])
+        return wcode.goerror(request, ["Error in save_group."])
 
 
 def get_save_group_show(request, id):
@@ -322,13 +317,13 @@ def get_save_group_show(request, id):
 
                 cur_group.save()
 
-                return redirect('/group/' + str(id) + '/')
+                return wcode.goto('/group/' + str(id) + '/')
             except Group.DoesNotExist:
-                return get_error_page(request, ["Group is not found."])
+                return wcode.goerror(request, ["Group is not found."])
             except:
-                return get_error_page(request, ["Error in save_group_show."])
+                return wcode.goerror(request, ["Error in save_group_show."])
     else:
-        return get_error_page(request, ["Error in save_group_show."])
+        return wcode.goerror(request, ["Error in save_group_show."])
 
 
 def get_add_member_group(request, id):
@@ -389,7 +384,7 @@ def get_add_member_group(request, id):
                 return wcode.goto('/group/' + str(id))
 
         except Group.DoesNotExist:
-            return get_error_page(request,
+            return wcode.goerror(request,
                                   ["This is group not found!", "Group not found: group/" + str(id) + "/"])
 
 
@@ -435,7 +430,7 @@ def get_del_member_group(request, id):
                 return wcode.goto('/group/' + str(id))
 
         except Group.DoesNotExist:
-            return get_error_page(request,
+            return wcode.goerror(request,
                                   ["This is group not found!", "Group not found: group/" + str(id) + "/"])
 
 
@@ -499,7 +494,7 @@ def get_add_black_user_group(request, id):
                 return wcode.goto('/group/' + str(id))
 
         except Group.DoesNotExist:
-            return get_error_page(request,
+            return wcode.goerror(request,
                                   ["This is group not found!", "Group not found: group/" + str(id) + "/"])
 
 
@@ -542,7 +537,7 @@ def get_del_black_user_group(request, id):
                 return wcode.goto('/group/' + str(id))
 
         except Group.DoesNotExist:
-            return get_error_page(request,
+            return wcode.goerror(request,
                                   ["This is group not found!", "Group not found: group/" + str(id) + "/"])
 
 
@@ -573,10 +568,10 @@ def get_del_group(request, id):
             return wcode.goto('tree_manager')
 
         except Group.DoesNotExist:
-            return get_error_page(request,
+            return wcode.goerror(request,
                                   ["This is group not found!", "Group not found: group/" + str(id) + "/"])
         except User.DoesNotExist:
-            return get_error_page(request,
+            return wcode.goerror(request,
                                   ["This is user not found!", "User not found: user/" + str(get_user_id(request)) + "/"])
     else:
         return wcode.goto("tree_manager")
