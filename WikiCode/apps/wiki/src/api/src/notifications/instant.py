@@ -50,5 +50,5 @@ def get(request) -> str:
             user.notify_type = ""
         user.save()
         return result_notify
-    except User.DoesNotExist:
+    except __djangoapi.User.DoesNotExist:
         print("User not found")

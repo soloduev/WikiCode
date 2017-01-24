@@ -341,7 +341,6 @@ def get_save_group_show(request, id):
 
 
 def get_add_member_group(request, id):
-
     if request.method == "POST":
         try:
             # Получаем группу, которой хотим управлять
@@ -354,8 +353,8 @@ def get_add_member_group(request, id):
 
                 if find_user.id_user == get_user_id(request):
                     wcode.notify.instant.create(request, "error", 'Вы и так являетесь автором данной группы.\n'
-                                                                   'Вы не можете назначить себя участником.\n\n')
-                    return wcode.goto('/group/'+str(id))
+                                                                  'Вы не можете назначить себя участником.\n\n')
+                    return wcode.goto('/group/' + str(id))
 
                 wp = WikiPermissions()
                 wp.load_permissions(group.members)
@@ -375,34 +374,28 @@ def get_add_member_group(request, id):
                         is_find_black = True
 
                 if is_find_black:
-                    return get_group(request,
-                                            id,
-                                            notify={'type': 'error',
-                                                    'text': 'Данный пользователь уже находится у Вас в черном списке.\n'
-                                                            'Удалите его из черного списка, если хотите назначить его '
-                                                            'участником\n\n'})
+                    wcode.notify.instant.create(request,
+                                                "error", 'Данный пользователь уже находится у Вас в черном списке.\n'
+                                                         'Удалите его из черного списка, если хотите назначить его '
+                                                         'участником\n\n')
+                    return wcode.goto('/group/' + str(id))
 
                 if not is_find:
                     wp.add_to_white_list(find_user.id_user, find_user.nickname, "member", "Участник")
                     group.members = wp.get_xml_str()
                     group.save()
 
-                    return get_group(request,
-                                        id,
-                                        notify={'type': 'info',
-                                                'text': 'Добавлен новый участник группы.\n\n\n'})
+                    wcode.notify.instant.create(request, "info", 'Добавлен новый участник группы.\n\n\n')
+
+                    return wcode.goto('/group/' + str(id))
                 else:
-                    return get_group(request,
-                                        id,
-                                        notify={'type': 'error',
-                                                'text': 'Данный пользователь уже назначен участником.\n\n\n'})
+                    wcode.notify.instant.create(request, "error", 'Данный пользователь уже назначен участником.\n\n\n')
+                    return wcode.goto('/group/' + str(id))
 
             except User.DoesNotExist:
-                return get_group(request,
-                                        id,
-                                        notify={'type': 'error',
-                                                'text': 'Пользователя с таким nickname не существует.\n'
-                                                        'Новый участник не назначен.\n\n'})
+                wcode.notify.instant.create(request, "error", 'Пользователя с таким nickname не существует.\n'
+                                                              'Новый участник не назначен.\n\n')
+                return wcode.goto('/group/' + str(id))
 
         except Group.DoesNotExist:
             return get_error_page(request,
@@ -419,9 +412,9 @@ def get_del_member_group(request, id):
 
             if not del_member_nickname:
                 return get_group(request,
-                                        id,
-                                        notify={'type': 'error',
-                                                'text': 'Вы не указали удаляемого пользователя.\n\n\n'})
+                                 id,
+                                 notify={'type': 'error',
+                                         'text': 'Вы не указали удаляемого пользователя.\n\n\n'})
 
             try:
                 find_user = User.objects.get(nickname=del_member_nickname)
@@ -440,19 +433,19 @@ def get_del_member_group(request, id):
                     group.save()
 
                     return get_group(request,
-                                            id,
-                                            notify={'type': 'info',
-                                                    'text': 'Пользователь успешно удален из списка участников.\n\n\n'})
+                                     id,
+                                     notify={'type': 'info',
+                                             'text': 'Пользователь успешно удален из списка участников.\n\n\n'})
                 else:
                     return get_group(request,
-                                            id,
-                                            notify={'type': 'error',
-                                                    'text': 'Пользователь уже удален из списка участников\n\n\n'})
+                                     id,
+                                     notify={'type': 'error',
+                                             'text': 'Пользователь уже удален из списка участников\n\n\n'})
             except User.DoesNotExist:
                 return get_group(request,
-                                        id,
-                                        notify={'type': 'error',
-                                                'text': 'Удаляемого пользователя не существует.\n\n\n'})
+                                 id,
+                                 notify={'type': 'error',
+                                         'text': 'Удаляемого пользователя не существует.\n\n\n'})
 
         except Group.DoesNotExist:
             return get_error_page(request,
@@ -472,9 +465,9 @@ def get_add_black_user_group(request, id):
 
                 if find_user.id_user == get_user_id(request):
                     return get_group(request,
-                                            id,
-                                            notify={'type': 'error',
-                                                    'text': 'Вы не можете себя добавить в черный список.\n\n\n'})
+                                     id,
+                                     notify={'type': 'error',
+                                             'text': 'Вы не можете себя добавить в черный список.\n\n\n'})
 
                 wp = WikiPermissions()
                 wp.load_permissions(group.members)
@@ -494,12 +487,12 @@ def get_add_black_user_group(request, id):
 
                 if is_find_white:
                     return get_group(request,
-                                            id,
-                                            notify={'type': 'error',
-                                                    'text': 'Данный пользователь является участником '
-                                                            'Вашей группы.\n'
-                                                            'Удалите его из списка участников, если хотите добавить его'
-                                                            ' в черный список\n\n'})
+                                     id,
+                                     notify={'type': 'error',
+                                             'text': 'Данный пользователь является участником '
+                                                     'Вашей группы.\n'
+                                                     'Удалите его из списка участников, если хотите добавить его'
+                                                     ' в черный список\n\n'})
 
                 if not is_find:
                     wp.add_to_black_list(find_user.id_user, find_user.nickname, "ban", "Бан")
@@ -507,21 +500,21 @@ def get_add_black_user_group(request, id):
                     group.save()
 
                     return get_group(request,
-                                            id,
-                                            notify={'type': 'info',
-                                                    'text': 'Пользователь добавлен в черный список.\n\n\n'})
+                                     id,
+                                     notify={'type': 'info',
+                                             'text': 'Пользователь добавлен в черный список.\n\n\n'})
                 else:
                     return get_group(request,
-                                            id,
-                                            notify={'type': 'error',
-                                                    'text': 'Данный пользователь уже добавлен в черный список.\n\n\n'})
+                                     id,
+                                     notify={'type': 'error',
+                                             'text': 'Данный пользователь уже добавлен в черный список.\n\n\n'})
 
             except User.DoesNotExist:
                 return get_group(request,
-                                        id,
-                                        notify={'type': 'error',
-                                                'text': 'Пользователя с таким nickname не существует.\n'
-                                                        'Пользователь не добавлен в черный список.\n\n'})
+                                 id,
+                                 notify={'type': 'error',
+                                         'text': 'Пользователя с таким nickname не существует.\n'
+                                                 'Пользователь не добавлен в черный список.\n\n'})
 
         except Group.DoesNotExist:
             return get_error_page(request,
@@ -538,9 +531,9 @@ def get_del_black_user_group(request, id):
 
             if not del_user_nickname:
                 return get_group(request,
-                                        id,
-                                        notify={'type': 'error',
-                                                'text': 'Вы не указали удаляемого пользователя.\n\n\n'})
+                                 id,
+                                 notify={'type': 'error',
+                                         'text': 'Вы не указали удаляемого пользователя.\n\n\n'})
 
             try:
                 find_user = User.objects.get(nickname=del_user_nickname)
@@ -559,23 +552,23 @@ def get_del_black_user_group(request, id):
                     group.save()
 
                     return get_group(request,
-                                            id,
-                                            notify={'type': 'info',
-                                                    'text': 'Пользователь успешно удален из черного списка.\n\n\n'})
+                                     id,
+                                     notify={'type': 'info',
+                                             'text': 'Пользователь успешно удален из черного списка.\n\n\n'})
                 else:
                     return get_group(request,
-                                            id,
-                                            notify={'type': 'error',
-                                                    'text': 'Пользователь уже удален из черного списка.\n\n\n'})
+                                     id,
+                                     notify={'type': 'error',
+                                             'text': 'Пользователь уже удален из черного списка.\n\n\n'})
             except User.DoesNotExist:
                 return get_group(request,
-                                        id,
-                                        notify={'type': 'error',
-                                                'text': 'Удаляемого пользователя не существует.\n\n\n'})
+                                 id,
+                                 notify={'type': 'error',
+                                         'text': 'Удаляемого пользователя не существует.\n\n\n'})
 
         except Group.DoesNotExist:
             return get_group(request,
-                                  ["This is group not found!", "Group not found: group/" + str(id) + "/"])
+                             ["This is group not found!", "Group not found: group/" + str(id) + "/"])
 
 
 def get_del_group(request, id):
