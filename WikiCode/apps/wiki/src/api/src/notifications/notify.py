@@ -18,15 +18,6 @@
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# ------------------------------------------------------
-# -------------------- WikiCode API --------------------
-# ------------------------------------------------------
+# Управление уведомлениями
 
-from WikiCode.apps.wiki.src.api.src.notifications import notify
-from WikiCode.apps.wiki.src.api.src import djangoapi as __djangoapi
-
-
-def goto(html_page: str):
-    return __djangoapi.redirect(html_page)
-
-
+from WikiCode.apps.wiki.src.api.src.notifications import instant

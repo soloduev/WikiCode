@@ -37,8 +37,6 @@ def get_group(request, id, notify=None):
                 'text': 'any text',
             }
     """
-    if notify is None:
-        notify = {'type': 'msg', 'text': ''}
 
     user_data = check_auth(request)
 
@@ -110,7 +108,7 @@ def get_group(request, id, notify=None):
                 "preview_publ_path": preview_publ_path,
                 "preview_publ_path_value": preview_publ_path_value,
                 "all_publs": all_publs,
-                "notify":notify,
+                "notify": wcode.notify.instant.get(request),
                 "white_list": white_list,
                 "black_list": black_list
             }
@@ -355,13 +353,9 @@ def get_add_member_group(request, id):
                 find_user = User.objects.get(nickname=white_user)
 
                 if find_user.id_user == get_user_id(request):
-                    wcode.notify.momental_notify(request, "error", 'Вы и так являетесь автором данной группы.\n'
+                    wcode.notify.instant.create(request, "error", 'Вы и так являетесь автором данной группы.\n'
                                                                    'Вы не можете назначить себя участником.\n\n')
-                    return get_group(request,
-                                            id,
-                                            notify={'type': 'error',
-                                                    'text': 'Вы и так являетесь автором данной группы.\n'
-                                                            'Вы не можете назначить себя участником.\n\n'})
+                    return wcode.goto('/group/'+str(id))
 
                 wp = WikiPermissions()
                 wp.load_permissions(group.members)

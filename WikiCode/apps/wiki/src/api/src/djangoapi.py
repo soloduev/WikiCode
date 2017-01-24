@@ -18,21 +18,8 @@
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# Управление уведомлениями
+# Все чисто джанговские методы и классы находятся здесь, скрытые от посторонних глаз
 
+from django.shortcuts import redirect
 from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.src.views.auth import get_user_id
-
-
-def momental_notify(request, type: str, message: str):
-    """ Порождает моментальное уведомление для текущего пользователя.
-    type:       'error' | 'info'
-    message:    'any text'
-    """
-    try:
-        user = User.objects.get(id_user=get_user_id(request))
-        user.notify_text = message
-        user.notify_type = type
-        user.save()
-    except User.DoesNotExist:
-        print("User not found")
