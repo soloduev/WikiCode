@@ -32,7 +32,7 @@ from WikiCode.apps.wiki.src.modules.wiki_comments.wiki_comments import WikiComme
 from WikiCode.apps.wiki.src.modules.wiki_permissions.wiki_permissions import WikiPermissions
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
 from WikiCode.apps.wiki.src.modules.wiki_versions.wiki_versions import WikiVersions
-from WikiCode.apps.wiki.src.views.error_view import get_error_page
+from WikiCode.apps.wiki.src.api import wcode
 from WikiCode.apps.wiki.src.wiki_markdown import WikiMarkdown
 from .auth import check_auth, get_user_id
 
@@ -66,7 +66,7 @@ def get_create(request):
             "dynamic_tree": wft.to_html_dynamic_folders(),
             "path": input_folder_id,
             "show_path": path_folder,
-            "empty_tree":empty_tree,
+            "empty_tree": empty_tree,
         }
 
         return render(request, 'wiki/create.html', context)
@@ -78,18 +78,8 @@ def get_create(request):
         return render(request, 'wiki/create.html', context)
 
 
-def get_page(request, id, notify=None):
-    """ Возвращает страницу конспекта.
-        Может принимать notify(сообщение, которое можно вывести после отображения страницы):
-        notify:
-            {
-                'type': 'error|info',
-                'text': 'any text',
-            }
-        """
-
-    if notify is None:
-        notify = {'type': 'msg', 'text': ''}
+def get_page(request, id):
+    """ Возвращает страницу конспекта."""
 
     try:
         cur_user_id = get_user_id(request)
@@ -100,7 +90,7 @@ def get_page(request, id, notify=None):
             wft = WikiFileTree()
             wft.load_tree(user.file_tree)
         except User.DoesNotExist:
-            return get_error_page(request, ["Не удалось загрузить юзера. Его уже не существует!"])
+            return wcode.goerror(request, ["Не удалось загрузить юзера. Его уже не существует!"])
 
         # Проверяем доступ пользователя к конспекту
         wp = WikiPermissions()
@@ -111,7 +101,7 @@ def get_page(request, id, notify=None):
         # Проверяем, не находится ли пользователь в черном списке
         for black_user in black_list:
             if str(cur_user_id) == str(black_user["id"]):
-                return get_error_page(request, ["У Вас нет прав доступа к этому конспекту."])
+                return wcode.goerror(request, ["У Вас нет прав доступа к этому конспекту."])
 
         # Проверяем, не находится ли пользователь в списке редакторов
         is_editor = False
@@ -122,7 +112,7 @@ def get_page(request, id, notify=None):
 
         # Если конспект приватный и пользователь не является редактором конспекта, то блокируем ему доступ
         if not publication.is_public and not is_editor and publication.id_author != cur_user_id:
-            return get_error_page(request, ["У Вас нет прав доступа к этому конспекту."])
+            return wcode.goerror(request, ["У Вас нет прав доступа к этому конспекту."])
 
         # Смотрим, может ли пользователь редактировать конспект.
         # Если конспект не защищен от редактирования или пользователь является редактором/автором конспекта, то конспект
@@ -172,7 +162,6 @@ def get_page(request, id, notify=None):
                     "dynamic_comments": wc.to_html(is_dynamic=True)
                 })
 
-
         else:
             dynamic_comments = None
 
@@ -219,7 +208,7 @@ def get_page(request, id, notify=None):
             else:
                 dynamic_tree = None
         except User.DoesNotExist:
-            return get_error_page(request, ["Пользователя не сущесвует"])
+            return wcode.goerror(request, ["Пользователя не сущесвует"])
 
         # Узнаем, ставил ли звезду, этот пользователь, этому конспекту
         try:
@@ -253,12 +242,12 @@ def get_page(request, id, notify=None):
             "is_editable": is_editable,
             "is_star": is_star,
             "tags": tags,
-            "notify": notify,
+            "notify": wcode.notify.instant.get(request),
         }
 
         return render(request, 'wiki/page/page.html', context)
     except Publication.DoesNotExist:
-        return get_error_page(request, ["This is publication not found!", "Page not found: page/"+str(id)+"/"])
+        return wcode.goerror(request, ["This is publication not found!", "Page not found: page/" + str(id) + "/"])
 
 
 def get_create_page(request):
@@ -269,7 +258,7 @@ def get_create_page(request):
     try:
         user = User.objects.get(email=user_data)
     except User.DoesNotExist:
-        return get_error_page(request, ["Пользователя, создающего конспект не существует!"])
+        return wcode.goerror(request, ["Пользователя, создающего конспект не существует!"])
     # Проверяем, чего хотим сделать
     if request.POST.get('secret') == "off":
         with open("WikiCode/apps/wiki/generate_pages/gen_page.gen", "r", encoding='utf-8') as f:
@@ -288,7 +277,7 @@ def get_create_page(request):
         # Перед тем, как создать публикацию, проверяем, не существует ли она уже
         try:
             publ = Publication.objects.get(id_publication=newid)
-            return get_error_page(request,["Конспект с таким id уже существует!"])
+            return wcode.goerror(request, ["Конспект с таким id уже существует!"])
         except Publication.DoesNotExist:
             # Создаем первые комментарии
             wiki_comments = WikiComments()
@@ -296,7 +285,7 @@ def get_create_page(request):
 
             # Создаем первую версию конспекта
             wiki_versions = WikiVersions()
-            wm = WikiMarkdown()                 # Получаем все абзацы
+            wm = WikiMarkdown()  # Получаем все абзацы
             paragraphs = wm.split(form["text"])
             wiki_versions.create_versions(id_user=user.id_user,
                                           seq=list(paragraphs))
@@ -361,7 +350,7 @@ def get_create_page(request):
                                type="personal",
                                id_folder=form['folder'].split(':')[1])  # new version
 
-        user.file_tree = wft.get_xml_str()                              # new version
+        user.file_tree = wft.get_xml_str()  # new version
 
         # Увеличиваем количество публикаций в статистике у пользователя
         user.publications += 1
@@ -399,21 +388,11 @@ def get_presentation(request, id):
         total = first_part + second_part + third_part
         return HttpResponse(total)
     except Publication.DoesNotExist:
-        return get_error_page(request, ["This is publication not found!"])
+        return wcode.goerror(request, ["This is publication not found!"])
 
 
-def get_publ_manager(request, id, notify=None):
-    """Запускает страницу управления конспектом
-    Может принимать notify(сообщение, которое можно вывести после отображения страницы):
-    notify:
-        {
-            'type': 'error|info',
-            'text': 'any text',
-        }
-    """
-
-    if notify is None:
-        notify = {'type': 'msg', 'text': ''}
+def get_publ_manager(request, id):
+    """Запускает страницу управления конспектом"""
 
     try:
         # Получаем пользователя
@@ -447,18 +426,20 @@ def get_publ_manager(request, id, notify=None):
                 "path_to_folder": path_to_folder,
                 "white_list": white_list,
                 "black_list": black_list,
-                "notify": notify
+                "notify": wcode.notify.instant.get(request)
             }
             return render(request, 'wiki/publ_manager.html', context)
         else:
-            return get_error_page(request, ["Вы не являетесь автором данного конспекта, чтобы перейти в панель управления!"])
+            return wcode.goerror(request,
+                                 ["Вы не являетесь автором данного конспекта, чтобы перейти в панель управления!"])
 
     except Publication.DoesNotExist:
-        return get_error_page(request, ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
+        return wcode.goerror(request,
+                             ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
     except User.DoesNotExist:
-        return get_error_page(request, ["User not found!"])
+        return wcode.goerror(request, ["User not found!"])
     except:
-        return get_error_page(request, ["Ошибка перехода на страницу управления конспектом."])
+        return wcode.goerror(request, ["Ошибка перехода на страницу управления конспектом."])
 
 
 @csrf_protect
@@ -503,14 +484,14 @@ def get_add_dynamic_comment(request, id):
 
                 except DynamicParagraph.DoesNotExist:
                     # Если этот динамический параграф отсутствует, создаем его
-                    wc.create_comments(id=stat.total_dynamic_comments+1)
+                    wc.create_comments(id=stat.total_dynamic_comments + 1)
                     dynamic_paragraph = DynamicParagraph(publication=publication,
-                                                             paragraph=num_paragraph,
-                                                             comments=wc.get_xml_str())
+                                                         paragraph=num_paragraph,
+                                                         comments=wc.get_xml_str())
                     stat.total_dynamic_comments += 1
 
                 except User.DoesNotExist:
-                    return get_error_page(request, ["User not found."])
+                    return wcode.goerror(request, ["User not found."])
 
                 # Добавляем новый коммент в БД
                 new_comment = Comment(id_comment=stat.total_comments + 1,
@@ -537,8 +518,8 @@ def get_add_dynamic_comment(request, id):
                 return HttpResponse('ok', content_type='text/html')
 
             except Publication.DoesNotExist:
-                return get_error_page(request, ["This is publication not found!",
-                                                "Page not found: publ_manager/" + str(id) + "/"])
+                return wcode.goerror(request, ["This is publication not found!",
+                                               "Page not found: publ_manager/" + str(id) + "/"])
     else:
         return HttpResponse('no', content_type='text/html')
 
@@ -612,13 +593,13 @@ def get_reply_dynamic_comment(request, id):
                     return HttpResponse('ok', content_type='text/html')
 
                 except DynamicParagraph.DoesNotExist:
-                    return get_error_page(request, ["DynamicParagraph not found."])
+                    return wcode.goerror(request, ["DynamicParagraph not found."])
                 except User.DoesNotExist:
-                    return get_error_page(request, ["User not found."])
+                    return wcode.goerror(request, ["User not found."])
 
             except Publication.DoesNotExist:
-                return get_error_page(request, ["This is publication not found!",
-                                                "Page not found: publ_manager/" + str(id) + "/"])
+                return wcode.goerror(request, ["This is publication not found!",
+                                               "Page not found: publ_manager/" + str(id) + "/"])
     else:
         return HttpResponse('no', content_type='text/html')
 
@@ -704,11 +685,11 @@ def get_add_main_comment(request, id):
                     return HttpResponse('no', content_type='text/html')
 
             except Publication.DoesNotExist:
-                return get_error_page(request, ["This is publication not found!",
-                                                "Page not found: publ_manager/" + str(id) + "/"])
+                return wcode.goerror(request, ["This is publication not found!",
+                                               "Page not found: publ_manager/" + str(id) + "/"])
             except User.DoesNotExist:
-                return get_error_page(request, ["This is user not found!",
-                                    "User not found: user/" + str(get_user_id(request)) + "/"])
+                return wcode.goerror(request, ["This is user not found!",
+                                               "User not found: user/" + str(get_user_id(request)) + "/"])
     else:
         return HttpResponse('no', content_type='text/html')
 
@@ -746,7 +727,7 @@ def get_save_publication(request, id):
                 # Получаем абзацы
                 md_text = ""
                 for i in range(0, count_paragraphs):
-                    md_text += request.POST.get(str(i+1))
+                    md_text += request.POST.get(str(i + 1))
                 wiki_markdown = WikiMarkdown()
                 md_paragraphs = wiki_markdown.split(md_text)
 
@@ -770,8 +751,8 @@ def get_save_publication(request, id):
                     return HttpResponse('not_eq', content_type='text/html')
 
             except Publication.DoesNotExist:
-                return get_error_page(request, ["This is publication not found!",
-                                                "Page not found: publ_manager/" + str(id) + "/"])
+                return wcode.goerror(request, ["This is publication not found!",
+                                               "Page not found: publ_manager/" + str(id) + "/"])
     else:
         return HttpResponse('no', content_type='text/html')
 
@@ -795,15 +776,15 @@ def get_get_version(request, id):
             context = {}
 
             for i in range(0, len(paragraphs)):
-                context[str(i+1)] = paragraphs[i]
+                context[str(i + 1)] = paragraphs[i]
 
             context["count"] = str(len(paragraphs))
 
             return HttpResponse(json.dumps(context), content_type="application/json")
 
         except Publication.DoesNotExist:
-            return get_error_page(request, ["This is publication not found!",
-                                            "Page not found: publ_manager/" + str(id) + "/"])
+            return wcode.goerror(request, ["This is publication not found!",
+                                           "Page not found: publ_manager/" + str(id) + "/"])
     else:
         return HttpResponse('no', content_type='text/html')
 
@@ -844,8 +825,8 @@ def get_set_head(request, id):
 
                 return HttpResponse('ok', content_type='text/html')
             except Publication.DoesNotExist:
-                return get_error_page(request, ["This is publication not found!",
-                                                "Page not found: publ_manager/" + str(id) + "/"])
+                return wcode.goerror(request, ["This is publication not found!",
+                                               "Page not found: publ_manager/" + str(id) + "/"])
     else:
         return HttpResponse('no', content_type='text/html')
 
@@ -879,7 +860,9 @@ def get_save_page(request, id):
 
                         # Проверяем, сохранил ли пользователь у себя уже этот конспект
                         if wft.is_publication(publication.id_publication):
-                            return get_page(request, id, notify={'type': 'error', 'text': 'Вы уже сохранили этот конспект у себя в дереве.'})
+                            wcode.notify.instant.create(request, 'error',
+                                                        'Вы уже сохранили этот конспект у себя в дереве.')
+                            return wcode.goto('/page/' + str(id))
 
                         # Если такая папка существует сохраняем в нее этот конспект
                         wft.create_publication(id=publication.id_publication,
@@ -894,18 +877,19 @@ def get_save_page(request, id):
                         current_user.save()
                         publication.save()
 
-                        return get_page(request, id, notify={'type': 'info', 'text': 'Конспект сохранен'})
+                        wcode.notify.instant.create(request, 'info', 'Конспект сохранен')
+                        return wcode.goto('/page/' + str(id))
                     except Folder.DoesNotExist:
-                        return get_error_page(request, ["Такой папки не существует"])
+                        return wcode.goerror(request, ["Такой папки не существует"])
                     except:
-                        return get_error_page(request, ["Передан неверный формат пути к папке"])
+                        return wcode.goerror(request, ["Передан неверный формат пути к папке"])
 
                 else:
-                    return get_error_page(request, ["Вы являетесь автором данного конспекта, "
-                                                    "Вы не можете его сохранить!"])
+                    return wcode.goerror(request, ["Вы являетесь автором данного конспекта, "
+                                                   "Вы не можете его сохранить!"])
             except Publication.DoesNotExist:
-                return get_error_page(request, ["This is publication not found!",
-                                                "Page not found: publ_manager/" + str(id) + "/"])
+                return wcode.goerror(request, ["This is publication not found!",
+                                               "Page not found: publ_manager/" + str(id) + "/"])
     else:
         return HttpResponse('no', content_type='text/html')
 
@@ -952,10 +936,10 @@ def get_add_star_publication(request, id):
                     return HttpResponse('ok', content_type='text/html')
 
             except User.DoesNotExist:
-                return get_error_page(request, ["User not found."])
+                return wcode.goerror(request, ["User not found."])
             except Publication.DoesNotExist:
-                return get_error_page(request, ["This is publication not found!",
-                                                "Page not found: publ_manager/" + str(id) + "/"])
+                return wcode.goerror(request, ["This is publication not found!",
+                                               "Page not found: publ_manager/" + str(id) + "/"])
     else:
         return HttpResponse('no', content_type='text/html')
 
@@ -978,12 +962,12 @@ def get_load_md(request, id):
                 return response
 
             except User.DoesNotExist:
-                return get_error_page(request, ["User not found."])
+                return wcode.goerror(request, ["User not found."])
             except Publication.DoesNotExist:
-                return get_error_page(request, ["This is publication not found!",
-                                                "Page not found: publ_manager/" + str(id) + "/"])
+                return wcode.goerror(request, ["This is publication not found!",
+                                               "Page not found: publ_manager/" + str(id) + "/"])
     else:
-        return get_error_page(request, ["По техническим причинам, вы пока не можете скачать этот конспект."])
+        return wcode.goerror(request, ["По техническим причинам, вы пока не можете скачать этот конспект."])
 
 
 def get_get_path_to_folder(request):
@@ -1010,7 +994,7 @@ def get_get_path_to_folder(request):
                 else:
                     return HttpResponse('no', content_type='text/html')
             except User.DoesNotExist:
-                return get_error_page(request, ["User not found."])
+                return wcode.goerror(request, ["User not found."])
             except:
                 return HttpResponse('no', content_type='text/html')
     else:
@@ -1041,7 +1025,7 @@ def get_get_path_to_publ(request, id):
                 else:
                     return HttpResponse('no', content_type='text/html')
             except User.DoesNotExist:
-                return get_error_page(request, ["User not found."])
+                return wcode.goerror(request, ["User not found."])
             except:
                 return HttpResponse('no', content_type='text/html')
     else:
@@ -1139,11 +1123,11 @@ def get_comment_rating_up(request, id):
                     return HttpResponse('no', content_type='text/html')
 
             except User.DoesNotExist:
-                return get_error_page(request, ["User not found."])
+                return wcode.goerror(request, ["User not found."])
             except Publication.DoesNotExist:
-                return get_error_page(request, ["Publication not found."])
+                return wcode.goerror(request, ["Publication not found."])
             except Comment.DoesNotExist:
-                return get_error_page(request, ["Comment not found."])
+                return wcode.goerror(request, ["Comment not found."])
     else:
         return HttpResponse('no', content_type='text/html')
 
@@ -1239,12 +1223,12 @@ def get_comment_rating_down(request, id):
                     return HttpResponse('no', content_type='text/html')
 
             except User.DoesNotExist:
-                return get_error_page(request, ["User not found."])
+                return wcode.goerror(request, ["User not found."])
             except Publication.DoesNotExist:
-                return get_error_page(request, ["Publication not found."])
+                return wcode.goerror(request, ["Publication not found."])
             except DynamicParagraph.DoesNotExist:
-                return get_error_page(request, ["DynamicParagraph not found."])
+                return wcode.goerror(request, ["DynamicParagraph not found."])
             except Comment.DoesNotExist:
-                return get_error_page(request, ["Comment not found."])
+                return wcode.goerror(request, ["Comment not found."])
     else:
         return HttpResponse('no', content_type='text/html')

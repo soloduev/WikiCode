@@ -18,7 +18,6 @@
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
 
 
-
 from .auth import check_auth, get_user_id
 from django.shortcuts import render
 from WikiCode.apps.wiki.models import User as WikiUser

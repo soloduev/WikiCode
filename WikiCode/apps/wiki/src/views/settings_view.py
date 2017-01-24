@@ -21,13 +21,12 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 from WikiCode.apps.wiki.models import User, Publication, Viewing, BugReport
-from WikiCode.apps.wiki.src.views.error_view import get_error_page
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
+from WikiCode.apps.wiki.src.api import wcode
 from .auth import check_auth, get_user_id
 
 
 def get_settings(request):
-
     try:
         id = get_user_id(request)
 
@@ -41,21 +40,21 @@ def get_settings(request):
         try:
             preview_publ = Publication.objects.get(id_publication=user.preview_publ_id)
             prewiew_path_publ = preview_publ.tree_path.split(":")[0]
-            prewiew_path_publ = prewiew_path_publ[:len(prewiew_path_publ)-5]
+            prewiew_path_publ = prewiew_path_publ[:len(prewiew_path_publ) - 5]
         except Publication.DoesNotExist:
             pass
 
         context = {
-            "user_data":check_auth(request),
+            "user_data": check_auth(request),
             "user_id": id,
             "user": user,
-            "prewiew_path_publ":prewiew_path_publ,
+            "prewiew_path_publ": prewiew_path_publ,
             "preview_tree": wft.to_html_preview()
         }
 
         return render(request, 'wiki/settings.html', context)
     except User.DoesNotExist:
-        get_error_page(request,["Sorry this user is not found!"])
+        wcode.goerror(request, ["Sorry this user is not found!"])
 
 
 def get_check_password(request):
@@ -115,9 +114,9 @@ def get_repassword_user(request):
                 # TODO: Информировать пользователя о том, чтобы он перезашел на платформу,так как он изменил свой пароль
                 return HttpResponseRedirect("/")
             else:
-                get_error_page(request, ["Sorry passwords incorrect!"])
+                wcode.goerror(request, ["Sorry passwords incorrect!"])
         except User.DoesNotExist:
-            get_error_page(request, ["User is not found!"])
+            wcode.goerror(request, ["User is not found!"])
     else:
         return HttpResponse('no', content_type='text/html')
 
@@ -171,11 +170,11 @@ def get_renickname_user(request):
                     # TODO: Информировать пользователя о том, чтобы он перезашел на платформу,так как он изменил свой никнейм
                     return HttpResponseRedirect("/")
                 else:
-                    get_error_page(request, ["Извините, но введенныя Вами новая пара никнеймов не совпадает!"])
+                    wcode.goerror(request, ["Извините, но введенныя Вами новая пара никнеймов не совпадает!"])
             else:
-                get_error_page(request, ["Извините, но Ваш старый пароль не корректен!"])
+                wcode.goerror(request, ["Извините, но Ваш старый пароль не корректен!"])
         except User.DoesNotExist:
-            get_error_page(request, ["User is not found!"])
+            wcode.goerror(request, ["User is not found!"])
     else:
         return HttpResponse('no', content_type='text/html')
 
@@ -199,8 +198,8 @@ def get_rename_user(request):
 
                 return HttpResponseRedirect("/")
             else:
-                get_error_page(request, ["Извините, но введенныя Вами новая пара имен не совпадает!"])
+                wcode.goerror(request, ["Извините, но введенныя Вами новая пара имен не совпадает!"])
         except User.DoesNotExist:
-            get_error_page(request, ["User is not found!"])
+            wcode.goerror(request, ["User is not found!"])
     else:
         return HttpResponse('no', content_type='text/html')

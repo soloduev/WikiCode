@@ -18,8 +18,8 @@
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
 
 
-
 from WikiCode.apps.wiki.models import User
+
 
 def check_auth(request):
     """Проверка аутентифицирован ли пользователь"""

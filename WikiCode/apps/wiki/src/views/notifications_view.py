@@ -22,24 +22,14 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 from WikiCode.apps.wiki.models import User, Notification, Statistics
-from WikiCode.apps.wiki.src.views.error_view import get_error_page
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
 from WikiCode.apps.wiki.src.modules.notify_generator.wiki_notify import WikiNotify
-from WikiCode.apps.wiki.views import user_view
+from WikiCode.apps.wiki.src.api import wcode
 from .auth import check_auth, get_user_id
 
 
-def get_notifications(request, notify=None):
-    """ Возвращает страницу уведомлений.
-        Может принимать notify(сообщение, которое можно вывести после отображения страницы):
-        notify:
-            {
-                'type': 'error|info',
-                'text': 'any text',
-            }
-        """
-    if notify is None:
-        notify = {'type': 'msg', 'text': ''}
+def get_notifications(request):
+    """ Возвращает страницу уведомлений."""
 
     user_data = check_auth(request)
     try:
@@ -82,12 +72,12 @@ def get_notifications(request, notify=None):
             "user_id": user_id,
             "preview_tree": wft.to_html_preview(),
             "notifications": notifications,
-            "notify": notify
+            "notify": wcode.notify.instant.get(request)
         }
 
         return render(request, 'wiki/notifications.html', context)
     except User.DoesNotExist:
-        return get_error_page(request, ["Sorry, user is not defined!", "Page not found: 'user/" + str(id) + "/'"])
+        return wcode.goerror(request, ["Sorry, user is not defined!", "Page not found: 'user/" + str(id) + "/'"])
 
 
 def get_send_request_colleagues(request, id):
@@ -102,15 +92,12 @@ def get_send_request_colleagues(request, id):
             if Notification.objects.filter(id_addressee=send_user.id_user,
                                            id_sender=current_user.id_user,
                                            type="add_colleague").count() != 0:
-                return user_view.get_user(request,
-                                          id,
-                                          notify={'type': 'error',
-                                                  'text': 'Заявка уже отправлена\n\n'})
+                wcode.notify.instant.create(request, 'error', 'Заявка уже отправлена\n\n')
+                return wcode.goto('/user/' + str(id))
 
             # Получаем текущую дату
             date = str(datetime.datetime.now())
             date = date[:len(date) - 7]
-
 
             # Генериуем html уведомления
             html_text = WikiNotify.generate_add_colleague(author_nickname=current_user.nickname,
@@ -134,14 +121,13 @@ def get_send_request_colleagues(request, id):
 
             new_notify.save()
 
-            return user_view.get_user(request,
-                                      id,
-                                      notify={'type': 'info',
-                                              'text': 'Заявка на добавление в коллеги успешно отправлена.\n\n'})
+            wcode.notify.instant.create(request, 'info', 'Заявка на добавление в коллеги успешно отправлена.\n\n')
+            return wcode.goto('/user/' + str(id))
+
         except User.DoesNotExist:
-            return get_error_page(request, ["User mot found!"])
+            return wcode.goerror(request, ["User mot found!"])
     else:
-        return get_error_page(request, ["Sorry, could not send the request to add the college for technical reasons!"])
+        return wcode.goerror(request, ["Sorry, could not send the request to add the college for technical reasons!"])
 
 
 def get_notification_read(request):
@@ -173,12 +159,12 @@ def delete_notification(request):
             notification = Notification.objects.get(id_notification=request.POST.get("delete_notification_id"))
             notification.delete()
 
-            return get_notifications(request, notify={'type': 'info',
-                                                      'text': 'Уведомление было успешно удалено.\n\n'})
+            wcode.notify.instant.create(request, 'info', 'Уведомление было успешно удалено.\n\n')
+            return wcode.goto('notifications')
 
         except Notification.DoesNotExist:
-            return get_notifications(request, notify={'type': 'error',
-                                                      'text': 'Извините, но это уведомление уже было удалено.\n\n'})
+            wcode.notify.instant.create(request, 'error', 'Извините, но это уведомление уже было удалено.\n\n')
+            return wcode.goto('notifications')
+
     else:
-        return get_error_page(request, [
-            "Извините, но удалить это уведомление пока невозможно. Приносим свои извинения."])
+        return wcode.goerror(request, ["Извините, но удалить уведомление пока невозможно. Приносим свои извинения."])

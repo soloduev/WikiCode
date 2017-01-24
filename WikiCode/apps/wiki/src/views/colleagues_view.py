@@ -19,23 +19,13 @@
 from django.shortcuts import render
 
 from WikiCode.apps.wiki.models import User, Colleague, Notification
-from WikiCode.apps.wiki.src.views.error_view import get_error_page
-from WikiCode.apps.wiki.src.views import notifications_view
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
+from WikiCode.apps.wiki.src.api import wcode
 from .auth import check_auth, get_user_id
 
 
-def get_colleagues(request, notify=None):
-    """ Возвращает страницу списка коллег пользователя.
-    Может принимать notify(сообщение, которое можно вывести после отображения страницы):
-    notify:
-        {
-            'type': 'error|info',
-            'text': 'any text',
-        }
-    """
-    if notify is None:
-        notify = {'type': 'msg', 'text': ''}
+def get_colleagues(request):
+    """ Возвращает страницу списка коллег пользователя."""
 
     user_data = check_auth(request)
     try:
@@ -68,12 +58,12 @@ def get_colleagues(request, notify=None):
             "user_id": user_id,
             "preview_tree": wft.to_html_preview(),
             "colleagues": colleagues,
-            "notify": notify
+            "notify": wcode.notify.instant.get(request)
         }
 
         return render(request, 'wiki/colleagues.html', context)
     except User.DoesNotExist:
-        return get_error_page(request, ["Sorry, user is not defined!"])
+        return wcode.goerror(request, ["Sorry, user is not defined!"])
 
 
 def get_add_colleague(request, id):
@@ -84,10 +74,8 @@ def get_add_colleague(request, id):
 
         try:
             Colleague.objects.get(id_user=cur_user.id_user)
-
-            return notifications_view.get_notifications(request,
-                                                        notify={'type': 'error',
-                                                                'text': 'Данный пользователь у вас уже в коллегах\n\n\n'})
+            wcode.notify.instant.create(request, 'error', 'Данный пользователь у вас уже в коллегах\n\n\n')
+            return wcode.goto('notifications')
 
         except Colleague.DoesNotExist:
 
@@ -109,10 +97,11 @@ def get_add_colleague(request, id):
             new_colleague.save()
             new_colleague_reverse.save()
 
-            return notifications_view.get_notifications(request, notify={'type': 'info',
-                                                                         'text': 'Пользователь был успешно добавлен в коллеги.\n\n\n'})
+            wcode.notify.instant.create(request, 'info', 'Пользователь был успешно добавлен в коллеги.\n\n\n')
+            return wcode.goto('notifications')
+
     except User.DoesNotExist:
-        return get_error_page(request, ["Sorry, user is not defined!"])
+        return wcode.goerror(request, ["Sorry, user is not defined!"])
 
 
 def get_delete_colleague(request):
@@ -122,17 +111,19 @@ def get_delete_colleague(request):
             del_user_id = User.objects.get(id_user=request.POST.get("delete_colleague_id"))
 
             try:
-                collegue = Colleague.objects.get(id_user=cur_user.id_user, id_colleague=del_user_id.id_user)
-                collegue_reverse = Colleague.objects.get(id_user=del_user_id.id_user, id_colleague=cur_user.id_user)
-                collegue.delete()
-                collegue_reverse.delete()
+                colleague = Colleague.objects.get(id_user=cur_user.id_user, id_colleague=del_user_id.id_user)
+                colleague_reverse = Colleague.objects.get(id_user=del_user_id.id_user, id_colleague=cur_user.id_user)
+                colleague.delete()
+                colleague_reverse.delete()
 
-                return get_colleagues(request, notify={'type': 'info', 'text': 'Пользователь был успешно убран из Вашего списка коллег.\n\n'})
+                wcode.notify.instant.create(request, 'info', 'Пользователь был успешно убран из Вашего списка коллег.\n\n')
+                return wcode.goto('colleagues')
 
             except Colleague.DoesNotExist:
-                return get_colleagues(request, notify={'type': 'error', 'text': 'Извините, но этот коллега уже был удален из вашего списка.\n\n'})
+                wcode.notify.instant.create(request, 'error', 'Извините, но этот коллега уже был удален из вашего списка.\n\n')
+                return wcode.goto('colleagues')
 
         except User.DoesNotExist:
-            return get_error_page(request, ["Sorry, user is not defined!"])
+            return wcode.goerror(request, ["Sorry, user is not defined!"])
     else:
-        return get_error_page(request, ["Извините, но удалить этого пользователя из Вашего списка коллег, пока невозможно. Приносим свои извинения."])
+        return wcode.goerror(request, ["Извините, но удалить этого пользователя из Вашего списка коллег, пока невозможно. Приносим свои извинения."])

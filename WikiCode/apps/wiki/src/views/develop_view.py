@@ -20,9 +20,8 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
-from WikiCode.apps.wiki.models import Publication, Developer
+from WikiCode.apps.wiki.models import Developer
 from WikiCode.apps.wiki.src.views.auth import check_auth, get_user_id
-from WikiCode.apps.wiki.src.views.index_view import get_index
 
 
 def get_login_developer(request):
@@ -46,7 +45,6 @@ def get_login_developer(request):
                     "user_id": user_id,
                 }
                 return render(request, 'wiki/develop_mode.html', context)
-
 
         else:
             print(">>>>>>>>>>>>>> WIKI ERROR: invalid login")

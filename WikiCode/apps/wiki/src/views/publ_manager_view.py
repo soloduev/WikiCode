@@ -1,6 +1,6 @@
 #   # -*- coding: utf-8 -*-
 #
-#   Copyright (C) 2016 Igor Soloduev <diahorver@gmail.com>
+#   Copyright (C) 2016-2017 Igor Soloduev <diahorver@gmail.com>
 #
 #   This file is part of WikiCode.
 #
@@ -16,17 +16,12 @@
 #
 #   You should have received a copy of the GNU Affero General Public License
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
-from django.http import HttpResponse
-from django.shortcuts import render
-from django.views.decorators.csrf import csrf_protect
 
 from WikiCode.apps.wiki.models import Publication, User
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
 from WikiCode.apps.wiki.src.modules.wiki_permissions.wiki_permissions import WikiPermissions
-from WikiCode.apps.wiki.src.views.auth import check_auth, get_user_id
-from WikiCode.apps.wiki.src.views.error_view import get_error_page
-from WikiCode.apps.wiki.models import User as WikiUser
-from WikiCode.apps.wiki.src.views.publication_view import get_publ_manager
+from WikiCode.apps.wiki.src.api import wcode
+from WikiCode.apps.wiki.src.views.auth import get_user_id
 
 
 def get_save_access(request, id):
@@ -40,14 +35,14 @@ def get_save_access(request, id):
             current_id = get_user_id(request)
             if current_id == publication.id_author:
 
-                return get_publ_manager(request, id)
+                return wcode.goto('/publ_manager/' + str(id))
             else:
-                return get_error_page(request, ["У Вас нет доступа к этому конспекту, чтобы управлять им!",
-                                                "Вы не являетесь редактором конспекта page/" + str(id) + "/"])
+                return wcode.goerror(request, ["У Вас нет доступа к этому конспекту, чтобы управлять им!",
+                                               "Вы не являетесь редактором конспекта page/" + str(id) + "/"])
 
         except Publication.DoesNotExist:
-            return get_error_page(request,
-                                  ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
+            return wcode.goerror(request,
+                                 ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
 
 
 def get_save_main_publ_manager(request, id):
@@ -67,21 +62,20 @@ def get_save_main_publ_manager(request, id):
                     publication.title = new_title
                     publication.description = new_description
                     publication.save()
-                    return get_publ_manager(request,
-                                            id,
-                                            notify={'type': 'info',
-                                                    'text': 'Заголовок и описание конспекта успешно изменены!\n\n\n'})
 
-                return get_publ_manager(request,
-                                        id,
-                                        notify={'type': 'error',
-                                                'text': 'Заголовок и описание изменить не удалось!\n\n\n'})
+                    wcode.notify.instant.create(request, 'info',
+                                                'Заголовок и описание конспекта успешно изменены!\n\n\n')
+                    return wcode.goto('/publ_manager/' + str(id))
+
+                wcode.notify.instant.create(request, 'error', 'Заголовок и описание изменить не удалось!\n\n\n')
+                return wcode.goto('/publ_manager/' + str(id))
+
             else:
-                return get_error_page(request, ["У Вас нет доступа к этому конспекту, чтобы управлять им!",
+                return wcode.goerror(request, ["У Вас нет доступа к этому конспекту, чтобы управлять им!",
                                                 "Вы не являетесь редактором конспекта page/" + str(id) + "/"])
         except Publication.DoesNotExist:
-            return get_error_page(request,
-                                  ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
+            return wcode.goerror(request,
+                                 ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
 
 
 def get_save_opt_publ_manager(request, id):
@@ -110,27 +104,26 @@ def get_save_opt_publ_manager(request, id):
 
                 wft = WikiFileTree()
                 wft.load_tree(cur_user.file_tree)
-                wft.reaccess_publication(publication.id_publication, "public" if request.POST.get("access-opt", False) else "private")
+                wft.reaccess_publication(publication.id_publication,
+                                         "public" if request.POST.get("access-opt", False) else "private")
 
                 cur_user.file_tree = wft.get_xml_str()
 
                 cur_user.save()
                 publication.save()
 
-                return get_publ_manager(request,
-                                        id,
-                                        notify={'type': 'info',
-                                                'text': 'Все настройки конспекта успешно изменены!\n\n\n'})
+                wcode.notify.instant.create(request, 'info', 'Все настройки конспекта успешно изменены!\n\n\n')
+                return wcode.goto('/publ_manager/' + str(id))
+
             else:
-                return get_error_page(request, ["У Вас нет доступа к этому конспекту, чтобы управлять им!",
-                                                "Вы не являетесь редактором конспекта page/" + str(id) + "/"])
+                return wcode.goerror(request, ["У Вас нет доступа к этому конспекту, чтобы управлять им!",
+                                               "Вы не являетесь редактором конспекта page/" + str(id) + "/"])
         except Publication.DoesNotExist:
-            return get_error_page(request,
-                                  ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
+            return wcode.goerror(request,
+                                 ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
 
         except User.DoesNotExist:
-            return get_error_page(request,
-                                  ["User not found!"])
+            return wcode.goerror(request, ["User not found!"])
 
 
 def get_add_white_user(request, id):
@@ -145,11 +138,9 @@ def get_add_white_user(request, id):
                 find_user = User.objects.get(nickname=white_user)
 
                 if find_user.id_user == get_user_id(request):
-                    return get_publ_manager(request,
-                                            id,
-                                            notify={'type': 'error',
-                                                    'text': 'Вы и так являетесь автором конспекта.\n'
-                                                            'Вы не можете назначить себя редактором.\n\n'})
+                    wcode.notify.instant.create(request, 'error', 'Вы и так являетесь автором конспекта.\n'
+                                                                  'Вы не можете назначить себя редактором.\n\n')
+                    return wcode.goto('/publ_manager/' + str(id))
 
                 wp = WikiPermissions()
                 wp.load_permissions(publication.permissions)
@@ -169,38 +160,31 @@ def get_add_white_user(request, id):
                         is_find_black = True
 
                 if is_find_black:
-                    return get_publ_manager(request,
-                                            id,
-                                            notify={'type': 'error',
-                                                    'text': 'Данный пользователь уже находится у Вас в черном списке.\n'
-                                                            'Удалите его из черного списка, если хотите назначить его '
-                                                            'редактором\n\n'})
+                    wcode.notify.instant.create(request, 'error',
+                                                'Данный пользователь уже находится у Вас в черном списке.\n'
+                                                'Удалите его из черного списка, если хотите назначить его '
+                                                'редактором\n\n')
+                    return wcode.goto('/publ_manager/' + str(id))
 
                 if not is_find:
                     wp.add_to_white_list(find_user.id_user, find_user.nickname, "editor", "Редактор")
                     publication.permissions = wp.get_xml_str()
                     publication.save()
+                    wcode.notify.instant.create(request, 'info', 'Назначен новый редактор конспекта.\n\n\n')
+                    return wcode.goto('/publ_manager/' + str(id))
 
-                    return get_publ_manager(request,
-                                        id,
-                                        notify={'type': 'info',
-                                                'text': 'Назначен новый редактор конспекта.\n\n\n'})
                 else:
-                    return get_publ_manager(request,
-                                        id,
-                                        notify={'type': 'error',
-                                                'text': 'Данный пользователь уже назначен редактором.\n\n\n'})
+                    wcode.notify.instant.create(request, 'error', 'Данный пользователь уже назначен редактором.\n\n\n')
+                    return wcode.goto('/publ_manager/' + str(id))
 
             except User.DoesNotExist:
-                return get_publ_manager(request,
-                                        id,
-                                        notify={'type': 'error',
-                                                'text': 'Пользователя с таким nickname не существует.\n'
-                                                        'Новый редактор не назначен.\n\n'})
+                wcode.notify.instant.create(request, 'error', 'Пользователя с таким nickname не существует.\n'
+                                                              'Новый редактор не назначен.\n\n')
+                return wcode.goto('/publ_manager/' + str(id))
 
         except Publication.DoesNotExist:
-            return get_error_page(request,
-                                  ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
+            return wcode.goerror(request,
+                                 ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
 
 
 def get_del_white_user(request, id):
@@ -212,10 +196,8 @@ def get_del_white_user(request, id):
             del_user_nickname = request.POST.get("publ_editor")
 
             if not del_user_nickname:
-                return get_publ_manager(request,
-                                        id,
-                                        notify={'type': 'error',
-                                                'text': 'Вы не указали удаляемого пользователя.\n\n\n'})
+                wcode.notify.instant.create(request, 'error', 'Вы не указали удаляемого пользователя.\n\n\n')
+                return wcode.goto('/publ_manager/' + str(id))
 
             try:
                 find_user = User.objects.get(nickname=del_user_nickname)
@@ -233,24 +215,21 @@ def get_del_white_user(request, id):
                     publication.permissions = wp.get_xml_str()
                     publication.save()
 
-                    return get_publ_manager(request,
-                                            id,
-                                            notify={'type': 'info',
-                                                    'text': 'Пользователь успешно удален из списка редакторов.\n\n\n'})
+                    wcode.notify.instant.create(request, 'info',
+                                                'Пользователь успешно удален из списка редакторов.\n\n\n')
+                    return wcode.goto('/publ_manager/' + str(id))
+
                 else:
-                    return get_publ_manager(request,
-                                            id,
-                                            notify={'type': 'error',
-                                                    'text': 'Пользователь уже удален из списка редакторов\n\n\n'})
+                    wcode.notify.instant.create(request, 'error', 'Пользователь уже удален из списка редакторов\n\n\n')
+                    return wcode.goto('/publ_manager/' + str(id))
+
             except User.DoesNotExist:
-                return get_publ_manager(request,
-                                        id,
-                                        notify={'type': 'error',
-                                                'text': 'Удаляемого пользователя не существует.\n\n\n'})
+                wcode.notify.instant.create(request, 'error', 'Удаляемого пользователя не существует.\n\n\n')
+                return wcode.goto('/publ_manager/' + str(id))
 
         except Publication.DoesNotExist:
-            return get_error_page(request,
-                                  ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
+            return wcode.goerror(request,
+                                 ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
 
 
 def get_add_black_user(request, id):
@@ -265,10 +244,8 @@ def get_add_black_user(request, id):
                 find_user = User.objects.get(nickname=black_user)
 
                 if find_user.id_user == get_user_id(request):
-                    return get_publ_manager(request,
-                                            id,
-                                            notify={'type': 'error',
-                                                    'text': 'Вы не можете себя добавить в черный список.\n\n\n'})
+                    wcode.notify.instant.create(request, 'error', 'Вы не можете себя добавить в черный список.\n\n\n')
+                    return wcode.goto('/publ_manager/' + str(id))
 
                 wp = WikiPermissions()
                 wp.load_permissions(publication.permissions)
@@ -287,39 +264,33 @@ def get_add_black_user(request, id):
                         is_find_white = True
 
                 if is_find_white:
-                    return get_publ_manager(request,
-                                            id,
-                                            notify={'type': 'error',
-                                                    'text': 'Данный пользователь является редактором '
-                                                            'Вашего конспекта.\n'
-                                                            'Удалите его из списка редакторов, если хотите добавить его'
-                                                            ' в черный список\n\n'})
+                    wcode.notify.instant.create(request, 'error', 'Данный пользователь является редактором '
+                                                                  'Вашего конспекта.\n'
+                                                                  'Удалите его из списка редакторов, если хотите добавить его'
+                                                                  ' в черный список\n\n')
+                    return wcode.goto('/publ_manager/' + str(id))
 
                 if not is_find:
                     wp.add_to_black_list(find_user.id_user, find_user.nickname, "ban", "Бан")
                     publication.permissions = wp.get_xml_str()
                     publication.save()
 
-                    return get_publ_manager(request,
-                                            id,
-                                            notify={'type': 'info',
-                                                    'text': 'Пользователь добавлен в черный список.\n\n\n'})
+                    wcode.notify.instant.create(request, 'info', 'Пользователь добавлен в черный список.\n\n\n')
+                    return wcode.goto('/publ_manager/' + str(id))
+
                 else:
-                    return get_publ_manager(request,
-                                            id,
-                                            notify={'type': 'error',
-                                                    'text': 'Данный пользователь уже добавлен в черный список.\n\n\n'})
+                    wcode.notify.instant.create(request, 'error',
+                                                'Данный пользователь уже добавлен в черный список.\n\n\n')
+                    return wcode.goto('/publ_manager/' + str(id))
 
             except User.DoesNotExist:
-                return get_publ_manager(request,
-                                        id,
-                                        notify={'type': 'error',
-                                                'text': 'Пользователя с таким nickname не существует.\n'
-                                                        'Пользователь не добавлен в черный список.\n\n'})
+                wcode.notify.instant.create(request, 'error', 'Пользователя с таким nickname не существует.\n'
+                                                              'Пользователь не добавлен в черный список.\n\n')
+                return wcode.goto('/publ_manager/' + str(id))
 
         except Publication.DoesNotExist:
-            return get_error_page(request,
-                                  ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
+            return wcode.goerror(request,
+                                 ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
 
 
 def get_del_black_user(request, id):
@@ -331,10 +302,8 @@ def get_del_black_user(request, id):
             del_user_nickname = request.POST.get("publ_black_user")
 
             if not del_user_nickname:
-                return get_publ_manager(request,
-                                        id,
-                                        notify={'type': 'error',
-                                                'text': 'Вы не указали удаляемого пользователя.\n\n\n'})
+                wcode.notify.instant.create(request, 'error', 'Вы не указали удаляемого пользователя.\n\n\n')
+                return wcode.goto('/publ_manager/' + str(id))
 
             try:
                 find_user = User.objects.get(nickname=del_user_nickname)
@@ -352,21 +321,17 @@ def get_del_black_user(request, id):
                     publication.permissions = wp.get_xml_str()
                     publication.save()
 
-                    return get_publ_manager(request,
-                                            id,
-                                            notify={'type': 'info',
-                                                    'text': 'Пользователь успешно удален из черного списка.\n\n\n'})
+                    wcode.notify.instant.create(request, 'info', 'Пользователь успешно удален из черного списка.\n\n\n')
+                    return wcode.goto('/publ_manager/' + str(id))
+
                 else:
-                    return get_publ_manager(request,
-                                            id,
-                                            notify={'type': 'error',
-                                                    'text': 'Пользователь уже удален из черного списка.\n\n\n'})
+                    wcode.notify.instant.create(request, 'error', 'Пользователь уже удален из черного списка.\n\n\n')
+                    return wcode.goto('/publ_manager/' + str(id))
+
             except User.DoesNotExist:
-                return get_publ_manager(request,
-                                        id,
-                                        notify={'type': 'error',
-                                                'text': 'Удаляемого пользователя не существует.\n\n\n'})
+                wcode.notify.instant.create(request, 'error', 'Удаляемого пользователя не существует.\n\n\n')
+                return wcode.goto('/publ_manager/' + str(id))
 
         except Publication.DoesNotExist:
-            return get_error_page(request,
-                                  ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])
+            return wcode.goerror(request,
+                                 ["This is publication not found!", "Page not found: publ_manager/" + str(id) + "/"])

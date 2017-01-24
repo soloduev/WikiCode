@@ -40,6 +40,7 @@ def get_bug_report(request):
     }
     return render(request, 'wiki/bug_report.html', context)
 
+
 @csrf_protect
 def get_send_bug(request):
     """Ajax представление. Отправляет баг репорт."""

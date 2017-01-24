@@ -22,23 +22,14 @@ from django.shortcuts import render
 
 from WikiCode.apps.wiki.models import Publication, Group, Tag
 from WikiCode.apps.wiki.settings import wiki_settings
+from WikiCode.apps.wiki.src.api import wcode
 from .auth import check_auth
 from .auth import get_user_id
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
-def get_index(request, notify=None):
-    """ Возвращает начальную страницу сайта.
-    Может принимать notify(сообщение, которое можно вывести после отображения страницы):
-    notify:
-        {
-            'type': 'error|info',
-            'text': 'any text',
-        }
-    """
-
-    if notify is None:
-        notify = {'type': 'msg', 'text': ''}
+def get_index(request):
+    """ Возвращает начальную страницу сайта"""
 
     # Получаем только публичные конспекты
     all_publications = Publication.objects.filter(is_public=True)
@@ -82,7 +73,7 @@ def get_index(request, notify=None):
         "user_id": get_user_id(request),
         "groups": reversed(groups),
         "tags": tags,
-        "notify": notify,
+        "notify": wcode.notify.instant.get(request),
     }
 
     return render(request, 'wiki/index.html', context)

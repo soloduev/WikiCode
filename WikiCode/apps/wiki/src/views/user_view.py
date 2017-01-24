@@ -33,22 +33,12 @@ from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.models import User as WikiUser
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
 from WikiCode.apps.wiki.src.modules.notify_generator.wiki_notify import WikiNotify
-from WikiCode.apps.wiki.src.views.error_view import get_error_page
-from WikiCode.apps.wiki.src.views.index_view import get_index
+from WikiCode.apps.wiki.src.api import wcode
 from .auth import check_auth, get_user_id
 
 
-def get_user(request, id, notify=None):
-    """ Возвращает страницу пользователя.
-        Может принимать notify(сообщение, которое можно вывести после отображения страницы):
-        notify:
-            {
-                'type': 'error|info',
-                'text': 'any text',
-            }
-    """
-    if notify is None:
-        notify = {'type': 'msg', 'text': ''}
+def get_user(request, id):
+    """ Возвращает страницу пользователя."""
 
     user_data = check_auth(request)
     try:
@@ -95,12 +85,12 @@ def get_user(request, id, notify=None):
                     "new_notifications": Notification.objects.filter(id_addressee=user.id_user, is_read=False).count(),
                     "total_colleagues": Colleague.objects.filter(id_user=user.id_user).count(),
                     "groups": reversed(groups),
-                    "notify": notify
+                    "notify": wcode.notify.instant.get(request)
                 }
 
                 return render(request, 'wiki/user.html', context)
             else:
-                return get_error_page(request, ["Sorry, id user problem!", "Page not found: 'user/" + str(id) + "/'"])
+                return wcode.goerror(request, ["Sorry, id user problem!", "Page not found: 'user/" + str(id) + "/'"])
         else:
             # Отрисовываем страницу другого пользователя
             other_user = User.objects.get(id_user=id)
@@ -158,13 +148,13 @@ def get_user(request, id, notify=None):
                 "is_colleague": is_colleague,
                 "is_send_colleague": is_send_colleague,
                 "groups": reversed(groups),
-                "notify": notify
+                "notify": wcode.notify.instant.get(request)
             }
 
             return render(request, 'wiki/user.html', context)
 
     except User.DoesNotExist:
-        return get_error_page(request, ["Sorry, user is not defined!","Page not found: 'user/"+str(id)+"/'"])
+        return wcode.goerror(request, ["Sorry, user is not defined!","Page not found: 'user/"+str(id)+"/'"])
 
 
 def get_create_user(request):
@@ -265,16 +255,17 @@ def get_login_user(request):
     if user is not None:
         if user.is_active:
             login(request, user)
-            return get_index(request, notify={'text': 'Авторизация прошла успешно.',
-                                              'type': 'info'})
+            wcode.notify.instant.create(request, 'info', 'Авторизация прошла успешно.')
+            return wcode.goto('index')
         else:
             print(">>>>>>>>>>>>>> WIKI ERROR: disabled account")
-            return get_index(request)
+            return wcode.goto('index')
 
     else:
         print(">>>>>>>>>>>>>> WIKI ERROR: invalid login")
 
-    return get_index(request, notify={'text': 'Вы ввели не верный логин или пароль!\n\n\nПовторите снова.', 'type': 'error'})
+    wcode.notify.instant.create(request, 'error', 'Вы ввели не верный логин или пароль!\n\n\nПовторите снова.')
+    return wcode.goto('index')
 
 
 def get_logout_user(request):

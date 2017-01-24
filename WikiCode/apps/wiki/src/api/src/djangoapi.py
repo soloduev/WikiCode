@@ -20,7 +20,19 @@
 
 # Все чисто джанговские методы и классы находятся здесь, скрытые от посторонних глаз
 
+# DJANGO METHODS
 from django.shortcuts import redirect
-from WikiCode.apps.wiki.models import User
+
+# WRAPPERS DJANGO METHODS
 from WikiCode.apps.wiki.src.views.auth import get_user_id
 from WikiCode.apps.wiki.src.views.error_view import get_error_page
+
+# MODELS
+from WikiCode.apps.wiki.models import User
+from WikiCode.apps.wiki.models import Group
+
+# MODULES
+from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
+from WikiCode.apps.wiki.src.modules.wiki_permissions.wiki_permissions import WikiPermissions
+
+

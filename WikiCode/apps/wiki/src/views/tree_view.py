@@ -19,29 +19,18 @@
 
 import datetime
 
-from django.core.urlresolvers import reverse
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 
 from WikiCode.apps.wiki.models import User, Publication, Statistics, Folder
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
-from WikiCode.apps.wiki.src.views.error_view import get_error_page
+from WikiCode.apps.wiki.src.api import wcode
 from .auth import check_auth, get_user_id
 
 
-def get_tree_manager(request, notify=None):
-    """ Возвращает страницу управления файловым деревом пользователя.
-        Может принимать notify(сообщение, которое можно вывести после отображения страницы):
-        notify:
-            {
-                'type': 'error|info',
-                'text': 'any text',
-            }
-        """
-
-    if notify is None:
-        notify = {'type': 'msg', 'text': ''}
+def get_tree_manager(request):
+    """ Возвращает страницу управления файловым деревом пользователя. """
 
     user_data = check_auth(request)
     try:
@@ -56,7 +45,7 @@ def get_tree_manager(request, notify=None):
             "preview_tree": wft.to_html_preview(),
             "dynamic_tree": wft.to_html_dynamic(),
             "dynamic_tree_folders": wft.to_html_dynamic_folders(),
-            "notify": notify,
+            "notify": wcode.notify.instant.get(request),
         }
 
         return render(request, 'wiki/tree_manager.html', context)
@@ -105,7 +94,7 @@ def get_add_folder_in_tree(request):
             new_folder = Folder(id_folder=stat.total_folders + 1,
                                 id_author=get_user_id(request),
                                 name=folder_name,
-                                date=date)              # new version
+                                date=date)  # new version
 
             # Обновляем статистику
             stat.total_folders += 1
@@ -126,7 +115,6 @@ def get_add_folder_in_tree(request):
 
     else:
         return HttpResponse('no', content_type='text/html')
-
 
 
 @csrf_protect
@@ -184,7 +172,6 @@ def get_check_folder_for_delete(request):
 
     else:
         return HttpResponse('no', content_type='text/html')
-
 
 
 @csrf_protect
@@ -348,8 +335,8 @@ def get_remove_saved(request):
             wft = WikiFileTree()
             wft.load_tree(cur_user.file_tree)
             if not wft.is_publication(saved_id):
-                return get_tree_manager(request, notify={'type': 'error', 'text': 'Данного конспекта не существует, '
-                                                                                  'либо он уже удален.'})
+                wcode.notify.instant.create(request, 'error', 'Данного конспекта не существует, либо он уже удален.')
+                return wcode.goto('tree_manager')
 
             wft.delete_publication(saved_id)
             publication.saves -= 1
@@ -358,15 +345,18 @@ def get_remove_saved(request):
             cur_user.save()
             publication.save()
 
-            return get_tree_manager(request, notify={'type': 'info', 'text': 'Конспект успешно удален из сохраненных.'})
+            wcode.notify.instant.create(request, 'info', 'Конспект успешно удален из сохраненных.')
+            return wcode.goto('tree_manager')
         except User.DoesNotExist:
-            return get_error_page(request, ["User not found"])
+            return wcode.goerror(request, ["User not found"])
         except Publication.DoesNotExist:
-            return get_error_page(request, ["Publication not found"])
+            return wcode.goerror(request, ["Publication not found"])
         except:
-            return get_tree_manager(request, notify={'type': 'error', 'text': 'Не удалось удалить конспект.'})
+            wcode.notify.instant.create(request, 'error', 'Не удалось удалить конспект.')
+            return wcode.goto('tree_manager')
     else:
-        return get_tree_manager(request, notify={'type': 'error', 'text': 'Не удалось удалить конспект.'})
+        wcode.notify.instant.create(request, 'error', 'Не удалось удалить конспект.')
+        return wcode.goto('tree_manager')
 
 
 def get_move_publication(request):
@@ -387,16 +377,20 @@ def get_move_publication(request):
             wft = WikiFileTree()
             wft.load_tree(cur_user.file_tree)
             if not wft.is_publication(moved_id):
-                return get_tree_manager(request, notify={'type': 'error', 'text': 'Данного конспекта не существует, '
-                                                                                  'либо он уже удален.'})
+                wcode.notify.instant.create(request, 'error', 'Данного конспекта не существует, либо он уже удален.')
+                return wcode.goto('tree_manager')
+
             wft.move_publication(moved_id, to_folder_id)
             cur_user.file_tree = wft.get_xml_str()
             cur_user.save()
 
-            return get_tree_manager(request, notify={'type': 'info', 'text': 'Конспект успешно перемещен.'})
+            wcode.notify.instant.create(request, 'info', 'Конспект успешно перемещен.')
+            return wcode.goto('tree_manager')
         except User.DoesNotExist:
-            return get_error_page(request, ["User not found"])
+            return wcode.goerror(request, ["User not found"])
         except:
-            return get_tree_manager(request, notify={'type': 'error', 'text': 'Не удалось переместить конспект.'})
+            wcode.notify.instant.create(request, 'error', 'Не удалось переместить конспект.')
+            return wcode.goto('tree_manager')
     else:
-        return get_tree_manager(request, notify={'type': 'error', 'text': 'Не удалось переместить конспект.'})
+        wcode.notify.instant.create(request, 'error', 'Не удалось переместить конспект.')
+        return wcode.goto('tree_manager')
