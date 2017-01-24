@@ -411,10 +411,8 @@ def get_del_member_group(request, id):
             del_member_nickname = request.POST.get("member-group")
 
             if not del_member_nickname:
-                return get_group(request,
-                                 id,
-                                 notify={'type': 'error',
-                                         'text': 'Вы не указали удаляемого пользователя.\n\n\n'})
+                wcode.notify.instant.create(request, "error", 'Вы не указали удаляемого пользователя.\n\n\n')
+                return wcode.goto('/group/' + str(id))
 
             try:
                 find_user = User.objects.get(nickname=del_member_nickname)
@@ -432,20 +430,18 @@ def get_del_member_group(request, id):
                     group.members = wp.get_xml_str()
                     group.save()
 
-                    return get_group(request,
-                                     id,
-                                     notify={'type': 'info',
-                                             'text': 'Пользователь успешно удален из списка участников.\n\n\n'})
+                    wcode.notify.instant.create(request, "info",
+                                                'Пользователь успешно удален из списка участников.\n\n\n')
+                    return wcode.goto('/group/' + str(id))
                 else:
-                    return get_group(request,
-                                     id,
-                                     notify={'type': 'error',
-                                             'text': 'Пользователь уже удален из списка участников\n\n\n'})
+                    wcode.notify.instant.create(request, "error",
+                                                'Пользователь уже удален из списка участников\n\n\n')
+                    return wcode.goto('/group/' + str(id))
+
             except User.DoesNotExist:
-                return get_group(request,
-                                 id,
-                                 notify={'type': 'error',
-                                         'text': 'Удаляемого пользователя не существует.\n\n\n'})
+                wcode.notify.instant.create(request, "error",
+                                            'Удаляемого пользователя не существует.\n\n\n')
+                return wcode.goto('/group/' + str(id))
 
         except Group.DoesNotExist:
             return get_error_page(request,
@@ -464,10 +460,8 @@ def get_add_black_user_group(request, id):
                 find_user = User.objects.get(nickname=black_user)
 
                 if find_user.id_user == get_user_id(request):
-                    return get_group(request,
-                                     id,
-                                     notify={'type': 'error',
-                                             'text': 'Вы не можете себя добавить в черный список.\n\n\n'})
+                    wcode.notify.instant.create(request, "error", 'Вы не можете себя добавить в черный список.\n\n\n')
+                    return wcode.goto('/group/' + str(id))
 
                 wp = WikiPermissions()
                 wp.load_permissions(group.members)
@@ -486,35 +480,32 @@ def get_add_black_user_group(request, id):
                         is_find_white = True
 
                 if is_find_white:
-                    return get_group(request,
-                                     id,
-                                     notify={'type': 'error',
-                                             'text': 'Данный пользователь является участником '
-                                                     'Вашей группы.\n'
-                                                     'Удалите его из списка участников, если хотите добавить его'
-                                                     ' в черный список\n\n'})
+                    wcode.notify.instant.create(request,
+                                                "error",
+                                                'Данный пользователь является участником '
+                                                'Вашей группы.\n'
+                                                'Удалите его из списка участников, если хотите добавить его'
+                                                ' в черный список\n\n')
+                    return wcode.goto('/group/' + str(id))
 
                 if not is_find:
                     wp.add_to_black_list(find_user.id_user, find_user.nickname, "ban", "Бан")
                     group.members = wp.get_xml_str()
                     group.save()
 
-                    return get_group(request,
-                                     id,
-                                     notify={'type': 'info',
-                                             'text': 'Пользователь добавлен в черный список.\n\n\n'})
+                    wcode.notify.instant.create(request, "info", 'Пользователь добавлен в черный список.\n\n\n')
+
+                    return wcode.goto('/group/' + str(id))
                 else:
-                    return get_group(request,
-                                     id,
-                                     notify={'type': 'error',
-                                             'text': 'Данный пользователь уже добавлен в черный список.\n\n\n'})
+                    wcode.notify.instant.create(request, "error",
+                                                'Данный пользователь уже добавлен в черный список.\n\n\n')
+                    return wcode.goto('/group/' + str(id))
 
             except User.DoesNotExist:
-                return get_group(request,
-                                 id,
-                                 notify={'type': 'error',
-                                         'text': 'Пользователя с таким nickname не существует.\n'
-                                                 'Пользователь не добавлен в черный список.\n\n'})
+                wcode.notify.instant.create(request, "error",
+                                                     'Пользователя с таким nickname не существует.\n'
+                                                     'Пользователь не добавлен в черный список.\n\n')
+                return wcode.goto('/group/' + str(id))
 
         except Group.DoesNotExist:
             return get_error_page(request,
@@ -530,10 +521,8 @@ def get_del_black_user_group(request, id):
             del_user_nickname = request.POST.get("black-list-group")
 
             if not del_user_nickname:
-                return get_group(request,
-                                 id,
-                                 notify={'type': 'error',
-                                         'text': 'Вы не указали удаляемого пользователя.\n\n\n'})
+                wcode.notify.instant.create(request, "error", 'Вы не указали удаляемого пользователя.\n\n\n')
+                return wcode.goto('/group/' + str(id))
 
             try:
                 find_user = User.objects.get(nickname=del_user_nickname)
@@ -551,20 +540,15 @@ def get_del_black_user_group(request, id):
                     group.members = wp.get_xml_str()
                     group.save()
 
-                    return get_group(request,
-                                     id,
-                                     notify={'type': 'info',
-                                             'text': 'Пользователь успешно удален из черного списка.\n\n\n'})
+                    wcode.notify.instant.create(request, "info", 'Пользователь успешно удален из черного списка.\n\n\n')
+                    return wcode.goto('/group/' + str(id))
                 else:
-                    return get_group(request,
-                                     id,
-                                     notify={'type': 'error',
-                                             'text': 'Пользователь уже удален из черного списка.\n\n\n'})
+                    wcode.notify.instant.create(request, "error", 'Пользователь уже удален из черного списка.\n\n\n')
+                    return wcode.goto('/group/' + str(id))
+
             except User.DoesNotExist:
-                return get_group(request,
-                                 id,
-                                 notify={'type': 'error',
-                                         'text': 'Удаляемого пользователя не существует.\n\n\n'})
+                wcode.notify.instant.create(request, "error", 'Удаляемого пользователя не существует.\n\n\n')
+                return wcode.goto('/group/' + str(id))
 
         except Group.DoesNotExist:
             return get_group(request,
