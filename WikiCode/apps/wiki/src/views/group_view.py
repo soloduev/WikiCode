@@ -28,17 +28,8 @@ from WikiCode.apps.wiki.src.views.error_view import get_error_page
 from WikiCode.apps.wiki.src.api import wcode
 
 
-def get_group(request, id, notify=None):
-    """ Возвращает страницу группы.
-        Может принимать notify(сообщение, которое можно вывести после отображения страницы):
-        notify:
-            {
-                'type': 'error|info',
-                'text': 'any text',
-            }
-    """
-
-    user_data = check_auth(request)
+def get_group(request, id):
+    """ Возвращает страницу группы."""
 
     try:
         # Получаем группу
@@ -93,7 +84,7 @@ def get_group(request, id, notify=None):
             # Отрисовываем группу глазами автора
 
             context = {
-                "user_data": user_data,
+                "user_data": check_auth(request),
                 "user_id": get_user_id(request),
                 "is_author": True,
                 "author_nickname": author.nickname,
@@ -119,7 +110,7 @@ def get_group(request, id, notify=None):
             # Отрисовываем группу другого пользователя
 
             context = {
-                "user_data": user_data,
+                "user_data": check_auth(request),
                 "user_id": get_user_id(request),
                 "is_author": False,
                 "author_nickname": author.nickname,
@@ -134,7 +125,7 @@ def get_group(request, id, notify=None):
                 "preview_publ_path": preview_publ_path,
                 "preview_publ_path_value": preview_publ_path_value,
                 "all_publs": all_publs,
-                "notify": notify,
+                "notify": wcode.notify.instant.get(request),
                 "white_list": white_list,
                 "black_list": black_list
             }
@@ -144,7 +135,7 @@ def get_group(request, id, notify=None):
         return get_error_page(request, ["Группы с таким id не существует!"])
     except User.DoesNotExist:
         context = {
-            "user_data": user_data,
+            "user_data": check_auth(request),
             "user_id": get_user_id(request),
         }
         return render(request, 'wiki/create.html', context)
@@ -220,7 +211,7 @@ def create_group(request):
                     cur_user.save()
                     group.save()
 
-                    return get_group(request, folder_id_group)
+                    return wcode.goto('/group/' + str(folder_id_group))
             except User.DoesNotExist:
                 return get_error_page(request, ["User not found!"])
     else:
@@ -551,8 +542,8 @@ def get_del_black_user_group(request, id):
                 return wcode.goto('/group/' + str(id))
 
         except Group.DoesNotExist:
-            return get_group(request,
-                             ["This is group not found!", "Group not found: group/" + str(id) + "/"])
+            return get_error_page(request,
+                                  ["This is group not found!", "Group not found: group/" + str(id) + "/"])
 
 
 def get_del_group(request, id):
@@ -579,14 +570,13 @@ def get_del_group(request, id):
             group.delete()
             cur_user.save()
 
-            return redirect("tree_manager")
+            return wcode.goto('tree_manager')
 
         except Group.DoesNotExist:
-            return get_group(request,
-                             ["This is group not found!", "Group not found: group/" + str(id) + "/"])
+            return get_error_page(request,
+                                  ["This is group not found!", "Group not found: group/" + str(id) + "/"])
         except User.DoesNotExist:
-            return get_group(request,
-                             ["This is user not found!", "User not found: user/" + str(get_user_id(request)) + "/"])
-
+            return get_error_page(request,
+                                  ["This is user not found!", "User not found: user/" + str(get_user_id(request)) + "/"])
     else:
-        return redirect("tree_manager")
+        return wcode.goto("tree_manager")
