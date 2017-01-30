@@ -5,7 +5,5 @@ django-bootstrap3==6.2.2
 html5lib==0.9999999
 Markdown==2.6.5
 markdown2==2.3.0
-Pillow==3.2.0
-pycurl==7.19.3
 pytest==2.9.1
 six==1.10.0

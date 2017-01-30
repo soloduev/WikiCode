@@ -45,13 +45,14 @@ SECRET_KEY = 'p!mij0c^3$!wtfdlahtljeyr5q97ar+$e@td)$+@(re0m*l-_p'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = eval(os.environ.get('DEBUG_MODE', 'True'))
+DEBUG = False
 
-ALLOWED_HOSTS = ['wikicode.ru',
-		 'www.wikicode.ru',
-		 '5.45.120.175',
-		 '5.45.120.175:80'
-		]
-
+ALLOWED_HOSTS = ['188.93.211.233',
+                 '188.93.211.233:80',
+                 '188.93.211.233:8080',
+                 '188.93.211.233:8000',
+                 'wikicode.ru',
+                 'www.wikicode.ru']
 
 # Application definition
 
@@ -107,7 +108,7 @@ if not DEBUG:
           'ENGINE': 'django.db.backends.postgresql_psycopg2',
           'NAME': 'wikicode',
           'USER': 'django',
-          'PASSWORD': '1234567890',
+          'PASSWORD': '123456',
           'HOST': 'localhost',
           'PORT': '',
                 }
@@ -165,12 +166,12 @@ BOOTSTRAP3 = {
 STATIC_URL = '/static/'
 
 if not DEBUG:
-    STATIC_ROOT = '/home/django/WikiCode/static'
+    STATIC_ROOT = '/home/django/wikicode/static'
 else:
     STATIC_ROOT = '/home/lazytroll/Develop/PythonProjects/WikiCode/static'
 
 if not DEBUG:
-    MEDIA_ROOT = "/home/django/WikiCode/media"
+    MEDIA_ROOT = "/home/django/wikicode/media"
 else:
     MEDIA_ROOT = "/home/lazytroll/Develop/PythonProjects/WikiCode/media"
 
