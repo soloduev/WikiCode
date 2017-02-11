@@ -88,6 +88,15 @@ def develop_mode_id(view):
                     "user_id": user_id,
                 }
                 return render(request, 'wiki/develop_mode.html', context)
+            except User.DoesNotExist:
+                # Если НЕ входит, перенаправляем его на страницу ремонта сайта
+                user_data = check_auth(request)
+
+                context = {
+                    "user_data": user_data,
+                    "user_id": user_id,
+                }
+                return render(request, 'wiki/develop_mode.html', context)
         else:
             return view(request, id)
 

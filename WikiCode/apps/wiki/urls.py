@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^settings/$', views.settings, name='settings'),
     url(r'^user/(?P<id>[0-9]+)/$', views.user, name='user'),
     url(r'^registration/$', views.registration, name='registration'),
+    url(r'^invite_registration/$', views.invite_registration, name='invite_registration'),
     url(r'^login/$', views.login, name='login'),
     url(r'^tree_manager/$',views.tree_manager, name='tree_manager'),
     url(r'^publ_manager/(?P<id>[0-9]+)$',views.publ_manager, name='publ_manager'),
@@ -39,11 +40,14 @@ urlpatterns = [
 
     url(r'^create_page/$', views.create_page, name='create_page'),
     url(r'^create_user/$', views.create_user, name='create_user'),
+    url(r'^create_user_invite/$', views.create_user_invite, name='create_user_invite'),
     url(r'^login_user/$', views.login_user, name='login_user'),
     url(r'^logout_user/$', views.logout_user, name='logout_user'),
 
     url(r'^registration/check_nickname/$', views.check_nickname, name='check_nickname'),
     url(r'^registration/check_email/$', views.check_email, name='check_email'),
+    url(r'^invite_registration/check_nickname/$', views.check_nickname, name='check_nickname'),
+    url(r'^invite_registration/check_email/$', views.check_email, name='check_email'),
 
     # События в менеджере дерева
     url(r'^tree_manager/add_folder_in_tree/$', views.add_folder_in_tree, name='add_folder_in_tree'),
@@ -97,8 +101,8 @@ urlpatterns = [
     url(r'^notifications/delete_notification/$', views.delete_notification, name='delete_notification'),
 
     # События на странице настроек пользователя
-    url(r'^settings/check_password/$', views.check_password, name='check_password'),
-    url(r'^settings/check_nickname/$', views.check_nickname, name='check_nickname'),
+    url(r'^settings/check_password/$', views.check_password_settings, name='check_password'),
+    url(r'^settings/check_nickname/$', views.check_nickname_settings, name='check_nickname'),
     url(r'^settings/repassword_user/$', views.repassword_user, name='repassword_user'),
     url(r'^settings/renickname_user/$', views.renickname_user, name='renickname_user'),
     url(r'^settings/rename_user/$', views.rename_user, name='rename_user'),

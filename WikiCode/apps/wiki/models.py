@@ -239,3 +239,10 @@ class Notification(models.Model):
 
     def __str__(self):
         return str(self.title) + "; " + str(self.id_sender) + "; " + str(self.id_addressee) + "; " + str(self.date)
+
+
+class InviteKeys(models.Model):
+    key = models.CharField(max_length=16)
+
+    def __str__(self):
+        return str(self.id)

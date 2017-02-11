@@ -34,6 +34,16 @@ def get_registration(request):
     return render(request, 'wiki/registration.html', context)
 
 
+def get_invite_registration(request):
+
+    context = {
+        "user_data" : check_auth(request),
+        "user_id": get_user_id(request),
+    }
+
+    return render(request, 'wiki/invite_registration.html', context)
+
+
 def get_check_nickname(request):
     """Ajax представление. Проверка на существование такого nickname в базе данных"""
 

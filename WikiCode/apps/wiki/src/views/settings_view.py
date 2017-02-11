@@ -20,7 +20,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
-from WikiCode.apps.wiki.models import User, Publication, Viewing, BugReport
+from WikiCode.apps.wiki.models import User, Publication, Viewing, BugReport, Developer
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
 from WikiCode.apps.wiki.src.api import wcode
 from .auth import check_auth, get_user_id
@@ -164,6 +164,18 @@ def get_renickname_user(request):
                             bug_report.save()
                     except BugReport.DoesNotExist:
                         pass
+                    # Меняем имя разработчика если он таковым является
+                    try:
+                        developer = Developer.objects.get(id_developer=id)
+                        developer.name_developer = new_nickname
+                        developer.save()
+                    except Developer.DoesNotExist:
+                        pass
+
+                    # Меняем DjangoUser nickname
+                    owner = request.user
+                    owner.username = new_nickname
+                    owner.save()
 
                     cur_user.save()
 

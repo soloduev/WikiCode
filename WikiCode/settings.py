@@ -45,7 +45,6 @@ SECRET_KEY = 'p!mij0c^3$!wtfdlahtljeyr5q97ar+$e@td)$+@(re0m*l-_p'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = eval(os.environ.get('DEBUG_MODE', 'True'))
-DEBUG = False
 
 ALLOWED_HOSTS = ['188.93.211.233',
                  '188.93.211.233:80',

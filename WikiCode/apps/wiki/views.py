@@ -87,6 +87,11 @@ def registration(request):
     return registration_view.get_registration(request)
 
 
+# Запрос страницы регистрации нового пользователя по приглашению(invite_registration.html)
+def invite_registration(request):
+    return registration_view.get_invite_registration(request)
+
+
 # Запрос страницы авторизации пользователя(login.html)
 def login(request):
     return user_view.get_login(request)
@@ -96,6 +101,11 @@ def login(request):
 @develop_mode
 def create_user(request):
     return user_view.get_create_user(request)
+
+
+# Непосредственное создание нового пользователя по приглашению
+def create_user_invite(request):
+    return user_view.get_create_user_invite(request)
 
 
 # Непосредственная авторизация пользователя
@@ -161,23 +171,21 @@ def bug_report(request):
 
 
 # Ajax запрос на проверку существования никнеймa
-@develop_mode
 def check_nickname(request):
     return registration_view.get_check_nickname(request)
 
 
-@develop_mode
 def check_email(request):
     return registration_view.get_check_email(request)
 
 
 @develop_mode
-def check_password(request):
+def check_password_settings(request):
     return settings_view.get_check_password(request)
 
 
 @develop_mode
-def check_nickname(request):
+def check_nickname_settings(request):
     return settings_view.get_check_nickname(request)
 
 

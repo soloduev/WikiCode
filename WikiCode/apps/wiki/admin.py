@@ -33,6 +33,7 @@ from .models import Colleague
 from .models import Notification
 from .models import Starring
 from .models import CommentRating
+from .models import InviteKeys
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User as DjangoUser
 
@@ -66,3 +67,4 @@ admin.site.register(Folder)
 admin.site.register(Colleague)
 admin.site.register(Notification)
 admin.site.register(CommentRating)
+admin.site.register(InviteKeys)

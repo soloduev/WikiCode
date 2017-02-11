@@ -42,6 +42,7 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar-collapse-2">
                 <ul class="nav navbar-nav navbar-right">
+                    <li id="nav-bar-button5"><a href="{% url 'invite_registration' %}">Регистрация по приглашению</a></li>
                     <li id="nav-bar-button5"><a href="{% url 'about' %}">О платформе</a></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
@@ -72,12 +73,12 @@
                                 </span>
                                 <br><br>
                                 <p>
-                                    <label class="text-center" style="color: #479a56;font-family: Courier;">Сейчас находится на ремонте! Скоро все будет работать! Приносим Вам свои извинения!</label>
+                                    <label class="text-center" style="color: #479a56;font-family: Courier;">Платформа находится на стадии тестирования. Совсем скоро будет официальный релиз.</label>
                                 </p>
 
                                 <p>
                                     <label class="text-center" style="color: #479a56;font-family: Courier;">Вход доступен только
-                                        <a id="secret-btn">разработчикам</a> и тестировщикам.</label>
+                                        <a id="secret-btn">доверенным и приглашенным</a> лицам.</label>
                                 </p>
                             </div>
                         </div>
@@ -86,14 +87,15 @@
                         <div class="container text-center">
                             <div class="row">
                                 <br><br>
-                                <div class="col-xs-4"></div>
-                                <div class="col-xs-4">
+                                <div class="col-xs-12 col-sm-4"></div>
+                                <div class="col-xs-12 col-sm-4">
+                                    <h4>Вход по приглашению:</h4>
                                     <form action="{% url 'login_developer' %}" method="post">
                                         {% csrf_token %}
-                                        <label>Developer name:</label>
+                                        <label>Your name:</label>
                                         <input name="developer_name" type="text" class="form-control" style="border-radius: 0px; font-family: Courier;" placeholder="Input name...">
                                         <br>
-                                        <label>Password:</label>
+                                        <label>Your password:</label>
                                         <input name="developer_password"  type="password" class="form-control" style="border-radius: 0px; font-family: Courier;" placeholder="Input password...">
                                         <br>
                                         <button class="btn" id="wiki-style-btn">Войти</button>
@@ -120,16 +122,12 @@
                 <hr/>
                 <div class="text-center center-block">
                     <br/>
-                    <p>Copyright &copy; 2016 Igor Soloduev</p>
+                    <p>Copyright &copy; 2017 Igor Soloduev</p>
                     <a href="https://vk.com/wikicode_ru"><i class="fa fa-vk fa-3x social"></i></a>
                     <a href="https://github.com/LazyTroll/WikiCode"><i class="fa fa-github fa-3x social"></i></a>
                     <a href="https://bitbucket.org/LazyTroll/wikicode"><i class="fa fa-bitbucket fa-3x social"></i></a>
                     <a href=""><i class="fa fa-facebook-official fa-3x social"></i></a>
-                    <br/>
-                    <hr/>
-                    <img src="{% static 'wiki/images/agplv3.png' %}">
                 </div>
-                <hr/>
             </div>
         </div>
     {% endblock %}

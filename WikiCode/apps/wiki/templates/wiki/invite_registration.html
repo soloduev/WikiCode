@@ -1,0 +1,189 @@
+<!--
+    Copyright (C) 2016-2017 Igor Soloduev <diahorver@gmail.com>
+
+    This file is part of WikiCode.
+
+    WikiCode is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    WikiCode is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
+-->
+{% extends 'my_bootstrap3.html' %}
+{% load bootstrap3 %}
+{% block bootstrap3_content %}
+
+    <!-- Second navbar for sign in -->
+    <nav class="navbar navbar-default navbar-fixed-top" style="box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#navbar-collapse-2">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span>
+
+                    <a href="/" class="navbar-brand" id="wikicode-theme-brand"><i
+                            class="fa fa-university"></i> WikiCode</a>
+                </span>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="navbar-collapse-2">
+                <ul class="nav navbar-nav navbar-right">
+                    <li id="nav-bar-button5"><a href="{% url 'about' %}">О платформе</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container -->
+    </nav><!-- /.navbar -->
+
+
+    {% block page_name %}
+
+    {% endblock %}
+    {% block content %}
+        <div class="container">
+            <div class="row">
+                <br><br><br><br><br>
+                <div id="main-block"class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="row">
+                        <label class="text-center btn-primary btn-block">РЕГИСТРАЦИЯ ПО ПРИГЛАШЕНИЮ</label>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-1 col-sm-2 col-md-3 col-lg-4"></div>
+                        <div id="reg-panel"class="col-xs-10 col-sm-8 col-md-6 col-lg-4">
+                            <div class="container-fluid">
+                                <br>
+                                <div class="row">
+                                    <label class="text-center">Перед регистрацией, пожалуйста, ознакомьтесь с нашими правилами:</label>
+                                </div>
+                                <div class="row">
+                                    <div id="accordion" class="panel-group">
+                                        <div class="panel panel-default"  style="border-radius: 0px;" href="#collapse-1" data-parent="#accordion" data-toggle="collapse">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a href="#collapse-1" data-parent="#accordion"
+                                                       data-toggle="collapse" style="text-decoration: none;"><span
+                                                            class="glyphicon glyphicon-alert"></span> Читать правила...</a>
+                                                </h4>
+                                            </div>
+                                            <div class="panel-collapse collapse" id="collapse-1">
+                                                <div class="panel-body" id="rules">
+                                                    <label>Десять простых правил, которые должен соблюдать
+                                                        каждый:</label><br>
+                                                    <ol>
+                                                        <li>Правило</li>
+                                                        <li>Правило</li>
+                                                        <li>Правило</li>
+                                                        <li>Правило</li>
+                                                        <li>Правило</li>
+                                                        <li>Правило</li>
+                                                        <li>Правило</li>
+                                                        <li>Правило</li>
+                                                        <li>Правило</li>
+                                                        <li>Правило</li>
+                                                    </ol>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <form action="{% url 'create_user_invite' %}" method="post" onsubmit="return validate_registration_form();">
+                                    {% csrf_token %}
+                                    {% if error %}
+                                        <div class="row">
+                                            <label style="color:red;">{{ error }}</label>
+                                        </div>
+                                        <br>
+                                    {% endif %}
+                                    <div class="row">
+                                        <label id="wiki_nickname_message">Никнейм</label>
+                                    </div>
+                                    <div class="row">
+                                        <input id="wiki_nickname" type="text" name="user_nickname" placeholder="Nickname" class="form-control btn-block"  autofocus required style="border-radius: 0px;height: 30px;" pattern="[a-zA-Z0-9_-]{3,12}" maxlength="12" title="Логин может содержать буквы только латинского алфавитa, знаки '_' и '-' , а также цифры. Его длина должна находиться в диапазоне от 3 до 12 символов">
+                                    </div>
+                                    <br>
+
+                                    <div class="row">
+                                        <label id="wiki_email_message">Почта</label>
+                                    </div>
+                                    <div class="row">
+                                        <input id="wiki_email" type="email" name="user_email" placeholder="example@example.com" class="form-control btn-block"  required style="border-radius: 0px;height: 30px;" pattern="^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$" title="Вы неверно ввели адрес электронной почты, необходимый формат: user@mail.com">
+                                    </div>
+                                    <br>
+
+                                    <div class="row">
+                                        <label>Пароль</label>
+                                    </div>
+                                    <div class="row">
+                                        <input id="user_password_input" type="password" name="user_password" placeholder="Пароль" class="form-control btn-block"  required style="border-radius: 0px;height: 30px;" pattern="[a-zA-Z0-9]{6,16}" maxlength="16" title="Пароль должен состоять только из букв латинского алфавита и цифр. Его длина должна находиться в диапазоне от 6 до 16 символов.">
+                                    </div>
+                                    <br>
+
+                                    <div class="row">
+                                        <label>Повторите пароль</label>
+                                    </div>
+                                    <div class="row">
+                                        <input id="user_password_repeat_input" type="password" name="user_password_repeat" placeholder="Повторите пароль" class="form-control btn-block"  required style="border-radius: 0px;height: 30px;" pattern="[a-zA-Z0-9]{6,16}" maxlength="16" title="Пароль должен состоять только из букв латинского алфавита и цифр. Его длина должна находиться в диапазоне от 6 до 16 символов.">
+                                    </div>
+                                    <br>
+
+                                    <div class="row">
+                                        <label>Invite ключ</label>
+                                    </div>
+                                    <div class="row">
+                                        <input id="invite_key_input" type="password" name="invite_key" placeholder="Invite ключ" class="form-control btn-block"  required style="border-radius: 0px;height: 30px;" pattern="[a-zA-Z0-9]{16,16}" maxlength="16" title="Ключ должен состоять только из букв латинского алфавита и цифр. Его длина должна быть равна 16 символовам.">
+                                    </div>
+                                    <br>
+
+                                    <div class="row">
+                                        <button id="wiki_sign_up" type="submit" class="btn btn-block"><span class="glyphicon glyphicon-ok"></span> Зарегистрироваться</button>
+                                    </div>
+                                </form>
+                                <br>
+                            </div>
+                        </div>
+                        <div class="col-xs-1 col-sm-2 col-md-3 col-lg-4"></div>
+                    </div>
+                    <div class="row">
+                        <br><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block add_script %}
+        {% load staticfiles %}
+        <script src={% static "wiki/wiki_scripts/registration.js" %}></script>
+    {% endblock %}
+
+    {% block footer %}
+        {% load staticfiles %}
+        <div class="container">
+            <div class="row">
+                <hr/>
+                <div class="text-center center-block">
+                    <br/>
+                    <p>Copyright &copy; 2016 Igor Soloduev</p>
+                    <a href="https://vk.com/wikicode_ru"><i class="fa fa-vk fa-3x social"></i></a>
+                    <a href="https://github.com/LazyTroll/WikiCode"><i class="fa fa-github fa-3x social"></i></a>
+                    <a href="https://bitbucket.org/LazyTroll/wikicode"><i class="fa fa-bitbucket fa-3x social"></i></a>
+                    <a href=""><i class="fa fa-facebook-official fa-3x social"></i></a>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+{% endblock %}

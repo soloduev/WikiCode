@@ -31,6 +31,8 @@ from WikiCode.apps.wiki.models import Colleague
 from WikiCode.apps.wiki.models import Notification
 from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.models import User as WikiUser
+from WikiCode.apps.wiki.models import InviteKeys
+from WikiCode.apps.wiki.models import Developer
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
 from WikiCode.apps.wiki.src.modules.notify_generator.wiki_notify import WikiNotify
 from WikiCode.apps.wiki.src.api import wcode
@@ -157,7 +159,7 @@ def get_user(request, id):
         return wcode.goerror(request, ["Sorry, user is not defined!","Page not found: 'user/"+str(id)+"/'"])
 
 
-def get_create_user(request):
+def get_create_user(request, is_invite=None):
     """Регистрация нового пользователя"""
 
     # Получаем данные формы
@@ -226,6 +228,13 @@ def get_create_user(request):
                                               html_text=WikiNotify.generate_hello_user())
             hello_notification.save()
 
+            # Если это инвайт регистрация, удаляем ключ и делаем пользователя разработчиком:
+            if is_invite:
+                is_invite.delete()
+                new_developer = Developer(id_developer=total_reg_users,
+                                          name_developer=form["user_nickname"])
+                new_developer.save()
+
             # Сохранение всех изменений в БД
             new_wiki_user.save()
             stat.save()
@@ -243,6 +252,17 @@ def get_create_user(request):
         "user_id": get_user_id(request),
     }
     return render(request, 'wiki/registration.html', context)
+
+
+def get_create_user_invite(request):
+    # Проверяем, на соответствие invite ключа
+    try:
+        invite_key = InviteKeys.objects.get(key=request.POST.get('invite_key'))
+
+        # Создаем нового пользователя
+        return get_create_user(request, is_invite=invite_key)
+    except InviteKeys.DoesNotExist:
+        return wcode.goto('invite_registration')
 
 
 def get_login_user(request):
