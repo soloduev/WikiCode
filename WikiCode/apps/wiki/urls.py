@@ -23,6 +23,7 @@ from . import views
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^about/$', views.about, name='about'),
+    url(r'^about_invite/$', views.about_invite, name='about_invite'),
     url(r'^create/$', views.create, name='create'),
     url(r'^page/(?P<id>[0-9]+)/$', views.page, name='page'),
     url(r'^group/(?P<id>[0-9]+)/$', views.group, name='group'),

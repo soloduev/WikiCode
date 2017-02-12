@@ -23,7 +23,7 @@ from django.shortcuts import render
 from .auth import check_auth, get_user_id
 
 
-def get_about(request):
+def get_about(request, is_invite=False):
     with open("WikiCode/apps/wiki/docs/1.1.Description.md", "r", encoding='utf-8') as f:
         about_wikicode = f.read()
 
@@ -33,4 +33,7 @@ def get_about(request):
         "about_wikicode":about_wikicode,
     }
 
-    return render(request, 'wiki/about.html', context)
+    if not is_invite:
+        return render(request, 'wiki/about.html', context)
+    else:
+        return render(request, 'wiki/about_invite.html', context)

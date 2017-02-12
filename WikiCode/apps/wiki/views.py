@@ -47,6 +47,11 @@ def about(request):
     return about_view.get_about(request)
 
 
+# Запрос информации о платформе в режиме ремонта(about_invite.html)
+def about_invite(request):
+    return about_view.get_about(request, is_invite=True)
+
+
 # Запрос страницы создания конспекта(create.html)
 @develop_mode
 @login_required
