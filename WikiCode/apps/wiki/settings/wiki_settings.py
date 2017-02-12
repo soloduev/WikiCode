@@ -1,6 +1,6 @@
 #   # -*- coding: utf-8 -*-
 #
-#   Copyright (C) 2016 Igor Soloduev <diahorver@gmail.com>
+#   Copyright (C) 2017 Igor Soloduev <diahorver@gmail.com>
 #
 #   This file is part of WikiCode.
 #
