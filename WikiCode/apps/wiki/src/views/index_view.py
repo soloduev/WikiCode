@@ -21,8 +21,8 @@
 from django.shortcuts import render
 
 from WikiCode.apps.wiki.models import Publication, Group, Tag
-from WikiCode.apps.wiki.settings import wiki_settings
-from WikiCode.apps.wiki.src.api import wcode
+import configuration as wiki_settings
+from WikiCode.apps.wiki.src.engine import wcode
 from .auth import check_auth
 from .auth import get_user_id
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger

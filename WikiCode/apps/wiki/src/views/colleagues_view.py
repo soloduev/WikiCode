@@ -20,7 +20,7 @@ from django.shortcuts import render
 
 from WikiCode.apps.wiki.models import User, Colleague, Notification
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
-from WikiCode.apps.wiki.src.api import wcode
+from WikiCode.apps.wiki.src.engine import wcode
 from .auth import check_auth, get_user_id
 
 

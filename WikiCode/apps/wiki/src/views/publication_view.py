@@ -27,12 +27,12 @@ from django.views.decorators.csrf import csrf_protect, csrf_exempt
 
 from WikiCode.apps.wiki.models import Publication, Statistics, Viewing, DynamicParagraph, Comment, Folder, Starring
 from WikiCode.apps.wiki.models import User, CommentRating, Tag
-from WikiCode.apps.wiki.settings import wiki_settings
+import configuration as wiki_settings
 from WikiCode.apps.wiki.src.modules.wiki_comments.wiki_comments import WikiComments
 from WikiCode.apps.wiki.src.modules.wiki_permissions.wiki_permissions import WikiPermissions
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
 from WikiCode.apps.wiki.src.modules.wiki_versions.wiki_versions import WikiVersions
-from WikiCode.apps.wiki.src.api import wcode
+from WikiCode.apps.wiki.src.engine import wcode
 from WikiCode.apps.wiki.src.wiki_markdown import WikiMarkdown
 from .auth import check_auth, get_user_id
 

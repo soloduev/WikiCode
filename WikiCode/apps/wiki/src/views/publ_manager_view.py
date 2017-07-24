@@ -20,7 +20,7 @@
 from WikiCode.apps.wiki.models import Publication, User
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
 from WikiCode.apps.wiki.src.modules.wiki_permissions.wiki_permissions import WikiPermissions
-from WikiCode.apps.wiki.src.api import wcode
+from WikiCode.apps.wiki.src.engine import wcode
 from WikiCode.apps.wiki.src.views.auth import get_user_id
 
 

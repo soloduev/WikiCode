@@ -20,7 +20,7 @@
 
 # Моментальные уведомления
 
-from WikiCode.apps.wiki.src.api.src import djangoapi as __djangoapi
+from WikiCode.apps.wiki.src.engine.src import djangoapi as __djangoapi
 
 
 def create(request, type: str, message: str):

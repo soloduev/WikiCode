@@ -20,4 +20,4 @@
 
 # Управление уведомлениями
 
-from WikiCode.apps.wiki.src.api.src.notifications import instant
+from WikiCode.apps.wiki.src.engine.src.notifications import instant

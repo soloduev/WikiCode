@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-#   # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 #
-#   Copyright (C) 2016 Igor Soloduev <diahorver@gmail.com>
+#   Copyright (C) 2016-2017 Igor Soloduev <diahorver@gmail.com>
 #
 #   This file is part of WikiCode.
 #
@@ -22,8 +22,9 @@
 import os
 import sys
 
-from WikiCode.apps.wiki.settings import wiki_settings
+import configuration as wiki_settings
 from WikiCode.apps.wiki.src.wiki_tests import WikiTests
+from WikiCode.apps.wiki.manager import wcode_manager
 
 # Если активирован модуль тестирования, запускаем сначала его
 
@@ -40,8 +41,11 @@ if wiki_settings.RUN_TESTS:
 
 if not STOP_SERVER:
     if __name__ == "__main__":
-        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "WikiCode.settings")
 
-        from django.core.management import execute_from_command_line
+        if sys.argv[1] == "wcode":
+            wcode_manager.execute_commands(sys.argv)
+        else:
+            os.environ.setdefault("DJANGO_SETTINGS_MODULE", "WikiCode.settings")
 
-        execute_from_command_line(sys.argv)
+            from django.core.management import execute_from_command_line
+            execute_from_command_line(sys.argv)

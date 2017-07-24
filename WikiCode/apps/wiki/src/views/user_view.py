@@ -35,7 +35,7 @@ from WikiCode.apps.wiki.models import InviteKeys
 from WikiCode.apps.wiki.models import Developer
 from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
 from WikiCode.apps.wiki.src.modules.notify_generator.wiki_notify import WikiNotify
-from WikiCode.apps.wiki.src.api import wcode
+from WikiCode.apps.wiki.src.engine import wcode
 from .auth import check_auth, get_user_id
 
 

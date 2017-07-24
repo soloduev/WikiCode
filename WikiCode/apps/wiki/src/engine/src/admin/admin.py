@@ -20,7 +20,7 @@
 
 # Администрирование платформы
 
-from WikiCode.apps.wiki.src.api.src import djangoapi as __djangoapi
+from WikiCode.apps.wiki.src.engine.src import djangoapi as __djangoapi
 
 
 # Данный метод генерирует необходимое количество invite ключей, а также модели к ним.
