@@ -58,11 +58,11 @@
                         {% csrf_token %}
                         <div class="form-group">
                             <label class="sr-only" for="Email">Email</label>
-                            <input type="text" class="form-control" id="Email" name="user_name" placeholder="Nickname" autofocus required style="border-radius: 0px;"/>
+                            <input type="text" class="form-control" id="Email" name="user_email" placeholder="Почта" autofocus required style="border-radius: 0px;"/>
                         </div>
                         <div class="form-group">
                             <label class="sr-only" for="Password">Пароль</label>
-                            <input type="password" class="form-control" id="Password" name="user_password"  placeholder="Password" required style="border-radius: 0px;"/>
+                            <input type="password" class="form-control" id="Password" name="user_password"  placeholder="Пароль" required style="border-radius: 0px;"/>
                         </div>
                         <button type="submit" class="btn btn-primary" style="border-radius: 0px;" href="{% url 'login_user' %}">Войти</button>
                         <div class="form-group">

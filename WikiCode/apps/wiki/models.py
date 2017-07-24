@@ -1,6 +1,6 @@
 #   # -*- coding: utf-8 -*-
 #
-#   Copyright (C) 2016 Igor Soloduev <diahorver@gmail.com>
+#   Copyright (C) 2016-2017 Igor Soloduev <diahorver@gmail.com>
 #
 #   This file is part of WikiCode.
 #
@@ -24,16 +24,10 @@ from django.contrib.auth.models import User as DjangoUser
 class User(models.Model):
     user = models.OneToOneField(DjangoUser)
     id_user = models.BigIntegerField()
-    name = models.CharField(max_length=100)
-    nickname = models.CharField(max_length=100)
+    nickname = models.CharField(max_length=100, blank=True)
     email = models.EmailField(max_length=100)
     file_tree = models.TextField()
-    publications = models.BigIntegerField()
-    avatar = models.ImageField(upload_to='avatars')
     preview_publ_id = models.BigIntegerField()
-    # Моментальное уведомление
-    notify_text = models.TextField(default="", blank=True)                   # Моментальное уведомление, текст
-    notify_type = models.CharField(max_length=5, default="msg", blank=True)  # Моментальное уведомление, тип
 
     def __str__(self):
         return str(self.id_user)
@@ -47,98 +41,19 @@ class Publication(models.Model):
     description = models.TextField(max_length=500, blank=True)
     text = models.TextField()
     theme = models.CharField(max_length=50)
-    html_page = models.TextField()
     tree_path = models.TextField()
     read = models.BigIntegerField()
-    stars = models.BigIntegerField()
     saves = models.BigIntegerField()
-    main_comments = models.TextField()
-    versions = models.BinaryField(blank=True)
-    permissions = models.TextField()
     # Все настройки конспекта
     is_public = models.BooleanField()
     is_dynamic_paragraphs = models.BooleanField()
-    is_general_comments = models.BooleanField()
-    is_contents = models.BooleanField()
-    is_protected_edit = models.BooleanField()
-    is_files = models.BooleanField()
-    is_links = models.BooleanField()
-    is_versions = models.BooleanField()
     is_show_author = models.BooleanField()
     is_loading = models.BooleanField()
     is_saving = models.BooleanField()
-    is_starring = models.BooleanField()
     is_file_tree = models.BooleanField()
 
     def __str__(self):
         return str(self.id_publication)
-
-
-# Модель отдельного динамического параграфа.
-# Пока он используется только для оставления комментариев
-class DynamicParagraph(models.Model):
-    publication = models.ForeignKey(Publication, on_delete=models.CASCADE)
-    paragraph = models.BigIntegerField()
-    comments = models.TextField()
-
-    def __str__(self):
-            return str(self.publication) + "_" + str(self.paragraph)
-
-
-# Модель тега, реализованная через соотношение: Название тега -> источник -> тип источника
-class Tag(models.Model):
-    name = models.CharField(max_length=100)
-    to_id = models.BigIntegerField()
-    type = models.CharField(max_length=5)  # publ, group
-
-    def __str__(self):
-        return self.name + " -> " + str(self.to_id) + " -> " + self.type
-
-
-# Модель просмотра страницы. Указывает кто просмотрел и когда
-class Viewing(models.Model):
-    id_user = models.BigIntegerField()
-    nickname = models.CharField(max_length=100)
-    id_publ = models.BigIntegerField()
-    date = models.CharField(max_length=100)
-
-    def __str__(self):
-        return str("user:" + str(self.id_user) +
-                   " publ:" + str(self.id_publ))
-
-
-# Указывает кто поставил звезду и когда
-class Starring(models.Model):
-    id_user = models.BigIntegerField()
-    id_publ = models.BigIntegerField()
-    date = models.CharField(max_length=100)
-
-    def __str__(self):
-        return str("user:" + str(self.id_user) +
-                   " publ:" + str(self.id_publ))
-
-
-class CommentRating(models.Model):
-    id_user = models.BigIntegerField()
-    id_comment = models.BigIntegerField()
-    id_user_to = models.BigIntegerField()  # id пользователя, которому поставили лайк
-    type = models.CharField(max_length=4)  # up, down, none
-
-    def __str__(self):
-        return str("user:" + str(self.id_user) +
-                   " comment:" + str(self.id_comment))
-
-
-# Модель любого комментария
-class Comment(models.Model):
-    id_comment = models.BigIntegerField()
-    id_author = models.BigIntegerField()
-    id_publication = models.BigIntegerField()
-    date = models.CharField(max_length=100)
-    text = models.TextField()
-
-    def __str__(self):
-        return str("id:" + str(self.id_comment))
 
 
 # Модель папки
@@ -152,36 +67,6 @@ class Folder(models.Model):
         return str(self.id_folder)
 
 
-# Модель группы
-class Group(models.Model):
-    id_group = models.BigIntegerField()
-    id_author = models.BigIntegerField()
-    title = models.CharField(max_length=100)
-    status = models.TextField()
-    type = models.CharField(max_length=50)  # Тип группы: Group, Course, Documentation, Organisation
-    description = models.CharField(max_length=1500)
-    members = models.TextField()    # Модуль тот же, что и permissions
-    date_create = models.CharField(max_length=100)
-    rating = models.BigIntegerField()
-    tags = models.TextField()   # Модуль тегов который надо сделать
-    preview_publ_id = models.BigIntegerField(blank=True)
-    # Поля отображения группы
-    is_show_total_publ = models.BooleanField(default=True)
-    is_show_total_members = models.BooleanField(default=True)
-    is_show_rating = models.BooleanField(default=True)
-    is_show_date = models.BooleanField(default=True)
-    is_show_preview_tree = models.BooleanField(default=True)
-    is_show_status = models.BooleanField(default=True)
-    is_show_description = models.BooleanField(default=True)
-    is_show_tags = models.BooleanField(default=True)
-    is_show_contents = models.BooleanField(default=True)
-    is_show_members = models.BooleanField(default=True)
-    is_show_author = models.BooleanField(default=True)
-
-    def __str__(self):
-        return str(self.id_group)
-
-
 # Модель в единственном экземпляре, для хранения статистики
 class Statistics(models.Model):
     id_statistics = models.IntegerField()
@@ -189,12 +74,8 @@ class Statistics(models.Model):
     users_reg = models.BigIntegerField()
     # Зарегестрировано юзеров за всю историю
     users_total_reg = models.BigIntegerField(default=0)
-    user_online = models.BigIntegerField()
     publications_create = models.BigIntegerField()
-    total_comments = models.BigIntegerField()   # Всего создано комментариев
     total_folders = models.BigIntegerField()    # Всего создано папок
-    total_notification = models.BigIntegerField()  # Всего создано уведомлений
-    total_dynamic_comments = models.BigIntegerField()  # Всего инстанциировано блоков динамических комментариев
 
     def __str__(self):
         return str(self.id_statistics)
@@ -206,39 +87,6 @@ class Developer(models.Model):
 
     def __str__(self):
         return str(self.name_developer)
-
-
-class BugReport(models.Model):
-    id_author = models.BigIntegerField()
-    nickname_author = models.CharField(max_length=100)
-    name_author = models.CharField(max_length=100)
-    date = models.CharField(max_length=100)
-    text = models.TextField()
-
-    def __str__(self):
-        return str(self.date)
-
-
-class Colleague(models.Model):
-    id_user = models.BigIntegerField()
-    id_colleague = models.BigIntegerField()
-
-    def __str__(self):
-        return str(self.id_user) + "_" + str(self.id_colleague)
-
-
-class Notification(models.Model):
-    id_notification = models.BigIntegerField()
-    title = models.CharField(max_length=50)
-    type = models.CharField(max_length=20)
-    id_sender = models.BigIntegerField()
-    id_addressee = models.BigIntegerField()
-    is_read = models.BooleanField()
-    date = models.CharField(max_length=50)
-    html_text = models.TextField()
-
-    def __str__(self):
-        return str(self.title) + "; " + str(self.id_sender) + "; " + str(self.id_addressee) + "; " + str(self.date)
 
 
 class InviteKeys(models.Model):

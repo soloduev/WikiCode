@@ -29,12 +29,4 @@ from WikiCode.apps.wiki.src.views.error_view import get_error_page
 
 # MODELS
 from WikiCode.apps.wiki.models import User
-from WikiCode.apps.wiki.models import Group
 from WikiCode.apps.wiki.models import InviteKeys
-
-# MODULES
-from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
-from WikiCode.apps.wiki.src.modules.wiki_permissions.wiki_permissions import WikiPermissions
-
-# PYTHON CORE LIBS
-import random

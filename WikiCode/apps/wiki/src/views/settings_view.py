@@ -20,9 +20,9 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
-from WikiCode.apps.wiki.models import User, Publication, Viewing, BugReport, Developer
-from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
+from WikiCode.apps.wiki.models import User, Publication, Developer
 from WikiCode.apps.wiki.src.engine import wcode
+from WikiCode.apps.wiki.src.fs.fs import WikiFileSystem
 from .auth import check_auth, get_user_id
 
 
@@ -34,7 +34,7 @@ def get_settings(request):
         user = User.objects.get(id_user=id)
         prewiew_path_publ = ""
 
-        wft = WikiFileTree()
+        wft = WikiFileSystem()
         wft.load_tree(user.file_tree)
 
         try:
@@ -147,22 +147,6 @@ def get_renickname_user(request):
                             publ.nickname_author = new_nickname
                             publ.save()
                     except Publication.DoesNotExist:
-                        pass
-                    # Меняем все просмотры, где был указан его никнейм
-                    try:
-                        viewings = Viewing.objects.filter(id_user=cur_user.id_user)
-                        for view in viewings:
-                            view.nickname = new_nickname
-                            view.save()
-                    except Viewing.DoesNotExist:
-                        pass
-                    # Меняем все баг-репорты, где был указан его никнейм
-                    try:
-                        bug_reports = BugReport.objects.filter(id_author=cur_user.id_user)
-                        for bug_report in bug_reports:
-                            bug_report.nickname_author = new_nickname
-                            bug_report.save()
-                    except BugReport.DoesNotExist:
                         pass
                     # Меняем имя разработчика если он таковым является
                     try:

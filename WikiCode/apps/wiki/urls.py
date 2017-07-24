@@ -17,7 +17,7 @@
 #   You should have received a copy of the GNU Affero General Public License
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
 
-from django.conf.urls import url, include
+from django.conf.urls import url
 
 from . import views
 urlpatterns = [
@@ -26,7 +26,6 @@ urlpatterns = [
     url(r'^about_invite/$', views.about_invite, name='about_invite'),
     url(r'^create/$', views.create, name='create'),
     url(r'^page/(?P<id>[0-9]+)/$', views.page, name='page'),
-    url(r'^group/(?P<id>[0-9]+)/$', views.group, name='group'),
     url(r'^settings/$', views.settings, name='settings'),
     url(r'^user/(?P<id>[0-9]+)/$', views.user, name='user'),
     url(r'^registration/$', views.registration, name='registration'),
@@ -34,10 +33,6 @@ urlpatterns = [
     url(r'^login/$', views.login, name='login'),
     url(r'^tree_manager/$',views.tree_manager, name='tree_manager'),
     url(r'^publ_manager/(?P<id>[0-9]+)$',views.publ_manager, name='publ_manager'),
-    url(r'^colleagues/$',views.colleagues, name='colleagues'),
-    url(r'^notifications/$',views.notifications, name='notifications'),
-    url(r'^bug_report/$',views.bug_report, name='bug_report'),
-    url(r'^bug_report/send_bug/$',views.send_bug, name='send_bug'),
 
     url(r'^create_page/$', views.create_page, name='create_page'),
     url(r'^create_user/$', views.create_user, name='create_user'),
@@ -45,9 +40,7 @@ urlpatterns = [
     url(r'^login_user/$', views.login_user, name='login_user'),
     url(r'^logout_user/$', views.logout_user, name='logout_user'),
 
-    url(r'^registration/check_nickname/$', views.check_nickname, name='check_nickname'),
     url(r'^registration/check_email/$', views.check_email, name='check_email'),
-    url(r'^invite_registration/check_nickname/$', views.check_nickname, name='check_nickname'),
     url(r'^invite_registration/check_email/$', views.check_email, name='check_email'),
 
     # События в менеджере дерева
@@ -60,66 +53,28 @@ urlpatterns = [
     url(r'^tree_manager/remove_saved/$', views.remove_saved, name='remove_saved'),
     url(r'^tree_manager/get_path_to_folder/$', views.get_path_to_folder, name='get_path_to_folder_move'),
     url(r'^tree_manager/move_publication/$', views.move_publication, name='move_publication'),
-    url(r'^tree_manager/create_group/$', views.create_group, name='create_group'),
 
     # События на странице управления конспектом
     url(r'^publ_manager/delete_publ_in_tree/$', views.delete_publ_in_tree, name='delete_publ_in_tree'),
     url(r'^publ_manager/(?P<id>[0-9]+)/save_main_publ_manager/$', views.save_main_publ_manager, name='save_main_publ_manager'),
     url(r'^publ_manager/(?P<id>[0-9]+)/save_opt_publ_manager/$', views.save_opt_publ_manager, name='save_opt_publ_manager'),
-    url(r'^publ_manager/(?P<id>[0-9]+)/add_white_user/$', views.add_white_user, name='add_white_user'),
-    url(r'^publ_manager/(?P<id>[0-9]+)/del_white_user/$', views.del_white_user, name='del_white_user'),
-    url(r'^publ_manager/(?P<id>[0-9]+)/add_black_user/$', views.add_black_user, name='add_black_user'),
-    url(r'^publ_manager/(?P<id>[0-9]+)/del_black_user/$', views.del_black_user, name='del_black_user'),
 
     # События на странице конспекта
-    url(r'^page/(?P<id>[0-9]+)/add_dynamic_comment/$', views.add_dynamic_comment, name='add_dynamic_comment'),
-    url(r'^page/(?P<id>[0-9]+)/reply_dynamic_comment/$', views.reply_dynamic_comment, name='reply_dynamic_comment'),
-    url(r'^page/(?P<id>[0-9]+)/add_main_comment/$', views.add_main_comment, name='add_main_comment'),
     url(r'^page/(?P<id>[0-9]+)/save_publication/$', views.save_publication, name='save_publication'),
-    url(r'^page/(?P<id>[0-9]+)/get_version/$', views.get_version, name='get_version'),
-    url(r'^page/(?P<id>[0-9]+)/set_head/$', views.set_head, name='set_head'),
     url(r'^page/(?P<id>[0-9]+)/presentation/$', views.presentation, name='presentation'),
     url(r'^page/(?P<id>[0-9]+)/save_page/$', views.save_page, name='save_page'),
-    url(r'^page/(?P<id>[0-9]+)/add_star_publication/$', views.add_star_publication, name='add_star_publication'),
     url(r'^page/(?P<id>[0-9]+)/load_md/$', views.load_md, name='load_md'),
     url(r'^page/(?P<id>[0-9]+)/get_path_to_folder/$', views.get_path_to_folder_id, name='get_path_to_folder_save'),
-    url(r'^page/(?P<id>[0-9]+)/comment_rating_up/$', views.comment_rating_up, name='comment_rating_up'),
-    url(r'^page/(?P<id>[0-9]+)/comment_rating_down/$', views.comment_rating_down, name='comment_rating_down'),
-
-    # События на странице пользователя
-    url(r'^user/(?P<id>[0-9]+)/send_request_colleagues/$', views.send_request_colleagues, name='send_request_colleagues'),
 
     # Событие, если сайт находится на ремонте
     url(r'^login_developer/$', views.login_developer, name='login_developer'),
 
-    # События на странице коллег
-    url(r'^colleagues/delete_colleague/$', views.delete_colleague, name='delete_colleague'),
-
-
-    # Событие на странице уведомлений
-    url(r'^notifications/add_colleague/(?P<id>[0-9]+)$', views.add_colleague, name='add_colleague'),
-    url(r'^notifications/notification_read/$', views.notification_read, name='notification_read'),
-    url(r'^notifications/delete_notification/$', views.delete_notification, name='delete_notification'),
-
     # События на странице настроек пользователя
     url(r'^settings/check_password/$', views.check_password_settings, name='check_password'),
-    url(r'^settings/check_nickname/$', views.check_nickname_settings, name='check_nickname'),
     url(r'^settings/repassword_user/$', views.repassword_user, name='repassword_user'),
     url(r'^settings/renickname_user/$', views.renickname_user, name='renickname_user'),
     url(r'^settings/rename_user/$', views.rename_user, name='rename_user'),
 
     # События на странице создания конспекта
-    url(r'^create/get_path_to_folder/$', views.get_path_to_folder, name='get_path_to_folder'),
-
-    # События на странице группы
-    url(r'^group/(?P<id>[0-9]+)/save_group/$', views.save_group, name='save_group'),
-    url(r'^group/(?P<id>[0-9]+)/get_path_to_publ/$', views.get_path_to_publ, name='get_path_to_publ'),
-    url(r'^group/(?P<id>[0-9]+)/save_group_show/$', views.save_group_show, name='save_group_show'),
-    url(r'^group/(?P<id>[0-9]+)/add_member_group/$', views.add_member_group, name='add_member_group'),
-    url(r'^group/(?P<id>[0-9]+)/del_member_group/$', views.del_member_group, name='del_member_group'),
-    url(r'^group/(?P<id>[0-9]+)/add_black_user_group/$', views.add_black_user_group, name='add_black_user_group'),
-    url(r'^group/(?P<id>[0-9]+)/del_black_user_group/$', views.del_black_user_group, name='del_black_user_group'),
-    url(r'^group/(?P<id>[0-9]+)/del_group/$', views.del_group, name='del_group'),
-
+    url(r'^create/get_path_to_folder/$', views.get_path_to_folder, name='get_path_to_folder')
 ]
-

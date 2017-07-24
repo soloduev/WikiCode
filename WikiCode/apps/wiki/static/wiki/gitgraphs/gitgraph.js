@@ -115,7 +115,7 @@
     this.author = (typeof options.author === "string") ? options.author : "Sergio Flores <saxo-guy@epic.com>";
     this.reverseArrow = booleanOptionOr( options.reverseArrow, false );
 
-    // Template management
+    // Template Management
     if ( (typeof options.template === "string")
          || (typeof options.template === "object") ) {
       this.template = this.newTemplate( options.template );

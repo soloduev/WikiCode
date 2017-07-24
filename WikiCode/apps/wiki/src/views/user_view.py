@@ -18,25 +18,42 @@
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
 import datetime
 
+from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login
 from django.contrib.auth.models import User as DjangoUser
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 
-from WikiCode.apps.wiki.models import Publication, Group
+from WikiCode.apps.wiki.models import Developer
+from WikiCode.apps.wiki.models import InviteKeys
+from WikiCode.apps.wiki.models import Publication
 from WikiCode.apps.wiki.models import Statistics
-from WikiCode.apps.wiki.models import Colleague
-from WikiCode.apps.wiki.models import Notification
 from WikiCode.apps.wiki.models import User
 from WikiCode.apps.wiki.models import User as WikiUser
-from WikiCode.apps.wiki.models import InviteKeys
-from WikiCode.apps.wiki.models import Developer
-from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
-from WikiCode.apps.wiki.src.modules.notify_generator.wiki_notify import WikiNotify
 from WikiCode.apps.wiki.src.engine import wcode
+from WikiCode.apps.wiki.src.fs.fs import WikiFileSystem
 from .auth import check_auth, get_user_id
+
+
+class EmailAuthBackend(ModelBackend):
+    def authenticate(self, username=None, password=None, **kwargs):
+        try:
+            user = DjangoUser.objects.get(email=username)
+            if user.check_password(password):
+                return user
+        except ObjectDoesNotExist:
+            # Run the default password hasher once to reduce the timing
+            # difference between an existing and a non-existing user (#20760).
+            DjangoUser().set_password(password)
+
+    def get_user(self, user_id):
+        try:
+            return DjangoUser.objects.get(pk=user_id)
+        except DjangoUser.DoesNotExist:
+            return None
 
 
 def get_user(request, id):
@@ -48,7 +65,7 @@ def get_user(request, id):
         if str(get_user_id(request)) == id:
             # Отрисовываем страницу текущего пользователя
 
-            wft = WikiFileTree()
+            wft = WikiFileSystem()
             wft.load_tree(user.file_tree)
 
             user_id = get_user_id(request)
@@ -66,28 +83,17 @@ def get_user(request, id):
             # Получаем все последние конспекты пользователя
             publications = Publication.objects.filter(id_author=id)
 
-            # Получаем все лучшие конспекты пользователя
-            top_publications = Publication.objects.filter(id_author=id).order_by('stars')
-
-            # Получаем все группы пользователя
-            groups = Group.objects.filter(id_author=id)
-
             if user_id != -1:
                 context = {
                     "user_data": user_data,
                     "user_id": user_id,
                     "preview_tree": wft.to_html_preview(),
                     "publications": reversed(publications),
-                    "top_publications": reversed(top_publications),
                     "user":user,
                     "prewiew_publ_text":preview_publ_text,
                     "prewiew_publ_title":prewiew_publ_title,
                     "prewiew_publ_id":prewiew_publ_id,
                     "other_user": False,
-                    "new_notifications": Notification.objects.filter(id_addressee=user.id_user, is_read=False).count(),
-                    "total_colleagues": Colleague.objects.filter(id_user=user.id_user).count(),
-                    "groups": reversed(groups),
-                    "notify": wcode.notify.instant.get(request)
                 }
 
                 return render(request, 'wiki/user.html', context)
@@ -96,25 +102,8 @@ def get_user(request, id):
         else:
             # Отрисовываем страницу другого пользователя
             other_user = User.objects.get(id_user=id)
-            wft = WikiFileTree()
+            wft = WikiFileSystem()
             wft.load_tree(other_user.file_tree)
-
-            # Узнаем, не является ли он коллегой
-            is_colleague = False
-            try:
-                Colleague.objects.get(id_user=get_user_id(request),
-                                      id_colleague=other_user.id_user)
-                is_colleague = True
-            except Colleague.DoesNotExist:
-                pass
-
-            # Узнаем, не отправляли ли мы ему уже заявку в коллеги
-            is_send_colleague = False
-            if Notification.objects.filter(id_addressee=other_user.id_user,
-                                           id_sender=get_user_id(request),
-                                           type="add_colleague").count() != 0:
-                is_send_colleague = True
-
 
             # Получаем текст превью публикации
             try:
@@ -130,27 +119,17 @@ def get_user(request, id):
             # Получаем все последние конспекты пользователя
             publications = Publication.objects.filter(id_author=id, is_public=True)
 
-            # Получаем все лучшие конспекты пользователя
-            top_publications = Publication.objects.filter(id_author=id, is_public=True).order_by('stars')
-
-            # Получаем все группы пользователя
-            groups = Group.objects.filter(id_author=id)
 
             context = {
                 "user_data": user_data,
                 "user_id": get_user_id(request),
                 "preview_tree": wft.to_html_preview(only_public=True),
                 "publications": reversed(publications),
-                "top_publications": reversed(top_publications),
                 "user":other_user,
                 "prewiew_publ_text": preview_publ_text,
                 "prewiew_publ_title": prewiew_publ_title,
                 "prewiew_publ_id": prewiew_publ_id,
                 "other_user": True,
-                "is_colleague": is_colleague,
-                "is_send_colleague": is_send_colleague,
-                "groups": reversed(groups),
-                "notify": wcode.notify.instant.get(request)
             }
 
             return render(request, 'wiki/user.html', context)
@@ -165,93 +144,68 @@ def get_create_user(request, is_invite=None):
     # Получаем данные формы
     form = request.POST
 
-    # Проверяем на существование такого имени и email.
+    # Проверяем на существование такого email.
     # Осли проверка успешна, пользователя не создаем
-    try:
-            simple1 = WikiUser.objects.get(nickname=form["user_nickname"])
-    except WikiUser.DoesNotExist:
-        try:
-            simple2 = WikiUser.objects.get(email=form["user_email"])
-        except WikiUser.DoesNotExist:
 
-            # Создаем нового пользователя
-            user = DjangoUser.objects.create_user(form["user_nickname"],
-                                                  form["user_email"],
-                                                  form["user_password"])
+    simple_user = DjangoUser.objects.filter(email=form["user_email"])
+    if not simple_user:
+        # Создаем нового пользователя
+        user = DjangoUser.objects.create_user(username=form["user_email"],
+                                              email=form["user_email"],
+                                              password=form["user_password"])
 
-            stat = Statistics.objects.get(id_statistics=1)
-            # Необходимо для создания id пользователей
-            total_reg_users = stat.users_total_reg
-            stat.users_total_reg += 1
-            stat.users_reg += 1
+        stat = Statistics.objects.get(id_statistics=1)
+        # Необходимо для создания id пользователей
+        total_reg_users = stat.users_total_reg
+        stat.users_total_reg += 1
+        stat.users_reg += 1
 
-            # Создаем дерево по умолчанию для юзера
-            wft = WikiFileTree()
-            wft.create_tree(total_reg_users)
+        # Создаем дерево по умолчанию для юзера
+        wft = WikiFileSystem()
+        wft.create_tree(total_reg_users)
 
-            # Создаем нового юзера
-            new_wiki_user = WikiUser(user=user,
-                                     nickname=form["user_nickname"],
-                                     email=form["user_email"],
-                                     id_user=total_reg_users,
-                                     file_tree=wft.get_xml_str(),
-                                     avatar="none.jpg",
-                                     name="anonymous",
-                                     publications=0,
-                                     preview_publ_id=-1)
+        # Создаем нового юзера
+        new_wiki_user = WikiUser(user=user,
+                                 nickname="",
+                                 email=form["user_email"],
+                                 id_user=total_reg_users,
+                                 file_tree=wft.get_xml_str(),
+                                 preview_publ_id=-1)
 
-            user = authenticate(username=form["user_nickname"], password=form["user_password"])
+        user = authenticate(username=form["user_email"], password=form["user_password"])
 
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                else:
-                    print(">>>>>>>>>>>>>> WIKI ERROR: disabled account")
-
+        if user is not None:
+            if user.is_active:
+                login(request, user)
             else:
-                print(">>>>>>>>>>>>>> WIKI ERROR: invalid login")
+                print(">>>>>>>>>>>>>> WIKI ERROR: disabled account")
 
-            # Получаем текущую дату
-            date = str(datetime.datetime.now())
-            date = date[:len(date) - 7]
+        else:
+            print(">>>>>>>>>>>>>> WIKI ERROR: invalid login")
 
-            # Отправляем готовое уведомление пользователю от системы
-            total_notifications = stat.total_notification
-            stat.total_notification += 1
-            hello_notification = Notification(id_notification=total_notifications,
-                                              id_sender=-1,
-                                              title="Добро пожаловать!",
-                                              id_addressee=total_reg_users,
-                                              date=date,
-                                              type='wiki_code',
-                                              is_read=False,
-                                              html_text=WikiNotify.generate_hello_user())
-            hello_notification.save()
+        # Получаем текущую дату
+        date = str(datetime.datetime.now())
+        date = date[:len(date) - 7]
 
-            # Если это инвайт регистрация, удаляем ключ и делаем пользователя разработчиком:
-            if is_invite:
-                is_invite.delete()
-                new_developer = Developer(id_developer=total_reg_users,
-                                          name_developer=form["user_nickname"])
-                new_developer.save()
+        # Если это инвайт регистрация, удаляем ключ и делаем пользователя разработчиком:
+        if is_invite:
+            is_invite.delete()
+            new_developer = Developer(id_developer=total_reg_users,
+                                      name_developer=form["user_nickname"])
+            new_developer.save()
 
-            # Сохранение всех изменений в БД
-            new_wiki_user.save()
-            stat.save()
+        # Сохранение всех изменений в БД
+        new_wiki_user.save()
+        stat.save()
 
-            return HttpResponseRedirect("/")
+        return HttpResponseRedirect("/")
+    else:
         context = {
             "error": "Пользователь с таким Email уже существует",
             "user_data": check_auth(request),
             "user_id": get_user_id(request),
         }
         return render(request, 'wiki/registration.html', context)
-    context = {
-        "error": "Пользователь с таким Nickname уже существует",
-        "user_data": check_auth(request),
-        "user_id": get_user_id(request),
-    }
-    return render(request, 'wiki/registration.html', context)
 
 
 def get_create_user_invite(request):
@@ -267,15 +221,14 @@ def get_create_user_invite(request):
 
 def get_login_user(request):
 
-    user_name = request.POST['user_name']
-    user_password = request.POST['user_password']
-
-    user = authenticate(username=user_name, password=user_password)
+    user_email = request.POST.get("user_email", False)
+    user_password = request.POST.get("user_password", False)
+    print(user_email)
+    user = authenticate(username=user_email, password=user_password)
 
     if user is not None:
         if user.is_active:
             login(request, user)
-            wcode.notify.instant.create(request, 'info', 'Авторизация прошла успешно.')
             return wcode.goto('index')
         else:
             print(">>>>>>>>>>>>>> WIKI ERROR: disabled account")
@@ -284,7 +237,6 @@ def get_login_user(request):
     else:
         print(">>>>>>>>>>>>>> WIKI ERROR: invalid login")
 
-    wcode.notify.instant.create(request, 'error', 'Вы ввели не верный логин или пароль!\n\n\nПовторите снова.')
     return wcode.goto('index')
 
 

@@ -20,19 +20,9 @@
 from django.contrib import admin
 from .models import User
 from .models import Publication
-from .models import Tag
-from .models import Group
 from .models import Statistics
-from .models import Viewing
 from .models import Developer
-from .models import BugReport
-from .models import DynamicParagraph
-from .models import Comment
 from .models import Folder
-from .models import Colleague
-from .models import Notification
-from .models import Starring
-from .models import CommentRating
 from .models import InviteKeys
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User as DjangoUser
@@ -54,17 +44,7 @@ admin.site.unregister(DjangoUser)
 admin.site.register(DjangoUser, UserAdmin)
 
 admin.site.register(Publication)
-admin.site.register(Tag)
-admin.site.register(Group)
 admin.site.register(Statistics)
-admin.site.register(Viewing)
-admin.site.register(Starring)
 admin.site.register(Developer)
-admin.site.register(BugReport)
-admin.site.register(DynamicParagraph)
-admin.site.register(Comment)
 admin.site.register(Folder)
-admin.site.register(Colleague)
-admin.site.register(Notification)
-admin.site.register(CommentRating)
 admin.site.register(InviteKeys)

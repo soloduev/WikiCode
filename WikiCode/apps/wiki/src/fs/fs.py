@@ -19,13 +19,13 @@
 
 import xml.etree.ElementTree as ET
 from xml.dom.minidom import parseString
+
 from lxml import etree
 
+from WikiCode.apps.wiki.src.fs.config import params as CONFIG
 
-from WikiCode.apps.wiki.src.modules.wiki_tree.config import params as CONFIG
 
-
-class WikiFileTree():
+class WikiFileSystem():
     """
     :VERSION: 0.32
     Класс для работы с файловым деревом на платформе WIKICODE.
@@ -58,7 +58,7 @@ class WikiFileTree():
         """Создает пустое дерево. Чтобы создать дерево, достаточно указать его id"""
         if type(id) == int:
             # Создаем новый корневой элемент
-            wft_root = ET.Element('wiki_tree')
+            wft_root = ET.Element('wiki_fs')
             # Задаем ему id
             wft_root.set('id', str(id))
             # Переводим xml в строку

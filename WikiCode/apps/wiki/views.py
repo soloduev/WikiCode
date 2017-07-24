@@ -21,16 +21,12 @@
 from WikiCode.apps.wiki.src.views import index_view
 from WikiCode.apps.wiki.src.views import about_view
 from WikiCode.apps.wiki.src.views import publication_view
-from WikiCode.apps.wiki.src.views import group_view
 from WikiCode.apps.wiki.src.views import settings_view
 from WikiCode.apps.wiki.src.views import user_view
 from WikiCode.apps.wiki.src.views import registration_view
 from WikiCode.apps.wiki.src.views import tree_view
 from WikiCode.apps.wiki.src.views import publ_manager_view
 from WikiCode.apps.wiki.src.views import develop_view
-from WikiCode.apps.wiki.src.views import error_view
-from WikiCode.apps.wiki.src.views import colleagues_view
-from WikiCode.apps.wiki.src.views import notifications_view
 from django.contrib.auth.decorators import login_required
 from WikiCode.apps.wiki.src.develop_mode.develop_mode import develop_mode, develop_mode_id
 
@@ -63,13 +59,6 @@ def create(request):
 @develop_mode_id
 def page(request, id):
     return publication_view.get_page(request, id)
-
-
-# Запрос страницы отдельной группы(group.html)
-@develop_mode_id
-@login_required
-def group(request, id):
-    return group_view.get_group(request, id)
 
 
 # Запрос страницы настроек зарегестрированного пользователя(settings.html)
@@ -154,32 +143,6 @@ def publ_manager(request, id):
     return publication_view.get_publ_manager(request, id)
 
 
-# Запрос страницы коллег пользователя(colleagues.html)
-@develop_mode
-@login_required
-def colleagues(request):
-    return colleagues_view.get_colleagues(request)
-
-
-# Запрос страницы уведомлений пользователя(notifications.html)
-@develop_mode
-@login_required
-def notifications(request):
-    return notifications_view.get_notifications(request)
-
-
-# Запрос страницы баг-репорта(bug_report.html)
-@develop_mode
-@login_required
-def bug_report(request):
-    return error_view.get_bug_report(request)
-
-
-# Ajax запрос на проверку существования никнеймa
-def check_nickname(request):
-    return registration_view.get_check_nickname(request)
-
-
 def check_email(request):
     return registration_view.get_check_email(request)
 
@@ -187,11 +150,6 @@ def check_email(request):
 @develop_mode
 def check_password_settings(request):
     return settings_view.get_check_password(request)
-
-
-@develop_mode
-def check_nickname_settings(request):
-    return settings_view.get_check_nickname(request)
 
 
 @develop_mode
@@ -252,27 +210,6 @@ def set_preview_publ_in_tree(request):
     return tree_view.get_set_preview_publ_in_tree(request)
 
 
-# Добавление динамического комментария к конспекту
-@develop_mode_id
-@login_required
-def add_dynamic_comment(request, id):
-    return publication_view.get_add_dynamic_comment(request, id)
-
-
-# Добавление динамического комментария к конспекту
-@develop_mode_id
-@login_required
-def reply_dynamic_comment(request, id):
-    return publication_view.get_reply_dynamic_comment(request, id)
-
-
-# Добавление общего комментария к конспекту
-@develop_mode_id
-@login_required
-def add_main_comment(request, id):
-    return publication_view.get_add_main_comment(request, id)
-
-
 # Сохранение изменений в конспекте
 @develop_mode_id
 @login_required
@@ -280,90 +217,9 @@ def save_publication(request, id):
     return publication_view.get_save_publication(request, id)
 
 
-# Получение абзацев определеноой версии
-@develop_mode_id
-def get_version(request, id):
-    return publication_view.get_get_version(request, id)
-
-
-# Установление HEAD выбранной версии конспекта
-@develop_mode_id
-def set_head(request, id):
-    return publication_view.get_set_head(request, id)
-
-
 # Здесь не должно быть никаких декораторов!!!
 def login_developer(request):
     return develop_view.get_login_developer(request)
-
-
-@develop_mode
-@login_required
-def send_bug(request):
-    return error_view.get_send_bug(request)
-
-
-# Отправка уведомления на заявку на добавления в коллеги
-@develop_mode_id
-@login_required
-def send_request_colleagues(request, id):
-    return notifications_view.get_send_request_colleagues(request, id)
-
-
-# Добавление пользователя в коллеги
-@develop_mode_id
-@login_required
-def add_colleague(request, id):
-    return colleagues_view.get_add_colleague(request, id)
-
-
-# Ajax POST запрос, что уведомление было прочитано
-@develop_mode
-@login_required
-def notification_read(request):
-    return notifications_view.get_notification_read(request)
-
-
-# Удаление пользователя из списка коллег
-@develop_mode
-@login_required
-def delete_colleague(request):
-    return colleagues_view.get_delete_colleague(request)
-
-
-# Удаление уведомления
-@develop_mode
-@login_required
-def delete_notification(request):
-    return notifications_view.delete_notification(request)
-
-
-# Добавление редактора к конспекту
-@develop_mode_id
-@login_required
-def add_white_user(request, id):
-    return publ_manager_view.get_add_white_user(request, id)
-
-
-# Удаление редактора конспекта
-@develop_mode_id
-@login_required
-def del_white_user(request, id):
-    return publ_manager_view.get_del_white_user(request, id)
-
-
-# Добавление пользователя в черный список
-@develop_mode_id
-@login_required
-def add_black_user(request, id):
-    return publ_manager_view.get_add_black_user(request, id)
-
-
-# Удаление пользователя из черного списка
-@develop_mode_id
-@login_required
-def del_black_user(request, id):
-    return publ_manager_view.get_del_black_user(request, id)
 
 
 # Сохранение конспекта в своем дереве конспектов
@@ -378,13 +234,6 @@ def save_page(request, id):
 @login_required
 def remove_saved(request):
     return tree_view.get_remove_saved(request)
-
-
-# Добавление или удаление звезды конспекту
-@develop_mode_id
-@login_required
-def add_star_publication(request, id):
-    return publication_view.get_add_star_publication(request, id)
 
 
 # Загрузка конспекта в формате markdown
@@ -408,13 +257,6 @@ def get_path_to_publ(request, id):
     return publication_view.get_get_path_to_publ(request, id)
 
 
-# Получение полного пути к конспекту
-@develop_mode_id
-@login_required
-def save_group_show(request, id):
-    return group_view.get_save_group_show(request, id)
-
-
 # Получение полного пути к папке
 @develop_mode_id
 @login_required
@@ -422,75 +264,8 @@ def get_path_to_folder_id(request, id):
     return publication_view.get_get_path_to_folder(request)
 
 
-# Повышение рейтинга комментарию
-@develop_mode_id
-@login_required
-def comment_rating_up(request, id):
-    return publication_view.get_comment_rating_up(request, id)
-
-
-# Понижение рейтинга комментарию
-@develop_mode_id
-@login_required
-def comment_rating_down(request, id):
-    return publication_view.get_comment_rating_down(request, id)
-
-
 # Перемещение конспекта
 @develop_mode
 @login_required
 def move_publication(request):
     return tree_view.get_move_publication(request)
-
-
-# Создание группы
-@develop_mode
-@login_required
-def create_group(request):
-    return group_view.create_group(request)
-
-
-# Сохранение основных настроек группы
-@develop_mode_id
-@login_required
-def save_group(request, id):
-    return group_view.get_save_group(request, id)
-
-
-# Добавление нового участника группы
-@develop_mode_id
-@login_required
-def add_member_group(request, id):
-    return group_view.get_add_member_group(request, id)
-
-
-# Удаление участника группы
-@develop_mode_id
-@login_required
-def del_member_group(request, id):
-    return group_view.get_del_member_group(request, id)
-
-
-# Добавление пользователя в черный список группы
-@develop_mode_id
-@login_required
-def add_black_user_group(request, id):
-    return group_view.get_add_black_user_group(request, id)
-
-
-# Удаление пользователя из черного списка группы
-@develop_mode_id
-@login_required
-def del_black_user_group(request, id):
-    return group_view.get_del_black_user_group(request, id)
-
-
-# Удаление группы
-@develop_mode_id
-@login_required
-def del_group(request, id):
-    return group_view.get_del_group(request, id)
-
-
-
-

@@ -265,47 +265,6 @@
         </div>
     </div>
 
-    <!-- Модальное окно для создания группы -->
-    <div class="modal fade" id="modal_create_group" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Создание группы</h4>
-                </div>
-                <form action="{% url 'create_group' %}" method="post">
-                    {% csrf_token %}
-                    <div class="modal-body text-left">
-                        <h5>При создании группы, все конспекты, которые могут в ней храниться, будут в этой папке. Данная папка сменит свой тип и станет группой.</h5>
-                        <hr>
-                        <h4>Заголовок группы</h4>
-                        <input required type="text" name="title-group" class="form-control btn-block" placeholder="Заголовок" style="height: 30px; font-family: Courier; border-radius: 0px;"/>
-                        <h4>Тип группы</h4>
-                        <select required title="Тип группы" name="type-group" class="form-control btn-block" style="border-radius: 0px;font-family: Courier;">
-                            <option>Группа</option>
-                            <option>Курс</option>
-                            <option>Документация</option>
-                            <option>Организация</option>
-                        </select>
-                        <h4>Описание <span style="font-size: 14px; color: rgba(82, 82, 82, 0.44)">(Не обязательно)</span></h4>
-                        <textarea type="text" name="description-group" class="form-control btn-block" placeholder="Введите описание..." style="height: 100px; font-family: Courier; resize: none; border-radius: 0px;"></textarea>
-                        <h4>Уровень доступа</h4>
-                        <select required title="Уровень доступа" name="permission-group" class="form-control btn-block" style="border-radius: 0px;font-family: Courier;">
-                            <option>Публичная группа</option>
-                            <option>Приватная группа</option>
-                        </select>
-                        <h4>Начальный статус <span style="font-size: 14px; color: rgba(82, 82, 82, 0.44)">(Не обязательно)</span></h4>
-                        <input type="text" name="status-group" class="form-control btn-block" placeholder="Начальный статус" style="height: 30px; font-family: Courier; border-radius: 0px;"/>
-                        <input hidden id="create-group-folder-id" name="create-group-folder">
-                    </div>
-                    <div class="modal-footer">
-                        <button id="wiki-style-btn" type="submit" class="btn">Создать группу</button>
-                        <button id="wiki-style-btn" type="button" class="btn" data-dismiss="modal">Отмена</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
     <nav id="context-menu" class="context-menu">
         <ul class="context-menu__items">

@@ -10,9 +10,6 @@
     <link href={% static "wiki/slidebars/styles/slidebars.min.css" %} type="text/css" rel="stylesheet">
     <script src={% static "wiki/slidebars/scripts/slidebars.min.js" %}></script>
 
-    <link href={% static "wiki/gitgraphs/gitgraph.css" %} type="text/css" rel="stylesheet">
-    <script src={% static "wiki/gitgraphs/gitgraph.js" %}></script>
-
     <script src={% static "wiki/auto_resize/autoResize.js" %}></script>
     <script src={% static "wiki/wiki_scripts/page.js" %}></script>
 
@@ -45,129 +42,11 @@
             document.getElementById('li-md-wikicode-{{ p.index|escapejs }}').onmouseout = function(e) {
                 $(".border li .md-hover").attr("style", "padding: 3px 20px;border-right: 3px solid #c9c9c9;");
             };
-
-            {% if publication.is_versions %}
-                // Для версий
-                document.getElementById('v_markdown-row-{{ p.index|escapejs }}').innerHTML = marked(md_text[{{ p.index|escapejs }}]);
-            {% endif %}
         {% endfor %}
-
-
-
-        // Если активирован модуль динамических комментариев, то выполняем их обработку
-        {% if module_dynamic_paragraphs and publication.is_dynamic_paragraphs %}
-            // Если произошло нажатие на кнопку комментировать абзац
-            $("#comment_paragraph_wiki_tree_context").on("click", function () {
-                var selected_num_paragraph = parseInt($("#selected_number_paragraph").val());
-                // Перед тем как добавлять блоки html кода, очищаем предыдущие добавленные
-                $("#dynamic-comments-div").empty();
-                // Добавляем в модальное окно сам текст абзаца
-                document.getElementById('md-dynamic-paragraph-show').innerHTML = marked(md_text[selected_num_paragraph]);
-
-                // Само добавление кода"/user/{{ publication.id_author }}"
-                {% for comment in dynamic_comments %}
-                    if(({{ comment.paragraph|escapejs }}) == selected_num_paragraph) {
-                        $("#dynamic-comments-div").html("{{ comment.dynamic_comments|escapejs }}");
-                    }
-                {% endfor %}
-            });
-        {% endif %}
-
-
-        {% if module_main_comments and publication.is_general_comments %}
-            /* Общий блок комментариев */
-            $("#btn-show-comment").on("click", function () {
-                $("#main-comments-block").show();
-                $("#show-comment-btn").hide();
-                $("#hide-comment-btn").show();
-            });
-
-            $("#btn-hide-comment").on("click", function () {
-                $("#main-comments-block").hide();
-                $("#show-comment-btn").show();
-                $("#hide-comment-btn").hide();
-            });
-        {% endif %}
-
-
-        {% if module_versions and publication.is_versions %}
-            /* Working with graphs */
-            var myTemplateConfig = {
-                colors: [ "#2882ba", "#f2abaf", "#80a870", "#4cc0c4", "#6ac181", "#e6e878", "#f2815c" ], // branches colors, 1 per column
-                branch: {
-                    lineWidth: 6,
-                    spacingX: 20,
-                    showLabel: false,                  // display branch names on graph
-                },
-                commit: {
-                    spacingY: -40,
-                    dot: {
-                        size: 8,
-                        strokeWidth: 2,
-                    },
-                    message: {
-                        displayAuthor: false,
-                        displayBranch: false,
-                        displayHash: false,
-                        font: "normal 12pt Arial"
-                    },
-                    shouldDisplayTooltipsInCompactMode: false, // default = true
-                    tooltipHTMLFormatter: function ( commit ) {
-                        return "" + commit.sha1 + "" + ": " + commit.message;
-                    }
-                }
-            };
-            var myTemplate = new GitGraph.Template( myTemplateConfig );
-            var gitgraph = new GitGraph( {template: myTemplate} );
-            var to_version;
-
-            function show_version() {
-                $("#set_head_version").show('slow');
-                $.ajax({
-                    type: "GET",
-                    url: "get_version/",
-                    data: {
-                        "to_version": to_version.toString(),
-                    },
-                    dataType: "text",
-                    cache: false,
-                    success: function(data){
-                        if (data == 'no'){
-                            console.log("ERROR in page.js. to_version");
-                        }
-                        else{
-                            // Перед тем, как парсить контент, удаляем весь блок отображения версии
-                            $('#version_block_show').fadeOut(300);
-                            $('#version_block_show').empty();
-
-                            // Парсим ответ и отображаем его
-                            var json = JSON.parse(data);
-                            var count_versions = parseInt(json['count']);
-                            console.log(count_versions);
-                            for(var i=0; i < count_versions; i++){
-                                $('#version_block_show').append('<li style="border-top: solid 1px #cbcbcb; text-align: left; background-color: rgba(255, 255, 255, 0)"><div class="md-hover" id="v_markdown-row-'+(i+1).toString()+'"></div></li>');
-                                document.getElementById('v_markdown-row-'+(i+1).toString()+'').innerHTML = marked(json[(i+1).toString()]);
-                            }
-                            $('#version_block_show').fadeIn(300);
-                        }
-                    }
-                });
-            };
-
-            {{ versions_js|safe }}
-
-        {% endif %}
 
         {% if publication.is_contents %}
             document.getElementById('contents-publication').innerHTML = marked("{{ contents|escapejs }}");
         {% endif %}
 
-        /* Отображение обычного уведомления */
-        $.notify("{{ notify.text|escapejs }}",
-                {
-                    position: "right bottom",
-                    className: "{{ notify.type|escapejs }}",
-                    autoHideDelay: 8000
-                });
     </script>
 {% endblock %}

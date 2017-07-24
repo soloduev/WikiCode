@@ -41,41 +41,6 @@
                     <div id="reg-panel"class="col-xs-10 col-sm-8 col-md-6 col-lg-4">
                         <div class="container-fluid">
                             <br>
-                            <div class="row">
-                                <label class="text-center">Перед регистрацией, пожалуйста, ознакомьтесь с нашими правилами:</label>
-                            </div>
-                            <div class="row">
-                                <div id="accordion" class="panel-group">
-                                    <div class="panel panel-default"  style="border-radius: 0px;" href="#collapse-1" data-parent="#accordion" data-toggle="collapse">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title">
-                                                <a href="#collapse-1" data-parent="#accordion"
-                                                   data-toggle="collapse" style="text-decoration: none;"><span
-                                                        class="glyphicon glyphicon-alert"></span> Читать правила...</a>
-                                            </h4>
-                                        </div>
-                                        <div class="panel-collapse collapse" id="collapse-1">
-                                            <div class="panel-body" id="rules">
-                                                <label>Десять простых правил, которые должен соблюдать
-                                                    каждый:</label><br>
-                                                <ol>
-                                                    <li>Правило</li>
-                                                    <li>Правило</li>
-                                                    <li>Правило</li>
-                                                    <li>Правило</li>
-                                                    <li>Правило</li>
-                                                    <li>Правило</li>
-                                                    <li>Правило</li>
-                                                    <li>Правило</li>
-                                                    <li>Правило</li>
-                                                    <li>Правило</li>
-                                                </ol>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <br>
                             <form action="{% url 'create_user' %}" method="post" onsubmit="return validate_registration_form();">
                                 {% csrf_token %}
                                 {% if error %}
@@ -84,14 +49,6 @@
                                     </div>
                                     <br>
                                 {% endif %}
-                                <div class="row">
-                                    <label id="wiki_nickname_message">Никнейм</label>
-                                </div>
-                                <div class="row">
-                                    <input id="wiki_nickname" type="text" name="user_nickname" placeholder="Nickname" class="form-control btn-block"  autofocus required style="border-radius: 0px;height: 30px;" pattern="[a-zA-Z0-9_-]{3,12}" maxlength="12" title="Логин может содержать буквы только латинского алфавитa, знаки '_' и '-' , а также цифры. Его длина должна находиться в диапазоне от 3 до 12 символов">
-                                </div>
-                                <br>
-
                                 <div class="row">
                                     <label id="wiki_email_message">Почта</label>
                                 </div>

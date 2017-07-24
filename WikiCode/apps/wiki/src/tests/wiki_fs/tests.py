@@ -19,7 +19,8 @@
 
 # ТЕСТИРОВАНИЕ ФУНКЦИОНАЛА WIKITREE
 
-from WikiCode.apps.wiki.src.modules.wiki_tree import wiki_tree as wt_test
+from WikiCode.apps.wiki.src.fs import fs as wt_test
+
 
 # Version:       0.026
 # Total Tests:   33
@@ -46,7 +47,7 @@ class WikiTreeTest(object):
     # Указывается номер теста и сообщение об ошибке
     def __add_error(self, num_test, msg):
         self.errors.append({
-            "module": "WikiTree",
+            "module": "WikiFileSystem",
             "num_test": num_test,
             "msg": msg
         })
@@ -78,7 +79,7 @@ class WikiTreeTest(object):
         # -------------------------------------
         def test_1(self):
             print("WikiFileTree: " + test_1.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             if not wft.create_tree(14):
                 self.__add_error("1","Arg Error!")
         test_1(self)
@@ -86,7 +87,7 @@ class WikiTreeTest(object):
         # -------------------------------------
         def test_2(self):
             print("WikiFileTree: " + test_2.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             if wft.create_tree("asas"):
                 self.__add_error("2", "Arg Error!")
         test_2(self)
@@ -94,7 +95,7 @@ class WikiTreeTest(object):
         # -------------------------------------
         def test_3(self):
             print("WikiFileTree: " + test_3.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             wft.create_tree(1)
             # wft.print_xml()
         test_3(self)
@@ -102,7 +103,7 @@ class WikiTreeTest(object):
         # -------------------------------------
         def test_4(self):
             print("WikiFileTree: " + test_4.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             wft.create_tree(1)
             new_tree = wft.get_xml_str()
             wft.load_tree(new_tree)
@@ -114,7 +115,7 @@ class WikiTreeTest(object):
         # -------------------------------------
         def test_5(self):
             print("WikiFileTree: " + test_5.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             wft.create_tree(3423)
             if wft.get_id() != 3423:
                 self.__add_error("5", "get_id is error!")
@@ -132,7 +133,7 @@ class WikiTreeTest(object):
         # -------------------------------------
         def test_6(self):
             print("WikiFileTree: " + test_6.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             wft.create_tree(1)
             for i in range(0,10):
                 k = -1
@@ -151,7 +152,7 @@ class WikiTreeTest(object):
         # -------------------------------------
         def test_7(self):
             print("WikiFileTree: " + test_7.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             wft.create_tree(1)
             status = wft.create_folder(id=1,
                                        access="protected",
@@ -199,7 +200,7 @@ class WikiTreeTest(object):
         # -------------------------------------
         def test_8(self):
             print("WikiFileTree: " + test_8.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             stats = set()
             stats.add(wft.create_tree(1))
             stats.add(wft.create_folder(id=1,access="private",type="saved",name="new folder",style="green",view="open",id_folder=-1))
@@ -221,7 +222,7 @@ class WikiTreeTest(object):
         # -------------------------------------
         def test_9(self):
             print("WikiFileTree: " + test_9.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             stats = set()
             stats.add(wft.delete_folder(4))
             wft.create_tree(1)
@@ -241,7 +242,7 @@ class WikiTreeTest(object):
         # -------------------------------------
         def test_10(self):
             print("WikiFileTree: " + test_10.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             # wft.print_config()
 
         test_10(self)
@@ -249,7 +250,7 @@ class WikiTreeTest(object):
         # -------------------------------------
         def test_11(self):
             print("WikiFileTree: " + test_11.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             stats = set()
             stats.add(wft.create_tree(1))
             stats.add(wft.create_folder(id=1, access="private", type="saved", name="new folder", style="green", view="open", id_folder=-1))
@@ -271,7 +272,7 @@ class WikiTreeTest(object):
         # -------------------------------------
         def test_12(self):
             print("WikiFileTree: " + test_12.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             stats = set()
             stats.add(wft.create_tree(1))
             stats.add(wft.create_folder(id=1, access="private", type="saved", name="new folder", style="green", view="open", id_folder=-1))
@@ -295,7 +296,7 @@ class WikiTreeTest(object):
         # -------------------------------------
         def test_13(self):
             print("WikiFileTree: " + test_13.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             stats = set()
             stats.add(wft.create_tree(1))
             stats.add(wft.create_folder(id=1, access="private", type="saved", name="new folder", style="green", view="open", id_folder=-1))
@@ -319,7 +320,7 @@ class WikiTreeTest(object):
         # -------------------------------------
         def test_14(self):
             print("WikiFileTree: " + test_14.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             stats = set()
             stats.add(wft.create_tree(1))
             stats.add(wft.create_folder(id=1, access="private", type="saved", name="new folder", style="green", view="open",id_folder=-1))
@@ -343,7 +344,7 @@ class WikiTreeTest(object):
         # -------------------------------------
         def test_15(self):
             print("WikiFileTree: " + test_15.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             stats = set()
             stats.add(wft.create_tree(1))
             stats.add(wft.create_folder(id=2, access="private", type="saved", name="new folder", style="green", view="open",id_folder=-1))
@@ -367,7 +368,7 @@ class WikiTreeTest(object):
         # -------------------------------------
         def test_16(self):
             print("WikiFileTree: " + test_16.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             stats = set()
             stats.add(wft.create_tree(1))
             stats.add(wft.create_folder(id=2, access="private", type="saved", name="new folder", style="green", view="open",id_folder=-1))
@@ -392,7 +393,7 @@ class WikiTreeTest(object):
         # -------------------------------------
         def test_17(self):
             print("WikiFileTree: " + test_17.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             stats = set()
             wft.create_tree(1)
             stats.add(wft.create_folder(id=1, access="private", type="saved", name="new folder", style="green", view="open",id_folder=-1))
@@ -421,7 +422,7 @@ class WikiTreeTest(object):
 
         def test_18(self):
             print("WikiFileTree: " + test_18.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             stats = set()
             wft.create_tree(1)
             stats.add(not wft.create_folder(id=2, access="private", type="saved", name="new folder", style="green", view="open",id_folder=-1))
@@ -447,7 +448,7 @@ class WikiTreeTest(object):
         # -------------------------------------
         def test_19(self):
             print("WikiFileTree: " + test_19.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             stats = set()
             stats.add(wft.create_tree(1))
             stats.add(wft.create_folder(id=1, access="private", type="saved", name="new folder", style="green", view="open",id_folder=-1))
@@ -479,7 +480,7 @@ class WikiTreeTest(object):
         # -------------------------------------
         def test_20(self):
             print("WikiFileTree: " + test_20.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             stats = set()
             stats.add(wft.create_tree(1))
             stats.add(wft.create_folder(id=1, access="private", type="saved", name="new folder", style="green", view="open",id_folder=-1))
@@ -510,7 +511,7 @@ class WikiTreeTest(object):
         # -------------------------------------
         def test_21(self):
             print("WikiFileTree: " + test_21.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             stats = set()
             stats.add(wft.create_tree(1))
             stats.add(wft.create_folder(id=2, access="private", type="saved", name="new folder", style="green", view="open",id_folder=-1))
@@ -541,7 +542,7 @@ class WikiTreeTest(object):
         # -------------------------------------
         def test_22(self):
             print("WikiFileTree: " + test_22.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             stats = set()
             stats.add(wft.create_tree(1))
             stats.add(wft.create_folder(id=2, access="public", type="saved", name="new folder", style="green", view="open",id_folder=-1))
@@ -570,7 +571,7 @@ class WikiTreeTest(object):
         # ПРОВЕРЯЛОСЬ ИЗМЕНЕНИЕ ДОСТУПА ПРИ СОЗДАНИИ ПАПОК
         def test_23(self):
             print("WikiFileTree: " + test_23.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             wft.create_tree(1)
             wft.create_folder(id=1, access="public", type="saved", name="new folder", style="green", view="open",id_folder=-1)
             wft.create_folder(id=2, access="private", type="saved", name="new folder", style="green", view="open",id_folder=1)
@@ -583,7 +584,7 @@ class WikiTreeTest(object):
         # ПРОВЕРЯЛОСЬ ИЗМЕНЕНИЕ ДОСТУПА ПРИ ИЗМЕНЕНИИ ДОСТУПА ПАПКИ
         def test_24(self):
             print("WikiFileTree: " + test_24.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             wft.create_tree(1)
             wft.create_folder(id=1, access="public", type="saved", name="new folder", style="green", view="open",
                               id_folder=-1)
@@ -603,7 +604,7 @@ class WikiTreeTest(object):
         # ПРОВЕРЯЛОСЬ ИЗМЕНЕНИЕ ДОСТУПА ПРИ ИЗМЕНЕНИИ ДОСТУПА ПАПКИ
         def test_25(self):
             print("WikiFileTree: " + test_25.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             wft.create_tree(1)
             wft.create_folder(id=1, access="public", type="saved", name="new folder", style="green", view="open",
                               id_folder=-1)
@@ -626,7 +627,7 @@ class WikiTreeTest(object):
         # При создании конспекта, проверяем его доступ
         def test_26(self):
             print("WikiFileTree: " + test_26.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             wft.create_tree(1)
             wft.create_folder(id=1, access="public", type="saved", name="new folder", style="green", view="open",
                               id_folder=-1)
@@ -645,7 +646,7 @@ class WikiTreeTest(object):
         # Проверяем изменение доступа конспекта в приватной папке
         def test_27(self):
             print("WikiFileTree: " + test_27.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             wft.create_tree(1)
             wft.create_folder(id=1, access="public", type="saved", name="new folder", style="green", view="open",
                               id_folder=-1)
@@ -664,7 +665,7 @@ class WikiTreeTest(object):
         # Проверяем функцию получения количества корневых папок
         def test_28(self):
             print("WikiFileTree: " + test_28.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             wft.create_tree(1)
 
             if wft.get_num_root_folders() != 0:
@@ -695,7 +696,7 @@ class WikiTreeTest(object):
         # Проверяем функцию генерации preview html
         def test_29(self):
             print("WikiFileTree: " + test_28.__name__)
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             wft.create_tree(1)
 
             wft.create_folder(id=1, access="public", type="saved", name="new folder", style="green", view="open",
@@ -721,7 +722,7 @@ class WikiTreeTest(object):
             print("WikiFileTree: " + test_30.__name__)
             stats = set()
 
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             wft.create_tree(1)
 
             wft.create_folder(id=1, access="public", type="saved", name="new folder", style="green", view="open",
@@ -765,7 +766,7 @@ class WikiTreeTest(object):
             print("WikiFileTree: " + test_31.__name__)
 
 
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             wft.create_tree(1)
 
             wft.create_folder(id=1, access="public", type="saved", name="Уроки по С++", style="green", view="open",
@@ -810,7 +811,7 @@ class WikiTreeTest(object):
         def test_32(self):
             print("WikiFileTree: " + test_32.__name__)
 
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             wft.create_tree(1)
 
             wft.create_folder(id=1, access="public", type="saved", name="Уроки по С++", style="green", view="open",
@@ -849,7 +850,7 @@ class WikiTreeTest(object):
         def test_33(self):
             print("WikiFileTree: " + test_33.__name__)
 
-            wft = wt_test.WikiFileTree()
+            wft = wt_test.WikiFileSystem()
             wft.create_tree(1)
 
             wft.create_folder(id=1, access="public", type="saved", name="Уроки по С++", style="green", view="open",

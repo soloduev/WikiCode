@@ -20,9 +20,8 @@
 
 from django.shortcuts import render
 
-from WikiCode.apps.wiki.models import Publication, Group, Tag
+from WikiCode.apps.wiki.models import Publication
 import configuration as wiki_settings
-from WikiCode.apps.wiki.src.engine import wcode
 from .auth import check_auth
 from .auth import get_user_id
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -49,9 +48,6 @@ def get_index(request):
 
     paginator = Paginator(all_publications, 10)
 
-    # Получаем все группы
-    groups = Group.objects.all()
-
     page = request.GET.get('page')
 
     try:
@@ -61,19 +57,11 @@ def get_index(request):
     except EmptyPage:
         publications = paginator.page(paginator.num_pages)
 
-    # Немного кода в одну строку
-    # Получаем все теги платформы и их количество в виде списка словарей: [{'name': 'TagName', 'count': 1}...]
-    tags = [{'name': tag, 'count': Tag.objects.filter(name=tag).count()}
-            for tag in set([tag.name for tag in Tag.objects.all()])]
-
     context = {
         "all_publications": all_publications,
         "publications": publications,
         "user_data": check_auth(request),
         "user_id": get_user_id(request),
-        "groups": reversed(groups),
-        "tags": tags,
-        "notify": wcode.notify.instant.get(request),
     }
 
     return render(request, 'wiki/index.html', context)

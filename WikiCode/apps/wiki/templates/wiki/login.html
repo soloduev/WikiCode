@@ -44,14 +44,14 @@
                             <form action="{% url 'login_user' %}" method="post">
                                 {% csrf_token %}
                                 <div class="row">
-                                    <label id="wiki_nickname_message">Ваш Nickname</label>
+                                    <label id="wiki_email_message">Почта</label>
                                 </div>
                                 <div class="row">
-                                    <input type="text" class="form-control" id="Email" name="user_name" placeholder="Nickname" autofocus required style="border-radius: 0px;"/>
+                                    <input type="email" class="form-control" id="Email" name="user_email" placeholder="example@example.com" autofocus required style="border-radius: 0px;"/>
                                 </div>
                                 <br>
                                 <div class="row">
-                                    <label>Ваш Пароль</label>
+                                    <label>Пароль</label>
                                 </div>
                                 <div class="row">
                                     <input type="password" class="form-control" id="Password" name="user_password"  placeholder="Password" required  style="border-radius: 0px;"/>

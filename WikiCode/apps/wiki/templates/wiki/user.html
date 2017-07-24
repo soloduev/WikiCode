@@ -1,5 +1,5 @@
 <!--
-    Copyright (C) 2016 Igor Soloduev <diahorver@gmail.com>
+    Copyright (C) 2016-2017 Igor Soloduev <diahorver@gmail.com>
 
     This file is part of WikiCode.
 
@@ -64,8 +64,8 @@
                             <img style="width: 100%" src="http://placehold.it/240x240">
                             <div class="[ info-card-details ] animate">
                                 <div class="[ info-card-header ]">
-                                    <h1> {{ user.nickname }} </h1>
-                                    <h3> {{ user.name }} </h3>
+                                    <h1> {{ user.email }} </h1>
+                                    <h3> {{ user.email }} </h3>
                                 </div>
                                 <div class="[ info-card-detail ]">
                                     <!-- Description -->
@@ -81,30 +81,10 @@
                     <div class="col-md-8 col-sm-12">
                         <div class="row btn-block">
                             <div class="col-md-6 col-sm-6 col-xs-6" style="border-right: solid 1px #d5d5d5;">
-                                <label class="text-left btn-block" id="title-elem-page">Имя</label>
-                                <label class="text-left btn-block" id="title-elem-page">Никнейм</label>
                                 <label class="text-left btn-block" id="title-elem-page">Почта</label>
-                                <hr>
-                                <label class="text-left btn-block" id="title-elem-page">Конспектов</label>
-                                <label class="text-left btn-block" id="title-elem-page">Сохраненных</label>
-                                <label class="text-left btn-block" id="title-elem-page">Комментировал</label>
-                                <hr>
-                                <label class="text-left btn-block" id="title-elem-page">Рейтинг</label>
-                                <label class="text-left btn-block" id="title-elem-page">Его сохранили</label>
-                                <label class="text-left btn-block" id="title-elem-page">Его комментировали</label>
                             </div>
                             <div class="col-md-6 col-sm-6  col-xs-6">
-                                <label class="text-left btn-block">{{ user.name }}</label>
-                                <label class="text-left btn-block">{{ user.nickname }}</label>
                                 <label class="text-left btn-block">{{ user.email }}</label>
-                                <hr>
-                                <label class="text-left btn-block">{{ user.publications }}</label>
-                                <label class="text-left btn-block">0</label>
-                                <label class="text-left btn-block">0</label>
-                                <hr>
-                                <label class="text-left btn-block">0</label>
-                                <label class="text-left btn-block">0</label>
-                                <label class="text-left btn-block">0</label>
                             </div>
                         </div>
                     </div>
@@ -112,16 +92,6 @@
                 {% if not other_user %}
                     <div class="row" style="border-top: 1px solid #d5d5d5;">
                         <br>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                            <a href="{% url 'colleagues' %}" class="btn btn-block" id="wiki-style-btn-user">Коллеги <i
-                                    class="fa fa-users"></i> ({{ total_colleagues }})</a>
-                            <br>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                            <a href="{% url 'notifications' %}" class="btn btn-block" id="wiki-style-btn-user">Уведомления <i
-                                    class="fa fa-comments-o"></i> ({{ new_notifications }})</a>
-                            <br>
-                        </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
                             <a href="{% url 'tree_manager' %}" class="btn btn-block" id="wiki-style-btn-user">Мои конспекты
                                 <i class="glyphicon glyphicon-folder-close"></i></a>
@@ -133,34 +103,13 @@
                             <br>
                         </div>
                     </div>
-                {% else %}
-                    <input hidden id="nickname_for_add_colleagues" value="{{ user.nickname }}">
-                    <div class="row" style="border-top: 1px solid #d5d5d5;">
-                        <br>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                            {% if not is_colleague %}
-                                {% if not is_send_colleague %}
-                                    <button data-toggle="modal" data-target="#modal_add_colleague" class="btn btn-block" id="wiki-style-btn-user-add-colleague">Добавить в коллеги <i class="fa fa-user-plus"></i></button>
-                                    <br>
-                                {% else %}
-                                    <span><b>Вы отправили заявку на добавление в коллеги.</b></span>
-                                    <br><br>
-                                {% endif %}
-                            {% else %}
-                                <span>Статус: <b>Ваш коллега</b></span>
-                                <br><br>
-                            {% endif %}
-                        </div>
-                    </div>
                 {% endif %}
                 <div class="row">
                     <div class="tabbable-panel">
                         <div class="tabbable-line">
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#tab_default_1" data-toggle="tab">Превью конспект </a></li>
-                                <li><a href="#tab_default_2" data-toggle="tab">Лучшие </a></li>
                                 <li><a href="#tab_default_3" data-toggle="tab">Последние </a></li>
-                                <li><a href="#tab_default_4" data-toggle="tab">Группы </a></li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tab_default_1">
@@ -175,41 +124,6 @@
                                                     <!--Здесь должен располагаться сгенерированный превью-конспект-->
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane" id="tab_default_2">
-                                    <div class="container-fluid">
-                                        <div class="row">
-                                            {% for publ in top_publications %}
-                                                <!-- Start publication-->
-                                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                                                    <div class="box">
-                                                        <div class="info">
-                                                            <a style="text-decoration: none; cursor: pointer;"
-                                                               href="/page/{{ publ.id_publication }}/"><div style="font-size: 12pt;"
-                                                                                                            class="text-left">{{ publ.title }}</div></a>
-                                                            <div class="publ-tags text-left">
-                                                                <span class="wiki-tag">Tag1</span>
-                                                                <span class="wiki-tag">Tag2</span>
-                                                            </div>
-                                                            <p style="font-size: 10pt;">{{ publ.description }}</p>
-                                                            <div class="btn-group">
-                                                                <button id="reads_publ" href="" class="btn btn-sm btn-default">
-                                                                    <span class="glyphicon glyphicon-eye-open"></span> {{ publ.read }}
-                                                                </button>
-                                                                <button id="imports_publ" href="" class="btn btn-sm btn-default">
-                                                                    <span class="glyphicon glyphicon-import"></span> 0
-                                                                </button>
-                                                                <button id="likes_publ" href="" class="btn btn-sm btn-default">
-                                                                    <span class="glyphicon glyphicon-star"></span> {{ publ.stars }}
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!--End publication-->
-                                            {% endfor %}
                                         </div>
                                     </div>
                                 </div>
@@ -248,78 +162,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="tab_default_4">
-                                    <div class="container-fluid">
-                                        <div class="row">
-                                            {% for group in groups %}
-                                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                                                    <div {% if group.type == "Группа" %}class="box-wiki-group"
-                                                         {% elif group.type == "Курс" %}class="box-wiki-course"
-                                                         {% elif group.type == "Организация" %}class="box-wiki-org"
-                                                         {% elif group.type == "Документация" %}class="box"
-                                                         {% else %}class="box"{% endif %}>
-                                                        <div class="info">
-                                                            <a style="text-decoration: none; cursor: pointer;"
-                                                               href="/group/{{ group.id_group }}/"><div style="font-size: 12pt;"
-                                                                                                        class="text-left">
-                                                                {% if group.type == "Курс" %}
-                                                                   <span class="glyphicon glyphicon-education"></span>
-                                                                {% elif group.type == "Группа" %}
-                                                                    <span class="glyphicon glyphicon-th"></span>
-                                                                {% elif group.type == "Организация" %}
-                                                                    <span class="glyphicon glyphicon-globe"></span>
-                                                                {% elif group.type == "Документация" %}
-                                                                    <span class="glyphicon glyphicon-book"></span>
-                                                                {% else %}
-
-                                                                {% endif %}
-                                                                {{ group.title }}</div></a>
-                                                            <div class="publ-tags text-left">
-                                                                <span class="wiki-tag">Tag1</span>
-                                                                <span class="wiki-tag">Tag2</span>
-                                                            </div>
-                                                            <p style="font-size: 10pt;">{{ group.description }}</p>
-                                                            <div class="btn-group">
-                                                                <button id="likes_publ" href="" class="btn btn-sm btn-default">
-                                                                    <span class="glyphicon glyphicon-star"></span> {{ group.rating }}
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Модальное окно для добавления коллеги -->
-    <div class="modal fade" id="modal_add_colleague" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Добавление в коллеги</h4>
-                </div>
-                <form action="{% url 'send_request_colleagues' user.id_user %}" method="post">
-                    {% csrf_token %}
-                    <div class="modal-body">
-                        <h4>Отправляя заявку на добавление в коллеги, Вы можете оставить сообщение.</h4>
-                        <textarea type="text" name="colleague_extra_text" class="form-control btn-block" placeholder="Введите описание..." style="height: 100px; font-family: Courier; resize: none; border-radius: 0px;"></textarea>
-                        <br>
-                        <h4>Пользователь станет Вашим коллегой, после того, как подтвердит Вашу заявку.</h4>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" id="wiki-style-btn" class="btn">Отправить заявку</button>
-                        <button type="button" id="wiki-style-btn" class="btn" data-dismiss="modal">Отмена</button>
-                    </div>
-                </form>
             </div>
         </div>
     </div>
@@ -345,13 +191,5 @@
             $("#wiki-code-preview-title").text("");
             $("#wiki-style-btn-read-preview-publ").hide();
         {% endif %}
-
-        /* Отображение обычного уведомления */
-        $.notify("{{ notify.text|escapejs }}",
-                {
-                    position: "right bottom",
-                    className: "{{ notify.type|escapejs }}",
-                    autoHideDelay: 8000
-                });
     </script>
 {% endblock %}

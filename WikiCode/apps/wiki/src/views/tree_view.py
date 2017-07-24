@@ -24,8 +24,8 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 
 from WikiCode.apps.wiki.models import User, Publication, Statistics, Folder
-from WikiCode.apps.wiki.src.modules.wiki_tree.wiki_tree import WikiFileTree
 from WikiCode.apps.wiki.src.engine import wcode
+from WikiCode.apps.wiki.src.fs.fs import WikiFileSystem
 from .auth import check_auth, get_user_id
 
 
@@ -36,7 +36,7 @@ def get_tree_manager(request):
     try:
         user = User.objects.get(email=user_data)
 
-        wft = WikiFileTree()
+        wft = WikiFileSystem()
         wft.load_tree(user.file_tree)
 
         context = {
@@ -45,7 +45,6 @@ def get_tree_manager(request):
             "preview_tree": wft.to_html_preview(),
             "dynamic_tree": wft.to_html_dynamic(),
             "dynamic_tree_folders": wft.to_html_dynamic_folders(),
-            "notify": wcode.notify.instant.get(request),
         }
 
         return render(request, 'wiki/tree_manager.html', context)
@@ -74,7 +73,7 @@ def get_add_folder_in_tree(request):
             # Получаем текущую статистику платформы
             stat = Statistics.objects.get(id_statistics=1)
 
-            wft = WikiFileTree()
+            wft = WikiFileSystem()
             wft.load_tree(user.file_tree)
             wft.create_folder(id=stat.total_folders + 1,
                               name=folder_name,
@@ -190,7 +189,7 @@ def get_delete_publ_in_tree(request):
             stat = Statistics.objects.get(id_statistics=1)
 
             # Загружаем дерево пользователя
-            wft = WikiFileTree()
+            wft = WikiFileSystem()
             wft.load_tree(user.file_tree)
             # Удаляем публикацию по указанному id
             wft.delete_publication(id_publ)
@@ -230,7 +229,7 @@ def get_rename_publ_in_tree(request):
         try:
             user = User.objects.get(email=user_data)
             publication = Publication.objects.get(id_publication=id)
-            wft = WikiFileTree()
+            wft = WikiFileSystem()
             wft.load_tree(user.file_tree)
             wft.rename_publication(int(id), new_name_publ)
 
@@ -275,7 +274,7 @@ def get_rename_folder_in_tree(request):
         try:
             user = User.objects.get(email=user_data)
             folder = Folder.objects.get(id_folder=id)
-            wft = WikiFileTree()
+            wft = WikiFileSystem()
             wft.load_tree(user.file_tree)
             wft.rename_folder(id, new_name_folder)
 
@@ -332,7 +331,7 @@ def get_remove_saved(request):
             cur_user = User.objects.get(id_user=get_user_id(request))
 
             # Получаем файловое дерево пользователя
-            wft = WikiFileTree()
+            wft = WikiFileSystem()
             wft.load_tree(cur_user.file_tree)
             if not wft.is_publication(saved_id):
                 wcode.notify.instant.create(request, 'error', 'Данного конспекта не существует, либо он уже удален.')
@@ -374,7 +373,7 @@ def get_move_publication(request):
             cur_user = User.objects.get(id_user=get_user_id(request))
 
             # Получаем файловое дерево пользователя
-            wft = WikiFileTree()
+            wft = WikiFileSystem()
             wft.load_tree(cur_user.file_tree)
             if not wft.is_publication(moved_id):
                 wcode.notify.instant.create(request, 'error', 'Данного конспекта не существует, либо он уже удален.')

@@ -22,7 +22,6 @@
 # -------------------- WikiCode API --------------------
 # ------------------------------------------------------
 
-from WikiCode.apps.wiki.src.engine.src.notifications import notify
 from WikiCode.apps.wiki.src.engine.src.admin import admin
 from WikiCode.apps.wiki.src.engine.src import djangoapi as __djangoapi
 

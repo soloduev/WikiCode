@@ -140,6 +140,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = ['WikiCode.apps.wiki.src.views.user_view.EmailAuthBackend']
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/

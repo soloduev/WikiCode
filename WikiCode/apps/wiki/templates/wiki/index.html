@@ -1,5 +1,5 @@
 <!--
-    Copyright (C) 2016 Igor Soloduev <diahorver@gmail.com>
+    Copyright (C) 2016-2017 Igor Soloduev <diahorver@gmail.com>
 
     This file is part of WikiCode.
 
@@ -66,12 +66,8 @@
                     <div class="tabbable-panel">
                         <div class="tabbable-line">
                             <ul class="nav nav-tabs ">
-                                <li class="active"><a href="#tab_default_1" data-toggle="tab">Последние конспекты </a>
-                                </li>
-                                <li><a href="#tab_default_2" data-toggle="tab">Лучшие Конспекты</a></li>
-                                <li><a href="#tab_default_3" data-toggle="tab">Теги </a></li>
+                                <li class="active"><a href="#tab_default_1" data-toggle="tab">Последние конспекты </a></li>
                                 <li><a href="#tab_default_4" data-toggle="tab">Авторы </a></li>
-                                <li><a href="#tab_default_5" data-toggle="tab">Группы </a></li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tab_default_1">
@@ -84,10 +80,7 @@
                                                         <a style="text-decoration: none; cursor: pointer;"
                                                            href="/page/{{ publ.id_publication }}/"><h4
                                                                 class="text-left">{{ publ.title }}</h4></a>
-                                                        <div class="publ-tags text-left">
-                                                            <span class="wiki-tag">Tag1</span>
-                                                            <span class="wiki-tag">Tag2</span>
-                                                        </div>
+
                                                         <p>{{ publ.description }}</p>
                                                         <div class="btn-group">
                                                             <button id="reads_publ" href="" class="btn btn-default">
@@ -95,9 +88,6 @@
                                                             </button>
                                                             <button id="imports_publ" href="" class="btn btn-default">
                                                                 <span class="glyphicon glyphicon-import"></span> 0
-                                                            </button>
-                                                            <button id="likes_publ" href="" class="btn btn-default">
-                                                                <span class="glyphicon glyphicon-star"></span> {{ publ.stars }}
                                                             </button>
                                                             <a id="author_publ" href="/user/{{ publ.id_author }}"
                                                                class="btn btn-default"><span
@@ -114,81 +104,10 @@
                                     </div>
 
                                 </div>
-                                <div class="tab-pane" id="tab_default_2">
-                                    <p></p>
-                                    <h4>Позже, здесь будут перечислены лучшие конспекты по запросу</h4>
-                                </div>
-                                <div class="tab-pane" id="tab_default_3">
-                                    <br>
-                                    <div class="container-fluid">
-                                        <div class="row">
-                                            <div class="col-xs-6 col-sm-7 col-md-8 col-lg-9 text-center">
-                                                <i>Выберите любой тег...</i>
-                                            </div>
-                                            <div class="col-xs-6 col-sm-5 col-md-4 col-lg-3">
-                                                {% for tag in tags %}
-                                                    <div class="box">
-                                                        <div class="info" style="height: 22px;">
-                                                            <div class="col-xs-6 text-left">
-                                                                <a style="text-decoration: none; cursor: pointer;">{{ tag.name }}</a>
-                                                            </div>
-                                                            <div class="col-xs-6 text-right">
-                                                                <span>({{ tag.count }})</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                {% endfor %}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="tab-pane" id="tab_default_4">
                                     <p></p>
                                     <h4>Позже, здесь будут перечислены все авторы конспектов сайта, а также поиск чисто
                                         по авторам</h4>
-                                </div>
-                                <div class="tab-pane" id="tab_default_5">
-                                    <div class="container-fluid">
-                                        <div class="row">
-                                            {% for group in groups %}
-                                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                                    <div {% if group.type == "Группа" %}class="box-wiki-group"
-                                                         {% elif group.type == "Курс" %}class="box-wiki-course"
-                                                         {% elif group.type == "Организация" %}class="box-wiki-org"
-                                                         {% elif group.type == "Документация" %}class="box"
-                                                         {% else %}class="box"{% endif %}>
-                                                        <div class="info">
-                                                            <a style="text-decoration: none; cursor: pointer;"
-                                                               href="/group/{{ group.id_group }}/"><div style="font-size: 12pt;"
-                                                                                                        class="text-left">
-                                                                {% if group.type == "Курс" %}
-                                                                    <span class="glyphicon glyphicon-education"></span>
-                                                                {% elif group.type == "Группа" %}
-                                                                    <span class="glyphicon glyphicon-th"></span>
-                                                                {% elif group.type == "Организация" %}
-                                                                    <span class="glyphicon glyphicon-globe"></span>
-                                                                {% elif group.type == "Документация" %}
-                                                                    <span class="glyphicon glyphicon-book"></span>
-                                                                {% else %}
-
-                                                                {% endif %}
-                                                                {{ group.title }}</div></a>
-                                                            <div class="publ-tags text-left">
-                                                                <span class="wiki-tag">Tag1</span>
-                                                                <span class="wiki-tag">Tag2</span>
-                                                            </div>
-                                                            <p style="font-size: 10pt;">{{ group.description }}</p>
-                                                            <div class="btn-group">
-                                                                <button id="likes_publ" href="" class="btn btn-sm btn-default">
-                                                                    <span class="glyphicon glyphicon-star"></span> {{ group.rating }}
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -218,13 +137,4 @@
 
 {% block add_script %}
     {% load staticfiles %}
-    <script>
-        /* Отображение обычного уведомления */
-        $.notify("{{ notify.text|escapejs }}",
-                {
-                    position: "right bottom",
-                    className: "{{ notify.type|escapejs }}",
-                    autoHideDelay: 8000
-                });
-    </script>
 {% endblock %}
