@@ -28,11 +28,11 @@
 # Для другой почты пока не работает.
 
 # Почта и пароль, с которой будет происходить отправка бекапов:
-EMAIL_BACKUP_SENDER_NAME = ""
-EMAIL_BACKUP_SENDER_PASSWORD = ""
+EMAIL_BACKUP_SENDER_NAME = "wcodetest@gmail.com"
+EMAIL_BACKUP_SENDER_PASSWORD = "wcodetest7251955"
 
 # Почта на которую будут отправляться бекапы:
-EMAIL_BACKUP_RECEIVER_NAME = ""
+EMAIL_BACKUP_RECEIVER_NAME = "diahorver@gmail.com"
 
 # Тема и текст письма при отправки очередного бекапа
 EMAIL_BACKUP_SUBJECT = "Daily backup"

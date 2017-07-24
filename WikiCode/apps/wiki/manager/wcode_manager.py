@@ -27,6 +27,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 import configuration
+from WikiCode.apps.wiki.src.wiki_tests import WikiTests
 
 
 # Главный обработчик команд
@@ -41,6 +42,11 @@ def execute_commands(args):
             __install_wikicode()
         elif commands[0] == "clearall":
             __clear_wikicode()
+        elif commands[0] == "test":
+            __test_wikicode()
+    elif count_commands == 2:
+        if commands[0] == "load":
+            __load_db(commands[1])
 
 
 # Очищает текущее состояние сайта и запускает его с самого начала
@@ -90,12 +96,26 @@ def __backup_current_database():
     os.remove(backup_file_name)
 
 
+def __load_db(db_filename):
+    assert os.path.isfile(db_filename), "Database file not exist"
+
+    print("Loading database file for wikicode:")
+    __backup_current_database()
+    print("Load new file...:")
+    subprocess.call(["python3", "manage.py", "loaddata", db_filename])
+
+
+def __test_wikicode():
+    wiki_tests = WikiTests()
+    is_errors = wiki_tests.run()
+
 def __print_help():
     print("Справка по командам сайта:")
     print("install          -   первая настоящая установка сайта")
     print("present          -   первая установка сайта с набором тестовых данных")
     print("clearall         -   очищает всю БД и все данные")
-    print("load <id>        -   загружает определенную версию БД сайта")
+    print("load <filename>  -   загружает определенную версию БД сайта")
+    print("help             -   выводит справку по командам сайта")
 
 
 def __send_mail(send_from, send_to, subject, text, filename):
