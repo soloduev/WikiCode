@@ -74,9 +74,6 @@ def get_check_email(request):
         try:
             user = WikiUser.objects.get(email=email)
         except WikiUser.DoesNotExist:
-            if email == "diahorver@gmail.com":
-                return HttpResponse('ok', content_type='text/html')
-            else:
                 return HttpResponse('no', content_type='text/html')
 
         return HttpResponse('ok', content_type='text/html')

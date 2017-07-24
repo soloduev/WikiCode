@@ -37,6 +37,7 @@ urlpatterns = [
     url(r'^create_page/$', views.create_page, name='create_page'),
     url(r'^create_user/$', views.create_user, name='create_user'),
     url(r'^create_user_invite/$', views.create_user_invite, name='create_user_invite'),
+    url(r'^confirm_registration/(?P<key>.+)&(?P<email>.+)$', views.confirm_registration),
     url(r'^login_user/$', views.login_user, name='login_user'),
     url(r'^logout_user/$', views.logout_user, name='logout_user'),
 

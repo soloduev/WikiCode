@@ -26,6 +26,7 @@ class User(models.Model):
     id_user = models.BigIntegerField()
     nickname = models.CharField(max_length=100, blank=True)
     email = models.EmailField(max_length=100)
+    is_activated = models.BooleanField(default=False)
     file_tree = models.TextField()
     preview_publ_id = models.BigIntegerField()
 
@@ -89,8 +90,20 @@ class Developer(models.Model):
         return str(self.name_developer)
 
 
+# Ключи доступа для регистрации по приглашению
 class InviteKeys(models.Model):
     key = models.CharField(max_length=16)
 
     def __str__(self):
         return str(self.id)
+
+
+# TODO: Сделать так, чтобы через 24 часа они сгорали
+# Ключи для регистрации любого из пользователей
+class RegistrationKey(models.Model):
+    key = models.CharField(max_length=32)
+    email = models.CharField(max_length=100)
+    date = models.CharField(max_length=100)
+
+    def __str__(self):
+        return str(self.email)

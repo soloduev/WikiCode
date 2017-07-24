@@ -16,7 +16,7 @@
 #
 #   You should have received a copy of the GNU Affero General Public License
 #   along with WikiCode.  If not, see <http://www.gnu.org/licenses/>.
-
+from django.shortcuts import render
 
 from WikiCode.apps.wiki.src.views import index_view
 from WikiCode.apps.wiki.src.views import about_view
@@ -94,12 +94,19 @@ def login(request):
 # Непосредственное создание нового пользователя
 @develop_mode
 def create_user(request):
-    return user_view.get_create_user(request)
+    return user_view.get_offer_registration(request)
 
 
 # Непосредственное создание нового пользователя по приглашению
+@develop_mode
 def create_user_invite(request):
-    return user_view.get_create_user_invite(request)
+    return user_view.get_offer_registration(request)
+
+
+# Непосредственное создание нового пользователя по приглашению
+@develop_mode
+def confirm_registration(request, key, email):
+    return user_view.get_create_user(request, key, email)
 
 
 # Непосредственная авторизация пользователя

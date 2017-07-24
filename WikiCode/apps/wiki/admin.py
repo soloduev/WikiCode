@@ -24,6 +24,7 @@ from .models import Statistics
 from .models import Developer
 from .models import Folder
 from .models import InviteKeys
+from .models import RegistrationKey
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User as DjangoUser
 
@@ -48,3 +49,4 @@ admin.site.register(Statistics)
 admin.site.register(Developer)
 admin.site.register(Folder)
 admin.site.register(InviteKeys)
+admin.site.register(RegistrationKey)

@@ -85,11 +85,12 @@ def __backup_current_database():
 
     # Отпрaвляем полученный файл на почту
     print("Backup sending...")
-    __send_mail(configuration.EMAIL_BACKUP_SENDER_NAME,
-                configuration.EMAIL_BACKUP_RECEIVER_NAME,
-                configuration.EMAIL_BACKUP_SUBJECT,
-                configuration.EMAIL_BACKUP_TEXT,
-                backup_file_name)
+    send_mail(configuration.EMAIL_BACKUP_SENDER_NAME,
+              configuration.EMAIL_BACKUP_SENDER_PASSWORD,
+              configuration.EMAIL_BACKUP_RECEIVER_NAME,
+              configuration.EMAIL_BACKUP_SUBJECT,
+              configuration.EMAIL_BACKUP_TEXT,
+              backup_file_name)
 
     # Затем удаляем этот файл
     print("Remove files...")
@@ -118,7 +119,7 @@ def __print_help():
     print("help             -   выводит справку по командам сайта")
 
 
-def __send_mail(send_from, send_to, subject, text, filename):
+def send_mail(send_from, password, send_to, subject, text, filename=None):
 
     msg = MIMEMultipart()
     msg['Subject'] = subject
@@ -129,15 +130,16 @@ def __send_mail(send_from, send_to, subject, text, filename):
     body = MIMEText(text)
     msg.attach(body)
 
-    # PDF attachment
-    fp = open(filename, 'rb')
-    att = MIMEApplication(fp.read(), _subtype="xml")
-    fp.close()
-    att.add_header('Content-Disposition', 'attachment', filename=filename)
-    msg.attach(att)
+    if filename is not None:
+        # File attachment
+        fp = open(filename, 'rb')
+        att = MIMEApplication(fp.read(), _subtype="xml")
+        fp.close()
+        att.add_header('Content-Disposition', 'attachment', filename=filename)
+        msg.attach(att)
 
     server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
     server.ehlo()
-    server.login(send_from, configuration.EMAIL_BACKUP_SENDER_PASSWORD)
+    server.login(send_from, password)
     server.sendmail(send_from, [send_to], msg.as_string())
     server.close()
