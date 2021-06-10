@@ -1,6 +1,6 @@
 beautifulsoup4==4.4.1
 bleach==1.4.2
-Django==1.9.1
+Django==2.2.24
 django-bootstrap3==6.2.2
 html5lib==0.9999999
 Markdown==2.6.5
